@@ -5,8 +5,10 @@ module.exports = {
 	outputDir: 'dist',
 	assetsDir: 'static',
 	lintOnSave: false,
-	// 大量依赖发布为 ES2020+/ESM，webpack 4 默认不转译 node_modules，开启全量转译
-	transpileDependencies: [/.*/],
+	// 仅转译发布为 ES2020+/ESM 的依赖（webpack 4 默认不转译 node_modules）。
+	// 白名单来自 2026-09-07 实测：关闭全量转译后只有这 4 个包触发 module parse 失败，
+	// 其余依赖（element-ui/date-fns/dompurify/remend/@iconify/vue2 等）均为 webpack 4 可解析产物。
+	transpileDependencies: ['@agentscope-ai/agentscope', 'cron-parser', 'marked', 'mime-types'],
 	devServer: {
 		port: 5173,
 		host: '0.0.0.0',
