@@ -20,7 +20,7 @@ import { computed } from '@/composables/vue';
 import { COMMON, ERROR } from '@/constants/text.js';
 
 /**
- * RouteError —— React 版 errorElement 的 Vue 等价物。
+ * RouteError：路由级错误兜底组件。
  * 被 onErrorCaptured 捕获后渲染在路由/布局占位区，保留侧边栏可用；
  * 同时可被 App.vue 用作全局兜底。
  */

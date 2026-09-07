@@ -1,7 +1,7 @@
 /**
- * Vuex app 模块（迁移方案 v2 §6：四模块骨架之一，Phase 1 先落 app）。
+ * Vuex app 模块。
  * 职责：深色模式、服务器连接配置（setup）。
- * localStorage 键与旧 React 版一致：server_url / username；主题用 theme。
+ * localStorage 键：server_url / username；主题用 theme。
  */
 
 const THEME_KEY = 'theme';

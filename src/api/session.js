@@ -1,5 +1,5 @@
 /**
- * Sessions API（去 TS 版，迁移自 src/api/session.ts，契约不变）。
+ * Sessions API：会话列表 / 创建 / 消息流式读取。
  */
 import { client } from './client';
 

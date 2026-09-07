@@ -1,5 +1,5 @@
 /**
- * 日程页私有文案（来源：migration/04.TEXTS.md 日程页）。
+ * 日程页私有文案。
  */
 export const TEXT = {
   schedule: {

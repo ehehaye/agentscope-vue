@@ -1,5 +1,5 @@
 /**
- * Vuex workspace 模块（迁移方案 02 §4.3 / 03 Phase 2）。
+ * Vuex workspace 模块。
  * 职责：工作区目录、状态、git 状态；供侧边栏与多页面共享。
  */
 import { workspaceApi } from '@/api';

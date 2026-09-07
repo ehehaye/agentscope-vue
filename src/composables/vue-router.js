@@ -1,8 +1,8 @@
 import { reactive, watch, getCurrentInstance } from '@/composables/vue';
 
 /**
- * 路由桥接（迁移方案 02 §5.1）。
- * Vue 2.6 + composition-api 中没有内置 useRoute/useRouter，
+ * 路由桥接：提供响应式 useRoute 与 useRouter。
+ * Vue 2.6 的组合式 API 环境没有内置 useRoute/useRouter，
  * 通过 getCurrentInstance 从组件实例上取得。
  *
  * 注意：不能直接返回 `proxy.$route`，那只是 setup 时刻的快照——

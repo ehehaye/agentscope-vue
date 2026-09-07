@@ -1,5 +1,5 @@
 /**
- * 文档状态轮询（迁移自 useDocumentStatusPolling.ts，02 §4.5 / 03 Phase 5）。
+ * 文档状态轮询。
  * 条件轮询：仅当存在非终态文档 id 时调度请求；每 tick 返回的 items
  * fan-out 到 upload 模块的 applyServerStatuses，联动上传卡片显示服务端进度。
  */

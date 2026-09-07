@@ -7,7 +7,6 @@ import upload from './modules/upload';
 
 Vue.use(Vuex);
 
-// upload 随 Phase 5 加入（02 §4）。
 export default new Vuex.Store({
   modules: {
     app,

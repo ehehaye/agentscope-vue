@@ -4,8 +4,7 @@ import store from "@/store";
 
 Vue.use(VueRouter);
 
-// Phase 1 骨架路由：setup 门禁 + AppLayout 壳 + /dev/markdown 渲染验证页。
-// 业务页面（凭证/知识库/MCP/聊天…）随 Phase 2-4 逐个挂入。
+// setup 门禁 + AppLayout 壳 + /dev/markdown 渲染验证页；业务页见下方 routes。
 const routes = [
   {
     path: "/setup",
@@ -94,7 +93,7 @@ const router = new VueRouter({
   routes,
 });
 
-// setup 门禁：未配置服务器地址/用户名时一律重定向 /setup（02 §3 setup 步骤 5）。
+// setup 门禁：未配置服务器地址/用户名时一律重定向 /setup。
 router.beforeEach((to, _from, next) => {
   const ready = store.getters["app/setupComplete"];
   if (!ready && to.path !== "/setup") {

@@ -61,7 +61,6 @@ export default defineComponent({
 	components: { Icon },
 	data() {
 		return {
-			// Phase 1 骨架导航；业务页随 Phase 2-4 补入（凭证/知识库/MCP/技能/频道/日程）
 			navItems: [
 					{ to: '/chat', icon: 'lucide:message-square', label: '聊天' },
 					{ to: '/credential', icon: 'lucide:key-round', label: '凭证' },

@@ -1,5 +1,5 @@
 /**
- * Health API（去 TS 首个模块，Phase 1 联通用）。
+ * Health API：后端健康探针。
  * 探针在服务端无 I/O，超过 10s 即视为后端卡住。
  */
 import { client } from './client';

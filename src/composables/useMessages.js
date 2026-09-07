@@ -1,6 +1,6 @@
 /**
- * useMessages composable（迁移方案 02 §10.2 / 03 Phase 4）。
- * 对 Vuex chat 模块的薄封装，向组件层暴露与旧 React hook 对齐的 API。
+ * useMessages composable：对 Vuex chat 模块的薄封装。
+ * 向组件层暴露消息列表/发送/HITL 确认/中断/关闭等 API。
  */
 import { computed, watch, unref } from '@/composables/vue';
 import { useStore } from '@/composables/vuex';

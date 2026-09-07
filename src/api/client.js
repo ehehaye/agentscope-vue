@@ -1,5 +1,5 @@
 /**
- * HTTP 客户端（去 TS 版，迁移自 src/api/client.ts，契约不变）。
+ * HTTP 客户端（原生 fetch 封装，统一注入头与错误归一）。
  * - 原生 fetch（非 axios），统一注入 X-User-ID 头（localStorage）
  * - FastAPI/Pydantic 422 错误提取 detail；silent 模式不弹 toast
  * - stream() 只返回 Response，SSE 解析交给上层（见 api/session.js 的 async generator）

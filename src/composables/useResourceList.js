@@ -1,7 +1,7 @@
 import { ref, computed, onMounted } from '@/composables/vue';
 
 /**
- * 通用资源列表 composable（迁移方案 02 §5.2）。
+ * 通用资源列表 composable。
  * 覆盖「列表 + loading + error + 自动刷新」的同构模式。
  *
  * @param {(params?: any) => Promise<any>} listFn 返回列表或 { list: any[] }

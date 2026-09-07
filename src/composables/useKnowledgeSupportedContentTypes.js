@@ -1,5 +1,5 @@
 /**
- * 知识库支持的上传类型（迁移自 useKnowledgeSupportedContentTypes.ts，03 Phase 5）。
+ * 知识库支持的上传类型。
  * 模块级缓存：服务端 parser 能力在进程生命周期内不变，全局只拉一次。
  */
 import { ref, onMounted, onUnmounted } from '@/composables/vue';

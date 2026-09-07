@@ -1,5 +1,5 @@
 /**
- * 知识库文档列表（迁移自 useKnowledgeDocuments.ts，03 Phase 5）。
+ * 知识库文档列表。
  * 拉取某知识库的全部文档（分页耗尽），knowledgeBaseId 变化时重拉。
  * @param {import('vue').Ref<string|null>|string|null} knowledgeBaseId
  */

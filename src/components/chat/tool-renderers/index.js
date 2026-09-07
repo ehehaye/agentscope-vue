@@ -1,5 +1,5 @@
 /**
- * 工具调用渲染映射表（迁移自 tool-renderers/index.tsx）。
+ * 工具调用渲染映射表。
  */
 import BashRenderer from './BashRenderer.vue';
 import ReadRenderer from './ReadRenderer.vue';

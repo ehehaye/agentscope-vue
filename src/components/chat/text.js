@@ -1,5 +1,5 @@
 /**
- * Chat 页面中文文案（去 i18n，迁移方案 04.TEXTS.md）。
+ * Chat 页面中文文案。
  */
 export const TEXT = {
   errorTitle: '回复出错',

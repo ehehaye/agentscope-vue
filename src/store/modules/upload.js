@@ -1,12 +1,11 @@
 /**
- * Vuex upload 模块（迁移方案 02 §4.5 / 03 Phase 5）。
- * 对应 React 侧 UploadContext.tsx 的 reducer + UploadProvider。
+ * Vuex upload 模块：上传任务状态与并发调度。
  *
  * 设计要点：
  * - state 只放可序列化的 tasks 数组；File / AbortController / 调度标记
  *   放在模块级 Map/Set（非响应式），避免 Vue 2.6 把 File 对象深层代理。
  * - 上传 XHR 生命周期由 startUpload 驱动；scheduler 在 enqueue/cancel 后
- *   手动触发，对齐 React useEffect[tasks] 的效果。
+ *   手动触发。
  */
 import { knowledgeBaseApi } from '@/api';
 // 注意：循环依赖（store/index.js → upload.js → store）。
@@ -85,7 +84,7 @@ function startUpload(task) {
 
 /**
  * 并发调度器：最多 MAX_CONCURRENT_UPLOADS 个 uploading 同时跑，
- * 其余 queued 排队。对齐 React useEffect[tasks] 的副作用。
+ * 其余 queued 排队。上传副作用由本模块级调度器统一触发。
  */
 function runScheduler() {
 	const tasks = store.state.upload.tasks;

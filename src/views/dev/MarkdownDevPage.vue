@@ -57,7 +57,7 @@ const STATIC_SAMPLE = `# AgentScope 渲染验证
 ## 代码高亮
 \`\`\`javascript
 function greet(name) {
-  // 验证 highlight.js 主题（浅色 vs.css / 深色待 Phase 4 切 github-dark）
+  // 验证 highlight.js 主题随 .dark 切换
   return \`你好，\${name}！\`;
 }
 console.log(greet('AgentScope'));

@@ -12,7 +12,7 @@
 import { defineComponent } from '@/composables/vue';
 
 /**
- * 3D 翻转卡片容器（React framer-motion FlipCard 的 Vue 等价物）。
+ * 3D 翻转卡片容器。
  * 当 visible 为 true 时从下方 -90° 翻转进入；为 false 时向上 90° 翻转退出。
  */
 export default defineComponent({

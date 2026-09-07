@@ -1,9 +1,8 @@
 /**
- * 音频中心（迁移方案 02 §4.5 / 03 Phase 5）。
- * L2 provide/inject：在聊天子树根部 provide 一个 StreamingAudioManager 实例。
+ * 音频中心：provide/inject 在聊天子树根部共享 StreamingAudioManager 实例。
  * - store 侧 SSE 路由经 useAudioCenter() 拿同一实例 start/append/end。
  * - 组件侧用 useAudioBlock(blockId) 订阅单块状态，触发响应式重渲染。
- * 音频 DataBlock 不随 fixture 回放出现，验证依赖真实 omni 后端。
+ * 音频 DataBlock 由真实 omni 后端产生并驱动。
  */
 import { provide, inject, ref, computed, onMounted, onUnmounted } from '@/composables/vue';
 import { StreamingAudioManager } from '@/utils/streamingAudio';
@@ -22,8 +21,8 @@ export function useAudioCenter() {
 }
 
 /**
- * 订阅单个音频 DataBlock 的播放状态。无 provider 时返回惰性空值
- *（dev fixture 回放页无 audio center，气泡仍需可渲染）。
+ * 订阅单个音频 DataBlock 的播放状态。无 provider 时返回惰性空值，
+ * 消息气泡仍可正常渲染。
  * @param {import('vue').Ref<string>|string} blockId
  */
 export function useAudioBlock(blockId) {

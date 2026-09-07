@@ -9,7 +9,7 @@ import App from './App.vue';
 import '@fontsource-variable/geist';
 import '@fontsource-variable/geist-mono';
 
-// CSS 引入顺序（迁移方案 v2 §5.3）：
+// CSS 引入顺序：
 // 1. Tailwind v2 + index.css 主题变量（:root / .dark 单点）
 // 2. Element 组件样式
 // 3. element-overrides（把 Element 表面色映射到 CSS 变量，含深色兜底）

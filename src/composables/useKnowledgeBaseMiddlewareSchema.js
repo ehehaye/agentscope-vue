@@ -1,5 +1,5 @@
 /**
- * 知识库中间件参数 schema（迁移自 useKnowledgeBaseMiddlewareSchema.ts）。
+ * 知识库中间件参数 schema。
  * 模块级缓存：schema 在进程生命周期内不变。
  */
 import { ref, onMounted } from '@/composables/vue';

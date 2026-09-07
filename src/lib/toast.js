@@ -1,5 +1,5 @@
 /**
- * Toast 薄封装（迁移方案 v2 §5.5）：对齐旧版 sonner 的使用习惯。
+ * Toast 薄封装：以 toast.success/error/warning/info 语义封装 Element 轻提示。
  * - toast.success/error/warning/info → Element Message（轻提示，顶部居中短文案）
  * - 组件内也可直接用 this.$message / this.$notify（Element 全量注册后可用）
  * 注意：Element 的 Message/Notification 是模块级函数，需在 plugins/element.js
@@ -26,7 +26,7 @@ export const toast = {
 		return Message({ type: 'info', ...normalize(message, options) });
 	},
 	/**
-	 * 带标题/描述的通知（对齐旧 sonner top-right 位姿）。
+	 * 带标题/描述的通知（固定 top-right 位姿）。
 	 * @param {{title?: string, message: string, type?: 'success'|'error'|'warning'|'info', duration?: number}} opts
 	 */
 	notify({ title, message, type = 'info', duration = 4500 }) {

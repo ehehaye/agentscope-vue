@@ -1,5 +1,5 @@
 /**
- * 工具调用渲染共享函数（迁移自 tool-renderers/_shared.tsx）。
+ * 工具调用渲染共享函数。
  */
 const TODO_TOOLS = new Set(['TaskGet', 'TaskUpdate', 'TaskList', 'TaskCreate']);
 const MCP_TOOL_PREFIX = 'mcp__';

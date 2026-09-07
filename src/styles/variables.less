@@ -1,5 +1,5 @@
 // —— 编译期桥接：SFC 中的 Less 变量 → 运行时 CSS 自定义属性 ——
-// 迁移方案 v2 §4.4 A1：Less 变量是编译期常量，无法随 .dark 翻转；
+// Less 变量是编译期常量，无法随 .dark 翻转；
 // 全部桥接到 index.css 的 :root/.dark CSS 变量，深色模式单点维护。
 // 本文件经 vue.config.js css.loaderOptions.less.additionalData 全局注入。
 

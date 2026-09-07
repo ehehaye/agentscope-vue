@@ -1,5 +1,5 @@
 /**
- * API 层统一出口（去 TS 版随 Phase 推进逐个补模块）。
+ * API 层统一出口：各业务 API 模块由此汇出。
  */
 export { client, ApiError, TIMEOUT_STATUS, getBaseUrl, getUserId } from './client';
 export { healthApi } from './health';
