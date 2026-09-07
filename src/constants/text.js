@@ -1,8 +1,8 @@
 /**
  * 高频复用中文文案常量（去 i18n 后的唯一运行时文案层）。
  *
- * 来源：旧 src/i18n/locales/zh.json 的 common / error 命名空间
- * （生成脚本 scripts/extract-i18n-texts.py，勿手改）。
+ * 来源：去 i18n 时从旧 zh.json 的 common / error 命名空间抽取的一次性产物
+ * （原生成脚本 scripts/extract-i18n-texts.py 已随 src/i18n 一并移除）。
  * - 纯文案为字符串常量；带 {{占位符}} 的文案为函数，参数名与旧占位符一致。
  * - 页面/组件私有文案不进这里，直接在 .vue 中写字面量（见 migration/04.TEXTS.md）。
  */

@@ -49,7 +49,6 @@ src/
 ├── components       # 业务组件（chat、dialog、drawer、form、panel 等）
 ├── composables      # 组合式逻辑
 ├── constants        # 常量
-├── i18n             # 国际化
 ├── lib              # 工具库/第三方适配
 ├── plugins          # 插件注册
 ├── router           # 路由
