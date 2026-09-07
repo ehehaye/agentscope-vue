@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed } from '@vue/composition-api';
+import { defineComponent, ref, computed } from '@/composables/vue';
 
 const MAX_LINES = 18;
 

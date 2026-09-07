@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, onMounted, onBeforeUnmount } from '@vue/composition-api';
+import { defineComponent, ref, computed, onMounted, onBeforeUnmount } from '@/composables/vue';
 
 export default defineComponent({
   name: 'DateCell',

@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, watch } from '@vue/composition-api';
+import { defineComponent, ref, computed, watch } from '@/composables/vue';
 
 export default defineComponent({
   name: 'RenameSessionDialog',

@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from '@/composables/vue';
 import { credentialApi } from '@/api';
 import SchemaForm from '@/components/form/SchemaForm.vue';
 

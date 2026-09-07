@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from '@/composables/vue';
 import { Icon } from '@iconify/vue2';
 import KnowledgeDocumentsPanel from '@/components/knowledge/KnowledgeDocumentsPanel.vue';
 import ConfigCard from './ConfigCard.vue';

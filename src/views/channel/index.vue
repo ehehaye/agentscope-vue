@@ -135,7 +135,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, watch, onBeforeUnmount } from '@vue/composition-api';
+import { defineComponent, ref, computed, watch, onBeforeUnmount } from '@/composables/vue';
 import { Icon } from '@iconify/vue2';
 import { channelApi } from '@/api';
 import { useChannels } from '@/composables/useChannels';

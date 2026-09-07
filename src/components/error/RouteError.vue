@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { computed } from '@vue/composition-api';
+import { computed } from '@/composables/vue';
 import { COMMON, ERROR } from '@/constants/text.js';
 
 /**

@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import { defineComponent, computed, ref, watch } from '@vue/composition-api';
+import { defineComponent, computed, ref, watch } from '@/composables/vue';
 import { channelApi } from '@/api';
 import { Icon } from '@iconify/vue2';
 import TypeAvatar from './TypeAvatar.vue';

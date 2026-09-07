@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed } from '@vue/composition-api';
+import { defineComponent, ref, computed } from '@/composables/vue';
 import { useStore } from '@/composables/vuex';
 import ChatContent from '@/components/chat/ChatContent.vue';
 import * as fixtures from '@/fixtures/sse';

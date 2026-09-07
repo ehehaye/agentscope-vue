@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, reactive } from '@vue/composition-api';
+import { defineComponent, ref, computed, reactive } from '@/composables/vue';
 import { useAgents } from '@/composables/useAgents';
 
 export default defineComponent({

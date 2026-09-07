@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import { defineComponent, computed, watch } from '@vue/composition-api';
+import { defineComponent, computed, watch } from '@/composables/vue';
 import LlmSelect from '@/components/select/LlmSelect.vue';
 import PermissionModeSelect from '@/components/select/PermissionModeSelect.vue';
 import BindingsEditor from './BindingsEditor.vue';

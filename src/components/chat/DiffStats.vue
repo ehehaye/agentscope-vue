@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from '@/composables/vue';
 import { formatNumber } from '@/utils/common';
 
 export default defineComponent({

@@ -1,6 +1,6 @@
 # AgentScope Web UI — Vue 2 迁移版
 
-本项目基于 [AgentScope 官方 Web UI 示例](https://github.com/agentscope-ai/agentscope/tree/main/examples/web_ui) 进行 Vue 2 迁移改造，目标是在国内最常见的 Vue 2 老项目技术栈（**Vue 2.6.14 + vue-cli 4 / Webpack 4~5**）下可直接运行、可复用、可二次开发。
+本项目基于 [AgentScope 官方 Web UI 示例](https://github.com/agentscope-ai/agentscope/tree/main/examples/web_ui) 进行 Vue 2 迁移改造，目标是在国内最常见的 Vue 2 老项目技术栈（**vue-cli 4 / Webpack 4~5**）下可直接运行、可复用、可二次开发。
 
 ## 项目背景
 
@@ -8,17 +8,17 @@
 
 ## 技术栈与兼容策略
 
-| 依赖 | 当前参考实现 | 最低兼容目标 |
-|------|--------------|--------------|
-| Vue | 2.6.14 | 2.6.14 |
-| 构建工具 | Vite 3 + `vite-plugin-vue2` | vue-cli 4 / Webpack 4~5 |
-| 路由 | vue-router 3.x | vue-router 3.x |
-| 状态管理 | vuex 3.x | vuex 3.x |
-| UI 组件库 | Element UI 2.15.x | Element UI 2.15.x |
-| 组合式 API | @vue/composition-api 1.7.x | @vue/composition-api 1.7.x（可选） |
-| 样式 | Tailwind CSS v4 + Less | Tailwind CSS v3/v4 + Less |
+| 依赖 | 当前实现 | 说明 |
+| --- | --- | --- |
+| Vue | 2.7.0 | 因模板大量采用 `?.` / `??` 语法，需 Vue 2.7+ 的编译器；仍属 Vue 2 线 |
+| 构建工具 | vue-cli 4.5 + Webpack 4 | 当前仓库已直接基于 vue-cli 4 运行 |
+| 路由 | vue-router 3.x | — |
+| 状态管理 | vuex 3.x | — |
+| UI 组件库 | Element UI 2.15.x | — |
+| 组合式 API | Vue 2.7 内置 | 已移除 `@vue/composition-api`，业务代码统一从 `vue` / `src/composables` 桥接导入 |
+| 样式 | Tailwind CSS v2（`@tailwindcss/postcss7-compat`）+ Less | — |
 
-> 当前仓库使用 Vite 作为**参考运行环境**，源码写法尽量规避 Vite 专属语法；若你的老项目使用 vue-cli 4，可直接拷贝 `src/` 下组件与视图到现有工程，替换或补充路由、store 后即可接入。
+> 当前仓库已**直接基于 vue-cli 4 运行**。若你的老项目使用 vue-cli 4 / Vue 2.7，可直接拷贝 `src/` 下组件与视图到现有工程，替换或补充路由、store 后即可接入。
 
 ## 运行方式
 
@@ -61,10 +61,10 @@ src/
 
 本仓库提供两种接入思路：
 
-1. **直接兼容老项目**：将 `src/` 源码迁移到 Vue 2.6.14 + vue-cli 4 工程中。Element UI 2.x、vue-router 3.x、vuex 3.x 均无需升级，改动成本最低。
-2. **低成本升级至 Vue 3**：当前代码已使用 `@vue/composition-api`，Element UI 可替换为 Element Plus，vue-router / vuex 升级至 4.x，整体迁移量可控。
+1. **直接兼容老项目**：将 `src/` 源码迁移到 Vue 2.7 + vue-cli 4 工程中。Element UI 2.x、vue-router 3.x、vuex 3.x 均无需升级，改动成本最低。
+2. **低成本升级至 Vue 3**：当前代码已使用 Vue 2.7 内置 Composition API 风格，Element UI 可替换为 Element Plus，vue-router / vuex 升级至 4.x，整体迁移量可控。
 
-具体迁移步骤与注意事项可参考 `migration/` 目录下的分析文档。
+具体迁移步骤、webpack 4 兼容性补丁及非阻塞性问题记录，可参考 `migration/` 目录下的分析文档，特别是 [06.VUE_CLI_MIGRATION_NOTES.md](migration/06.VUE_CLI_MIGRATION_NOTES.md)。
 
 ## 相关链接
 

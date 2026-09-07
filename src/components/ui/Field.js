@@ -1,4 +1,4 @@
-import { defineComponent, h, computed } from '@vue/composition-api';
+import { defineComponent, h, computed } from '@/composables/vue';
 import { cn } from '@/lib/utils';
 import Label from './Label.vue';
 

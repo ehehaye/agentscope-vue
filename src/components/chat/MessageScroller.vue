@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, watch, nextTick } from '@vue/composition-api';
+import { defineComponent, ref, watch, nextTick } from '@/composables/vue';
 import { Icon } from '@iconify/vue2';
 
 export default defineComponent({

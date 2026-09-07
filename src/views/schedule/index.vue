@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed } from '@vue/composition-api';
+import { defineComponent, ref, computed } from '@/composables/vue';
 import { Icon } from '@iconify/vue2';
 import { CronExpressionParser } from 'cron-parser';
 import CalendarTabPage from './CalendarTabPage.vue';

@@ -1,4 +1,4 @@
-import { reactive, watch, getCurrentInstance } from '@vue/composition-api';
+import { reactive, watch, getCurrentInstance } from '@/composables/vue';
 
 /**
  * 路由桥接（迁移方案 02 §5.1）。

@@ -1,4 +1,4 @@
-import { defineComponent, h } from '@vue/composition-api';
+import { defineComponent, h } from '@/composables/vue';
 import { cn } from '@/lib/utils';
 
 const inputGroupClass =

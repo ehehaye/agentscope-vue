@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { defineComponent, computed } from '@vue/composition-api';
+import { defineComponent, computed } from '@/composables/vue';
 import { Splitpanes, Pane } from 'splitpanes';
 import 'splitpanes/dist/splitpanes.css';
 import Panel from './Panel.vue';

@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import { defineComponent, computed } from '@vue/composition-api';
+import { defineComponent, computed } from '@/composables/vue';
 
 function effectiveType(prop) {
   return prop.type ?? prop.anyOf?.find((t) => t.type !== 'null')?.type ?? 'string';

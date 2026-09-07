@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from '@/composables/vue';
 import { Icon } from '@iconify/vue2';
 import AgentSelect from '@/components/select/AgentSelect.vue';
 

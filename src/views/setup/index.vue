@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from '@/composables/vue';
 import { healthApi, ApiError, TIMEOUT_STATUS } from '@/api';
 
 export default defineComponent({

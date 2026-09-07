@@ -12,7 +12,7 @@ export const ReplyPhase = {
   INTERRUPTING: 'interrupting',
 };
 
-const INTERRUPT_TIMEOUT_MS = 10_000;
+const INTERRUPT_TIMEOUT_MS = 10000;
 
 function hasPendingToolCall(msg) {
   if (!msg || msg.role !== 'assistant') return false;

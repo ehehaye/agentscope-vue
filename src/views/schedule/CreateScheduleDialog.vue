@@ -99,7 +99,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, watch } from '@vue/composition-api';
+import { defineComponent, ref, computed, watch } from '@/composables/vue';
 import AgentSelect from '@/components/select/AgentSelect.vue';
 import LlmSelect from '@/components/select/LlmSelect.vue';
 import PermissionModeSelect from '@/components/select/PermissionModeSelect.vue';

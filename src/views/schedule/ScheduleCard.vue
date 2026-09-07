@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { defineComponent, computed } from '@vue/composition-api';
+import { defineComponent, computed } from '@/composables/vue';
 import { Icon } from '@iconify/vue2';
 import { parseCronExpression, getFrequencyLabel } from './schedule-utils';
 import { TEXT } from './text';

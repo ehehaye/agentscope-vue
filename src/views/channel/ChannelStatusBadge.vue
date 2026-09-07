@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { defineComponent, computed } from '@vue/composition-api';
+import { defineComponent, computed } from '@/composables/vue';
 
 const TONE = {
 	disabled: 'text-muted-foreground',

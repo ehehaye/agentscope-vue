@@ -3,7 +3,7 @@ import { sessionApi } from '@/api';
 
 /**
  * 拉取某个 agent 下的会话列表（含团队信息）。
- * @param {import('@vue/composition-api').Ref<string|null>|string|null} agentId
+ * @param {import('vue').Ref<string|null>|string|null} agentId
  */
 export function useSessions(agentId) {
   const sessions = ref([]);

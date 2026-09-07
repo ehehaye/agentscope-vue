@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, watch } from '@vue/composition-api';
+import { defineComponent, ref, computed, watch } from '@/composables/vue';
 import { knowledgeBaseApi } from '@/api';
 
 export default defineComponent({

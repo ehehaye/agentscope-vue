@@ -3,8 +3,8 @@ import { workspaceApi } from '@/api';
 
 /**
  * 当前会话的工作区 MCP / Skill 管理。
- * @param {import('@vue/composition-api').Ref<string|null>|string|null} agentId
- * @param {import('@vue/composition-api').Ref<string|null>|string|null} sessionId
+ * @param {import('vue').Ref<string|null>|string|null} agentId
+ * @param {import('vue').Ref<string|null>|string|null} sessionId
  */
 export function useWorkspace(agentId, sessionId) {
   const mcps = ref([]);

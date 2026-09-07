@@ -3,7 +3,7 @@
  * Vue 2.6 + composition-api 中没有内置 useStore，
  * 通过 getCurrentInstance 从组件实例上注入 store。
  */
-import { getCurrentInstance } from '@vue/composition-api';
+import { getCurrentInstance } from '@/composables/vue';
 import store from '@/store';
 
 export function useStore() {

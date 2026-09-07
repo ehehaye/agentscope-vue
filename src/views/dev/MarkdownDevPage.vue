@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from '@/composables/vue';
 import MarkdownRenderer from '@/components/common/MarkdownRenderer.vue';
 
 const STATIC_SAMPLE = `# AgentScope 渲染验证

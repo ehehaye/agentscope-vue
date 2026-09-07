@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { defineComponent, computed } from '@vue/composition-api';
+import { defineComponent, computed } from '@/composables/vue';
 import { getResultText, tryGetFilePath } from '../tool-utils';
 import DiffPreview from './DiffPreview.vue';
 

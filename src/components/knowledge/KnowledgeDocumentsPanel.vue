@@ -119,7 +119,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, watch, toRef } from '@vue/composition-api';
+import { defineComponent, ref, computed, watch, toRef } from '@/composables/vue';
 import { Icon } from '@iconify/vue2';
 import { knowledgeBaseApi } from '@/api';
 import { toast } from '@/lib/toast';

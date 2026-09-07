@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, watch, onUnmounted } from '@vue/composition-api';
+import { defineComponent, ref, computed, watch, onUnmounted } from '@/composables/vue';
 import { Icon } from '@iconify/vue2';
 import { copyToClipboard, formatNumber, formatTime } from '@/utils/common';
 import { TEXT } from './text';

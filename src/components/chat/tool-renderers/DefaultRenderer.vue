@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { defineComponent, computed } from '@vue/composition-api';
+import { defineComponent, computed } from '@/composables/vue';
 
 // 兜底渲染器：ToolCallRow 统一以 :pair="{ call, result }" 传入。
 export default defineComponent({

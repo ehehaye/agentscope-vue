@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, watch, watchEffect } from '@vue/composition-api';
+import { defineComponent, ref, computed, watch, watchEffect } from '@/composables/vue';
 import { knowledgeBaseApi } from '@/api';
 import MarkdownRenderer from '@/components/common/MarkdownRenderer.vue';
 

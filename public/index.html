@@ -1,9 +1,10 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 	<head>
-		<meta charset="UTF-8" />
-		<link rel="icon" type="image/svg+xml" href="/agentscope.svg" />
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" type="image/svg+xml" href="<%= BASE_URL %>agentscope.svg" />
 		<title>AgentScope</title>
 		<script>
 			// 首帧前应用主题，避免深色闪烁。
@@ -23,7 +24,10 @@
 		</script>
 	</head>
 	<body>
+		<noscript>
+			<strong>本站点需要启用 JavaScript 才能正常运行。</strong>
+		</noscript>
 		<div id="root"></div>
-		<script type="module" src="/src/main.js"></script>
+		<!-- built files will be auto injected -->
 	</body>
 </html>

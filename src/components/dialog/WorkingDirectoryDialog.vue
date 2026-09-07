@@ -83,7 +83,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, watch } from '@vue/composition-api';
+import { defineComponent, ref, computed, watch } from '@/composables/vue';
 import { workspaceApi } from '@/api';
 
 function basename(p) {

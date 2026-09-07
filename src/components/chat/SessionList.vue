@@ -101,7 +101,7 @@
 </template>
 
 <script>
-import { defineComponent, computed } from '@vue/composition-api';
+import { defineComponent, computed } from '@/composables/vue';
 import { Icon } from '@iconify/vue2';
 import { isToday } from 'date-fns';
 import AgentSelect from '@/components/select/AgentSelect.vue';

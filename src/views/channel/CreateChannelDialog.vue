@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, watch } from '@vue/composition-api';
+import { defineComponent, ref, computed, watch } from '@/composables/vue';
 import { channelApi } from '@/api';
 import ChannelForm, { defaultChannelForm, isChannelFormValid, toCreateRequest } from './ChannelForm.vue';
 

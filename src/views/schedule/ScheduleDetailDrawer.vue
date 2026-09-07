@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, watch, getCurrentInstance } from '@vue/composition-api';
+import { defineComponent, ref, computed, watch, getCurrentInstance } from '@/composables/vue';
 import { Icon } from '@iconify/vue2';
 import DeleteDialog from '@/components/dialog/DeleteDialog.vue';
 import StatusBadge from '@/components/badge/StatusBadge.vue';

@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import { defineComponent, computed, ref, watch, onUnmounted } from '@vue/composition-api';
+import { defineComponent, computed, ref, watch, onUnmounted } from '@/composables/vue';
 import { Icon } from '@iconify/vue2';
 import { getContentBlocks } from '@agentscope-ai/agentscope/message';
 import { ReplyFinishedReason } from '@agentscope-ai/agentscope/event';

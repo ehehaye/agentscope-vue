@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from '@/composables/vue';
 
 export default defineComponent({
   name: 'DeleteDialog',

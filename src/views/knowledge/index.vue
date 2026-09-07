@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, watch } from '@vue/composition-api';
+import { defineComponent, ref, computed, watch } from '@/composables/vue';
 import { Icon } from '@iconify/vue2';
 import { useRoute, useRouter } from '@/composables/vue-router';
 import CreateKnowledgeBaseDialog from '@/components/dialog/CreateKnowledgeBaseDialog.vue';

@@ -174,7 +174,7 @@
 </template>
 
 <script>
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from '@/composables/vue';
 import { Icon } from '@iconify/vue2';
 import { useCredentials } from '@/composables/useCredentials';
 import { credentialApi, modelApi, ttsModelApi, embeddingModelApi } from '@/api';

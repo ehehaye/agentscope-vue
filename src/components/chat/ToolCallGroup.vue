@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { defineComponent, computed } from '@vue/composition-api';
+import { defineComponent, computed } from '@/composables/vue';
 import { Icon } from '@iconify/vue2';
 import Collapsible from '@/components/ui/Collapsible.vue';
 import ToolCallRow from './ToolCallRow.vue';

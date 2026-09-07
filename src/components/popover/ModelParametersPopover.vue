@@ -127,7 +127,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, watch } from '@vue/composition-api';
+import { defineComponent, ref, computed, watch } from '@/composables/vue';
 import { Icon } from '@iconify/vue2';
 import { useAvailableTTSModels } from '@/composables/useAvailableTTSModels';
 import { credentialLabel } from '@/utils/common';

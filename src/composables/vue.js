@@ -18,4 +18,8 @@ export {
 	toRefs,
 	toRef,
 	unref,
-} from '@vue/composition-api';
+	nextTick,
+	defineComponent,
+	getCurrentInstance,
+	h,
+} from 'vue';

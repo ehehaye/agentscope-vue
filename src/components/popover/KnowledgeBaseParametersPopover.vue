@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, watch } from '@vue/composition-api';
+import { defineComponent, ref, computed, watch } from '@/composables/vue';
 
 function resolve(prop) {
   if (prop.type && prop.type !== 'null') {

@@ -24,7 +24,7 @@ export function useAudioCenter() {
 /**
  * 订阅单个音频 DataBlock 的播放状态。无 provider 时返回惰性空值
  *（dev fixture 回放页无 audio center，气泡仍需可渲染）。
- * @param {import('@vue/composition-api').Ref<string>|string} blockId
+ * @param {import('vue').Ref<string>|string} blockId
  */
 export function useAudioBlock(blockId) {
   const manager = useAudioCenter();

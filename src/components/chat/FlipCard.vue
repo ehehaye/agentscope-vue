@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from '@/composables/vue';
 
 /**
  * 3D 翻转卡片容器（React framer-motion FlipCard 的 Vue 等价物）。

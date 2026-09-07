@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { defineComponent, computed } from '@vue/composition-api';
+import { defineComponent, computed } from '@/composables/vue';
 import { Icon } from '@iconify/vue2';
 import ConfirmCard from './ConfirmCard.vue';
 import { TEXT } from './text';

@@ -3,9 +3,9 @@ import { workspaceApi } from '@/api';
 
 /**
  * 拉取会话工作区状态（cwd + git）。
- * @param {import('@vue/composition-api').Ref<string|null>|string|null} agentId
- * @param {import('@vue/composition-api').Ref<string|null>|string|null} sessionId
- * @param {import('@vue/composition-api').Ref<string|null>|string|null} cwd
+ * @param {import('vue').Ref<string|null>|string|null} agentId
+ * @param {import('vue').Ref<string|null>|string|null} sessionId
+ * @param {import('vue').Ref<string|null>|string|null} cwd
  */
 export function useWorkspaceStatus(agentId, sessionId, cwd) {
   const status = ref(null);

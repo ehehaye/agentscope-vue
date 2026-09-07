@@ -140,7 +140,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, watch, onUnmounted } from '@vue/composition-api';
+import { defineComponent, ref, computed, watch, onUnmounted } from '@/composables/vue';
 import { useRoute, useRouter } from '@/composables/vue-router';
 import { useMessages } from '@/composables/useMessages';
 import { useSessions } from '@/composables/useSessions';

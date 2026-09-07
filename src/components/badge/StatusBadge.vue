@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from '@/composables/vue';
 import { Icon } from '@iconify/vue2';
 import Spinner from '@/components/ui/Spinner.vue';
 import { COMMON } from '@/constants/text';

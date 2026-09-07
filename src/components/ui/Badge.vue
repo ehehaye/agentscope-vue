@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { defineComponent, computed } from '@vue/composition-api';
+import { defineComponent, computed } from '@/composables/vue';
 
 // 自实现 Badge（对齐 shadcn badge secondary 变体；03 §5.2 中 el-badge 语义不符——
 // Element 的 el-badge 是角标计数，chip 场景用本组件）。

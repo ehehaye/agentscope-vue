@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, watch, onMounted, onUnmounted, nextTick } from '@vue/composition-api';
+import { defineComponent, ref, computed, watch, onMounted, onUnmounted, nextTick } from '@/composables/vue';
 import { Icon } from '@iconify/vue2';
 import { useAudioBlock } from '@/composables/useAudioCenter.js';
 

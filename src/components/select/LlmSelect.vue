@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import { defineComponent, computed } from '@vue/composition-api';
+import { defineComponent, computed } from '@/composables/vue';
 import { Icon } from '@iconify/vue2';
 import { useAvailableModels } from '@/composables/useAvailableModels';
 import { credentialLabel } from '@/utils/common';

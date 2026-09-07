@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, watch } from '@vue/composition-api';
+import { defineComponent, ref, computed, watch } from '@/composables/vue';
 import { knowledgeBaseApi } from '@/api';
 import { COMMON } from '@/constants/text';
 import SchemaForm from '@/components/form/SchemaForm.vue';

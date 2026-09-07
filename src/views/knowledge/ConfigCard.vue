@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { defineComponent, computed } from '@vue/composition-api';
+import { defineComponent, computed } from '@/composables/vue';
 import ConfigItem from './ConfigItem.vue';
 import { TEXT } from './text';
 

@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { defineComponent, computed } from '@vue/composition-api';
+import { defineComponent, computed } from '@/composables/vue';
 import { avatarTint } from '@/utils/common';
 
 export default defineComponent({

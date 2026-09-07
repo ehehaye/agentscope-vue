@@ -1,7 +1,7 @@
 /**
  * 知识库文档列表（迁移自 useKnowledgeDocuments.ts，03 Phase 5）。
  * 拉取某知识库的全部文档（分页耗尽），knowledgeBaseId 变化时重拉。
- * @param {import('@vue/composition-api').Ref<string|null>|string|null} knowledgeBaseId
+ * @param {import('vue').Ref<string|null>|string|null} knowledgeBaseId
  */
 import { ref, watch } from '@/composables/vue';
 import { knowledgeBaseApi } from '@/api';
