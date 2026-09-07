@@ -6,7 +6,7 @@
 		"serve": "vue-cli-service serve",
 		"dev": "vue-cli-service serve",
 		"build": "vue-cli-service build",
-		"preview": "vue-cli-service serve --mode production"
+		"preview": "node scripts/serve-dist.mjs"
 	},
 	"browserslist": [
 		"> 1%",
