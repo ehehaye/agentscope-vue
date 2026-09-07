@@ -1,0 +1,469 @@
+[
+  {
+    "id": "d5ec9dbbd3c144388320e6a16763c9ae",
+    "created_at": "2026-09-05T21:44:33.579117",
+    "metadata": {},
+    "type": "REPLY_START",
+    "session_id": "1dfa9fb4a8f147249115a0067bd2b578",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "name": "Fixture Agent",
+    "role": "assistant"
+  },
+  {
+    "id": "b3a99e1272f94131b8a199b3a2587bc6",
+    "created_at": "2026-09-05T21:44:33.592441",
+    "metadata": {},
+    "type": "MODEL_CALL_START",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "model_name": "deepseek-v4-pro"
+  },
+  {
+    "id": "1f47666c6a8a47849e8ae00d934bdd20",
+    "created_at": "2026-09-05T21:44:34.365769",
+    "metadata": {},
+    "type": "THINKING_BLOCK_START",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "block_id": "14e1011c672f44ae9f927e72c309e4eb"
+  },
+  {
+    "id": "76ee026bf95e414fb0351ce8e8da4d07",
+    "created_at": "2026-09-05T21:44:34.365960",
+    "metadata": {},
+    "type": "THINKING_BLOCK_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "block_id": "14e1011c672f44ae9f927e72c309e4eb",
+    "delta": "The"
+  },
+  {
+    "id": "3ed5451fbf9148acba37da858385dafe",
+    "created_at": "2026-09-05T21:44:34.516925",
+    "metadata": {},
+    "type": "THINKING_BLOCK_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "block_id": "14e1011c672f44ae9f927e72c309e4eb",
+    "delta": " user"
+  },
+  {
+    "id": "5e9a2f28788d4a08abe7f09f34000c44",
+    "created_at": "2026-09-05T21:44:34.559870",
+    "metadata": {},
+    "type": "THINKING_BLOCK_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "block_id": "14e1011c672f44ae9f927e72c309e4eb",
+    "delta": " wants"
+  },
+  {
+    "id": "061be44128de465a823f153bb7143034",
+    "created_at": "2026-09-05T21:44:34.560285",
+    "metadata": {},
+    "type": "THINKING_BLOCK_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "block_id": "14e1011c672f44ae9f927e72c309e4eb",
+    "delta": " me"
+  },
+  {
+    "id": "4df35848e63c4844a52ee48f442ded1c",
+    "created_at": "2026-09-05T21:44:34.560545",
+    "metadata": {},
+    "type": "THINKING_BLOCK_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "block_id": "14e1011c672f44ae9f927e72c309e4eb",
+    "delta": " to"
+  },
+  {
+    "id": "ba914192a6e24828ae2db5ed00f96916",
+    "created_at": "2026-09-05T21:44:34.560757",
+    "metadata": {},
+    "type": "THINKING_BLOCK_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "block_id": "14e1011c672f44ae9f927e72c309e4eb",
+    "delta": " use"
+  },
+  {
+    "id": "c688fc9b89b64064aaac7abd0de1ac47",
+    "created_at": "2026-09-05T21:44:34.561136",
+    "metadata": {},
+    "type": "THINKING_BLOCK_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "block_id": "14e1011c672f44ae9f927e72c309e4eb",
+    "delta": " browser"
+  },
+  {
+    "id": "1f989b18cae0454f9ca5fd74ec82690d",
+    "created_at": "2026-09-05T21:44:34.600673",
+    "metadata": {},
+    "type": "THINKING_BLOCK_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "block_id": "14e1011c672f44ae9f927e72c309e4eb",
+    "delta": " tools"
+  },
+  {
+    "id": "4dd3eb87560949abbc29241f6b1bf0a5",
+    "created_at": "2026-09-05T21:44:34.601228",
+    "metadata": {},
+    "type": "THINKING_BLOCK_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "block_id": "14e1011c672f44ae9f927e72c309e4eb",
+    "delta": " to"
+  },
+  {
+    "id": "6a2c162a3615426299c11c2d00874531",
+    "created_at": "2026-09-05T21:44:34.601629",
+    "metadata": {},
+    "type": "THINKING_BLOCK_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "block_id": "14e1011c672f44ae9f927e72c309e4eb",
+    "delta": " visit"
+  },
+  {
+    "id": "787c0749782541a0aaac317701d4a5fe",
+    "created_at": "2026-09-05T21:44:34.601967",
+    "metadata": {},
+    "type": "THINKING_BLOCK_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "block_id": "14e1011c672f44ae9f927e72c309e4eb",
+    "delta": " https"
+  },
+  {
+    "id": "42c41854639f433c92d40f27473c2bdf",
+    "created_at": "2026-09-05T21:44:34.602178",
+    "metadata": {},
+    "type": "THINKING_BLOCK_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "block_id": "14e1011c672f44ae9f927e72c309e4eb",
+    "delta": "://"
+  },
+  {
+    "id": "ac4604f85b7a4f0a8027b00b18d86375",
+    "created_at": "2026-09-05T21:44:34.602396",
+    "metadata": {},
+    "type": "THINKING_BLOCK_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "block_id": "14e1011c672f44ae9f927e72c309e4eb",
+    "delta": "example"
+  },
+  {
+    "id": "457d3be161df4f43ba07c15900c89831",
+    "created_at": "2026-09-05T21:44:34.644516",
+    "metadata": {},
+    "type": "THINKING_BLOCK_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "block_id": "14e1011c672f44ae9f927e72c309e4eb",
+    "delta": ".com"
+  },
+  {
+    "id": "f08a7a840d2d40f584ef9b45371fcd6c",
+    "created_at": "2026-09-05T21:44:34.645043",
+    "metadata": {},
+    "type": "THINKING_BLOCK_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "block_id": "14e1011c672f44ae9f927e72c309e4eb",
+    "delta": " and"
+  },
+  {
+    "id": "42a93192ce2d48fb864ffb7568ba5e6e",
+    "created_at": "2026-09-05T21:44:34.645417",
+    "metadata": {},
+    "type": "THINKING_BLOCK_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "block_id": "14e1011c672f44ae9f927e72c309e4eb",
+    "delta": " tell"
+  },
+  {
+    "id": "91847502f4724aab94d68bfb373b4093",
+    "created_at": "2026-09-05T21:44:34.645788",
+    "metadata": {},
+    "type": "THINKING_BLOCK_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "block_id": "14e1011c672f44ae9f927e72c309e4eb",
+    "delta": " them"
+  },
+  {
+    "id": "818c5f2432f14b79a00d3cddfb4fecdb",
+    "created_at": "2026-09-05T21:44:34.646153",
+    "metadata": {},
+    "type": "THINKING_BLOCK_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "block_id": "14e1011c672f44ae9f927e72c309e4eb",
+    "delta": " the"
+  },
+  {
+    "id": "b5d55469431f47c0a227a9a8b888e62e",
+    "created_at": "2026-09-05T21:44:34.646483",
+    "metadata": {},
+    "type": "THINKING_BLOCK_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "block_id": "14e1011c672f44ae9f927e72c309e4eb",
+    "delta": " page"
+  },
+  {
+    "id": "66f9059ca9e140c1a6347abff0dd7465",
+    "created_at": "2026-09-05T21:44:34.683751",
+    "metadata": {},
+    "type": "THINKING_BLOCK_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "block_id": "14e1011c672f44ae9f927e72c309e4eb",
+    "delta": " title"
+  },
+  {
+    "id": "74f88511b9f849c495ca55ad9a1c4d0c",
+    "created_at": "2026-09-05T21:44:34.684144",
+    "metadata": {},
+    "type": "THINKING_BLOCK_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "block_id": "14e1011c672f44ae9f927e72c309e4eb",
+    "delta": "."
+  },
+  {
+    "id": "96deb09f8bca411d8d23d62b665c70ab",
+    "created_at": "2026-09-05T21:44:34.684420",
+    "metadata": {},
+    "type": "THINKING_BLOCK_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "block_id": "14e1011c672f44ae9f927e72c309e4eb",
+    "delta": " Let"
+  },
+  {
+    "id": "af10f3d409614eef8afc5e6fdb32506b",
+    "created_at": "2026-09-05T21:44:34.684649",
+    "metadata": {},
+    "type": "THINKING_BLOCK_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "block_id": "14e1011c672f44ae9f927e72c309e4eb",
+    "delta": " me"
+  },
+  {
+    "id": "927efd6f75824207bef4e52aff2d3c7e",
+    "created_at": "2026-09-05T21:44:34.690819",
+    "metadata": {},
+    "type": "THINKING_BLOCK_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "block_id": "14e1011c672f44ae9f927e72c309e4eb",
+    "delta": " use"
+  },
+  {
+    "id": "c75774c230774c40a0586ba5830df0ce",
+    "created_at": "2026-09-05T21:44:34.691095",
+    "metadata": {},
+    "type": "THINKING_BLOCK_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "block_id": "14e1011c672f44ae9f927e72c309e4eb",
+    "delta": " the"
+  },
+  {
+    "id": "e14bb760ba0a45279a04de40213b1c01",
+    "created_at": "2026-09-05T21:44:34.726880",
+    "metadata": {},
+    "type": "THINKING_BLOCK_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "block_id": "14e1011c672f44ae9f927e72c309e4eb",
+    "delta": " browser"
+  },
+  {
+    "id": "ed6726a5c259459a813d7f0b6634ab87",
+    "created_at": "2026-09-05T21:44:34.727451",
+    "metadata": {},
+    "type": "THINKING_BLOCK_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "block_id": "14e1011c672f44ae9f927e72c309e4eb",
+    "delta": " navigate"
+  },
+  {
+    "id": "41467e02b61c44ffaa44c81417468788",
+    "created_at": "2026-09-05T21:44:34.727853",
+    "metadata": {},
+    "type": "THINKING_BLOCK_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "block_id": "14e1011c672f44ae9f927e72c309e4eb",
+    "delta": " tool"
+  },
+  {
+    "id": "8a798bff01e145dca179222c328577b0",
+    "created_at": "2026-09-05T21:44:34.728069",
+    "metadata": {},
+    "type": "THINKING_BLOCK_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "block_id": "14e1011c672f44ae9f927e72c309e4eb",
+    "delta": "."
+  },
+  {
+    "id": "6a25e7e42d4f49cea91979582320ba5b",
+    "created_at": "2026-09-05T21:44:34.965420",
+    "metadata": {},
+    "type": "THINKING_BLOCK_END",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "block_id": "14e1011c672f44ae9f927e72c309e4eb"
+  },
+  {
+    "id": "cc97a1e171194e6481477810898656da",
+    "created_at": "2026-09-05T21:44:34.965614",
+    "metadata": {},
+    "type": "TOOL_CALL_START",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "tool_call_id": "call_00_LaKpQufKMSYbr5SnSKkY1815",
+    "tool_call_name": "mcp__browser-use__browser_navigate"
+  },
+  {
+    "id": "27cc1d89bff64e04888b9df83c52ec68",
+    "created_at": "2026-09-05T21:44:34.965693",
+    "metadata": {},
+    "type": "TOOL_CALL_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "tool_call_id": "call_00_LaKpQufKMSYbr5SnSKkY1815",
+    "delta": ""
+  },
+  {
+    "id": "6c00f5f3038d4f6fb67216a3e9786823",
+    "created_at": "2026-09-05T21:44:34.966333",
+    "metadata": {},
+    "type": "TOOL_CALL_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "tool_call_id": "call_00_LaKpQufKMSYbr5SnSKkY1815",
+    "delta": "{"
+  },
+  {
+    "id": "bde75693c8684e3cb20713e4b72520fb",
+    "created_at": "2026-09-05T21:44:34.966631",
+    "metadata": {},
+    "type": "TOOL_CALL_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "tool_call_id": "call_00_LaKpQufKMSYbr5SnSKkY1815",
+    "delta": "\""
+  },
+  {
+    "id": "0ce0867279bf4c8b90bff597fd2835b1",
+    "created_at": "2026-09-05T21:44:34.966833",
+    "metadata": {},
+    "type": "TOOL_CALL_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "tool_call_id": "call_00_LaKpQufKMSYbr5SnSKkY1815",
+    "delta": "url"
+  },
+  {
+    "id": "61ec159562674e268e478f951d928ab1",
+    "created_at": "2026-09-05T21:44:35.008611",
+    "metadata": {},
+    "type": "TOOL_CALL_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "tool_call_id": "call_00_LaKpQufKMSYbr5SnSKkY1815",
+    "delta": "\""
+  },
+  {
+    "id": "3906f32d5c41417a973b5a514a549565",
+    "created_at": "2026-09-05T21:44:35.009113",
+    "metadata": {},
+    "type": "TOOL_CALL_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "tool_call_id": "call_00_LaKpQufKMSYbr5SnSKkY1815",
+    "delta": ": "
+  },
+  {
+    "id": "99feef9c3da546dbae034ed49221272c",
+    "created_at": "2026-09-05T21:44:35.009396",
+    "metadata": {},
+    "type": "TOOL_CALL_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "tool_call_id": "call_00_LaKpQufKMSYbr5SnSKkY1815",
+    "delta": "\""
+  },
+  {
+    "id": "bd460f808ad44866b5acef3b7f438f62",
+    "created_at": "2026-09-05T21:44:35.009626",
+    "metadata": {},
+    "type": "TOOL_CALL_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "tool_call_id": "call_00_LaKpQufKMSYbr5SnSKkY1815",
+    "delta": "https"
+  },
+  {
+    "id": "032bb321ed3d479ca65aa4eb496e2140",
+    "created_at": "2026-09-05T21:44:35.027374",
+    "metadata": {},
+    "type": "TOOL_CALL_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "tool_call_id": "call_00_LaKpQufKMSYbr5SnSKkY1815",
+    "delta": "://"
+  },
+  {
+    "id": "b592836615b04ad8af886e71585ae14c",
+    "created_at": "2026-09-05T21:44:35.027829",
+    "metadata": {},
+    "type": "TOOL_CALL_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "tool_call_id": "call_00_LaKpQufKMSYbr5SnSKkY1815",
+    "delta": "example"
+  },
+  {
+    "id": "15cc731391c44bf79db9eed72f802002",
+    "created_at": "2026-09-05T21:44:35.028121",
+    "metadata": {},
+    "type": "TOOL_CALL_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "tool_call_id": "call_00_LaKpQufKMSYbr5SnSKkY1815",
+    "delta": ".com"
+  },
+  {
+    "id": "d039f14a5c2f483e8650b52f8f43c574",
+    "created_at": "2026-09-05T21:44:35.028436",
+    "metadata": {},
+    "type": "TOOL_CALL_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "tool_call_id": "call_00_LaKpQufKMSYbr5SnSKkY1815",
+    "delta": "\""
+  },
+  {
+    "id": "52be78770a404a93b424446d52e345ad",
+    "created_at": "2026-09-05T21:44:35.065411",
+    "metadata": {},
+    "type": "TOOL_CALL_DELTA",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "tool_call_id": "call_00_LaKpQufKMSYbr5SnSKkY1815",
+    "delta": "}"
+  },
+  {
+    "id": "946e8cb728714308a1e865dddaac2b09",
+    "created_at": "2026-09-05T21:44:35.150155",
+    "metadata": {},
+    "type": "TOOL_CALL_END",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "tool_call_id": "call_00_LaKpQufKMSYbr5SnSKkY1815"
+  },
+  {
+    "id": "e1898fa6bf34470f9ef62dadee7a866c",
+    "created_at": "2026-09-05T21:44:35.150363",
+    "metadata": {},
+    "type": "MODEL_CALL_END",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "input_tokens": 15820,
+    "output_tokens": 85,
+    "cache_input_tokens": 15744,
+    "cache_creation_input_tokens": 0,
+    "finished_reason": "completed"
+  },
+  {
+    "id": "77cb029549f64c60823f1889de2be8c1",
+    "created_at": "2026-09-05T21:44:35.169912",
+    "metadata": {},
+    "type": "REQUIRE_USER_CONFIRM",
+    "reply_id": "85850edb6a474723a335a4d53e76e51c",
+    "tool_calls": [
+      {
+        "type": "tool_call",
+        "id": "call_00_LaKpQufKMSYbr5SnSKkY1815",
+        "name": "mcp__browser-use__browser_navigate",
+        "input": "{\"url\": \"https://example.com\"}",
+        "state": "asking",
+        "suggested_rules": [
+          {
+            "tool_name": "mcp__browser-use__browser_navigate",
+            "rule_content": null,
+            "behavior": "allow",
+            "source": "suggested"
+          }
+        ],
+        "created_at": "2026-09-05T21:44:34.965235",
+        "finished_at": null
+      }
+    ]
+  }
+]
