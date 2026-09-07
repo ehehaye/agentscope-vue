@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col" :class="$attrs.class">
     <slot name="header" />
-    <div class="flex w-full flex-col rounded-[28px] border bg-background px-2">
+    <div class="flex w-full flex-col tw-rounded-28px border bg-background px-2">
       <div v-if="files.length > 0" class="flex flex-wrap gap-2 px-1 pt-1">
         <div
           v-for="(file, index) in files"

@@ -47,7 +47,7 @@
         />
       </FlipCard>
       <TextInput
-        class="mt-2 w-full rounded-[32px] bg-muted p-1"
+        class="mt-2 w-full tw-rounded-32px bg-muted p-1"
         :disabled="disabled"
         :phase="phase"
         :allowed-input-types="allowedInputTypes"

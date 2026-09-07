@@ -18,7 +18,7 @@
           :class="dir !== workingDirs[workingDirs.length - 1] ? 'border-b' : ''"
         >
           <span class="min-w-0 flex-1 truncate font-mono text-left" :title="dir.path">{{ dir.path }}</span>
-          <span class="shrink-0 rounded border px-1.5 py-0.5 text-[10px]">{{ dir.source }}</span>
+          <span class="shrink-0 rounded border px-1.5 py-0.5 tw-text-10px">{{ dir.source }}</span>
         </li>
       </ul>
     </div>
@@ -52,7 +52,7 @@
                 :title="rule.rule_content"
               >{{ rule.rule_content }}</span>
               <span v-else class="min-w-0 flex-1 text-muted-foreground">任意调用</span>
-              <span class="shrink-0 rounded border px-1.5 py-0.5 text-[10px]">{{ rule.source }}</span>
+              <span class="shrink-0 rounded border px-1.5 py-0.5 tw-text-10px">{{ rule.source }}</span>
             </li>
           </ul>
         </div>

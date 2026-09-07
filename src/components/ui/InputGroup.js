@@ -65,9 +65,9 @@ export const InputGroupAddon = defineComponent({
 const buttonClass = 'flex items-center gap-2 text-sm shadow-none';
 
 const buttonSizes = {
-	xs: "h-6 gap-1 rounded-[calc(var(--radius)-3px)] px-1.5 [&>svg:not([class*='size-'])]:size-3.5",
+	xs: "h-6 gap-1 tw-rounded-calc-r-3px px-1.5 [&>svg:not([class*='size-'])]:size-3.5",
 	sm: '',
-	'icon-xs': 'size-6 rounded-[calc(var(--radius)-3px)] p-0 has-[>svg]:p-0',
+	'icon-xs': 'size-6 tw-rounded-calc-r-3px p-0 has-[>svg]:p-0',
 	'icon-sm': 'size-8 p-0 has-[>svg]:p-0',
 };
 

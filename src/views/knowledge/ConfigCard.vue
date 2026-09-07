@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col gap-y-3">
-    <h3 class="text-[13.5px] font-medium text-foreground">{{ TEXT.knowledge.config.title }}</h3>
+    <h3 class="tw-text-13_5px font-medium text-foreground">{{ TEXT.knowledge.config.title }}</h3>
     <div class="grid grid-cols-2 gap-x-4 gap-y-3 rounded-lg border border-border bg-card p-3 sm:grid-cols-3">
       <ConfigItem :label="TEXT.knowledge.config.embeddingModel" :value="embedding.model" />
       <ConfigItem :label="TEXT.knowledge.config.dimensions" :value="String(embedding.dimensions || '—')" />

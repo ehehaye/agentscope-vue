@@ -14,7 +14,7 @@
       </el-button>
       <el-button size="small" @click="reset">重置</el-button>
     </div>
-    <div class="flex-1 rounded-[22px] bg-card p-2 shadow-panel">
+    <div class="flex-1 tw-rounded-22px bg-card p-2 shadow-panel">
       <ChatContent
         :msgs="msgs"
         :loading="loading"

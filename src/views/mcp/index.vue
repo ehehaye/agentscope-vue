@@ -1,8 +1,8 @@
 <template>
   <div class="flex size-full gap-2 p-2">
-    <aside class="flex w-64 min-w-0 flex-col overflow-hidden rounded-[22px] bg-card">
+    <aside class="flex w-64 min-w-0 flex-col overflow-hidden tw-rounded-22px bg-card">
       <div class="flex flex-col gap-y-1 p-5 pb-3">
-        <div class="text-xl font-medium tracking-[-0.02em]">{{ COMMON['mcp-hub'] }}</div>
+        <div class="text-xl font-medium tw-tracking-neg-0_02em">{{ COMMON['mcp-hub'] }}</div>
         <div class="text-xs text-muted-foreground">{{ TEXT.mcp.subtitle }}</div>
       </div>
       <div class="flex-1 overflow-y-auto px-2">
@@ -14,7 +14,7 @@
         >
           <Icon icon="lucide:plug" class="h-4 w-4" />
           <span class="flex-1 truncate">{{ COMMON['my-mcp'] }}</span>
-          <span class="font-mono text-[10px] text-muted-foreground">{{ mcps.length }}</span>
+          <span class="font-mono tw-text-10px text-muted-foreground">{{ mcps.length }}</span>
         </div>
 
         <div class="mb-1 mt-4 px-2 text-xs font-medium text-muted-foreground">{{ TEXT.mcp.hubsLabel }}</div>
@@ -34,7 +34,7 @@
             @click="$router.push(`/mcp/${hub.hub_id}`)"
           >
             <img v-if="hub.icon_url" :src="hub.icon_url" class="h-4 w-4 rounded-sm object-cover" />
-            <div v-else class="flex h-4 w-4 items-center justify-center rounded-sm bg-muted text-[10px] font-bold">
+            <div v-else class="flex h-4 w-4 items-center justify-center rounded-sm bg-muted tw-text-10px font-bold">
               {{ hub.display_name.slice(0, 1).toUpperCase() }}
             </div>
             <span class="flex-1 truncate">{{ hub.display_name }}</span>
@@ -43,7 +43,7 @@
       </div>
     </aside>
 
-    <main class="shadow-panel flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-[22px] bg-card">
+    <main class="shadow-panel flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden tw-rounded-22px bg-card">
       <MinePanel
         v-if="!hubId"
         :mcps="mcps"

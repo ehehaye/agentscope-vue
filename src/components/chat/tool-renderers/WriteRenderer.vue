@@ -2,7 +2,7 @@
   <div class="flex flex-col rounded-sm border bg-background">
     <div v-if="filePath" class="px-2 py-1 text-xs text-muted-foreground">{{ filePath }}</div>
     <DiffPreview v-if="diff" :unified-diff="diff" />
-    <pre v-else-if="resultText" class="max-h-[200px] overflow-auto p-2 text-xs whitespace-pre-wrap break-all">{{ resultText }}</pre>
+    <pre v-else-if="resultText" class="tw-max-h-200px overflow-auto p-2 text-xs whitespace-pre-wrap break-all">{{ resultText }}</pre>
   </div>
 </template>
 

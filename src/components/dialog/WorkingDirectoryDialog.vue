@@ -22,7 +22,7 @@
         @click="load('')"
       />
     </el-input>
-    <div class="h-[45vh] overflow-y-auto border rounded-lg p-1">
+    <div class="tw-h-45vh overflow-y-auto border rounded-lg p-1">
       <div v-if="loading" class="flex h-full items-center justify-center text-sm text-muted-foreground">
         <i class="el-icon-loading" />
       </div>

@@ -6,7 +6,7 @@
     </div>
     <div v-if="resultText">
       <div class="text-muted-foreground">Output</div>
-      <pre class="max-h-[200px] overflow-auto rounded border bg-secondary p-2 whitespace-pre-wrap break-all">{{ resultText }}</pre>
+      <pre class="tw-max-h-200px overflow-auto rounded border bg-secondary p-2 whitespace-pre-wrap break-all">{{ resultText }}</pre>
     </div>
   </div>
 </template>

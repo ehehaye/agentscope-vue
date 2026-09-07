@@ -12,7 +12,7 @@
               v-for="key in column"
               :key="key"
               :size="rowSize(column.length)"
-              class="rounded-[22px] bg-card shadow-panel"
+              class="tw-rounded-22px bg-card shadow-panel"
             >
               <Panel
                 :title="panels[key]?.title || key"

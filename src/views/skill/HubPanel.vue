@@ -42,19 +42,19 @@
             <div class="flex items-center gap-2">
               <span class="font-medium">{{ card.display_name || card.name }}</span>
               <span v-if="card.author" class="text-xs text-muted-foreground">@{{ card.author }}</span>
-              <span v-for="tag in (card.tags || []).slice(0, 4)" :key="tag" class="rounded-full bg-secondary px-1.5 py-0.5 text-[10px]">#{{ tag }}</span>
+              <span v-for="tag in (card.tags || []).slice(0, 4)" :key="tag" class="rounded-full bg-secondary px-1.5 py-0.5 tw-text-10px">#{{ tag }}</span>
             </div>
             <p class="line-clamp-1 text-xs text-muted-foreground">{{ card.description }}</p>
           </div>
           <div class="flex items-center gap-2">
-            <span v-if="card.downloads != null" class="inline-flex items-center gap-1 text-[10px] text-muted-foreground">
+            <span v-if="card.downloads != null" class="inline-flex items-center gap-1 tw-text-10px text-muted-foreground">
               <Icon icon="lucide:download" class="h-3 w-3" />
               {{ card.downloads.toLocaleString() }}
             </span>
-            <span v-if="card.updated_at" class="text-[10px] text-muted-foreground">
+            <span v-if="card.updated_at" class="tw-text-10px text-muted-foreground">
               {{ now - card.updated_at < 3600 ? TEXT.skill.updatedRecently : TEXT.skill.updatedAgo(formatTime(now - card.updated_at, { leadingUnitOnly: true })) }}
             </span>
-            <span v-if="installedNames.has(card.name)" class="inline-flex items-center gap-1 rounded-full bg-muted px-3 py-1 text-[11px] text-muted-foreground">
+            <span v-if="installedNames.has(card.name)" class="inline-flex items-center gap-1 rounded-full bg-muted px-3 py-1 tw-text-11px text-muted-foreground">
               <Icon icon="lucide:check" class="h-3 w-3" />
               {{ TEXT.skill.installed }}
             </span>

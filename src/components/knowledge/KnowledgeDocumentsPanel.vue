@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col gap-y-3">
     <div class="flex items-center justify-between">
-      <h3 class="text-[13.5px] font-medium">文档</h3>
+      <h3 class="tw-text-13_5px font-medium">文档</h3>
       <div class="flex items-center gap-2">
         <el-button
           v-if="hasTerminalTasks"
@@ -47,7 +47,7 @@
                   @click="row.doc && row.phase === 'ready' && handleOpenDetail(row.doc)"
                 >{{ row.filename }}</span>
                 <span
-                  class="inline-flex shrink-0 items-center gap-x-1 rounded-md px-1.5 py-0.5 text-[10px] font-medium whitespace-nowrap"
+                  class="inline-flex shrink-0 items-center gap-x-1 rounded-md px-1.5 py-0.5 tw-text-10px font-medium whitespace-nowrap"
                   :class="statusTone(row.phase)"
                 >
                   <Icon v-if="row.phase === 'ready'" icon="lucide:check-circle-2" class="h-3 w-3" />
