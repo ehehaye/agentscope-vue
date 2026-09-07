@@ -1,6 +1,6 @@
 <template>
-  <div class="my-4 flex items-center justify-center">
-    <span class="rounded-full bg-muted px-3 py-1 font-mono text-xs text-muted-foreground">
+  <div class="tw-my-4 tw-flex tw-items-center tw-justify-center">
+    <span class="tw-rounded-full tw-bg-muted tw-px-3 tw-py-1 tw-font-mono tw-text-xs tw-text-muted-foreground">
       {{ stamp }}
     </span>
   </div>

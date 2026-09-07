@@ -1,8 +1,8 @@
 <template>
-  <div class="flex size-full flex-col">
-    <div class="flex items-center justify-between p-4">
-      <h2 class="text-xl font-semibold">{{ monthLabel }}</h2>
-      <div class="flex items-center gap-2">
+  <div class="tw-flex tw-size-full tw-flex-col">
+    <div class="tw-flex tw-items-center tw-justify-between tw-p-4">
+      <h2 class="tw-text-xl tw-font-semibold">{{ monthLabel }}</h2>
+      <div class="tw-flex tw-items-center tw-gap-2">
         <el-button size="small" @click="goToToday">{{ TEXT.schedule.today }}</el-button>
         <el-tooltip :content="TEXT.schedule.previousYear" placement="top">
           <el-button size="small" icon="el-icon-d-arrow-left" @click="goToPrevYear" />
@@ -19,20 +19,20 @@
       </div>
     </div>
 
-    <div class="flex flex-1 flex-col">
-      <div class="grid grid-cols-7 border-b border-border">
-        <div v-for="day in weekDays" :key="day" class="py-2 text-center text-sm font-medium text-muted-foreground">
+    <div class="tw-flex tw-flex-1 tw-flex-col">
+      <div class="tw-grid tw-grid-cols-7 tw-border-b tw-border-border">
+        <div v-for="day in weekDays" :key="day" class="tw-py-2 tw-text-center tw-text-sm tw-font-medium tw-text-muted-foreground">
           {{ day }}
         </div>
       </div>
 
-      <div class="grid flex-1 grid-cols-7" :style="{ gridTemplateRows: `repeat(${weeksNeeded}, minmax(0, 1fr))` }">
+      <div class="tw-grid tw-flex-1 tw-grid-cols-7" :style="{ gridTemplateRows: `repeat(${weeksNeeded}, minmax(0, 1fr))` }">
         <div
           v-for="(day, index) in prevMonthDays"
           :key="`prev-${index}`"
-          class="border-r border-b border-border p-2 text-muted-foreground/50"
+          class="tw-border-r tw-border-b tw-border-border tw-p-2 tw-text-muted-foreground/50"
         >
-          <div class="text-sm">{{ day }}</div>
+          <div class="tw-text-sm">{{ day }}</div>
         </div>
 
         <DateCell
@@ -48,9 +48,9 @@
         <div
           v-for="(day, index) in nextMonthDays"
           :key="`next-${index}`"
-          class="border-r border-b border-border p-2 text-muted-foreground/50"
+          class="tw-border-r tw-border-b tw-border-border tw-p-2 tw-text-muted-foreground/50"
         >
-          <div class="text-sm">{{ day }}</div>
+          <div class="tw-text-sm">{{ day }}</div>
         </div>
       </div>
     </div>

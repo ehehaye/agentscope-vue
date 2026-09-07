@@ -6,8 +6,8 @@
     :close-on-click-modal="false"
     @open="reset"
   >
-    <p class="text-sm text-muted-foreground">{{ TEXT.knowledge.dialogCreate.description }}</p>
-    <el-form label-position="top" class="mt-4 space-y-4">
+    <p class="tw-text-sm tw-text-muted-foreground">{{ TEXT.knowledge.dialogCreate.description }}</p>
+    <el-form label-position="top" class="tw-mt-4 tw-space-y-4">
       <el-form-item :label="TEXT.knowledge.dialogCreate.nameLabel">
         <el-input v-model="name" :placeholder="TEXT.knowledge.dialogCreate.namePlaceholder" />
       </el-form-item>
@@ -17,7 +17,7 @@
       </el-form-item>
 
       <el-form-item :label="TEXT.knowledge.dialogCreate.embeddingModelLabel">
-        <el-select v-model="selectedEmbedding" value-key="key" class="w-full" :loading="loadingModels" placeholder="选择嵌入模型">
+        <el-select v-model="selectedEmbedding" value-key="key" class="tw-w-full" :loading="loadingModels" placeholder="选择嵌入模型">
           <el-option-group
             v-for="provider in providers"
             :key="provider.type"
@@ -34,7 +34,7 @@
       </el-form-item>
 
       <el-form-item :label="TEXT.knowledge.dialogCreate.dimensionLabel">
-        <el-select v-model="dimension" class="w-full" placeholder="选择维度">
+        <el-select v-model="dimension" class="tw-w-full" placeholder="选择维度">
           <el-option
             v-for="d in dimensionOptions"
             :key="d"
@@ -45,7 +45,7 @@
       </el-form-item>
 
       <el-form-item :label="TEXT.knowledge.dialogCreate.chunkerLabel">
-        <el-select v-model="selectedChunkerType" class="w-full" placeholder="选择分块器">
+        <el-select v-model="selectedChunkerType" class="tw-w-full" placeholder="选择分块器">
           <el-option
             v-for="chunker in chunkers"
             :key="chunker.type"
@@ -62,10 +62,10 @@
         @change="handleChunkerParamChange"
       />
 
-      <p v-if="error" class="text-sm text-destructive">{{ error }}</p>
+      <p v-if="error" class="tw-text-sm tw-text-destructive">{{ error }}</p>
     </el-form>
 
-    <span slot="footer" class="dialog-footer">
+    <span slot="footer" class="tw-dialog-footer">
       <el-button @click="dialogVisible = false" :disabled="submitting">{{ COMMON.cancel }}</el-button>
       <el-button type="primary" :loading="submitting" :disabled="!canSubmit" @click="handleSubmit">
         {{ submitting ? COMMON.creating : COMMON.create }}

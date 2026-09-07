@@ -8,9 +8,9 @@
   >
     <ChannelForm v-if="visible && channel" v-model="form" mode="edit" :agents="agents" :channel-types="channelTypes" />
 
-    <el-alert v-if="error" :title="error" type="error" class="mt-3" :closable="false" show-icon />
+    <el-alert v-if="error" :title="error" type="error" class="tw-mt-3" :closable="false" show-icon />
 
-    <span slot="footer" class="dialog-footer">
+    <span slot="footer" class="tw-dialog-footer">
       <el-button @click="visible = false">取消</el-button>
       <el-button type="primary" :loading="loading" :disabled="!valid" @click="handleSubmit">保存</el-button>
     </span>

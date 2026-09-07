@@ -1,50 +1,50 @@
 <template>
   <div
-    class="flex w-full"
-    :class="isUser ? 'justify-end' : 'justify-start'"
+    class="tw-flex tw-w-full"
+    :class="isUser ? 'tw-justify-end' : 'tw-justify-start'"
     :data-role="message.role"
   >
-    <div class="flex tw-max-w-85pct flex-col gap-1">
-      <div class="flex flex-col gap-2">
+    <div class="tw-flex tw-max-w-85pct tw-flex-col tw-gap-1">
+      <div class="tw-flex tw-flex-col tw-gap-2">
         <template v-for="(block, index) in blocks">
           <Bubble v-if="block.type !== 'data'" :key="index" :variant="isUser ? 'muted' : 'ghost'">
             <ASBlock :block="block" />
           </Bubble>
         </template>
 
-        <div v-if="message.finished_reason === 'error'" class="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-900 dark:border-red-900 dark:bg-red-950 dark:text-red-50">
-          <div class="flex items-center gap-2 font-medium">
-            <Icon icon="lucide:triangle-alert" class="h-4 w-4" />
+        <div v-if="message.finished_reason === 'error'" class="tw-rounded-md tw-border tw-border-red-200 tw-bg-red-50 tw-p-3 tw-text-sm tw-text-red-900 dark:tw-border-red-900 dark:tw-bg-red-950 dark:tw-text-red-50">
+          <div class="tw-flex tw-items-center tw-gap-2 tw-font-medium">
+            <Icon icon="lucide:triangle-alert" class="tw-h-4 tw-w-4" />
             {{ TEXT.errorTitle }}
           </div>
-          <p class="mt-1 text-xs">{{ message.error?.message || TEXT.errorUnknown }}</p>
+          <p class="tw-mt-1 tw-text-xs">{{ message.error?.message || TEXT.errorUnknown }}</p>
         </div>
       </div>
 
-      <div v-if="dataBlocks.length > 0" class="flex flex-wrap gap-2">
+      <div v-if="dataBlocks.length > 0" class="tw-flex tw-flex-wrap tw-gap-2">
         <ASBlock v-for="(block, index) in dataBlocks" :key="`data-${index}`" :block="block" />
       </div>
 
-      <div v-if="!isUser" class="flex items-center gap-1">
-        <Badge v-if="elapsedText" class="font-mono">
-          <Icon v-if="isRunning" icon="lucide:loader-2" class="h-3 w-3 animate-spin" />
-          <Icon v-else icon="lucide:check-circle" class="h-3 w-3" />
-          <span class="tabular-nums">{{ elapsedText }}</span>
+      <div v-if="!isUser" class="tw-flex tw-items-center tw-gap-1">
+        <Badge v-if="elapsedText" class="tw-font-mono">
+          <Icon v-if="isRunning" icon="lucide:loader-2" class="tw-h-3 tw-w-3 tw-animate-spin" />
+          <Icon v-else icon="lucide:check-circle" class="tw-h-3 tw-w-3" />
+          <span class="tw-tabular-nums">{{ elapsedText }}</span>
           <template v-if="hasUsage">
-            <Icon icon="lucide:arrow-up" class="ml-1 h-3 w-3" />
-            <span class="tabular-nums">{{ formatNumber(message.usage?.input_tokens || 0) }}</span>
-            <Icon icon="lucide:arrow-down" class="ml-1 h-3 w-3" />
-            <span class="tabular-nums">{{ formatNumber(message.usage?.output_tokens || 0) }}</span>
+            <Icon icon="lucide:arrow-up" class="tw-ml-1 tw-h-3 tw-w-3" />
+            <span class="tw-tabular-nums">{{ formatNumber(message.usage?.input_tokens || 0) }}</span>
+            <Icon icon="lucide:arrow-down" class="tw-ml-1 tw-h-3 tw-w-3" />
+            <span class="tw-tabular-nums">{{ formatNumber(message.usage?.output_tokens || 0) }}</span>
           </template>
           <AudioInlineControl v-for="ab in audioBlocks" :key="ab.id" :block="ab" />
         </Badge>
         <el-button v-if="plainText" type="text" size="mini" @click="copyText">
-          <Icon :icon="copied ? 'lucide:check' : 'lucide:copy'" class="h-3 w-3" />
+          <Icon :icon="copied ? 'lucide:check' : 'lucide:copy'" class="tw-h-3 tw-w-3" />
         </el-button>
       </div>
-      <div v-else-if="plainText" class="flex justify-end">
+      <div v-else-if="plainText" class="tw-flex tw-justify-end">
         <el-button type="text" size="mini" @click="copyText">
-          <Icon :icon="copied ? 'lucide:check' : 'lucide:copy'" class="h-3 w-3" />
+          <Icon :icon="copied ? 'lucide:check' : 'lucide:copy'" class="tw-h-3 tw-w-3" />
         </el-button>
       </div>
     </div>

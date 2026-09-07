@@ -10,7 +10,7 @@ export const FieldSet = defineComponent({
 			'fieldset',
 			{
 				attrs: { 'data-slot': 'field-set' },
-				class: cn('flex flex-col gap-4 has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3', this.className),
+				class: cn('tw-flex tw-flex-col tw-gap-4 has-[>[data-slot=checkbox-group]]:tw-gap-3 has-[>[data-slot=radio-group]]:tw-gap-3', this.className),
 			},
 			this.$slots.default,
 		);
@@ -28,7 +28,7 @@ export const FieldLegend = defineComponent({
 			'legend',
 			{
 				attrs: { 'data-slot': 'field-legend', 'data-variant': this.variant },
-				class: cn('mb-1.5 font-medium data-[variant=label]:text-sm data-[variant=legend]:text-base', this.className),
+				class: cn('tw-mb-1.5 tw-font-medium data-[variant=label]:tw-text-sm data-[variant=legend]:tw-text-base', this.className),
 			},
 			this.$slots.default,
 		);
@@ -44,7 +44,7 @@ export const FieldGroup = defineComponent({
 			{
 				attrs: { 'data-slot': 'field-group' },
 				class: cn(
-					'group/field-group @container/field-group flex w-full flex-col gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4',
+					'tw-group/field-group tw-@container/field-group tw-flex tw-w-full tw-flex-col tw-gap-5 data-[slot=checkbox-group]:tw-gap-3 *:data-[slot=field-group]:tw-gap-4',
 					this.className,
 				),
 			},
@@ -53,14 +53,14 @@ export const FieldGroup = defineComponent({
 	},
 });
 
-const fieldClass = 'group/field flex w-full gap-2 data-[invalid=true]:text-destructive';
+const fieldClass = 'tw-group/field tw-flex tw-w-full tw-gap-2 data-[invalid=true]:tw-text-destructive';
 
 const fieldOrientations = {
-	vertical: 'flex-col *:w-full [&>.sr-only]:w-auto',
+	vertical: 'tw-flex-col *:tw-w-full [&>.sr-only]:tw-w-auto',
 	horizontal:
-		'flex-row items-center has-[>[data-slot=field-content]]:items-start *:data-[slot=field-label]:flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px',
+		'tw-flex-row tw-items-center has-[>[data-slot=field-content]]:tw-items-start *:data-[slot=field-label]:tw-flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:tw-mt-px',
 	responsive:
-		'flex-col *:w-full @md/field-group:flex-row @md/field-group:items-center @md/field-group:*:w-auto @md/field-group:has-[>[data-slot=field-content]]:items-start @md/field-group:*:data-[slot=field-label]:flex-auto [&>.sr-only]:w-auto @md/field-group:has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px',
+		'tw-flex-col *:tw-w-full @md/field-group:tw-flex-row @md/field-group:tw-items-center @md/field-group:*:tw-w-auto @md/field-group:has-[>[data-slot=field-content]]:tw-items-start @md/field-group:*:data-[slot=field-label]:tw-flex-auto [&>.sr-only]:tw-w-auto @md/field-group:has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:tw-mt-px',
 };
 
 export const Field = defineComponent({
@@ -89,7 +89,7 @@ export const FieldContent = defineComponent({
 			'div',
 			{
 				attrs: { 'data-slot': 'field-content' },
-				class: cn('group/field-content flex flex-1 flex-col gap-0.5 leading-snug', this.className),
+				class: cn('tw-group/field-content tw-flex tw-flex-1 tw-flex-col tw-gap-0.5 tw-leading-snug', this.className),
 			},
 			this.$slots.default,
 		);
@@ -106,8 +106,8 @@ export const FieldLabel = defineComponent({
 				attrs: { 'data-slot': 'field-label' },
 				props: {
 					className: cn(
-						'group/field-label peer/field-label flex w-fit gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-data-checked:border-primary/30 has-data-checked:bg-primary/5 has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border *:data-[slot=field]:p-2.5 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10',
-						'has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col',
+						'tw-group/field-label tw-peer/field-label tw-flex tw-w-fit tw-gap-2 tw-leading-snug group-data-[disabled=true]/field:tw-opacity-50 has-data-checked:tw-border-primary/30 has-data-checked:tw-bg-primary/5 has-[>[data-slot=field]]:tw-rounded-lg has-[>[data-slot=field]]:tw-border *:data-[slot=field]:tw-p-2.5 dark:has-data-checked:tw-border-primary/20 dark:has-data-checked:tw-bg-primary/10',
+						'has-[>[data-slot=field]]:tw-w-full has-[>[data-slot=field]]:tw-flex-col',
 						this.className,
 					),
 				},
@@ -126,7 +126,7 @@ export const FieldTitle = defineComponent({
 			{
 				attrs: { 'data-slot': 'field-label' },
 				class: cn(
-					'flex w-fit items-center gap-2 text-sm font-medium group-data-[disabled=true]/field:opacity-50',
+					'tw-flex tw-w-fit tw-items-center tw-gap-2 tw-text-sm tw-font-medium group-data-[disabled=true]/field:tw-opacity-50',
 					this.className,
 				),
 			},
@@ -144,9 +144,9 @@ export const FieldDescription = defineComponent({
 			{
 				attrs: { 'data-slot': 'field-description' },
 				class: cn(
-					'text-left text-sm leading-normal font-normal text-muted-foreground group-has-data-horizontal/field:text-balance [[data-variant=legend]+&]:-mt-1.5',
-					'last:mt-0 nth-last-2:-mt-1',
-					'[&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary',
+					'tw-text-left tw-text-sm tw-leading-normal tw-font-normal tw-text-muted-foreground group-has-data-horizontal/field:tw-text-balance [[data-variant=legend]+&]:tw--mt-1.5',
+					'last:tw-mt-0 nth-last-2:tw--mt-1',
+					'[&>a]:tw-underline [&>a]:tw-underline-offset-4 [&>a:hover]:tw-text-primary',
 					this.className,
 				),
 			},
@@ -164,16 +164,16 @@ export const FieldSeparator = defineComponent({
 			'div',
 			{
 				attrs: { 'data-slot': 'field-separator', 'data-content': hasContent },
-				class: cn('relative -my-2 h-5 text-sm group-data-[variant=outline]/field-group:-mb-2', this.className),
+				class: cn('tw-relative tw--my-2 tw-h-5 tw-text-sm group-data-[variant=outline]/field-group:tw--mb-2', this.className),
 			},
 			[
-				h('el-divider', { class: 'absolute inset-0 top-1/2' }),
+				h('el-divider', { class: 'tw-absolute tw-inset-0 tw-top-1/2' }),
 				hasContent
 					? h(
 							'span',
 							{
 								attrs: { 'data-slot': 'field-separator-content' },
-								class: 'relative mx-auto block w-fit bg-background px-2 text-muted-foreground',
+								class: 'tw-relative tw-mx-auto tw-block tw-w-fit tw-bg-background tw-px-2 tw-text-muted-foreground',
 							},
 							this.$slots.default,
 						)
@@ -206,7 +206,7 @@ export const FieldError = defineComponent({
 			if (unique.length === 1) return unique[0];
 			return h(
 				'ul',
-				{ class: 'ml-4 flex list-disc flex-col gap-1' },
+				{ class: 'tw-ml-4 tw-flex tw-list-disc tw-flex-col tw-gap-1' },
 				unique.map((msg, index) => h('li', { key: index }, msg)),
 			);
 		});
@@ -218,7 +218,7 @@ export const FieldError = defineComponent({
 			'div',
 			{
 				attrs: { role: 'alert', 'data-slot': 'field-error' },
-				class: cn('text-sm font-normal text-destructive', this.className),
+				class: cn('tw-text-sm tw-font-normal tw-text-destructive', this.className),
 			},
 			[this.content],
 		);

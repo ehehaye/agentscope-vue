@@ -1,8 +1,8 @@
 <template>
-  <div class="collapsible">
+  <div class="tw-collapsible">
     <div
-      class="collapsible-trigger flex cursor-pointer items-center gap-2"
-      :class="{ 'cursor-default': !expandable }"
+      class="tw-collapsible-trigger tw-flex tw-cursor-pointer tw-items-center tw-gap-2"
+      :class="{ 'tw-cursor-default': !expandable }"
       @click="toggle"
     >
       <!-- chevron 由各调用方在 trigger 插槽内自行渲染（对齐 React 版 CollapsibleTrigger asChild） -->
@@ -14,7 +14,7 @@
       @after-enter="afterEnter"
       @leave="leave"
     >
-      <div v-show="isOpen" class="collapsible-content overflow-hidden">
+      <div v-show="isOpen" class="tw-collapsible-content tw-overflow-hidden">
         <slot />
       </div>
     </transition>

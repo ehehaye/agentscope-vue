@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-col gap-y-3">
-    <h3 class="tw-text-13_5px font-medium text-foreground">{{ TEXT.knowledge.config.title }}</h3>
-    <div class="grid grid-cols-2 gap-x-4 gap-y-3 rounded-lg border border-border bg-card p-3 sm:grid-cols-3">
+  <div class="tw-flex tw-flex-col tw-gap-y-3">
+    <h3 class="tw-text-13_5px tw-font-medium tw-text-foreground">{{ TEXT.knowledge.config.title }}</h3>
+    <div class="tw-grid tw-grid-cols-2 tw-gap-x-4 tw-gap-y-3 tw-rounded-lg tw-border tw-border-border tw-bg-card tw-p-3 sm:tw-grid-cols-3">
       <ConfigItem :label="TEXT.knowledge.config.embeddingModel" :value="embedding.model" />
       <ConfigItem :label="TEXT.knowledge.config.dimensions" :value="String(embedding.dimensions || '—')" />
       <ConfigItem :label="TEXT.knowledge.config.credential" :value="knowledgeBase.credential_name || embedding.credential_id" />

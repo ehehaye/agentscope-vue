@@ -1,16 +1,16 @@
 <template>
-  <div class="flex h-full flex-col gap-2">
-    <span class="text-sm text-muted-foreground">当前会话已装备的 MCP 服务。</span>
+  <div class="tw-flex tw-h-full tw-flex-col tw-gap-2">
+    <span class="tw-text-sm tw-text-muted-foreground">当前会话已装备的 MCP 服务。</span>
     <InputGroup>
       <InputGroupInput v-model="search" placeholder="搜索 MCP" />
       <InputGroupAddon align="inline-end">
-        <Icon icon="lucide:search" class="h-4 w-4" />
+        <Icon icon="lucide:search" class="tw-h-4 tw-w-4" />
       </InputGroupAddon>
     </InputGroup>
 
-    <div class="flex flex-1 flex-col gap-2 overflow-y-auto">
+    <div class="tw-flex tw-flex-1 tw-flex-col tw-gap-2 tw-overflow-y-auto">
       <template v-if="loading">
-        <div class="flex flex-1 items-center justify-center text-sm text-muted-foreground">加载中…</div>
+        <div class="tw-flex tw-flex-1 tw-items-center tw-justify-center tw-text-sm tw-text-muted-foreground">加载中…</div>
       </template>
       <template v-else-if="filtered.length === 0">
         <PanelEmpty
@@ -20,45 +20,45 @@
         />
       </template>
       <template v-else>
-        <Item v-for="mcp in filtered" :key="mcp.name" variant="outline" class="group/mcp">
+        <Item v-for="mcp in filtered" :key="mcp.name" variant="outline" class="tw-group/mcp">
           <ItemMedia variant="image">
             <img
               v-if="installedByName[mcp.name]?.icon_url"
               :src="installedByName[mcp.name].icon_url"
               :alt="mcp.name"
-              class="size-full object-cover"
+              class="tw-size-full tw-object-cover"
             />
-            <span v-else class="flex size-full items-center justify-center text-sm font-medium">
+            <span v-else class="tw-flex tw-size-full tw-items-center tw-justify-center tw-text-sm tw-font-medium">
               {{ mcp.name.slice(0, 1).toUpperCase() }}
             </span>
           </ItemMedia>
           <ItemContent>
             <ItemTitle>
-              <span class="truncate">{{ mcp.name }}</span>
-              <span v-if="installedByName[mcp.name]?.author" class="text-xs text-muted-foreground">
+              <span class="tw-truncate">{{ mcp.name }}</span>
+              <span v-if="installedByName[mcp.name]?.author" class="tw-text-xs tw-text-muted-foreground">
                 @{{ installedByName[mcp.name].author }}
               </span>
-              <span class="text-xs text-muted-foreground/50">
+              <span class="tw-text-xs tw-text-muted-foreground/50">
                 {{ mcp.mcp_config?.type === 'stdio_mcp' ? '#stdio' : '#http' }}
               </span>
             </ItemTitle>
-            <ItemDescription v-if="installedByName[mcp.name]?.description" class="line-clamp-1">
+            <ItemDescription v-if="installedByName[mcp.name]?.description" class="tw-line-clamp-1">
               {{ installedByName[mcp.name].description }}
             </ItemDescription>
           </ItemContent>
           <ItemActions>
             <span
-              class="size-2 shrink-0 rounded-full"
-              :class="mcp.is_healthy ? 'bg-green-500' : 'bg-red-500'"
+              class="tw-size-2 tw-shrink-0 tw-rounded-full"
+              :class="mcp.is_healthy ? 'tw-bg-green-500' : 'tw-bg-red-500'"
               :title="mcp.is_healthy ? '健康' : '异常'"
             />
             <el-button
               type="text"
               size="mini"
-              class="opacity-0 group-hover/mcp:opacity-100"
+              class="tw-opacity-0 group-hover/mcp:tw-opacity-100"
               @click="askRemove(mcp.name)"
             >
-              <Icon icon="lucide:trash" class="h-3 w-3" />
+              <Icon icon="lucide:trash" class="tw-h-3 tw-w-3" />
             </el-button>
           </ItemActions>
         </Item>
@@ -66,8 +66,8 @@
     </div>
 
     <router-link to="/mcp">
-      <el-button type="primary" size="small" class="w-full">
-        <Icon icon="lucide:plus-circle" class="h-4 w-4" />
+      <el-button type="primary" size="small" class="tw-w-full">
+        <Icon icon="lucide:plus-circle" class="tw-h-4 tw-w-4" />
         添加 MCP
       </el-button>
     </router-link>

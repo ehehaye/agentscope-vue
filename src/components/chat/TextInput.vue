@@ -1,34 +1,34 @@
 <template>
-  <div class="flex flex-col" :class="$attrs.class">
+  <div class="tw-flex tw-flex-col" :class="$attrs.class">
     <slot name="header" />
-    <div class="flex w-full flex-col tw-rounded-28px border bg-background px-2">
-      <div v-if="files.length > 0" class="flex flex-wrap gap-2 px-1 pt-1">
+    <div class="tw-flex tw-w-full tw-flex-col tw-rounded-28px tw-border tw-bg-background tw-px-2">
+      <div v-if="files.length > 0" class="tw-flex tw-flex-wrap tw-gap-2 tw-px-1 tw-pt-1">
         <div
           v-for="(file, index) in files"
           :key="index"
-          class="flex max-w-full items-center gap-2 rounded-md bg-muted px-2 py-1 text-xs"
+          class="tw-flex tw-max-w-full tw-items-center tw-gap-2 tw-rounded-md tw-bg-muted tw-px-2 tw-py-1 tw-text-xs"
         >
-          <Icon icon="lucide:file-text" class="h-3 w-3 shrink-0" />
-          <span class="truncate">{{ file.name }}</span>
+          <Icon icon="lucide:file-text" class="tw-h-3 tw-w-3 tw-shrink-0" />
+          <span class="tw-truncate">{{ file.name }}</span>
           <Icon
             icon="lucide:x"
-            class="h-3 w-3 shrink-0 cursor-pointer"
+            class="tw-h-3 tw-w-3 tw-shrink-0 tw-cursor-pointer"
             @click="removeFile(index)"
           />
         </div>
       </div>
-      <div class="relative flex flex-wrap items-end justify-end">
+      <div class="tw-relative tw-flex tw-flex-wrap tw-items-end tw-justify-end">
         <textarea
           ref="textareaRef"
           v-model="value"
           :disabled="disabled"
           :placeholder="TEXT.inputPlaceholder"
           rows="1"
-          class="block min-w-0 flex-1 resize-none rounded-md border-0 bg-transparent px-3 py-3 text-sm outline-none placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+          class="tw-block tw-min-w-0 tw-flex-1 tw-resize-none tw-rounded-md tw-border-0 tw-bg-transparent tw-px-3 tw-py-3 tw-text-sm tw-outline-none placeholder:tw-text-muted-foreground focus:tw-outline-none disabled:tw-cursor-not-allowed disabled:tw-opacity-50"
           style="min-height: 52px; max-height: 168px; line-height: 21px; overflow-y: auto"
           @keydown="handleKeyDown"
         />
-        <div class="flex shrink-0 items-center gap-2 py-2">
+        <div class="tw-flex tw-shrink-0 tw-items-center tw-gap-2 tw-py-2">
           <el-button
             type="text"
             size="small"
@@ -36,7 +36,7 @@
             :disabled="attachDisabled"
             @click="openFilePicker"
           >
-            <Icon icon="lucide:paperclip" class="h-4 w-4" />
+            <Icon icon="lucide:paperclip" class="tw-h-4 tw-w-4" />
           </el-button>
           <el-button
             type="primary"
@@ -45,7 +45,7 @@
             :disabled="sendButton.disabled"
             @click="sendButton.onClick"
           >
-            <Icon :icon="sendButton.icon" class="h-4 w-4" />
+            <Icon :icon="sendButton.icon" class="tw-h-4 tw-w-4" />
           </el-button>
         </div>
       </div>
@@ -54,7 +54,7 @@
       ref="fileInputRef"
       type="file"
       multiple
-      class="hidden"
+      class="tw-hidden"
       :accept="acceptAttr"
       @change="handleFileSelect"
     />

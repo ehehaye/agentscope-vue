@@ -1,18 +1,18 @@
 <template>
   <el-dropdown trigger="click" @command="handleCommand">
     <span
-      class="el-dropdown-link inline-flex w-full cursor-pointer items-center justify-between gap-2 rounded-md border border-border px-3 py-1.5 text-sm hover:bg-row-hover"
-      :class="{ 'opacity-50': loading }"
+      class="el-dropdown-link tw-inline-flex tw-w-full tw-cursor-pointer tw-items-center tw-justify-between tw-gap-2 tw-rounded-md tw-border tw-border-border tw-px-3 tw-py-1.5 tw-text-sm hover:tw-bg-row-hover"
+      :class="{ 'tw-opacity-50': loading }"
     >
-      <span class="truncate">{{ displayLabel }}</span>
-      <Icon icon="lucide:chevron-down" class="h-4 w-4 shrink-0 text-muted-foreground" />
+      <span class="tw-truncate">{{ displayLabel }}</span>
+      <Icon icon="lucide:chevron-down" class="tw-h-4 tw-w-4 tw-shrink-0 tw-text-muted-foreground" />
     </span>
-    <el-dropdown-menu slot="dropdown" class="max-h-72 overflow-y-auto">
+    <el-dropdown-menu slot="dropdown" class="tw-max-h-72 tw-overflow-y-auto">
       <template v-if="!loading && groupEntries.length === 0">
         <el-dropdown-item disabled>暂无可用模型</el-dropdown-item>
-        <el-dropdown-item command="NEW_CREDENTIAL" class="text-xs">
-          <span class="inline-flex items-center gap-1">
-            <Icon icon="lucide:plus" class="h-3.5 w-3.5" />
+        <el-dropdown-item command="NEW_CREDENTIAL" class="tw-text-xs">
+          <span class="tw-inline-flex tw-items-center tw-gap-1">
+            <Icon icon="lucide:plus" class="tw-h-3.5 tw-w-3.5" />
             新建凭证
           </span>
         </el-dropdown-item>
@@ -31,7 +31,7 @@
               v-for="m in entry[1][0].models"
               :key="m.name"
               :command="{ type: entry[0], credential_id: entry[1][0].credential.id, model: m.name }"
-              :class="{ 'bg-accent': isSelected(entry[1][0].credential.id, m.name) }"
+              :class="{ 'tw-bg-accent': isSelected(entry[1][0].credential.id, m.name) }"
             >
               {{ m.label || m.name }}
             </el-dropdown-item>
@@ -41,19 +41,19 @@
               v-for="item in entry[1]"
               :key="item.credential.id"
               :command="null"
-              class="has-submenu"
+              class="tw-has-submenu"
             >
               <el-dropdown placement="right-start" @command="handleCommand">
-                <span class="inline-flex w-full items-center justify-between">
+                <span class="tw-inline-flex tw-w-full tw-items-center tw-justify-between">
                   {{ credentialLabel(item.credential) }}
-                  <Icon icon="lucide:chevron-right" class="ml-2 h-3.5 w-3.5" />
+                  <Icon icon="lucide:chevron-right" class="tw-ml-2 tw-h-3.5 tw-w-3.5" />
                 </span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item
                     v-for="m in item.models"
                     :key="m.name"
                     :command="{ type: entry[0], credential_id: item.credential.id, model: m.name }"
-                    :class="{ 'bg-accent': isSelected(item.credential.id, m.name) }"
+                    :class="{ 'tw-bg-accent': isSelected(item.credential.id, m.name) }"
                   >
                     {{ m.label || m.name }}
                   </el-dropdown-item>
@@ -63,8 +63,8 @@
           </template>
         </template>
         <el-dropdown-item divided command="NEW_CREDENTIAL">
-          <span class="inline-flex items-center gap-1">
-            <Icon icon="lucide:plus" class="h-3.5 w-3.5" />
+          <span class="tw-inline-flex tw-items-center tw-gap-1">
+            <Icon icon="lucide:plus" class="tw-h-3.5 tw-w-3.5" />
             新建凭证
           </span>
         </el-dropdown-item>

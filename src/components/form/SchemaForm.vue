@@ -1,5 +1,5 @@
 <template>
-  <el-form label-position="top" class="schema-form">
+  <el-form label-position="top" class="tw-schema-form">
     <el-form-item
       v-for="[key, prop] in entries"
       :key="key"
@@ -17,7 +17,7 @@
           :value="values[key]"
           @change="(val) => onChange(key, val)"
           :placeholder="placeholderFor(key, prop)"
-          class="w-full"
+          class="tw-w-full"
         >
           <el-option
             v-for="opt in enumValues(prop)"
@@ -46,7 +46,7 @@
           :max="prop.maximum"
           :step="effectiveType(prop) === 'integer' ? 1 : 0.1"
           :placeholder="placeholderFor(key, prop)"
-          class="w-full"
+          class="tw-w-full"
           controls-position="right"
         />
       </template>
@@ -60,7 +60,7 @@
         />
       </template>
 
-      <div v-if="descriptionFor(key, prop)" class="text-xs text-muted-foreground mt-1">
+      <div v-if="descriptionFor(key, prop)" class="tw-text-xs tw-text-muted-foreground tw-mt-1">
         {{ descriptionFor(key, prop) }}
       </div>
     </el-form-item>

@@ -15,7 +15,7 @@
         />
       </el-form-item>
     </el-form>
-    <span slot="footer" class="dialog-footer">
+    <span slot="footer" class="tw-dialog-footer">
       <el-button @click="dialogVisible = false" :disabled="submitting">取消</el-button>
       <el-button type="primary" :loading="submitting" :disabled="!name.trim()" @click="handleConfirm">
         确认

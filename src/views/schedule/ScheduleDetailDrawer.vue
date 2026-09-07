@@ -9,46 +9,46 @@
       custom-class="schedule-detail-drawer"
       @close="$emit('update:visible', false)"
     >
-      <div v-if="schedule" class="flex h-full flex-col gap-4 p-4">
-        <p class="text-sm text-muted-foreground">{{ schedule.data.description }}</p>
+      <div v-if="schedule" class="tw-flex tw-h-full tw-flex-col tw-gap-4 tw-p-4">
+        <p class="tw-text-sm tw-text-muted-foreground">{{ schedule.data.description }}</p>
 
-        <div class="flex flex-col gap-2">
-          <h3 class="text-sm font-semibold text-secondary-foreground">{{ COMMON.information }}</h3>
-          <div class="flex flex-col gap-2">
+        <div class="tw-flex tw-flex-col tw-gap-2">
+          <h3 class="tw-text-sm tw-font-semibold tw-text-secondary-foreground">{{ COMMON.information }}</h3>
+          <div class="tw-flex tw-flex-col tw-gap-2">
             <div
               v-for="item in scheduleInfoItems"
               :key="item.title"
-              class="flex flex-row items-center justify-between rounded-md px-2.5 py-2 text-xs font-mono ring-1 ring-border"
+              class="tw-flex tw-flex-row tw-items-center tw-justify-between tw-rounded-md tw-px-2.5 tw-py-2 tw-text-xs tw-font-mono tw-ring-1 tw-ring-border"
             >
-              <span class="font-medium">{{ item.title.toUpperCase() }}</span>
-              <span class="ml-auto text-muted-foreground">{{ item.content }}</span>
+              <span class="tw-font-medium">{{ item.title.toUpperCase() }}</span>
+              <span class="tw-ml-auto tw-text-muted-foreground">{{ item.content }}</span>
             </div>
           </div>
         </div>
 
         <el-divider />
 
-        <div class="flex flex-1 flex-col gap-2 overflow-hidden">
-          <h3 class="text-sm font-semibold">{{ TEXT.schedule.executionHistory }}</h3>
-          <div class="flex-1 overflow-y-auto space-y-1">
-            <div v-if="sessionsLoading" class="py-4 text-center text-sm text-muted-foreground">{{ COMMON.loading }}</div>
-            <div v-else-if="sessions.length === 0" class="py-4 text-center text-sm text-muted-foreground">{{ COMMON.noData }}</div>
+        <div class="tw-flex tw-flex-1 tw-flex-col tw-gap-2 tw-overflow-hidden">
+          <h3 class="tw-text-sm tw-font-semibold">{{ TEXT.schedule.executionHistory }}</h3>
+          <div class="tw-flex-1 tw-overflow-y-auto tw-space-y-1">
+            <div v-if="sessionsLoading" class="tw-py-4 tw-text-center tw-text-sm tw-text-muted-foreground">{{ COMMON.loading }}</div>
+            <div v-else-if="sessions.length === 0" class="tw-py-4 tw-text-center tw-text-sm tw-text-muted-foreground">{{ COMMON.noData }}</div>
             <div
               v-for="session in sessions"
               v-else
               :key="session.id"
-              class="flex cursor-pointer flex-row items-center justify-between rounded-md px-2.5 py-2 text-xs font-mono ring-1 ring-border transition-colors hover:bg-muted/50"
+              class="tw-flex tw-cursor-pointer tw-flex-row tw-items-center tw-justify-between tw-rounded-md tw-px-2.5 tw-py-2 tw-text-xs tw-font-mono tw-ring-1 tw-ring-border tw-transition-colors hover:tw-bg-muted/50"
               @click="goToSession(session)"
             >
-              <span class="text-muted-foreground">{{ new Date(session.created_at).toLocaleString() }}</span>
+              <span class="tw-text-muted-foreground">{{ new Date(session.created_at).toLocaleString() }}</span>
               <StatusBadge status="completed" />
             </div>
           </div>
         </div>
 
-        <div class="mt-auto pt-2">
+        <div class="tw-mt-auto tw-pt-2">
           <el-button type="danger" size="small" @click="openDelete = true">
-            <Icon icon="lucide:trash-2" class="mr-1 h-3 w-3" />
+            <Icon icon="lucide:trash-2" class="tw-mr-1 tw-h-3 tw-w-3" />
             {{ COMMON.delete }}
           </el-button>
         </div>

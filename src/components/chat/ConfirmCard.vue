@@ -1,25 +1,25 @@
 <template>
-  <div class="mb-2 w-full space-y-3 tw-rounded-28px bg-muted px-5 py-4 ring-1 ring-border">
-    <div class="text-sm font-medium text-secondary-foreground">{{ displayName }}</div>
-    <div class="tw-max-h-200px overflow-y-auto rounded-sm bg-background px-3 py-2 text-xs">
+  <div class="tw-mb-2 tw-w-full tw-space-y-3 tw-rounded-28px tw-bg-muted tw-px-5 tw-py-4 tw-ring-1 tw-ring-border">
+    <div class="tw-text-sm tw-font-medium tw-text-secondary-foreground">{{ displayName }}</div>
+    <div class="tw-max-h-200px tw-overflow-y-auto tw-rounded-sm tw-bg-background tw-px-3 tw-py-2 tw-text-xs">
       <component :is="renderer" v-if="renderer" :pair="{ call: toolCall }" />
-      <pre v-else class="whitespace-pre-wrap break-all">{{ confirmBody }}</pre>
+      <pre v-else class="tw-whitespace-pre-wrap tw-break-all">{{ confirmBody }}</pre>
     </div>
-    <div class="space-y-1 text-sm">
-      <div class="mb-1 font-medium text-secondary-foreground">{{ TEXT.confirmToolCall }}</div>
+    <div class="tw-space-y-1 tw-text-sm">
+      <div class="tw-mb-1 tw-font-medium tw-text-secondary-foreground">{{ TEXT.confirmToolCall }}</div>
 
       <button
         type="button"
-        class="flex w-full cursor-pointer items-center justify-start gap-2 rounded px-2 py-1 text-left"
-        :class="selected === 'yes' ? 'text-primary' : 'text-muted-foreground'"
+        class="tw-flex tw-w-full tw-cursor-pointer tw-items-center tw-justify-start tw-gap-2 tw-rounded tw-px-2 tw-py-1 tw-text-left"
+        :class="selected === 'yes' ? 'tw-text-primary' : 'tw-text-muted-foreground'"
         :disabled="hasConfirmed"
         @mouseenter="selected = 'yes'"
         @click="handleConfirm(true)"
       >
-        <Spinner v-if="hasConfirmed && selected === 'yes'" class="h-4 w-4" />
-        <Icon v-else icon="lucide:chevron-right" class="h-4 w-4" :class="selected === 'yes' ? 'visible' : 'invisible'" />
+        <Spinner v-if="hasConfirmed && selected === 'yes'" class="tw-h-4 tw-w-4" />
+        <Icon v-else icon="lucide:chevron-right" class="tw-h-4 tw-w-4" :class="selected === 'yes' ? 'tw-visible' : 'tw-invisible'" />
         <span>1. {{ TEXT.yes }}</span>
-        <span v-if="selected === 'yes'" class="ml-auto text-xs text-muted-foreground">
+        <span v-if="selected === 'yes'" class="tw-ml-auto tw-text-xs tw-text-muted-foreground">
           (<Kbd className="text-xs">Enter</Kbd> {{ TEXT.toConfirm }})
         </span>
       </button>
@@ -27,32 +27,32 @@
       <button
         v-if="hasSuggestedRules"
         type="button"
-        class="flex w-full cursor-pointer items-start justify-start gap-2 rounded px-2 py-1 text-left"
-        :class="selected === 'yes_with_rule' ? 'text-primary' : 'text-muted-foreground'"
+        class="tw-flex tw-w-full tw-cursor-pointer tw-items-start tw-justify-start tw-gap-2 tw-rounded tw-px-2 tw-py-1 tw-text-left"
+        :class="selected === 'yes_with_rule' ? 'tw-text-primary' : 'tw-text-muted-foreground'"
         :disabled="hasConfirmed"
         @mouseenter="selected = 'yes_with_rule'"
         @click="handleConfirm(true, [toolCall.suggested_rules[0]])"
       >
-        <Spinner v-if="hasConfirmed && selected === 'yes_with_rule'" class="mt-0.5 h-4 w-4 shrink-0" />
-        <Icon v-else icon="lucide:chevron-right" class="mt-0.5 h-4 w-4 shrink-0" :class="selected === 'yes_with_rule' ? 'visible' : 'invisible'" />
-        <span class="min-w-0 break-words">2. {{ yesWithRuleText }}</span>
-        <span v-if="selected === 'yes_with_rule'" class="ml-auto shrink-0 text-xs text-muted-foreground">
+        <Spinner v-if="hasConfirmed && selected === 'yes_with_rule'" class="tw-mt-0.5 tw-h-4 tw-w-4 tw-shrink-0" />
+        <Icon v-else icon="lucide:chevron-right" class="tw-mt-0.5 tw-h-4 tw-w-4 tw-shrink-0" :class="selected === 'yes_with_rule' ? 'tw-visible' : 'tw-invisible'" />
+        <span class="tw-min-w-0 tw-break-words">2. {{ yesWithRuleText }}</span>
+        <span v-if="selected === 'yes_with_rule'" class="tw-ml-auto tw-shrink-0 tw-text-xs tw-text-muted-foreground">
           (<Kbd className="text-xs">Enter</Kbd> {{ TEXT.toConfirm }})
         </span>
       </button>
 
       <button
         type="button"
-        class="flex w-full cursor-pointer items-center justify-start gap-2 rounded px-2 py-1 text-left"
-        :class="selected === 'no' ? 'text-primary' : 'text-muted-foreground'"
+        class="tw-flex tw-w-full tw-cursor-pointer tw-items-center tw-justify-start tw-gap-2 tw-rounded tw-px-2 tw-py-1 tw-text-left"
+        :class="selected === 'no' ? 'tw-text-primary' : 'tw-text-muted-foreground'"
         :disabled="hasConfirmed"
         @mouseenter="selected = 'no'"
         @click="handleConfirm(false)"
       >
-        <Spinner v-if="hasConfirmed && selected === 'no'" class="h-4 w-4" />
-        <Icon v-else icon="lucide:chevron-right" class="h-4 w-4" :class="selected === 'no' ? 'visible' : 'invisible'" />
+        <Spinner v-if="hasConfirmed && selected === 'no'" class="tw-h-4 tw-w-4" />
+        <Icon v-else icon="lucide:chevron-right" class="tw-h-4 tw-w-4" :class="selected === 'no' ? 'tw-visible' : 'tw-invisible'" />
         <span>{{ hasSuggestedRules ? '3' : '2' }}. {{ TEXT.no }}</span>
-        <span v-if="selected === 'no'" class="ml-auto text-xs text-muted-foreground">
+        <span v-if="selected === 'no'" class="tw-ml-auto tw-text-xs tw-text-muted-foreground">
           (<Kbd className="text-xs">Enter</Kbd> {{ TEXT.toConfirm }})
         </span>
       </button>

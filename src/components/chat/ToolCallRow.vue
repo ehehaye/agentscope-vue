@@ -1,18 +1,18 @@
 <template>
   <div>
     <div
-      class="group flex items-center gap-2"
-      :class="expandable ? 'cursor-pointer' : ''"
+      class="tw-group tw-flex tw-items-center tw-gap-2"
+      :class="expandable ? 'tw-cursor-pointer' : ''"
       @click="toggle"
     >
-      <span class="shrink-0">{{ displayName }}</span>
-      <span v-if="arg" class="min-w-0 truncate font-medium">{{ arg }}</span>
+      <span class="tw-shrink-0">{{ displayName }}</span>
+      <span v-if="arg" class="tw-min-w-0 tw-truncate tw-font-medium">{{ arg }}</span>
       <ToolStateIcon :state="pair.result?.state" />
       <Icon
         v-if="expandable"
         icon="lucide:chevron-right"
-        class="h-3 w-3 shrink-0 transition-transform"
-        :class="{ 'rotate-90': open }"
+        class="tw-h-3 tw-w-3 tw-shrink-0 tw-transition-transform"
+        :class="{ 'tw-rotate-90': open }"
       />
     </div>
     <transition
@@ -21,8 +21,8 @@
       @after-enter="afterEnter"
       @leave="leave"
     >
-      <div v-show="open" class="overflow-hidden">
-        <div class="mt-2">
+      <div v-show="open" class="tw-overflow-hidden">
+        <div class="tw-mt-2">
           <component :is="renderer" :pair="pair" />
         </div>
       </div>

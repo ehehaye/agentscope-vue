@@ -1,58 +1,58 @@
 <template>
-  <div class="flex h-full flex-col gap-3 overflow-y-auto text-sm">
-    <span class="text-sm text-muted-foreground">当前会话的权限规则与工作目录。</span>
+  <div class="tw-flex tw-h-full tw-flex-col tw-gap-3 tw-overflow-y-auto tw-text-sm">
+    <span class="tw-text-sm tw-text-muted-foreground">当前会话的权限规则与工作目录。</span>
 
-    <div class="flex flex-col gap-1.5">
-      <span class="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
-        <Icon icon="lucide:folder-open" class="h-3.5 w-3.5" />
+    <div class="tw-flex tw-flex-col tw-gap-1.5">
+      <span class="tw-flex tw-items-center tw-gap-1.5 tw-text-xs tw-font-medium tw-text-muted-foreground">
+        <Icon icon="lucide:folder-open" class="tw-h-3.5 tw-w-3.5" />
         工作目录
       </span>
       <template v-if="workingDirs.length === 0">
-        <p class="px-1 py-2 text-xs text-muted-foreground">没有配置工作目录。</p>
+        <p class="tw-px-1 tw-py-2 tw-text-xs tw-text-muted-foreground">没有配置工作目录。</p>
       </template>
-      <ul v-else class="flex flex-col rounded-md border">
+      <ul v-else class="tw-flex tw-flex-col tw-rounded-md tw-border">
         <li
           v-for="dir in workingDirs"
           :key="dir.path"
-          class="flex items-center justify-between gap-2 px-2 py-1.5 text-xs"
-          :class="dir !== workingDirs[workingDirs.length - 1] ? 'border-b' : ''"
+          class="tw-flex tw-items-center tw-justify-between tw-gap-2 tw-px-2 tw-py-1.5 tw-text-xs"
+          :class="dir !== workingDirs[workingDirs.length - 1] ? 'tw-border-b' : ''"
         >
-          <span class="min-w-0 flex-1 truncate font-mono text-left" :title="dir.path">{{ dir.path }}</span>
-          <span class="shrink-0 rounded border px-1.5 py-0.5 tw-text-10px">{{ dir.source }}</span>
+          <span class="tw-min-w-0 tw-flex-1 tw-truncate tw-font-mono tw-text-left" :title="dir.path">{{ dir.path }}</span>
+          <span class="tw-shrink-0 tw-rounded tw-border tw-px-1.5 tw-py-0.5 tw-text-10px">{{ dir.source }}</span>
         </li>
       </ul>
     </div>
 
     <template v-if="hasRules">
-      <div v-for="behavior in behaviors" :key="behavior.key" class="flex flex-col gap-1.5">
-        <span class="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
-          <Icon :icon="behavior.icon" class="h-3.5 w-3.5" />
+      <div v-for="behavior in behaviors" :key="behavior.key" class="tw-flex tw-flex-col tw-gap-1.5">
+        <span class="tw-flex tw-items-center tw-gap-1.5 tw-text-xs tw-font-medium tw-text-muted-foreground">
+          <Icon :icon="behavior.icon" class="tw-h-3.5 tw-w-3.5" />
           {{ behavior.label }}
         </span>
         <template v-for="(rules, toolName) in behavior.ruleMap">
         <div
           v-if="rules.length > 0"
           :key="toolName"
-          class="rounded-md border"
+          class="tw-rounded-md tw-border"
         >
-          <div class="flex items-center gap-2 border-b px-2 py-1.5 text-sm font-medium">
+          <div class="tw-flex tw-items-center tw-gap-2 tw-border-b tw-px-2 tw-py-1.5 tw-text-sm tw-font-medium">
             {{ toolName }}
-            <span class="ml-auto rounded bg-secondary px-1.5 py-0 text-xs">{{ rules.length }}</span>
+            <span class="tw-ml-auto tw-rounded tw-bg-secondary tw-px-1.5 tw-py-0 tw-text-xs">{{ rules.length }}</span>
           </div>
-          <ul class="flex flex-col">
+          <ul class="tw-flex tw-flex-col">
             <li
               v-for="(rule, index) in rules"
               :key="`${rule.rule_content || '*'}_${index}`"
-              class="flex items-center justify-between gap-2 px-2 py-1.5 text-xs"
-              :class="index !== rules.length - 1 ? 'border-b' : ''"
+              class="tw-flex tw-items-center tw-justify-between tw-gap-2 tw-px-2 tw-py-1.5 tw-text-xs"
+              :class="index !== rules.length - 1 ? 'tw-border-b' : ''"
             >
               <span
                 v-if="rule.rule_content"
-                class="min-w-0 flex-1 truncate font-mono text-left"
+                class="tw-min-w-0 tw-flex-1 tw-truncate tw-font-mono tw-text-left"
                 :title="rule.rule_content"
               >{{ rule.rule_content }}</span>
-              <span v-else class="min-w-0 flex-1 text-muted-foreground">任意调用</span>
-              <span class="shrink-0 rounded border px-1.5 py-0.5 tw-text-10px">{{ rule.source }}</span>
+              <span v-else class="tw-min-w-0 tw-flex-1 tw-text-muted-foreground">任意调用</span>
+              <span class="tw-shrink-0 tw-rounded tw-border tw-px-1.5 tw-py-0.5 tw-text-10px">{{ rule.source }}</span>
             </li>
           </ul>
         </div>

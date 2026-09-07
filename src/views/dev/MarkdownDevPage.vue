@@ -1,11 +1,11 @@
 <template>
-	<div class="flex h-full flex-col">
+	<div class="tw-flex tw-h-full tw-flex-col">
 		<!-- 工具栏 -->
 		<header
-			class="flex flex-wrap items-center gap-3 border-b border-border bg-card px-6 py-3"
+			class="tw-flex tw-flex-wrap tw-items-center tw-gap-3 tw-border-b tw-border-border tw-bg-card tw-px-6 tw-py-3"
 		>
-			<h1 class="text-sm font-semibold text-foreground">Markdown 渲染验证</h1>
-			<div class="flex-1"></div>
+			<h1 class="tw-text-sm tw-font-semibold tw-text-foreground">Markdown 渲染验证</h1>
+			<div class="tw-flex-1"></div>
 			<el-button size="small" @click="onToggleDark">
 				{{ dark ? '切换浅色' : '切换深色' }}
 			</el-button>
@@ -16,24 +16,24 @@
 		</header>
 
 		<!-- 内容区：静态样例 + 流式样例 -->
-		<div class="flex-1 overflow-auto bg-canvas px-6 py-6">
-			<div class="mx-auto max-w-3xl space-y-8">
-				<section class="rounded-lg border border-border bg-card p-6">
-					<h2 class="mb-4 text-sm font-medium text-muted-foreground">
+		<div class="tw-flex-1 tw-overflow-auto tw-bg-canvas tw-px-6 tw-py-6">
+			<div class="tw-mx-auto tw-max-w-3xl tw-space-y-8">
+				<section class="tw-rounded-lg tw-border tw-border-border tw-bg-card tw-p-6">
+					<h2 class="tw-mb-4 tw-text-sm tw-font-medium tw-text-muted-foreground">
 						静态样例（标题/表格/代码块/引用/列表）
 					</h2>
 					<MarkdownRenderer :content="staticSample" />
 				</section>
 
-				<section class="rounded-lg border border-border bg-card p-6">
-					<h2 class="mb-4 text-sm font-medium text-muted-foreground">
+				<section class="tw-rounded-lg tw-border tw-border-border tw-bg-card tw-p-6">
+					<h2 class="tw-mb-4 tw-text-sm tw-font-medium tw-text-muted-foreground">
 						流式样例（remend 自愈，分块追加）
 					</h2>
 					<MarkdownRenderer :content="streamContent" />
 				</section>
 
-				<section class="rounded-lg border border-border bg-card p-6">
-					<h2 class="mb-4 text-sm font-medium text-muted-foreground">
+				<section class="tw-rounded-lg tw-border tw-border-border tw-bg-card tw-p-6">
+					<h2 class="tw-mb-4 tw-text-sm tw-font-medium tw-text-muted-foreground">
 						XSS 过滤验证（应只显示文本，不弹窗）
 					</h2>
 					<MarkdownRenderer :content="xssSample" />

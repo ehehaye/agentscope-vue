@@ -1,6 +1,6 @@
 <template>
-  <div ref="viewport" class="relative h-full w-full overflow-y-auto" @scroll="onScroll">
-    <div ref="content" class="flex min-h-full flex-col gap-6 p-4">
+  <div ref="viewport" class="tw-relative tw-h-full tw-w-full tw-overflow-y-auto" @scroll="onScroll">
+    <div ref="content" class="tw-flex tw-min-h-full tw-flex-col tw-gap-6 tw-p-4">
       <slot />
     </div>
     <el-button
@@ -8,10 +8,10 @@
       type="default"
       size="mini"
       circle
-      class="absolute bottom-4 left-1/2 -translate-x-1/2"
+      class="tw-absolute tw-bottom-4 tw-left-1/2 tw--translate-x-1/2"
       @click="scrollToBottom"
     >
-      <Icon icon="lucide:arrow-down" class="h-4 w-4" />
+      <Icon icon="lucide:arrow-down" class="tw-h-4 tw-w-4" />
     </el-button>
   </div>
 </template>

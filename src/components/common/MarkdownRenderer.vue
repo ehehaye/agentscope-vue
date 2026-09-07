@@ -264,7 +264,7 @@ export default defineComponent({
     margin: @spacing-xs 0;
 
     .md-code-lang {
-      text-align: left;
+     tw-text-align: left;
       font-size: 12px;
       color: @text-secondary;
       padding: 4px @spacing-sm;
@@ -282,7 +282,7 @@ export default defineComponent({
       background-color: @surface-muted;
       user-select: none;
       min-width: 40px;
-      text-align: right;
+     tw-text-align: right;
 
       span {
         display: block;
@@ -325,7 +325,7 @@ export default defineComponent({
     .md-td {
       border: 1px solid @border-color;
       padding: @spacing-sm @spacing-md;
-      text-align: left;
+     tw-text-align: left;
     }
 
     .md-th {
@@ -336,10 +336,10 @@ export default defineComponent({
 
   .md-link {
     color: @primary-color;
-    text-decoration: none;
+   tw-text-decoration: none;
 
     &:hover {
-      text-decoration: underline;
+     tw-text-decoration: underline;
     }
   }
 

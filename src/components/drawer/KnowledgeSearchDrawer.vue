@@ -5,17 +5,17 @@
     direction="rtl"
     size="30rem"
   >
-    <div class="flex h-full flex-col gap-4 p-4">
+    <div class="tw-flex tw-h-full tw-flex-col tw-gap-4 tw-p-4">
       <el-input v-model="query" placeholder="输入查询..." @keyup.enter.native="handleSearch" />
       <el-button type="primary" :loading="loading" @click="handleSearch">搜索</el-button>
-      <div class="flex-1 overflow-y-auto space-y-2">
-        <div v-if="results.length === 0 && !loading" class="text-sm text-muted-foreground">输入查询并点击搜索</div>
+      <div class="tw-flex-1 tw-overflow-y-auto tw-space-y-2">
+        <div v-if="results.length === 0 && !loading" class="tw-text-sm tw-text-muted-foreground">输入查询并点击搜索</div>
         <div
           v-for="(item, index) in results"
           :key="index"
-          class="rounded-md border border-border p-3 text-sm"
+          class="tw-rounded-md tw-border tw-border-border tw-p-3 tw-text-sm"
         >
-          <p class="text-muted-foreground">{{ item.content || item.text || JSON.stringify(item) }}</p>
+          <p class="tw-text-muted-foreground">{{ item.content || item.text || JSON.stringify(item) }}</p>
         </div>
       </div>
     </div>

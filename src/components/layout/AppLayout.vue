@@ -1,7 +1,7 @@
 <template>
-	<div class="app-layout flex h-full w-full overflow-hidden">
+	<div class="tw-app-layout tw-flex tw-h-full tw-w-full tw-overflow-hidden">
 		<AppSidebar />
-		<main class="flex-1 overflow-hidden">
+		<main class="tw-flex-1 tw-overflow-hidden">
 			<RouteError v-if="err" :error="err" @retry="handleRetry" @home="handleHome" />
 			<transition v-else name="fade" mode="out-in">
 				<router-view />
@@ -25,7 +25,7 @@ export default {
 
 		onErrorCaptured((e) => {
 			err.value = e;
-			console.error('[AppLayout] error captured:', e);
+			console.error('tw-[AppLayout] tw-error tw-captured', e);
 			return false;
 		});
 

@@ -1,10 +1,10 @@
 <template>
   <div
-    class="rounded-2xl px-4 py-2.5 text-sm"
+    class="tw-rounded-2xl tw-px-4 tw-py-2.5 tw-text-sm"
     :class="[
       variant === 'muted'
-        ? 'bg-muted text-foreground'
-        : 'bg-card text-foreground shadow-sm',
+        ? 'tw-bg-muted tw-text-foreground'
+        : 'tw-bg-card tw-text-foreground tw-shadow-sm',
     ]"
   >
     <slot />

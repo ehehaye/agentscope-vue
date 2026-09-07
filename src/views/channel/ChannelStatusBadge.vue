@@ -1,6 +1,6 @@
 <template>
-	<span :class="['inline-flex items-center gap-1.5 text-xs font-medium', toneClass]">
-		<span :class="['h-1.5 w-1.5 rounded-full', dotClass]" />
+	<span :class="['tw-inline-flex tw-items-center tw-gap-1.5 tw-text-xs tw-font-medium', toneClass]">
+		<span :class="['tw-h-1.5 tw-w-1.5 tw-rounded-full', dotClass]" />
 		{{ label }}
 	</span>
 </template>
@@ -9,21 +9,21 @@
 import { defineComponent, computed } from '@/composables/vue';
 
 const TONE = {
-	disabled: 'text-muted-foreground',
-	stopped: 'text-muted-foreground',
-	connecting: 'text-amber-600',
-	retrying: 'text-amber-600',
-	connected: 'text-emerald-600',
-	failed: 'text-destructive',
+	disabled: 'tw-text-muted-foreground',
+	stopped: 'tw-text-muted-foreground',
+	connecting: 'tw-text-amber-600',
+	retrying: 'tw-text-amber-600',
+	connected: 'tw-text-emerald-600',
+	failed: 'tw-text-destructive',
 };
 
 const DOT = {
-	disabled: 'bg-muted-foreground/40',
-	stopped: 'bg-muted-foreground/40',
-	connecting: 'bg-amber-500',
-	retrying: 'bg-amber-500',
-	connected: 'bg-emerald-500',
-	failed: 'bg-destructive',
+	disabled: 'tw-bg-muted-foreground/40',
+	stopped: 'tw-bg-muted-foreground/40',
+	connecting: 'tw-bg-amber-500',
+	retrying: 'tw-bg-amber-500',
+	connected: 'tw-bg-emerald-500',
+	failed: 'tw-bg-destructive',
 };
 
 const STATE_LABELS = {

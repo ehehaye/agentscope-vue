@@ -1,25 +1,25 @@
 <template>
-  <div class="flex size-full p-2">
-    <main class="shadow-panel flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden tw-rounded-22px bg-card">
-      <div class="flex items-start justify-between gap-3 px-6 pt-5 pb-4">
+  <div class="tw-flex tw-size-full tw-p-2">
+    <main class="tw-shadow-panel tw-flex tw-h-full tw-min-h-0 tw-min-w-0 tw-flex-1 tw-flex-col tw-overflow-hidden tw-rounded-22px tw-bg-card">
+      <div class="tw-flex tw-items-start tw-justify-between tw-gap-3 tw-px-6 tw-pt-5 tw-pb-4">
         <div>
-          <div class="text-2xl font-semibold">{{ COMMON.schedule }}</div>
-          <div class="mt-1 text-sm text-muted-foreground">{{ TEXT.schedule.subtitle }}</div>
+          <div class="tw-text-2xl tw-font-semibold">{{ COMMON.schedule }}</div>
+          <div class="tw-mt-1 tw-text-sm tw-text-muted-foreground">{{ TEXT.schedule.subtitle }}</div>
         </div>
-        <div class="flex items-center gap-2">
+        <div class="tw-flex tw-items-center tw-gap-2">
           <el-button size="small" @click="createVisible = true">
-            <Icon icon="lucide:plus" class="h-4 w-4" />
+            <Icon icon="lucide:plus" class="tw-h-4 tw-w-4" />
           </el-button>
           <el-radio-group v-model="viewMode" size="small">
             <el-radio-button label="calendar">
-              <span class="inline-flex items-center gap-1">
-                <Icon icon="lucide:calendar" class="h-4 w-4" />
+              <span class="tw-inline-flex tw-items-center tw-gap-1">
+                <Icon icon="lucide:calendar" class="tw-h-4 tw-w-4" />
                 <span>{{ TEXT.schedule.calendar }}</span>
               </span>
             </el-radio-button>
             <el-radio-button label="list">
-              <span class="inline-flex items-center gap-1">
-                <Icon icon="lucide:list" class="h-4 w-4" />
+              <span class="tw-inline-flex tw-items-center tw-gap-1">
+                <Icon icon="lucide:list" class="tw-h-4 tw-w-4" />
                 <span>{{ TEXT.schedule.list }}</span>
               </span>
             </el-radio-button>
@@ -28,7 +28,7 @@
       </div>
       <el-divider />
 
-      <div class="flex-1 overflow-hidden">
+      <div class="tw-flex-1 tw-overflow-hidden">
         <CalendarTabPage
           v-if="viewMode === 'calendar'"
           :events="events"

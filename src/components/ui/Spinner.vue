@@ -1,5 +1,5 @@
 <template>
-	<Icon icon="lucide:loader-2" :class="cn('size-4 animate-spin', className)" role="status" aria-label="Loading" v-bind="$attrs" />
+	<Icon icon="lucide:loader-2" :class="cn('tw-size-4 tw-animate-spin', className)" role="status" aria-label="Loading" v-bind="$attrs" />
 </template>
 
 <script>

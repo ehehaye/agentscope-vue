@@ -1,21 +1,21 @@
 <template>
-  <span class="inline-flex items-center">
+  <span class="tw-inline-flex tw-items-center">
     <template v-if="isStreaming">
-      <span class="audio-wave ml-1">
+      <span class="audio-wave tw-ml-1">
         <i v-for="n in 6" :key="n" class="audio-wave-bar" :style="{ animationDelay: (n - 1) * 0.12 + 's' }" />
       </span>
     </template>
     <template v-else-if="src">
       <button
         type="button"
-        class="audio-play-btn ml-1"
+        class="audio-play-btn tw-ml-1"
         :aria-label="isPlaying ? '暂停' : '播放'"
         @click="toggle"
       >
         <span v-if="isPlaying" class="audio-wave">
           <i v-for="n in 6" :key="n" class="audio-wave-bar" :style="{ animationDelay: (n - 1) * 0.12 + 's' }" />
         </span>
-        <Icon v-else icon="lucide:play" class="h-3 w-3" />
+        <Icon v-else icon="lucide:play" class="tw-h-3 tw-w-3" />
       </button>
       <audio
         ref="audioRef"

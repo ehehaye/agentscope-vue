@@ -7,32 +7,32 @@
     :before-close="onClose"
     destroy-on-close
   >
-    <div v-if="document" class="flex h-full flex-col gap-3">
-      <p class="text-sm text-muted-foreground">
+    <div v-if="document" class="tw-flex tw-h-full tw-flex-col tw-gap-3">
+      <p class="tw-text-sm tw-text-muted-foreground">
         共 {{ document.chunk_count || 0 }} 个分块
       </p>
-      <el-tabs v-model="activeTab" class="flex-1 min-h-0 flex flex-col">
+      <el-tabs v-model="activeTab" class="tw-flex-1 tw-min-h-0 tw-flex tw-flex-col">
         <el-tab-pane label="分块" name="chunks">
-          <div class="flex flex-col gap-2" v-loading="chunksLoading">
-            <p v-if="chunksError" class="text-sm text-danger">{{ chunksError }}</p>
-            <div v-if="chunksUnsupported" class="text-center py-6 text-sm text-muted-foreground">
+          <div class="tw-flex tw-flex-col tw-gap-2" v-loading="chunksLoading">
+            <p v-if="chunksError" class="tw-text-sm tw-text-danger">{{ chunksError }}</p>
+            <div v-if="chunksUnsupported" class="tw-text-center tw-py-6 tw-text-sm tw-text-muted-foreground">
               当前向量存储不支持列出分块
             </div>
             <template v-else-if="chunks.length > 0">
               <div
                 v-for="chunk in chunks"
                 :key="chunk.chunk_index"
-                class="rounded-md border p-3"
+                class="tw-rounded-md tw-border tw-p-3"
               >
-                <span class="text-xs text-muted-foreground font-mono">
+                <span class="tw-text-xs tw-text-muted-foreground tw-font-mono">
                   #{{ chunk.chunk_index + 1 }} / {{ chunk.total_chunks }}
                 </span>
-                <p class="mt-1 text-sm whitespace-pre-wrap break-words">
+                <p class="tw-mt-1 tw-text-sm tw-whitespace-pre-wrap tw-break-words">
                   {{ chunkContent(chunk) }}
                 </p>
               </div>
             </template>
-            <div v-else-if="!chunksLoading" class="text-center py-6 text-sm text-muted-foreground">
+            <div v-else-if="!chunksLoading" class="tw-text-center tw-py-6 tw-text-sm tw-text-muted-foreground">
               暂无分块
             </div>
             <el-pagination
@@ -47,29 +47,29 @@
           </div>
         </el-tab-pane>
         <el-tab-pane label="预览" name="preview">
-          <div class="flex flex-col gap-2" v-loading="previewLoading">
-            <p v-if="previewError" class="text-sm text-danger">{{ previewError }}</p>
+          <div class="tw-flex tw-flex-col tw-gap-2" v-loading="previewLoading">
+            <p v-if="previewError" class="tw-text-sm tw-text-danger">{{ previewError }}</p>
             <template v-if="isText && text !== null">
               <MarkdownRenderer v-if="media === 'text/markdown'" :content="text" />
-              <pre v-else class="text-sm whitespace-pre-wrap break-words">{{ text }}</pre>
+              <pre v-else class="tw-text-sm tw-whitespace-pre-wrap tw-break-words">{{ text }}</pre>
             </template>
             <iframe
               v-else-if="isPdf && tokenUrl"
               :src="tokenUrl"
               :title="document.filename"
-              class="tw-h-60vh w-full border"
+              class="tw-h-60vh tw-w-full tw-border"
             />
             <img
               v-else-if="isImage && tokenUrl"
               :src="tokenUrl"
               :alt="document.filename"
-              class="max-w-full"
+              class="tw-max-w-full"
             />
-            <div v-else-if="!previewLoading" class="text-center py-6">
-              <p class="text-sm text-muted-foreground">
+            <div v-else-if="!previewLoading" class="tw-text-center tw-py-6">
+              <p class="tw-text-sm tw-text-muted-foreground">
                 {{ tooLargeToInline ? '文件过大，无法内联预览' : '无法预览此文件类型' }}
               </p>
-              <el-button size="small" class="mt-2" icon="el-icon-download" @click="handleDownload">
+              <el-button size="small" class="tw-mt-2" icon="el-icon-download" @click="handleDownload">
                 下载文件
               </el-button>
             </div>

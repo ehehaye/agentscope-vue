@@ -1,8 +1,8 @@
 <template>
-  <div class="flex flex-col gap-y-3">
-    <div class="flex items-center justify-between">
-      <h3 class="tw-text-13_5px font-medium">文档</h3>
-      <div class="flex items-center gap-2">
+  <div class="tw-flex tw-flex-col tw-gap-y-3">
+    <div class="tw-flex tw-items-center tw-justify-between">
+      <h3 class="tw-text-13_5px tw-font-medium">文档</h3>
+      <div class="tw-flex tw-items-center tw-gap-2">
         <el-button
           v-if="hasTerminalTasks"
           size="small"
@@ -12,51 +12,51 @@
           清除已完成
         </el-button>
         <el-button size="small" type="primary" @click="openFilePicker">
-          <Icon icon="lucide:upload" class="mr-1 h-3.5 w-3.5" />
+          <Icon icon="lucide:upload" class="tw-mr-1 tw-h-3.5 tw-w-3.5" />
           上传文档
         </el-button>
         <input
           ref="fileInputRef"
           type="file"
           multiple
-          class="hidden"
+          class="tw-hidden"
           :accept="acceptAttr"
           @change="handleFileSelect"
         />
       </div>
     </div>
 
-    <div v-if="loading" class="py-4 text-center text-sm text-muted-foreground">加载中...</div>
+    <div v-if="loading" class="tw-py-4 tw-text-center tw-text-sm tw-text-muted-foreground">加载中...</div>
     <template v-else>
-      <div v-if="rows.length === 0" class="py-4 text-center text-sm text-muted-foreground">
+      <div v-if="rows.length === 0" class="tw-py-4 tw-text-center tw-text-sm tw-text-muted-foreground">
         暂无文档
       </div>
-      <div v-else class="space-y-2">
+      <div v-else class="tw-space-y-2">
         <div
           v-for="row in rows"
           :key="row.key"
-          class="flex flex-col gap-y-2 rounded-lg border border-border bg-card p-3"
+          class="tw-flex tw-flex-col tw-gap-y-2 tw-rounded-lg tw-border tw-border-border tw-bg-card tw-p-3"
         >
-          <div class="flex items-start gap-x-3">
-            <Icon icon="lucide:file-text" class="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
-            <div class="flex min-w-0 flex-1 flex-col gap-y-0.5">
-              <div class="flex items-center gap-x-2">
+          <div class="tw-flex tw-items-start tw-gap-x-3">
+            <Icon icon="lucide:file-text" class="tw-mt-0.5 tw-h-4 tw-w-4 tw-shrink-0 tw-text-muted-foreground" />
+            <div class="tw-flex tw-min-w-0 tw-flex-1 tw-flex-col tw-gap-y-0.5">
+              <div class="tw-flex tw-items-center tw-gap-x-2">
                 <span
-                  class="truncate text-sm font-medium"
-                  :class="row.doc && row.phase === 'ready' ? 'cursor-pointer text-primary hover:underline' : ''"
+                  class="tw-truncate tw-text-sm tw-font-medium"
+                  :class="row.doc && row.phase === 'ready' ? 'tw-cursor-pointer tw-text-primary hover:tw-underline' : ''"
                   @click="row.doc && row.phase === 'ready' && handleOpenDetail(row.doc)"
                 >{{ row.filename }}</span>
                 <span
-                  class="inline-flex shrink-0 items-center gap-x-1 rounded-md px-1.5 py-0.5 tw-text-10px font-medium whitespace-nowrap"
+                  class="tw-inline-flex tw-shrink-0 tw-items-center tw-gap-x-1 tw-rounded-md tw-px-1.5 tw-py-0.5 tw-text-10px tw-font-medium tw-whitespace-nowrap"
                   :class="statusTone(row.phase)"
                 >
-                  <Icon v-if="row.phase === 'ready'" icon="lucide:check-circle-2" class="h-3 w-3" />
-                  <Icon v-else-if="row.phase === 'error'" icon="lucide:alert-circle" class="h-3 w-3" />
-                  <Icon v-else-if="row.phase !== 'cancelled'" icon="lucide:loader-2" class="h-3 w-3 animate-spin" />
+                  <Icon v-if="row.phase === 'ready'" icon="lucide:check-circle-2" class="tw-h-3 tw-w-3" />
+                  <Icon v-else-if="row.phase === 'error'" icon="lucide:alert-circle" class="tw-h-3 tw-w-3" />
+                  <Icon v-else-if="row.phase !== 'cancelled'" icon="lucide:loader-2" class="tw-h-3 tw-w-3 tw-animate-spin" />
                   {{ statusLabel(row.phase) }}
                 </span>
               </div>
-              <div class="flex items-center gap-x-2 text-xs text-muted-foreground">
+              <div class="tw-flex tw-items-center tw-gap-x-2 tw-text-xs tw-text-muted-foreground">
                 <span>{{ formatSize(row.size) }}</span>
                 <template v-if="row.chunkCount > 0">
                   <span>·</span>
@@ -64,14 +64,14 @@
                 </template>
               </div>
             </div>
-            <div class="flex shrink-0 items-center gap-x-1">
+            <div class="tw-flex tw-shrink-0 tw-items-center tw-gap-x-1">
               <el-button
                 v-if="row.canCancel"
                 type="text"
                 size="mini"
                 @click="handleCancel(row.task.taskId)"
               >
-                <Icon icon="lucide:x" class="h-3.5 w-3.5" />
+                <Icon icon="lucide:x" class="tw-h-3.5 tw-w-3.5" />
               </el-button>
               <el-button
                 v-else-if="row.canDismiss"
@@ -79,24 +79,24 @@
                 size="mini"
                 @click="handleDismiss(row.task.taskId)"
               >
-                <Icon icon="lucide:x" class="h-3.5 w-3.5" />
+                <Icon icon="lucide:x" class="tw-h-3.5 tw-w-3.5" />
               </el-button>
               <el-button v-else-if="row.doc" type="text" size="mini" @click="handleDelete(row.doc)">
-                <Icon icon="lucide:trash-2" class="h-3.5 w-3.5" />
+                <Icon icon="lucide:trash-2" class="tw-h-3.5 tw-w-3.5" />
               </el-button>
             </div>
           </div>
           <div
             v-if="row.showProgress"
-            class="relative h-1 w-full overflow-hidden rounded-full bg-muted"
+            class="tw-relative tw-h-1 tw-w-full tw-overflow-hidden tw-rounded-full tw-bg-muted"
           >
             <div
-              class="h-full rounded-full transition-all"
-              :class="row.phase === 'error' ? 'bg-red-500' : 'bg-primary'"
+              class="tw-h-full tw-rounded-full tw-transition-all"
+              :class="row.phase === 'error' ? 'tw-bg-red-500' : 'tw-bg-primary'"
               :style="{ width: row.progressValue + '%' }"
             />
           </div>
-          <p v-if="row.phase === 'error' && row.error" class="text-xs text-red-500">
+          <p v-if="row.phase === 'error' && row.error" class="tw-text-xs tw-text-red-500">
             {{ row.error }}
           </p>
         </div>
@@ -167,11 +167,11 @@ function statusLabel(phase) {
 function statusTone(phase) {
   switch (phase) {
     case 'ready':
-      return 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400';
+      return 'tw-bg-emerald-500/10 tw-text-emerald-700 dark:tw-text-emerald-400';
     case 'error':
-      return 'bg-red-500/10 text-red-600 dark:text-red-400';
+      return 'tw-bg-red-500/10 tw-text-red-600 dark:tw-text-red-400';
     case 'cancelled':
-      return 'bg-muted text-muted-foreground';
+      return 'tw-bg-muted tw-text-muted-foreground';
     case 'queued':
     case 'uploading':
     case 'pending':
@@ -179,7 +179,7 @@ function statusTone(phase) {
     case 'chunking':
     case 'indexing':
     default:
-      return 'bg-primary/10 text-primary';
+      return 'tw-bg-primary/10 tw-text-primary';
   }
 }
 

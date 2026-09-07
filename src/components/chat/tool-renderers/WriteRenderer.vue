@@ -1,8 +1,8 @@
 <template>
-  <div class="flex flex-col rounded-sm border bg-background">
-    <div v-if="filePath" class="px-2 py-1 text-xs text-muted-foreground">{{ filePath }}</div>
+  <div class="tw-flex tw-flex-col tw-rounded-sm tw-border tw-bg-background">
+    <div v-if="filePath" class="tw-px-2 tw-py-1 tw-text-xs tw-text-muted-foreground">{{ filePath }}</div>
     <DiffPreview v-if="diff" :unified-diff="diff" />
-    <pre v-else-if="resultText" class="tw-max-h-200px overflow-auto p-2 text-xs whitespace-pre-wrap break-all">{{ resultText }}</pre>
+    <pre v-else-if="resultText" class="tw-max-h-200px tw-overflow-auto tw-p-2 tw-text-xs tw-whitespace-pre-wrap tw-break-all">{{ resultText }}</pre>
   </div>
 </template>
 

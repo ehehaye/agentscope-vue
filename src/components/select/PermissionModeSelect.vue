@@ -1,10 +1,10 @@
 <template>
   <el-dropdown trigger="click" @command="(v) => $emit('change', v)">
     <span
-      class="el-dropdown-link inline-flex w-full cursor-pointer items-center justify-between gap-2 rounded-md border border-border px-3 py-1.5 text-sm hover:bg-row-hover"
+      class="el-dropdown-link tw-inline-flex tw-w-full tw-cursor-pointer tw-items-center tw-justify-between tw-gap-2 tw-rounded-md tw-border tw-border-border tw-px-3 tw-py-1.5 tw-text-sm hover:tw-bg-row-hover"
     >
-      <span class="truncate">{{ displayLabel }}</span>
-      <Icon icon="lucide:chevron-down" class="h-4 w-4 shrink-0 text-muted-foreground" />
+      <span class="tw-truncate">{{ displayLabel }}</span>
+      <Icon icon="lucide:chevron-down" class="tw-h-4 tw-w-4 tw-shrink-0 tw-text-muted-foreground" />
     </span>
     <el-dropdown-menu slot="dropdown">
       <el-dropdown-item disabled>权限模式</el-dropdown-item>
@@ -12,7 +12,7 @@
         v-for="mode in MODES"
         :key="mode.value"
         :command="mode.value"
-        :class="{ 'bg-accent': value === mode.value }"
+        :class="{ 'tw-bg-accent': value === mode.value }"
         :title="mode.desc"
       >
         {{ mode.label }}

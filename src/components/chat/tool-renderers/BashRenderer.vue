@@ -1,12 +1,12 @@
 <template>
-  <div class="flex flex-col gap-2 rounded-sm border bg-background p-2 text-xs">
+  <div class="tw-flex tw-flex-col tw-gap-2 tw-rounded-sm tw-border tw-bg-background tw-p-2 tw-text-xs">
     <div>
-      <div class="text-muted-foreground">Input</div>
-      <pre class="overflow-x-auto rounded border bg-secondary p-2 whitespace-pre-wrap break-all">{{ formattedInput }}</pre>
+      <div class="tw-text-muted-foreground">Input</div>
+      <pre class="tw-overflow-x-auto tw-rounded tw-border tw-bg-secondary tw-p-2 tw-whitespace-pre-wrap tw-break-all">{{ formattedInput }}</pre>
     </div>
     <div v-if="resultText">
-      <div class="text-muted-foreground">Output</div>
-      <pre class="tw-max-h-200px overflow-auto rounded border bg-secondary p-2 whitespace-pre-wrap break-all">{{ resultText }}</pre>
+      <div class="tw-text-muted-foreground">Output</div>
+      <pre class="tw-max-h-200px tw-overflow-auto tw-rounded tw-border tw-bg-secondary tw-p-2 tw-whitespace-pre-wrap tw-break-all">{{ resultText }}</pre>
     </div>
   </div>
 </template>

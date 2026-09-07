@@ -7,11 +7,11 @@
     :close-on-click-modal="false"
     @open="onOpen"
   >
-    <p class="text-sm text-muted-foreground mb-3">选择会话的工作目录，仅目录可选。</p>
+    <p class="tw-text-sm tw-text-muted-foreground tw-mb-3">选择会话的工作目录，仅目录可选。</p>
     <el-input
       v-model="path"
       placeholder="输入路径后回车浏览"
-      class="font-mono text-sm mb-2"
+      class="tw-font-mono tw-text-sm tw-mb-2"
       @keyup.enter.native="load(path)"
     >
       <el-button
@@ -22,38 +22,38 @@
         @click="load('')"
       />
     </el-input>
-    <div class="tw-h-45vh overflow-y-auto border rounded-lg p-1">
-      <div v-if="loading" class="flex h-full items-center justify-center text-sm text-muted-foreground">
+    <div class="tw-h-45vh tw-overflow-y-auto tw-border tw-rounded-lg tw-p-1">
+      <div v-if="loading" class="tw-flex tw-h-full tw-items-center tw-justify-center tw-text-sm tw-text-muted-foreground">
         <i class="el-icon-loading" />
       </div>
-      <div v-else-if="error" class="flex h-full flex-col items-center justify-center text-center px-4">
-        <i class="el-icon-folder-opened text-2xl text-muted-foreground mb-2" />
-        <p class="text-sm font-medium">无法列出目录</p>
-        <p class="text-xs text-muted-foreground break-all mt-1">{{ error }}</p>
+      <div v-else-if="error" class="tw-flex tw-h-full tw-flex-col tw-items-center tw-justify-center tw-text-center tw-px-4">
+        <i class="el-icon-folder-opened tw-text-2xl tw-text-muted-foreground tw-mb-2" />
+        <p class="tw-text-sm tw-font-medium">无法列出目录</p>
+        <p class="tw-text-xs tw-text-muted-foreground tw-break-all tw-mt-1">{{ error }}</p>
       </div>
       <div v-else>
         <el-button
           size="small"
           icon="el-icon-top"
           plain
-          class="w-full justify-start mb-1"
+          class="tw-w-full tw-justify-start tw-mb-1"
           @click="load(`${listedPath || ''}/..`)"
         >
           上级目录
         </el-button>
-        <div v-if="entries.length === 0" class="px-2 py-3 text-center text-xs text-muted-foreground">
+        <div v-if="entries.length === 0" class="tw-px-2 tw-py-3 tw-text-center tw-text-xs tw-text-muted-foreground">
           该目录为空
         </div>
         <el-button
           v-for="entry in entries"
           :key="entry.name"
           size="small"
-          class="w-full justify-start mb-0.5"
+          class="tw-w-full tw-justify-start tw-mb-0.5"
           :disabled="!entry.is_dir"
           @click="load(`${listedPath || ''}/${entry.name}`)"
         >
-          <i :class="entry.is_dir ? 'el-icon-folder' : 'el-icon-document'" class="mr-1" />
-          <span class="truncate">{{ entry.name }}</span>
+          <i :class="entry.is_dir ? 'el-icon-folder' : 'el-icon-document'" class="tw-mr-1" />
+          <span class="tw-truncate">{{ entry.name }}</span>
         </el-button>
       </div>
     </div>
@@ -76,8 +76,8 @@
     :disabled="disabled || !agentId || !sessionId"
     @click="dialogOpen = true"
   >
-    <span class="truncate" style="max-width: 10rem;">{{ label }}</span>
-    <i class="el-icon-arrow-down el-icon--right ml-1" />
+    <span class="tw-truncate" style="max-width: 10rem;">{{ label }}</span>
+    <i class="el-icon-arrow-down el-icon--right tw-ml-1" />
   </el-button>
   </span>
 </template>

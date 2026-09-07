@@ -1,5 +1,5 @@
 <template>
-	<div id="app" class="h-full w-full">
+	<div id="app" class="tw-h-full tw-w-full">
 		<RouteError v-if="err" :error="err" @retry="handleRetry" @home="handleHome" />
 		<router-view v-else />
 	</div>
@@ -55,7 +55,7 @@ export default {
 
 		onErrorCaptured((e) => {
 			err.value = e;
-			console.error('[App] error captured:', e);
+			console.error('tw-[App] tw-error tw-captured', e);
 			return false;
 		});
 

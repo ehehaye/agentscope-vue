@@ -1,47 +1,47 @@
 <template>
-  <div class="flex flex-col gap-3">
+  <div class="tw-flex tw-flex-col tw-gap-3">
     <div
       v-for="(binding, i) in value"
       :key="i"
-      class="rounded-lg border p-3"
-      :class="i === value.length - 1 ? 'border-dashed bg-muted/30' : ''"
+      class="tw-rounded-lg tw-border tw-p-3"
+      :class="i === value.length - 1 ? 'tw-border-dashed tw-bg-muted/30' : ''"
     >
-      <div v-if="i === value.length - 1" class="mb-2">
-        <span class="text-xs font-medium">默认路由</span>
-        <p class="mt-0.5 text-xs text-muted-foreground">匹配所有未命中的消息</p>
+      <div v-if="i === value.length - 1" class="tw-mb-2">
+        <span class="tw-text-xs tw-font-medium">默认路由</span>
+        <p class="tw-mt-0.5 tw-text-xs tw-text-muted-foreground">匹配所有未命中的消息</p>
       </div>
-      <div v-else class="mb-2 flex items-center justify-between">
-        <span class="text-xs font-medium text-muted-foreground">规则 {{ i + 1 }}</span>
-        <el-button type="text" class="h-auto p-0 text-destructive" @click="removeRule(i)">
-          <Icon icon="lucide:trash-2" class="h-3.5 w-3.5" />
+      <div v-else class="tw-mb-2 tw-flex tw-items-center tw-justify-between">
+        <span class="tw-text-xs tw-font-medium tw-text-muted-foreground">规则 {{ i + 1 }}</span>
+        <el-button type="text" class="tw-h-auto tw-p-0 tw-text-destructive" @click="removeRule(i)">
+          <Icon icon="lucide:trash-2" class="tw-h-3.5 tw-w-3.5" />
         </el-button>
       </div>
 
-      <div class="grid grid-cols-2 gap-2.5" :class="{ 'mb-2.5': i !== value.length - 1 }">
-        <div v-if="i !== value.length - 1" class="flex flex-col gap-1">
-          <span class="text-xs text-muted-foreground">匹配字段</span>
+      <div class="tw-grid tw-grid-cols-2 tw-gap-2.5" :class="{ 'tw-mb-2.5': i !== value.length - 1 }">
+        <div v-if="i !== value.length - 1" class="tw-flex tw-flex-col tw-gap-1">
+          <span class="tw-text-xs tw-text-muted-foreground">匹配字段</span>
           <el-input v-model="binding.match_key" size="small" placeholder="chat_id" />
         </div>
-        <div v-if="i !== value.length - 1" class="flex flex-col gap-1">
-          <span class="text-xs text-muted-foreground">匹配值</span>
+        <div v-if="i !== value.length - 1" class="tw-flex tw-flex-col tw-gap-1">
+          <span class="tw-text-xs tw-text-muted-foreground">匹配值</span>
           <el-input v-model="binding.match_value" size="small" placeholder="* 或具体值" />
         </div>
       </div>
 
-      <div class="grid grid-cols-2 gap-2.5">
-        <div class="flex flex-col gap-1">
-          <span class="text-xs text-muted-foreground">路由到助手</span>
+      <div class="tw-grid tw-grid-cols-2 tw-gap-2.5">
+        <div class="tw-flex tw-flex-col tw-gap-1">
+          <span class="tw-text-xs tw-text-muted-foreground">路由到助手</span>
           <AgentSelect
             :agents="agents"
             :value="binding.agent_id"
             size="small"
-            class="w-full"
+            class="tw-w-full"
             @change="(id) => update(i, { agent_id: id })"
           />
         </div>
-        <div class="flex flex-col gap-1">
-          <span class="text-xs text-muted-foreground">会话范围</span>
-          <el-select :value="binding.session_scope" size="small" class="w-full" @change="(v) => update(i, { session_scope: v })">
+        <div class="tw-flex tw-flex-col tw-gap-1">
+          <span class="tw-text-xs tw-text-muted-foreground">会话范围</span>
+          <el-select :value="binding.session_scope" size="small" class="tw-w-full" @change="(v) => update(i, { session_scope: v })">
             <el-option label="按聊天" value="per_chat" />
             <el-option label="按聊天用户" value="per_chat_user" />
           </el-select>
@@ -49,8 +49,8 @@
       </div>
     </div>
 
-    <el-button type="text" class="self-start" @click="addRule">
-      <Icon icon="lucide:plus" class="mr-1 h-3.5 w-3.5" />
+    <el-button type="text" class="tw-self-start" @click="addRule">
+      <Icon icon="lucide:plus" class="tw-mr-1 tw-h-3.5 tw-w-3.5" />
       添加规则
     </el-button>
   </div>

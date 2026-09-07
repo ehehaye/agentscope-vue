@@ -5,8 +5,8 @@
     width="420px"
     :close-on-click-modal="false"
   >
-    <p class="text-sm text-muted-foreground">{{ description }}</p>
-    <span slot="footer" class="dialog-footer">
+    <p class="tw-text-sm tw-text-muted-foreground">{{ description }}</p>
+    <span slot="footer" class="tw-dialog-footer">
       <el-button @click="dialogVisible = false">取消</el-button>
       <el-button type="danger" :loading="loading" @click="handleConfirm">删除</el-button>
     </span>

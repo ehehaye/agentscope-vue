@@ -1,48 +1,48 @@
 <template>
-  <div class="flex h-full w-full gap-2 p-2">
+  <div class="tw-flex tw-h-full tw-w-full tw-gap-2 tw-p-2">
     <!-- 左侧列表 -->
-    <aside class="flex w-64 flex-col rounded-2xl border border-border bg-card">
-      <div class="border-b border-border p-4">
-        <h1 class="text-lg font-medium text-foreground">凭证</h1>
-        <p class="text-xs text-muted-foreground">管理模型服务商 API 凭据</p>
+    <aside class="tw-flex tw-w-64 tw-flex-col tw-rounded-2xl tw-border tw-border-border tw-bg-card">
+      <div class="tw-border-b tw-border-border tw-p-4">
+        <h1 class="tw-text-lg tw-font-medium tw-text-foreground">凭证</h1>
+        <p class="tw-text-xs tw-text-muted-foreground">管理模型服务商 API 凭据</p>
       </div>
 
-      <div class="flex-1 overflow-y-auto p-2">
-        <div v-if="loading" class="space-y-2 p-2">
+      <div class="tw-flex-1 tw-overflow-y-auto tw-p-2">
+        <div v-if="loading" class="tw-space-y-2 tw-p-2">
           <el-skeleton v-for="i in 3" :key="i" :rows="1" animated />
         </div>
 
         <el-empty v-else-if="groupedByType.length === 0" description="暂无凭证类型" />
 
         <template v-else>
-          <div v-for="group in configuredGroups" :key="group.type" class="mb-4">
-            <div class="px-2 py-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+          <div v-for="group in configuredGroups" :key="group.type" class="tw-mb-4">
+            <div class="tw-px-2 tw-py-1 tw-text-xs tw-font-medium tw-uppercase tw-tracking-wider tw-text-muted-foreground">
               {{ group.title }}
             </div>
             <div
               v-for="rec in group.records"
               :key="rec.id"
-              class="flex cursor-pointer items-center justify-between rounded-md px-2 py-2 text-sm hover:bg-row-hover"
-              :class="{ 'bg-accent text-foreground': selectedId === rec.id }"
+              class="tw-flex tw-cursor-pointer tw-items-center tw-justify-between tw-rounded-md tw-px-2 tw-py-2 tw-text-sm hover:tw-bg-row-hover"
+              :class="{ 'tw-bg-accent tw-text-foreground': selectedId === rec.id }"
               @click="selectedId = rec.id"
             >
-              <span class="truncate">{{ rec.data.name || rec.id }}</span>
+              <span class="tw-truncate">{{ rec.data.name || rec.id }}</span>
               <el-tag v-if="!rec.editable" size="mini" type="info">只读</el-tag>
             </div>
           </div>
 
-          <div class="mt-4 border-t border-border pt-3">
-            <div class="px-2 py-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+          <div class="tw-mt-4 tw-border-t tw-border-border tw-pt-3">
+            <div class="tw-px-2 tw-py-1 tw-text-xs tw-font-medium tw-uppercase tw-tracking-wider tw-text-muted-foreground">
               添加凭据
             </div>
             <div
               v-for="group in groupedByType"
               :key="'add-' + group.type"
-              class="flex cursor-pointer items-center gap-2 rounded-md px-2 py-2 text-sm text-muted-foreground hover:bg-row-hover hover:text-foreground"
+              class="tw-flex tw-cursor-pointer tw-items-center tw-gap-2 tw-rounded-md tw-px-2 tw-py-2 tw-text-sm tw-text-muted-foreground hover:tw-bg-row-hover hover:tw-text-foreground"
               @click="openCreate(group.type)"
             >
-              <Icon icon="lucide:plus" class="h-4 w-4" />
-              <span class="truncate">{{ group.title }}</span>
+              <Icon icon="lucide:plus" class="tw-h-4 tw-w-4" />
+              <span class="tw-truncate">{{ group.title }}</span>
             </div>
           </div>
         </template>
@@ -50,18 +50,18 @@
     </aside>
 
     <!-- 右侧详情 -->
-    <main class="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-border bg-card">
+    <main class="tw-flex tw-min-h-0 tw-flex-1 tw-flex-col tw-overflow-hidden tw-rounded-2xl tw-border tw-border-border tw-bg-card">
       <template v-if="selectedCredential">
         <!-- 头部 -->
-        <div class="flex items-start justify-between border-b border-border p-4">
+        <div class="tw-flex tw-items-start tw-justify-between tw-border-b tw-border-border tw-p-4">
           <div>
-            <h2 class="text-lg font-medium text-foreground">
+            <h2 class="tw-text-lg tw-font-medium tw-text-foreground">
               {{ selectedCredential.data.name || selectedCredential.id }}
             </h2>
-            <p class="font-mono text-sm text-muted-foreground">{{ selectedType }}</p>
-            <el-tag v-if="!selectedCredential.editable" size="small" type="info" class="mt-1">只读</el-tag>
+            <p class="tw-font-mono tw-text-sm tw-text-muted-foreground">{{ selectedType }}</p>
+            <el-tag v-if="!selectedCredential.editable" size="small" type="info" class="tw-mt-1">只读</el-tag>
           </div>
-          <div class="flex items-center gap-2">
+          <div class="tw-flex tw-items-center tw-gap-2">
             <el-button
               size="small"
               icon="el-icon-edit"
@@ -79,7 +79,7 @@
         </div>
 
         <!-- 字段 -->
-        <div class="flex-1 overflow-y-auto p-4">
+        <div class="tw-flex-1 tw-overflow-y-auto tw-p-4">
           <el-descriptions :column="1" border>
             <el-descriptions-item
               v-for="[key, prop] in displayFields"
@@ -87,15 +87,15 @@
               :label="prop.title || key"
             >
               <MaskedValue v-if="isSecret(prop)" :value="String(selectedCredential.data[key] ?? '')" />
-              <span v-else class="break-all">{{ selectedCredential.data[key] }}</span>
+              <span v-else class="tw-break-all">{{ selectedCredential.data[key] }}</span>
             </el-descriptions-item>
           </el-descriptions>
 
           <!-- 可用模型 -->
-          <div class="mt-6">
-            <div class="mb-3 flex items-center justify-between">
-              <span class="text-sm font-medium text-foreground">可用模型</span>
-              <el-tabs v-if="hasMultipleModelTypes" v-model="modelTab" class="model-tabs">
+          <div class="tw-mt-6">
+            <div class="tw-mb-3 tw-flex tw-items-center tw-justify-between">
+              <span class="tw-text-sm tw-font-medium tw-text-foreground">可用模型</span>
+              <el-tabs v-if="hasMultipleModelTypes" v-model="modelTab" class="tw-model-tabs">
                 <el-tab-pane label="LLM" name="llm" />
                 <el-tab-pane v-if="ttsModels.length > 0" label="TTS" name="tts" />
                 <el-tab-pane v-if="embeddingModels.length > 0" label="Embedding" name="embedding" />
@@ -108,9 +108,9 @@
                 <el-table-column prop="label" label="模型" show-overflow-tooltip>
                   <template slot-scope="scope">
                     <span>{{ scope.row.label || scope.row.name }}</span>
-                    <el-tag v-if="scope.row.input_types?.includes(THINKING_TYPE)" size="mini" class="ml-2">推理</el-tag>
-                    <el-tag v-if="scope.row.realtime" size="mini" class="ml-2">实时</el-tag>
-                    <el-tag v-if="scope.row.status && scope.row.status !== 'active'" size="mini" type="warning" class="ml-2">{{ scope.row.status }}</el-tag>
+                    <el-tag v-if="scope.row.input_types?.includes(THINKING_TYPE)" size="mini" class="tw-ml-2">推理</el-tag>
+                    <el-tag v-if="scope.row.realtime" size="mini" class="tw-ml-2">实时</el-tag>
+                    <el-tag v-if="scope.row.status && scope.row.status !== 'active'" size="mini" type="warning" class="tw-ml-2">{{ scope.row.status }}</el-tag>
                   </template>
                 </el-table-column>
                 <el-table-column v-if="modelTab === 'llm' || modelTab === 'embedding'" label="上下文" width="120">
@@ -144,7 +144,7 @@
         </div>
       </template>
 
-      <el-empty v-else class="h-full justify-center" description="选择左侧凭据查看详情" />
+      <el-empty v-else class="tw-h-full tw-justify-center" description="选择左侧凭据查看详情" />
     </main>
 
     <CreateCredentialDialog

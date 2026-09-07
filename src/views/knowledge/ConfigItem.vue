@@ -1,7 +1,7 @@
 <template>
-  <div class="flex min-w-0 flex-col gap-y-0.5">
-    <span class="text-xs text-muted-foreground">{{ label }}</span>
-    <span class="truncate text-sm text-foreground" :title="value">{{ value }}</span>
+  <div class="tw-flex tw-min-w-0 tw-flex-col tw-gap-y-0.5">
+    <span class="tw-text-xs tw-text-muted-foreground">{{ label }}</span>
+    <span class="tw-truncate tw-text-sm tw-text-foreground" :title="value">{{ value }}</span>
   </div>
 </template>
 

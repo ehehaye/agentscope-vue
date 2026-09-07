@@ -5,10 +5,10 @@
     width="520px"
     :close-on-click-modal="false"
   >
-    <div v-loading="loadingSchemas" class="space-y-4">
+    <div v-loading="loadingSchemas" class="tw-space-y-4">
       <el-form label-position="top">
         <el-form-item label="凭证类型">
-          <el-select v-model="selectedType" placeholder="选择凭证类型" class="w-full">
+          <el-select v-model="selectedType" placeholder="选择凭证类型" class="tw-w-full">
             <el-option
               v-for="s in schemas"
               :key="typeConst(s)"
@@ -27,7 +27,7 @@
       />
     </div>
 
-    <span slot="footer" class="dialog-footer">
+    <span slot="footer" class="tw-dialog-footer">
       <el-button @click="dialogVisible = false" :disabled="submitting">取消</el-button>
       <el-button type="primary" :loading="submitting" :disabled="!selectedSchema" @click="handleSubmit">
         创建

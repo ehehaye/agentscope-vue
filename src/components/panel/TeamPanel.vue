@@ -1,49 +1,49 @@
 <template>
-  <div class="flex h-full flex-col gap-3 overflow-y-auto text-sm">
+  <div class="tw-flex tw-h-full tw-flex-col tw-gap-3 tw-overflow-y-auto tw-text-sm">
     <template v-if="!team">
       <PanelEmpty icon="lucide:users-round" title="暂无团队" description="当前会话不属于任何团队。" />
     </template>
     <template v-else>
-      <div class="px-2">
-        <span class="truncate text-sm font-medium">{{ team.team?.data?.name }}</span>
+      <div class="tw-px-2">
+        <span class="tw-truncate tw-text-sm tw-font-medium">{{ team.team?.data?.name }}</span>
       </div>
 
-      <section v-if="team.leader_agent" class="flex flex-col gap-0.5">
-        <span class="px-2 text-xs text-muted-foreground">队长</span>
-        <ul class="flex flex-col gap-0.5">
+      <section v-if="team.leader_agent" class="tw-flex tw-flex-col tw-gap-0.5">
+        <span class="tw-px-2 tw-text-xs tw-text-muted-foreground">队长</span>
+        <ul class="tw-flex tw-flex-col tw-gap-0.5">
           <li>
             <el-button
               type="text"
               size="mini"
-              class="w-full justify-start gap-2 font-normal"
-              :class="isActive(leaderSessionId) ? 'text-primary' : 'text-foreground'"
+              class="tw-w-full tw-justify-start tw-gap-2 tw-font-normal"
+              :class="isActive(leaderSessionId) ? 'tw-text-primary' : 'tw-text-foreground'"
               @click="goTo(leaderAgentId, leaderSessionId, null)"
             >
-              <Icon icon="lucide:crown" class="h-3.5 w-3.5 shrink-0" />
-              <span class="truncate">{{ team.leader_agent.data?.name }}</span>
+              <Icon icon="lucide:crown" class="tw-h-3.5 tw-w-3.5 tw-shrink-0" />
+              <span class="tw-truncate">{{ team.leader_agent.data?.name }}</span>
             </el-button>
           </li>
         </ul>
       </section>
 
-      <section class="flex flex-col gap-0.5">
-        <span class="px-2 text-xs text-muted-foreground">成员</span>
-        <ul v-if="team.members && team.members.length > 0" class="flex flex-col gap-0.5">
+      <section class="tw-flex tw-flex-col tw-gap-0.5">
+        <span class="tw-px-2 tw-text-xs tw-text-muted-foreground">成员</span>
+        <ul v-if="team.members && team.members.length > 0" class="tw-flex tw-flex-col tw-gap-0.5">
           <li v-for="member in team.members" :key="member.agent?.id">
             <el-button
               type="text"
               size="mini"
-              class="w-full justify-start gap-2 font-normal"
-              :class="isActive(member.session_id) ? 'text-primary' : 'text-foreground'"
+              class="tw-w-full tw-justify-start tw-gap-2 tw-font-normal"
+              :class="isActive(member.session_id) ? 'tw-text-primary' : 'tw-text-foreground'"
               :disabled="!member.session_id"
               @click="goTo(member.agent?.id, member.session_id, member.agent?.id)"
             >
-              <Icon icon="lucide:bot" class="h-3.5 w-3.5 shrink-0" />
-              <span class="truncate">{{ member.agent?.data?.name }}</span>
+              <Icon icon="lucide:bot" class="tw-h-3.5 tw-w-3.5 tw-shrink-0" />
+              <span class="tw-truncate">{{ member.agent?.data?.name }}</span>
             </el-button>
           </li>
         </ul>
-        <p v-else class="px-2 py-1 text-xs text-muted-foreground">暂无成员</p>
+        <p v-else class="tw-px-2 tw-py-1 tw-text-xs tw-text-muted-foreground">暂无成员</p>
       </section>
     </template>
   </div>

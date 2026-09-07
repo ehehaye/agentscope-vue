@@ -6,20 +6,20 @@
     :disabled="triggerDisabled"
     popper-class="kb-params-popover"
   >
-    <div class="flex flex-col gap-3">
+    <div class="tw-flex tw-flex-col tw-gap-3">
       <div>
-        <p class="text-sm font-medium text-foreground">知识库参数</p>
-        <p class="text-xs text-muted-foreground">配置知识库检索中间件参数</p>
+        <p class="tw-text-sm tw-font-medium tw-text-foreground">知识库参数</p>
+        <p class="tw-text-xs tw-text-muted-foreground">配置知识库检索中间件参数</p>
       </div>
-      <div v-if="!schema || entries.length === 0" class="text-xs text-muted-foreground">
+      <div v-if="!schema || entries.length === 0" class="tw-text-xs tw-text-muted-foreground">
         无可配置参数
       </div>
-      <el-form v-else label-position="top" size="small" class="space-y-2">
+      <el-form v-else label-position="top" size="small" class="tw-space-y-2">
         <el-form-item
           v-for="([key, prop]) in entries"
           :key="key"
           :label="prop.title || key.replace(/_/g, ' ')"
-          class="mb-2"
+          class="tw-mb-2"
         >
           <template v-if="resolve(prop).type === 'boolean'">
             <el-switch
@@ -31,7 +31,7 @@
             <el-select
               :value="paramValues[key] !== undefined ? paramValues[key] : ''"
               placeholder="选择"
-              class="w-full"
+              class="tw-w-full"
               @change="(v) => handleChange(key, v)"
             >
               <el-option
@@ -49,7 +49,7 @@
               :max="prop.maximum"
               :step="resolve(prop).type === 'integer' ? 1 : undefined"
               :controls="false"
-              class="w-full"
+              class="tw-w-full"
               @change="(v) => handleChange(key, v)"
             />
           </template>
@@ -60,7 +60,7 @@
               @input="(v) => handleChange(key, v)"
             />
           </template>
-          <p v-if="prop.description" class="mt-0.5 text-xs text-muted-foreground">
+          <p v-if="prop.description" class="tw-mt-0.5 tw-text-xs tw-text-muted-foreground">
             {{ prop.description }}
           </p>
         </el-form-item>

@@ -1,20 +1,20 @@
 <template>
-  <div class="flex size-full gap-2 p-2">
-    <aside class="flex w-64 min-w-0 flex-col overflow-hidden tw-rounded-22px bg-card">
-      <div class="flex flex-col gap-y-1 p-5 pb-3">
-        <div class="text-xl font-medium tw-tracking-neg-0_02em">{{ COMMON.knowledge }}</div>
-        <div class="text-xs text-muted-foreground">{{ TEXT.knowledge.subtitle }}</div>
+  <div class="tw-flex tw-size-full tw-gap-2 tw-p-2">
+    <aside class="tw-flex tw-w-64 tw-min-w-0 tw-flex-col tw-overflow-hidden tw-rounded-22px tw-bg-card">
+      <div class="tw-flex tw-flex-col tw-gap-y-1 tw-p-5 tw-pb-3">
+        <div class="tw-text-xl tw-font-medium tw-tracking-neg-0_02em">{{ COMMON.knowledge }}</div>
+        <div class="tw-text-xs tw-text-muted-foreground">{{ TEXT.knowledge.subtitle }}</div>
       </div>
-      <div class="flex-1 overflow-y-auto px-2">
-        <div class="mb-2 flex items-center justify-between px-2 text-xs font-medium text-muted-foreground">
+      <div class="tw-flex-1 tw-overflow-y-auto tw-px-2">
+        <div class="tw-mb-2 tw-flex tw-items-center tw-justify-between tw-px-2 tw-text-xs tw-font-medium tw-text-muted-foreground">
           <span>{{ TEXT.knowledge.list.label }}</span>
           <el-button type="text" size="mini" @click="createOpen = true">
-            <Icon icon="lucide:plus" class="h-3.5 w-3.5" />
+            <Icon icon="lucide:plus" class="tw-h-3.5 tw-w-3.5" />
           </el-button>
         </div>
-        <div v-if="loading" class="flex flex-1 flex-col items-center justify-center py-8">
-          <Spinner className="h-6 w-6" />
-          <p class="mt-2 text-xs text-muted-foreground">加载中…</p>
+        <div v-if="loading" class="tw-flex tw-flex-1 tw-flex-col tw-items-center tw-justify-center tw-py-8">
+          <Spinner className="h-6 tw-w-6" />
+          <p class="tw-mt-2 tw-text-xs tw-text-muted-foreground">加载中…</p>
         </div>
         <PanelEmpty
           v-else-if="knowledgeBases.length === 0"
@@ -23,31 +23,31 @@
           :description="TEXT.knowledge.list.emptyDescription"
         >
           <el-button size="small" @click="createOpen = true">
-            <Icon icon="lucide:plus" class="mr-1 h-3.5 w-3.5" />
+            <Icon icon="lucide:plus" class="tw-mr-1 tw-h-3.5 tw-w-3.5" />
             {{ TEXT.knowledge.list.createButton }}
           </el-button>
         </PanelEmpty>
-        <div v-else class="space-y-1">
+        <div v-else class="tw-space-y-1">
           <div
             v-for="kb in knowledgeBases"
             :key="kb.id"
-            class="group flex cursor-pointer items-center justify-between rounded-md px-2 py-1.5 text-sm transition-colors hover:bg-muted"
-            :class="{ 'bg-muted': selectedKbId === kb.id }"
+            class="tw-group tw-flex tw-cursor-pointer tw-items-center tw-justify-between tw-rounded-md tw-px-2 tw-py-1.5 tw-text-sm tw-transition-colors hover:tw-bg-muted"
+            :class="{ 'tw-bg-muted': selectedKbId === kb.id }"
             @click="selectKb(kb)"
           >
-            <span class="min-w-0 flex-1 truncate">{{ kb.name }}</span>
-            <span v-if="!kb.editable" class="ml-1 shrink-0 rounded border border-border px-1 tw-text-10px">{{ COMMON.readOnly }}</span>
+            <span class="tw-min-w-0 tw-flex-1 tw-truncate">{{ kb.name }}</span>
+            <span v-if="!kb.editable" class="tw-ml-1 tw-shrink-0 tw-rounded tw-border tw-border-border tw-px-1 tw-text-10px">{{ COMMON.readOnly }}</span>
             <el-dropdown v-if="kb.editable" trigger="click" @command="handleCommand($event, kb)">
-              <span class="ml-1 opacity-0 transition-opacity duration-150 group-hover:opacity-100" @click.stop>
-                <Icon icon="lucide:ellipsis" class="h-3.5 w-3.5" />
+              <span class="tw-ml-1 tw-opacity-0 tw-transition-opacity tw-duration-150 group-hover:tw-opacity-100" @click.stop>
+                <Icon icon="lucide:ellipsis" class="tw-h-3.5 tw-w-3.5" />
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item command="edit">
-                  <Icon icon="lucide:pencil" class="mr-1 h-3.5 w-3.5" />
+                  <Icon icon="lucide:pencil" class="tw-mr-1 tw-h-3.5 tw-w-3.5" />
                   {{ COMMON.edit }}
                 </el-dropdown-item>
                 <el-dropdown-item command="delete" divided>
-                  <Icon icon="lucide:trash-2" class="mr-1 h-3.5 w-3.5" />
+                  <Icon icon="lucide:trash-2" class="tw-mr-1 tw-h-3.5 tw-w-3.5" />
                   {{ COMMON.delete }}
                 </el-dropdown-item>
               </el-dropdown-menu>
@@ -57,12 +57,12 @@
       </div>
     </aside>
 
-    <main class="shadow-panel flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden tw-rounded-22px bg-card">
+    <main class="tw-shadow-panel tw-flex tw-min-h-0 tw-min-w-0 tw-flex-1 tw-flex-col tw-overflow-hidden tw-rounded-22px tw-bg-card">
       <DetailPanel v-if="selectedKb" :knowledge-base="selectedKb" @test="testOpen = true" />
-      <div v-else class="flex h-full items-center justify-center">
-        <div class="flex max-w-sm flex-col items-center gap-2 text-center">
-          <div class="text-sm font-medium">{{ TEXT.knowledge.selectHint }}</div>
-          <p class="text-xs text-muted-foreground">{{ TEXT.knowledge.selectHintDescription }}</p>
+      <div v-else class="tw-flex tw-h-full tw-items-center tw-justify-center">
+        <div class="tw-flex tw-max-w-sm tw-flex-col tw-items-center tw-gap-2 tw-text-center">
+          <div class="tw-text-sm tw-font-medium">{{ TEXT.knowledge.selectHint }}</div>
+          <p class="tw-text-xs tw-text-muted-foreground">{{ TEXT.knowledge.selectHintDescription }}</p>
         </div>
       </div>
     </main>

@@ -9,14 +9,14 @@
     custom-class="channel-detail-drawer"
     @closed="handleClose"
   >
-    <div v-if="channel" class="flex h-full flex-col gap-5 overflow-y-auto p-4">
-      <div class="flex items-start gap-3">
-        <TypeAvatar :type="type" class="h-10 w-10" />
-        <div class="min-w-0 flex-1">
-          <div class="truncate text-base font-semibold">{{ name }}</div>
-          <div class="mt-0.5 flex items-center gap-2">
+    <div v-if="channel" class="tw-flex tw-h-full tw-flex-col tw-gap-5 tw-overflow-y-auto tw-p-4">
+      <div class="tw-flex tw-items-start tw-gap-3">
+        <TypeAvatar :type="type" class="tw-h-10 tw-w-10" />
+        <div class="tw-min-w-0 tw-flex-1">
+          <div class="tw-truncate tw-text-base tw-font-semibold">{{ name }}</div>
+          <div class="tw-mt-0.5 tw-flex tw-items-center tw-gap-2">
             <ChannelStatusBadge :enabled="channel.enabled" :status="status" />
-            <span class="font-mono text-xs text-muted-foreground">{{ channel.id.slice(0, 8) }}</span>
+            <span class="tw-font-mono tw-text-xs tw-text-muted-foreground">{{ channel.id.slice(0, 8) }}</span>
           </div>
         </div>
       </div>
@@ -24,23 +24,23 @@
       <el-alert v-if="status?.last_error" :title="status.last_error" type="error" :closable="false" show-icon />
 
       <section>
-        <div class="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">基础配置</div>
+        <div class="tw-mb-2 tw-text-xs tw-font-semibold tw-uppercase tw-tracking-wide tw-text-muted-foreground">基础配置</div>
         <el-descriptions :column="1" border size="small">
           <el-descriptions-item label="平台类型">{{ typeName }}</el-descriptions-item>
           <el-descriptions-item v-if="model" label="模型">{{ model }}</el-descriptions-item>
           <el-descriptions-item label="权限模式">{{ channel.session?.permission_mode }}</el-descriptions-item>
           <el-descriptions-item v-for="row in configRows" :key="row.label" :label="row.label">
             <span v-if="typeof row.value === 'boolean'">
-              <Icon v-if="row.value" icon="lucide:check" class="h-4 w-4 text-emerald-600" />
-              <Icon v-else icon="lucide:minus" class="h-4 w-4 text-muted-foreground/40" />
+              <Icon v-if="row.value" icon="lucide:check" class="tw-h-4 tw-w-4 tw-text-emerald-600" />
+              <Icon v-else icon="lucide:minus" class="tw-h-4 tw-w-4 tw-text-muted-foreground/40" />
             </span>
-            <span v-else class="font-mono text-xs">{{ row.value }}</span>
+            <span v-else class="tw-font-mono tw-text-xs">{{ row.value }}</span>
           </el-descriptions-item>
         </el-descriptions>
       </section>
 
       <section>
-        <div class="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+        <div class="tw-mb-2 tw-flex tw-items-center tw-gap-2 tw-text-xs tw-font-semibold tw-uppercase tw-tracking-wide tw-text-muted-foreground">
           <span>路由规则</span>
           <el-tag size="mini" type="info">{{ channel.routing?.bindings?.length || 0 }}</el-tag>
         </div>
@@ -59,13 +59,13 @@
         </el-table>
       </section>
 
-      <section class="flex-1">
-        <div class="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+      <section class="tw-flex-1">
+        <div class="tw-mb-2 tw-flex tw-items-center tw-gap-2 tw-text-xs tw-font-semibold tw-uppercase tw-tracking-wide tw-text-muted-foreground">
           <span>会话</span>
           <el-tag size="mini" type="info">{{ sessions.length }}</el-tag>
         </div>
         <el-empty v-if="sessions.length === 0" description="暂无会话" />
-        <el-table v-else :data="sessions" size="small" border class="cursor-pointer">
+        <el-table v-else :data="sessions" size="small" border class="tw-cursor-pointer">
           <el-table-column label="会话" show-overflow-tooltip>
             <template slot-scope="scope">{{ scope.row.config?.name || scope.row.id }}</template>
           </el-table-column>
@@ -75,16 +75,16 @@
           <el-table-column width="50">
             <template slot-scope="scope">
               <router-link :to="`/chat/${scope.row.agent_id}/${scope.row.id}`" title="打开聊天">
-                <Icon icon="lucide:chevron-right" class="h-4 w-4 text-muted-foreground" />
+                <Icon icon="lucide:chevron-right" class="tw-h-4 tw-w-4 tw-text-muted-foreground" />
               </router-link>
             </template>
           </el-table-column>
         </el-table>
       </section>
 
-      <div class="pt-2">
-        <el-button type="danger" plain class="w-full" @click="$emit('delete')">
-          <Icon icon="lucide:trash-2" class="mr-1 h-4 w-4" />
+      <div class="tw-pt-2">
+        <el-button type="danger" plain class="tw-w-full" @click="$emit('delete')">
+          <Icon icon="lucide:trash-2" class="tw-mr-1 tw-h-4 tw-w-4" />
           删除频道
         </el-button>
       </div>

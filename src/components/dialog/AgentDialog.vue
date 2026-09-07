@@ -19,10 +19,10 @@
         />
       </el-form-item>
     </el-form>
-    <p v-if="errorMsg" class="mb-0 rounded-md bg-red-50 p-2 text-xs text-red-600 dark:bg-red-950 dark:text-red-400">
+    <p v-if="errorMsg" class="tw-mb-0 tw-rounded-md tw-bg-red-50 tw-p-2 tw-text-xs tw-text-red-600 dark:tw-bg-red-950 dark:tw-text-red-400">
       {{ errorMsg }}
     </p>
-    <span slot="footer" class="dialog-footer">
+    <span slot="footer" class="tw-dialog-footer">
       <el-button @click="dialogVisible = false" :disabled="submitting">取消</el-button>
       <el-button type="primary" :loading="submitting" :disabled="!form.name.trim()" @click="handleSubmit">
         创建

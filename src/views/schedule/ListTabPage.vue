@@ -1,6 +1,6 @@
 <template>
-  <div class="flex size-full flex-col">
-    <div class="flex w-full flex-row justify-between p-4">
+  <div class="tw-flex tw-size-full tw-flex-col">
+    <div class="tw-flex tw-w-full tw-flex-row tw-justify-between tw-p-4">
       <el-date-picker
         v-model="dateRange"
         type="daterange"
@@ -8,15 +8,15 @@
         start-placeholder="开始日期"
         end-placeholder="结束日期"
         value-format="yyyy-MM-dd"
-        class="w-72"
+        class="tw-w-72"
       />
     </div>
-    <div class="size-full overflow-y-auto p-4">
-      <div v-if="loading" class="flex h-full items-center justify-center text-muted-foreground">
+    <div class="tw-size-full tw-overflow-y-auto tw-p-4">
+      <div v-if="loading" class="tw-flex tw-h-full tw-items-center tw-justify-center tw-text-muted-foreground">
         {{ COMMON.loading }}
       </div>
       <EmptyState v-else-if="filteredSchedules.length === 0" />
-      <div v-else class="space-y-3">
+      <div v-else class="tw-space-y-3">
         <ScheduleCard
           v-for="schedule in filteredSchedules"
           :key="schedule.id"

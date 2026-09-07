@@ -1,10 +1,10 @@
 <template>
-	<div class="setup-page flex min-h-full items-center justify-center bg-canvas p-6">
-		<div class="w-full max-w-md rounded-xl border border-border bg-card p-8 shadow-panel">
-			<div class="mb-6 flex flex-col items-center text-center">
-				<img src="/agentscope.svg" alt="AgentScope" class="mb-3 h-12 w-12" />
-				<h1 class="text-xl font-semibold text-foreground">AgentScope</h1>
-				<p class="mt-2 text-sm text-muted-foreground">
+	<div class="tw-setup-page tw-flex tw-min-h-full tw-items-center tw-justify-center tw-bg-canvas tw-p-6">
+		<div class="tw-w-full tw-max-w-md tw-rounded-xl tw-border tw-border-border tw-bg-card tw-p-8 tw-shadow-panel">
+			<div class="tw-mb-6 tw-flex tw-flex-col tw-items-center tw-text-center">
+				<img src="/agentscope.svg" alt="AgentScope" class="tw-mb-3 tw-h-12 tw-w-12" />
+				<h1 class="tw-text-xl tw-font-semibold tw-text-foreground">AgentScope</h1>
+				<p class="tw-mt-2 tw-text-sm tw-text-muted-foreground">
 					输入服务器地址和你的用户名即可开始。
 				</p>
 			</div>
@@ -15,7 +15,7 @@
 				type="error"
 				show-icon
 				:closable="false"
-				class="mb-4"
+				class="tw-mb-4"
 			/>
 
 			<el-form label-position="top" @submit.native.prevent>
@@ -39,7 +39,7 @@
 
 			<el-button
 				type="primary"
-				class="w-full"
+				class="tw-w-full"
 				:loading="loading"
 				@click="onSubmit"
 			>

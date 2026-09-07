@@ -1,13 +1,13 @@
 <template>
-  <div class="flex max-w-full items-center gap-3 rounded-lg border border-border bg-card p-2">
-    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-muted">
-      <img v-if="isImage && dataUrl" :src="dataUrl" class="h-full w-full rounded-md object-cover" />
-      <Icon v-else-if="isVideo" icon="lucide:file-video-2" class="h-5 w-5" />
-      <Icon v-else icon="lucide:file-text" class="h-5 w-5" />
+  <div class="tw-flex tw-max-w-full tw-items-center tw-gap-3 tw-rounded-lg tw-border tw-border-border tw-bg-card tw-p-2">
+    <div class="tw-flex tw-h-10 tw-w-10 tw-shrink-0 tw-items-center tw-justify-center tw-rounded-md tw-bg-muted">
+      <img v-if="isImage && dataUrl" :src="dataUrl" class="tw-h-full tw-w-full tw-rounded-md tw-object-cover" />
+      <Icon v-else-if="isVideo" icon="lucide:file-video-2" class="tw-h-5 tw-w-5" />
+      <Icon v-else icon="lucide:file-text" class="tw-h-5 tw-w-5" />
     </div>
-    <div class="min-w-0 flex-1">
-      <div class="truncate text-sm font-medium">{{ block.name || 'File' }}</div>
-      <div class="text-xs text-muted-foreground">{{ extension }}</div>
+    <div class="tw-min-w-0 tw-flex-1">
+      <div class="tw-truncate tw-text-sm tw-font-medium">{{ block.name || 'File' }}</div>
+      <div class="tw-text-xs tw-text-muted-foreground">{{ extension }}</div>
     </div>
   </div>
 </template>

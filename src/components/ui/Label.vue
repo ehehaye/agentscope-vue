@@ -9,9 +9,9 @@ import { defineComponent } from '@/composables/vue';
 import { cn } from '@/lib/utils';
 
 const labelClass =
-	'flex items-center gap-2 text-sm leading-none font-medium select-none ' +
-	'group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 ' +
-	'peer-disabled:cursor-not-allowed peer-disabled:opacity-50';
+	'tw-flex tw-items-center tw-gap-2 tw-text-sm tw-leading-none tw-font-medium tw-select-none ' +
+	'group-data-[disabled=true]:tw-pointer-events-none group-data-[disabled=true]:tw-opacity-50 ' +
+	'peer-disabled:tw-cursor-not-allowed peer-disabled:tw-opacity-50';
 
 export default defineComponent({
 	name: 'Label',

@@ -1,6 +1,6 @@
 <template>
-  <div class="flex h-full flex-col p-4">
-    <div class="mb-4 flex items-center gap-2">
+  <div class="tw-flex tw-h-full tw-flex-col tw-p-4">
+    <div class="tw-mb-4 tw-flex tw-items-center tw-gap-2">
       <el-select v-model="selectedFixture" placeholder="选择 fixture" size="small">
         <el-option
           v-for="name in fixtureNames"
@@ -14,7 +14,7 @@
       </el-button>
       <el-button size="small" @click="reset">重置</el-button>
     </div>
-    <div class="flex-1 tw-rounded-22px bg-card p-2 shadow-panel">
+    <div class="tw-flex-1 tw-rounded-22px tw-bg-card tw-p-2 tw-shadow-panel">
       <ChatContent
         :msgs="msgs"
         :loading="loading"

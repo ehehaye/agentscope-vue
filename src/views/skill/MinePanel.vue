@@ -1,48 +1,48 @@
 <template>
-  <div class="flex h-full flex-col p-5">
-    <div class="mb-4 flex items-center justify-between">
+  <div class="tw-flex tw-h-full tw-flex-col tw-p-5">
+    <div class="tw-mb-4 tw-flex tw-items-center tw-justify-between">
       <div>
-        <div class="text-lg font-medium">{{ COMMON['my-skill'] }}</div>
-        <div class="text-xs text-muted-foreground">{{ TEXT.skill.mineDescription }}</div>
+        <div class="tw-text-lg tw-font-medium">{{ COMMON['my-skill'] }}</div>
+        <div class="tw-text-xs tw-text-muted-foreground">{{ TEXT.skill.mineDescription }}</div>
       </div>
-      <el-input v-if="skills.length > 0" v-model="query" :placeholder="TEXT.skill.mineSearchPlaceholder" size="small" class="w-48" />
+      <el-input v-if="skills.length > 0" v-model="query" :placeholder="TEXT.skill.mineSearchPlaceholder" size="small" class="tw-w-48" />
     </div>
 
-    <div class="flex-1 overflow-y-auto">
-      <div v-if="loading" class="flex justify-center py-10">
-        <Spinner class="h-6 w-6" />
+    <div class="tw-flex-1 tw-overflow-y-auto">
+      <div v-if="loading" class="tw-flex tw-justify-center tw-py-10">
+        <Spinner class="tw-h-6 tw-w-6" />
       </div>
-      <div v-else-if="skills.length === 0" class="flex flex-col items-center gap-2 py-10 text-center">
-        <Icon icon="lucide:plug" class="h-8 w-8 text-muted-foreground" />
-        <div class="text-sm font-medium">{{ TEXT.skill.mineEmptyTitle }}</div>
-        <p class="text-xs text-muted-foreground">{{ TEXT.skill.mineEmptyDescription }}</p>
+      <div v-else-if="skills.length === 0" class="tw-flex tw-flex-col tw-items-center tw-gap-2 tw-py-10 tw-text-center">
+        <Icon icon="lucide:plug" class="tw-h-8 tw-w-8 tw-text-muted-foreground" />
+        <div class="tw-text-sm tw-font-medium">{{ TEXT.skill.mineEmptyTitle }}</div>
+        <p class="tw-text-xs tw-text-muted-foreground">{{ TEXT.skill.mineEmptyDescription }}</p>
       </div>
-      <div v-else-if="shown.length === 0" class="py-10 text-center text-sm text-muted-foreground">
+      <div v-else-if="shown.length === 0" class="tw-py-10 tw-text-center tw-text-sm tw-text-muted-foreground">
         {{ TEXT.skill.noCardsTitle }}
       </div>
-      <div v-else class="space-y-2">
+      <div v-else class="tw-space-y-2">
         <div
           v-for="skill in shown"
           :key="skill.id"
-          class="flex cursor-pointer items-center gap-3 rounded-lg border border-border p-3 transition-colors hover:bg-muted"
+          class="tw-flex tw-cursor-pointer tw-items-center tw-gap-3 tw-rounded-lg tw-border tw-border-border tw-p-3 tw-transition-colors hover:tw-bg-muted"
           @click="openDetail(skill)"
         >
-          <img v-if="skill.icon_url" :src="skill.icon_url" class="h-10 w-10 rounded-md object-cover" />
-          <div v-else class="flex h-10 w-10 items-center justify-center rounded-md bg-muted text-sm font-bold">
+          <img v-if="skill.icon_url" :src="skill.icon_url" class="tw-h-10 tw-w-10 tw-rounded-md tw-object-cover" />
+          <div v-else class="tw-flex tw-h-10 tw-w-10 tw-items-center tw-justify-center tw-rounded-md tw-bg-muted tw-text-sm tw-font-bold">
             {{ (skill.display_name || skill.name).slice(0, 1).toUpperCase() }}
           </div>
-          <div class="min-w-0 flex-1">
-            <div class="flex items-center gap-2">
-              <span class="font-medium">{{ skill.display_name || skill.name }}</span>
-              <span v-if="skill.hub_id" class="text-xs text-muted-foreground">@{{ skill.hub_id }}</span>
-              <span v-for="tag in (skill.tags || []).slice(0, 4)" :key="tag" class="rounded-full bg-secondary px-1.5 py-0.5 tw-text-10px">#{{ tag }}</span>
+          <div class="tw-min-w-0 tw-flex-1">
+            <div class="tw-flex tw-items-center tw-gap-2">
+              <span class="tw-font-medium">{{ skill.display_name || skill.name }}</span>
+              <span v-if="skill.hub_id" class="tw-text-xs tw-text-muted-foreground">@{{ skill.hub_id }}</span>
+              <span v-for="tag in (skill.tags || []).slice(0, 4)" :key="tag" class="tw-rounded-full tw-bg-secondary tw-px-1.5 tw-py-0.5 tw-text-10px">#{{ tag }}</span>
             </div>
-            <p class="line-clamp-1 text-xs text-muted-foreground">{{ skill.description }}</p>
+            <p class="tw-line-clamp-1 tw-text-xs tw-text-muted-foreground">{{ skill.description }}</p>
           </div>
-          <div class="flex items-center gap-2">
-            <span v-if="skill.version" class="text-xs text-muted-foreground">{{ skill.version }}</span>
+          <div class="tw-flex tw-items-center tw-gap-2">
+            <span v-if="skill.version" class="tw-text-xs tw-text-muted-foreground">{{ skill.version }}</span>
             <el-button type="text" size="mini" @click.stop="askRemove(skill)">
-              <Icon icon="lucide:trash-2" class="h-3.5 w-3.5" />
+              <Icon icon="lucide:trash-2" class="tw-h-3.5 tw-w-3.5" />
             </el-button>
           </div>
         </div>
@@ -55,21 +55,21 @@
       direction="rtl"
       size="30rem"
     >
-      <div v-if="detailLoading" class="flex justify-center py-10">
-        <Spinner class="h-6 w-6" />
+      <div v-if="detailLoading" class="tw-flex tw-justify-center tw-py-10">
+        <Spinner class="tw-h-6 tw-w-6" />
       </div>
-      <div v-else-if="detailSkill" class="flex h-full flex-col gap-4 p-4">
-        <p class="text-sm text-muted-foreground">{{ detailSkill.description }}</p>
-        <div v-if="detailSkill.version" class="text-xs text-muted-foreground">
+      <div v-else-if="detailSkill" class="tw-flex tw-h-full tw-flex-col tw-gap-4 tw-p-4">
+        <p class="tw-text-sm tw-text-muted-foreground">{{ detailSkill.description }}</p>
+        <div v-if="detailSkill.version" class="tw-text-xs tw-text-muted-foreground">
           {{ TEXT.skill.versionLabel }}: {{ detailSkill.version }}
         </div>
-        <div v-if="detailSkill.hub_id" class="text-xs text-muted-foreground">
+        <div v-if="detailSkill.hub_id" class="tw-text-xs tw-text-muted-foreground">
           {{ TEXT.skill.hubLabel }}: {{ detailSkill.hub_id }}
         </div>
-        <div v-if="detailMarkdown" class="flex-1 overflow-y-auto">
+        <div v-if="detailMarkdown" class="tw-flex-1 tw-overflow-y-auto">
           <MarkdownRenderer :content="detailMarkdown" />
         </div>
-        <div v-else class="text-xs text-muted-foreground">{{ TEXT.skill.noReadme }}</div>
+        <div v-else class="tw-text-xs tw-text-muted-foreground">{{ TEXT.skill.noReadme }}</div>
       </div>
     </el-drawer>
 

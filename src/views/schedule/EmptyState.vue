@@ -1,11 +1,11 @@
 <template>
-  <div class="flex size-full flex-col items-center justify-center gap-4 rounded-xl border border-dashed p-6 text-center">
-    <Icon icon="lucide:calendar" class="h-8 w-8 text-muted-foreground" />
-    <div class="flex max-w-sm flex-col items-center gap-2">
-      <div class="text-sm font-medium">{{ title || TEXT.schedule.noSchedules }}</div>
-      <p class="text-sm text-muted-foreground">{{ description || TEXT.schedule.noSchedulesDescription }}</p>
+  <div class="tw-flex tw-size-full tw-flex-col tw-items-center tw-justify-center tw-gap-4 tw-rounded-xl tw-border tw-border-dashed tw-p-6 tw-text-center">
+    <Icon icon="lucide:calendar" class="tw-h-8 tw-w-8 tw-text-muted-foreground" />
+    <div class="tw-flex tw-max-w-sm tw-flex-col tw-items-center tw-gap-2">
+      <div class="tw-text-sm tw-font-medium">{{ title || TEXT.schedule.noSchedules }}</div>
+      <p class="tw-text-sm tw-text-muted-foreground">{{ description || TEXT.schedule.noSchedulesDescription }}</p>
     </div>
-    <div v-if="$slots.default" class="flex w-full max-w-sm flex-col items-center gap-2">
+    <div v-if="$slots.default" class="tw-flex tw-w-full tw-max-w-sm tw-flex-col tw-items-center tw-gap-2">
       <slot />
     </div>
   </div>

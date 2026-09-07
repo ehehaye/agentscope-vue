@@ -5,7 +5,7 @@
     width="500px"
     :close-on-click-modal="false"
   >
-    <el-form label-position="top" class="space-y-4">
+    <el-form label-position="top" class="tw-space-y-4">
       <el-form-item label="名称">
         <el-input v-model="form.name" placeholder="知识库名称" />
       </el-form-item>
@@ -13,7 +13,7 @@
         <el-input v-model="form.description" type="textarea" :rows="3" placeholder="描述" />
       </el-form-item>
     </el-form>
-    <span slot="footer" class="dialog-footer">
+    <span slot="footer" class="tw-dialog-footer">
       <el-button @click="dialogVisible = false" :disabled="submitting">取消</el-button>
       <el-button type="primary" :loading="submitting" @click="handleSubmit">保存</el-button>
     </span>

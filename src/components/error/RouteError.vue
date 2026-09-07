@@ -1,14 +1,14 @@
 <template>
-	<div class="flex h-full w-full flex-col items-center justify-center gap-4 p-8 text-center">
-		<div role="alert" class="flex flex-col gap-1">
-			<h1 class="text-lg font-semibold">{{ COMMON.error }}</h1>
-			<p class="text-sm text-muted-foreground">{{ ERROR.description }}</p>
+	<div class="tw-flex tw-h-full tw-w-full tw-flex-col tw-items-center tw-justify-center tw-gap-4 tw-p-8 tw-text-center">
+		<div role="alert" class="tw-flex tw-flex-col tw-gap-1">
+			<h1 class="tw-text-lg tw-font-semibold">{{ COMMON.error }}</h1>
+			<p class="tw-text-sm tw-text-muted-foreground">{{ ERROR.description }}</p>
 		</div>
 		<pre
 			v-if="detail"
-			class="text-muted-foreground bg-muted max-w-md overflow-auto rounded-md p-3 text-left text-xs whitespace-pre-wrap"
+			class="tw-text-muted-foreground tw-bg-muted tw-max-w-md tw-overflow-auto tw-rounded-md tw-p-3 tw-text-left tw-text-xs tw-whitespace-pre-wrap"
 		>{{ detail }}</pre>
-		<div class="flex gap-2">
+		<div class="tw-flex tw-gap-2">
 			<el-button @click="onRetry">{{ ERROR.retry }}</el-button>
 			<el-button type="primary" @click="onHome">{{ ERROR.home }}</el-button>
 		</div>

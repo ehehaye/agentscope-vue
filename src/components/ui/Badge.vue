@@ -1,6 +1,6 @@
 <template>
   <span
-    class="inline-flex items-center gap-0.5 whitespace-nowrap rounded-md border border-transparent px-2 py-0.5 text-xs font-medium"
+    class="tw-inline-flex tw-items-center tw-gap-0.5 tw-whitespace-nowrap tw-rounded-md tw-border tw-border-transparent tw-px-2 tw-py-0.5 tw-text-xs tw-font-medium"
     :class="variantClass"
   >
     <slot />
@@ -21,12 +21,12 @@ export default defineComponent({
     const variantClass = computed(() => {
       switch (props.variant) {
         case 'outline':
-          return 'border-border text-foreground';
+          return 'tw-border-border tw-text-foreground';
         case 'destructive':
-          return 'bg-red-100 text-red-900 dark:bg-red-950 dark:text-red-50';
+          return 'tw-bg-red-100 tw-text-red-900 dark:tw-bg-red-950 dark:tw-text-red-50';
         case 'secondary':
         default:
-          return 'bg-secondary text-secondary-foreground';
+          return 'tw-bg-secondary tw-text-secondary-foreground';
       }
     });
     return { variantClass };

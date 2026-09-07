@@ -1,8 +1,8 @@
 <template>
-  <span class="inline-flex items-center gap-2 font-mono text-sm">
+  <span class="tw-inline-flex tw-items-center tw-gap-2 tw-font-mono tw-text-sm">
     <span>{{ visible ? value : masked }}</span>
     <el-button type="text" size="mini" @click="visible = !visible">
-      <Icon :icon="visible ? 'lucide:eye-off' : 'lucide:eye'" class="h-4 w-4" />
+      <Icon :icon="visible ? 'lucide:eye-off' : 'lucide:eye'" class="tw-h-4 tw-w-4" />
     </el-button>
   </span>
 </template>

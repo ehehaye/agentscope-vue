@@ -1,15 +1,15 @@
 <template>
-  <div class="flex h-full flex-col gap-3 text-sm">
-    <div v-if="tasksContext && tasks.length > 0" class="flex shrink-0 items-center gap-2 pb-2">
-      <span class="inline-flex items-center gap-1 rounded-md bg-secondary px-2 py-0.5 text-xs">
+  <div class="tw-flex tw-h-full tw-flex-col tw-gap-3 tw-text-sm">
+    <div v-if="tasksContext && tasks.length > 0" class="tw-flex tw-shrink-0 tw-items-center tw-gap-2 tw-pb-2">
+      <span class="tw-inline-flex tw-items-center tw-gap-1 tw-rounded-md tw-bg-secondary tw-px-2 tw-py-0.5 tw-text-xs">
         已完成 {{ completedCount }}
       </span>
-      <span class="inline-flex items-center gap-1 rounded-md bg-secondary px-2 py-0.5 text-xs">
+      <span class="tw-inline-flex tw-items-center tw-gap-1 tw-rounded-md tw-bg-secondary tw-px-2 tw-py-0.5 tw-text-xs">
         共 {{ tasks.length }}
       </span>
     </div>
 
-    <div class="flex flex-1 flex-col overflow-y-auto">
+    <div class="tw-flex tw-flex-1 tw-flex-col tw-overflow-y-auto">
       <template v-if="!tasksContext || tasks.length === 0">
         <PanelEmpty icon="lucide:list-x" title="暂无任务" description="当前会话没有任务计划。" />
       </template>
@@ -17,28 +17,28 @@
         <button
           v-if="showEllipsis && !expanded"
           type="button"
-          class="flex w-full items-center justify-center rounded py-1 hover:bg-muted"
+          class="tw-flex tw-w-full tw-items-center tw-justify-center tw-rounded tw-py-1 hover:tw-bg-muted"
           @click="expanded = true"
         >
-          <Icon icon="lucide:ellipsis" class="h-4 w-4 text-muted-foreground" />
+          <Icon icon="lucide:ellipsis" class="tw-h-4 tw-w-4 tw-text-muted-foreground" />
         </button>
         <div
           v-for="task in displayedTasks"
           :key="task.id"
-          class="flex items-center gap-2 rounded px-2 py-1"
-          :class="task.state === 'completed' ? 'opacity-60' : ''"
+          class="tw-flex tw-items-center tw-gap-2 tw-rounded tw-px-2 tw-py-1"
+          :class="task.state === 'completed' ? 'tw-opacity-60' : ''"
         >
           <Icon
             :icon="stateIcon(task.state)"
-            class="h-3 w-3 shrink-0"
-            :class="task.state === 'in_progress' ? 'animate-spin' : ''"
+            class="tw-h-3 tw-w-3 tw-shrink-0"
+            :class="task.state === 'in_progress' ? 'tw-animate-spin' : ''"
           />
-          <div class="flex min-w-0 flex-1 flex-col gap-0.5">
-            <span class="flex items-center gap-1.5">
-              <span class="font-mono text-xs text-muted-foreground">#{{ task.id }}</span>
-              <span class="truncate" :class="task.state === 'completed' ? 'line-through' : ''">{{ task.subject }}</span>
+          <div class="tw-flex tw-min-w-0 tw-flex-1 tw-flex-col tw-gap-0.5">
+            <span class="tw-flex tw-items-center tw-gap-1.5">
+              <span class="tw-font-mono tw-text-xs tw-text-muted-foreground">#{{ task.id }}</span>
+              <span class="tw-truncate" :class="task.state === 'completed' ? 'tw-line-through' : ''">{{ task.subject }}</span>
             </span>
-            <span v-if="task.blocked_by && task.blocked_by.length > 0" class="text-xs text-muted-foreground">
+            <span v-if="task.blocked_by && task.blocked_by.length > 0" class="tw-text-xs tw-text-muted-foreground">
               ← 依赖 {{ task.blocked_by.map((id) => `#${id}`).join(', ') }}
             </span>
           </div>

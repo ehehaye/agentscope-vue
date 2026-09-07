@@ -136,9 +136,9 @@ body,
 		outline-color: var(--ring);
 	}
 	body {
-		@apply bg-canvas text-foreground;
+		@apply tw-bg-canvas tw-text-foreground;
 	}
 	html {
-		@apply font-sans;
+		@apply tw-font-sans;
 	}
 }

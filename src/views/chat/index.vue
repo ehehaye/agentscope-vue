@@ -1,7 +1,7 @@
 <template>
-  <main class="flex h-full w-full gap-2 p-2">
+  <main class="tw-flex tw-h-full tw-w-full tw-gap-2 tw-p-2">
     <SessionList
-      class="h-full shrink-0"
+      class="tw-h-full tw-shrink-0"
       :agents="agents"
       :agent-id="agentId"
       :sessions="sessions"
@@ -16,21 +16,21 @@
       @rename-session="openRename($event)"
       @delete-session="openDeleteSession($event)"
     />
-    <div class="flex flex-1 overflow-hidden tw-rounded-22px bg-card shadow-panel">
-      <div class="flex h-full w-full min-w-0 flex-col p-2">
+    <div class="tw-flex tw-flex-1 tw-overflow-hidden tw-rounded-22px tw-bg-card tw-shadow-panel">
+      <div class="tw-flex tw-h-full tw-w-full tw-min-w-0 tw-flex-col tw-p-2">
         <!-- top bar -->
-        <div class="mb-2 flex items-center justify-between gap-2 px-2">
-          <div class="flex min-w-0 flex-1 items-center gap-2">
+        <div class="tw-mb-2 tw-flex tw-items-center tw-justify-between tw-gap-2 tw-px-2">
+          <div class="tw-flex tw-min-w-0 tw-flex-1 tw-items-center tw-gap-2">
             <!-- Agent 选择 -->
-            <div class="flex min-w-0 items-center gap-2 text-sm">
-              <Icon icon="lucide:message-square" class="h-4 w-4 shrink-0 text-muted-foreground" />
-              <span class="truncate font-medium">{{ sessionName || TEXT.noSession }}</span>
-              <el-tag v-if="focusedMember" size="mini" type="info" class="ml-1 shrink-0">
+            <div class="tw-flex tw-min-w-0 tw-items-center tw-gap-2 tw-text-sm">
+              <Icon icon="lucide:message-square" class="tw-h-4 tw-w-4 tw-shrink-0 tw-text-muted-foreground" />
+              <span class="tw-truncate tw-font-medium">{{ sessionName || TEXT.noSession }}</span>
+              <el-tag v-if="focusedMember" size="mini" type="info" class="tw-ml-1 tw-shrink-0">
                 成员：{{ focusedMember.agent?.data?.name }}
               </el-tag>
             </div>
           </div>
-          <div class="flex shrink-0 items-center gap-1">
+          <div class="tw-flex tw-shrink-0 tw-items-center tw-gap-1">
             <LlmSelect
               :value="selectedModel"
               placeholder="选择模型"
@@ -52,19 +52,19 @@
               @change="handlePermissionModeChange"
             />
             <el-dropdown trigger="click" @command="togglePanel">
-              <span class="inline-flex cursor-pointer items-center gap-1 rounded-md border border-border px-2 py-1.5 text-sm hover:bg-row-hover">
-                <Icon icon="lucide:panel-right" class="h-4 w-4" />
-                <Icon icon="lucide:chevron-down" class="h-3 w-3 text-muted-foreground" />
+              <span class="tw-inline-flex tw-cursor-pointer tw-items-center tw-gap-1 tw-rounded-md tw-border tw-border-border tw-px-2 tw-py-1.5 tw-text-sm hover:tw-bg-row-hover">
+                <Icon icon="lucide:panel-right" class="tw-h-4 tw-w-4" />
+                <Icon icon="lucide:chevron-down" class="tw-h-3 tw-w-3 tw-text-muted-foreground" />
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item
                   v-for="item in PANEL_MENU"
                   :key="item.key"
                   :command="item.key"
-                  :class="{ 'bg-accent': isPanelOpen(item.key) }"
+                  :class="{ 'tw-bg-accent': isPanelOpen(item.key) }"
                 >
-                  <span class="flex items-center gap-2">
-                    <Icon :icon="item.icon" class="h-4 w-4" />
+                  <span class="tw-flex tw-items-center tw-gap-2">
+                    <Icon :icon="item.icon" class="tw-h-4 tw-w-4" />
                     {{ item.label }}
                   </span>
                 </el-dropdown-item>
@@ -74,9 +74,9 @@
         </div>
 
         <!-- chat area -->
-        <div class="relative flex flex-1 min-h-0 justify-center">
+        <div class="tw-relative tw-flex tw-flex-1 tw-min-h-0 tw-justify-center">
           <ChatContent
-            class="w-full tw-max-w-48rem"
+            class="tw-w-full tw-max-w-48rem"
             :msgs="msgs"
             :loading="loading"
             :phase="phase"
@@ -98,7 +98,7 @@
 
     <!-- right dock -->
     <PanelDock
-      class="ml-2 h-full tw-w-22rem shrink-0"
+      class="tw-ml-2 tw-h-full tw-w-22rem tw-shrink-0"
       :layout="panelLayout"
       :panels="panels"
       @close="closePanel"
@@ -190,7 +190,7 @@ const KNOWN_PANELS = new Set(PANEL_MENU.map((i) => i.key));
 
 function loadLayout() {
   try {
-    const raw = JSON.parse(localStorage.getItem(PANEL_LAYOUT_KEY) || '[]');
+    const raw = JSON.parse(localStorage.getItem(PANEL_LAYOUT_KEY) || 'tw-[]');
     if (!Array.isArray(raw)) return [];
     return raw
       .map((column) => (Array.isArray(column) ? column.filter((k) => KNOWN_PANELS.has(k)) : []))

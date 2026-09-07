@@ -5,17 +5,17 @@
     width="520px"
     :close-on-click-modal="false"
   >
-    <div v-loading="loadingSchema" class="space-y-4">
+    <div v-loading="loadingSchema" class="tw-space-y-4">
       <SchemaForm
         v-if="schema"
         :schema="schema"
         :values="values"
         @change="onFieldChange"
       />
-      <p v-else class="text-sm text-muted-foreground">加载中...</p>
+      <p v-else class="tw-text-sm tw-text-muted-foreground">加载中...</p>
     </div>
 
-    <span slot="footer" class="dialog-footer">
+    <span slot="footer" class="tw-dialog-footer">
       <el-button @click="dialogVisible = false" :disabled="submitting">取消</el-button>
       <el-button type="primary" :loading="submitting" :disabled="!schema" @click="handleSubmit">
         保存

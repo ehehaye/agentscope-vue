@@ -2,19 +2,19 @@
   <Icon
     v-if="state === 'success'"
     icon="lucide:check"
-    class="h-3 w-3 shrink-0 text-emerald-600 dark:text-emerald-400"
+    class="tw-h-3 tw-w-3 tw-shrink-0 tw-text-emerald-600 dark:tw-text-emerald-400"
   />
   <Icon
     v-else-if="state === 'error'"
     icon="lucide:x"
-    class="h-3 w-3 shrink-0 text-red-600 dark:text-red-400"
+    class="tw-h-3 tw-w-3 tw-shrink-0 tw-text-red-600 dark:tw-text-red-400"
   />
   <Icon
     v-else-if="state === 'interrupted' || state === 'denied'"
     icon="lucide:ban"
-    class="h-3 w-3 shrink-0"
+    class="tw-h-3 tw-w-3 tw-shrink-0"
   />
-  <Icon v-else icon="lucide:loader-circle" class="h-3 w-3 shrink-0 animate-spin" />
+  <Icon v-else icon="lucide:loader-circle" class="tw-h-3 tw-w-3 tw-shrink-0 tw-animate-spin" />
 </template>
 
 <script>

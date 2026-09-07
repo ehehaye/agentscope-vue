@@ -1,11 +1,11 @@
 <template>
-  <div class="overflow-x-auto">
-    <pre class="font-mono text-xs leading-5 whitespace-pre">{{ visibleDiff }}</pre>
+  <div class="tw-overflow-x-auto">
+    <pre class="tw-font-mono tw-text-xs tw-leading-5 tw-whitespace-pre">{{ visibleDiff }}</pre>
     <el-button
       v-if="shouldTruncate"
       type="text"
       size="mini"
-      class="mt-1 w-full"
+      class="tw-mt-1 tw-w-full"
       @click="expanded = !expanded"
     >
       {{ expanded ? '收起' : `展开 ${hiddenLines} 行` }}

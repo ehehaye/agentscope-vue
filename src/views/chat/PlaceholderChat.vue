@@ -1,9 +1,9 @@
 <template>
-	<div class="flex h-full items-center justify-center">
-		<div class="text-center">
-			<Icon icon="lucide:message-square" class="mx-auto mb-4 h-12 w-12 text-text-tertiary" />
-			<p class="text-lg font-medium text-foreground">聊天页面</p>
-			<p class="mt-2 text-sm text-muted-foreground">
+	<div class="tw-flex tw-h-full tw-items-center tw-justify-center">
+		<div class="tw-text-center">
+			<Icon icon="lucide:message-square" class="tw-mx-auto tw-mb-4 tw-h-12 tw-w-12 tw-text-text-tertiary" />
+			<p class="tw-text-lg tw-font-medium tw-text-foreground">聊天页面</p>
+			<p class="tw-mt-2 tw-text-sm tw-text-muted-foreground">
 				SSE 聊天链路将在 Phase 4 迁移（useMessages → ASMessageBubble 链路）。
 			</p>
 		</div>

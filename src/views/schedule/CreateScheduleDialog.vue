@@ -6,13 +6,13 @@
     :close-on-click-modal="false"
     @open="resetForm"
   >
-    <p class="text-sm text-muted-foreground">{{ TEXT.schedule.createSchedule.description }}</p>
+    <p class="tw-text-sm tw-text-muted-foreground">{{ TEXT.schedule.createSchedule.description }}</p>
     <el-form
       ref="formRef"
       :model="form"
       label-position="left"
       label-width="100px"
-      class="mt-4 tw-max-h-75vh overflow-y-auto pr-2"
+      class="tw-mt-4 tw-max-h-75vh tw-overflow-y-auto tw-pr-2"
     >
       <el-form-item :label="COMMON.name">
         <el-input v-model="form.name" :placeholder="TEXT.schedule.createSchedule.namePlaceholder" />
@@ -28,9 +28,9 @@
       </el-form-item>
 
       <el-form-item :label="COMMON.date">
-        <div class="flex gap-3">
+        <div class="tw-flex tw-gap-3">
           <el-date-picker v-model="form.date" type="date" :placeholder="TEXT.schedule.pickDate" value-format="yyyy-MM-dd" />
-          <el-time-picker v-model="form.time" placeholder="选择时间" value-format="HH:mm:ss" class="w-40" />
+          <el-time-picker v-model="form.time" placeholder="选择时间" value-format="HH:mm:ss" class="tw-w-40" />
         </div>
       </el-form-item>
 
@@ -39,7 +39,7 @@
       </el-form-item>
 
       <el-form-item :label="TEXT.schedule.frequency">
-        <el-select v-model="form.freq" class="w-full">
+        <el-select v-model="form.freq" class="tw-w-full">
           <el-option value="once" :label="TEXT.schedule.freqOnce" />
           <el-option value="daily" :label="TEXT.schedule.freqDaily" />
           <el-option value="weekly" :label="TEXT.schedule.freqWeekly" />
@@ -54,7 +54,7 @@
           :placeholder="TEXT.schedule.pickDate"
           value-format="yyyy-MM-dd"
           :disabled="form.freq === 'once'"
-          class="w-full"
+          class="tw-w-full"
         />
       </el-form-item>
 
@@ -63,7 +63,7 @@
           :agents="agents"
           :value="form.agentId"
           :placeholder="COMMON.selectAgent"
-          class="w-full"
+          class="tw-w-full"
           @change="(id) => form.agentId = id"
         />
       </el-form-item>
@@ -77,19 +77,19 @@
       </el-form-item>
 
       <el-form-item>
-        <div class="flex w-full items-center justify-between">
-          <div class="flex flex-col gap-0.5">
-            <span class="text-sm font-medium">{{ TEXT.schedule.stateful }}</span>
-            <span class="text-xs text-muted-foreground">{{ TEXT.schedule.statefulDesc }}</span>
+        <div class="tw-flex tw-w-full tw-items-center tw-justify-between">
+          <div class="tw-flex tw-flex-col tw-gap-0.5">
+            <span class="tw-text-sm tw-font-medium">{{ TEXT.schedule.stateful }}</span>
+            <span class="tw-text-xs tw-text-muted-foreground">{{ TEXT.schedule.statefulDesc }}</span>
           </div>
           <el-switch v-model="form.stateful" />
         </div>
       </el-form-item>
 
-      <p v-if="error" class="text-sm text-destructive">{{ error }}</p>
+      <p v-if="error" class="tw-text-sm tw-text-destructive">{{ error }}</p>
     </el-form>
 
-    <span slot="footer" class="dialog-footer">
+    <span slot="footer" class="tw-dialog-footer">
       <el-button @click="visible = false" :disabled="loading">{{ COMMON.cancel }}</el-button>
       <el-button type="primary" :loading="loading" :disabled="!isValid" @click="handleSubmit">
         {{ loading ? COMMON.creating : COMMON.create }}

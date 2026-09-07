@@ -8,18 +8,18 @@
       <Collapsible>
         <template #trigger="{ open }">
           <div
-            class="flex items-center gap-2 text-sm text-muted-foreground"
+            class="tw-flex tw-items-center tw-gap-2 tw-text-sm tw-text-muted-foreground"
             :class="{ shimmer: isThinkingRunning }"
           >
             <span>{{ thinkingTitle }}</span>
             <Icon
               icon="lucide:chevron-right"
-              class="h-3 w-3 transition-transform"
-              :class="{ 'rotate-90': open }"
+              class="tw-h-3 tw-w-3 tw-transition-transform"
+              :class="{ 'tw-rotate-90': open }"
             />
           </div>
         </template>
-        <div class="mt-2 rounded-md bg-muted p-2 text-sm text-muted-foreground">
+        <div class="tw-mt-2 tw-rounded-md tw-bg-muted tw-p-2 tw-text-sm tw-text-muted-foreground">
           <MarkdownRenderer :content="block.thinking" />
         </div>
       </Collapsible>
@@ -28,16 +28,16 @@
     <template v-else-if="block.type === 'hint'">
       <Collapsible>
         <template #trigger="{ open }">
-          <div class="flex items-center gap-2 text-sm text-muted-foreground">
+          <div class="tw-flex tw-items-center tw-gap-2 tw-text-sm tw-text-muted-foreground">
             <span>{{ hintLabel }}</span>
             <Icon
               icon="lucide:chevron-right"
-              class="h-3 w-3 transition-transform"
-              :class="{ 'rotate-90': open }"
+              class="tw-h-3 tw-w-3 tw-transition-transform"
+              :class="{ 'tw-rotate-90': open }"
             />
           </div>
         </template>
-        <div class="mt-2 rounded-md bg-muted p-2 text-sm">
+        <div class="tw-mt-2 tw-rounded-md tw-bg-muted tw-p-2 tw-text-sm">
           <ASBlock
             v-for="(item, idx) in hintItems"
             :key="idx"

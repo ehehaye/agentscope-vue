@@ -1,9 +1,9 @@
 <template>
 	<div
-		class="flex shrink-0 items-center justify-center overflow-hidden rounded-lg bg-muted text-sm font-semibold"
+		class="tw-flex tw-shrink-0 tw-items-center tw-justify-center tw-overflow-hidden tw-rounded-lg tw-bg-muted tw-text-sm tw-font-semibold"
 		:style="style"
 	>
-		<img v-if="type?.icon_url" :src="type.icon_url" :alt="label" class="h-full w-full object-cover" />
+		<img v-if="type?.icon_url" :src="type.icon_url" :alt="label" class="tw-h-full tw-w-full tw-object-cover" />
 		<span v-else>{{ initial }}</span>
 	</div>
 </template>

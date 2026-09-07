@@ -1,43 +1,43 @@
 <template>
-  <div class="flex h-full w-full gap-2 p-2">
+  <div class="tw-flex tw-h-full tw-w-full tw-gap-2 tw-p-2">
     <!-- 左侧列表 -->
-    <main class="flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-panel">
-      <div class="border-b border-border px-6 pt-5 pb-4">
-        <div class="text-2xl font-semibold">频道</div>
-        <div class="mt-1 text-sm text-muted-foreground">管理消息通道与路由规则</div>
+    <main class="tw-flex tw-h-full tw-min-h-0 tw-min-w-0 tw-flex-1 tw-flex-col tw-overflow-hidden tw-rounded-2xl tw-border tw-border-border tw-bg-card tw-shadow-panel">
+      <div class="tw-border-b tw-border-border tw-px-6 tw-pt-5 tw-pb-4">
+        <div class="tw-text-2xl tw-font-semibold">频道</div>
+        <div class="tw-mt-1 tw-text-sm tw-text-muted-foreground">管理消息通道与路由规则</div>
       </div>
 
-      <div class="flex-1 overflow-y-auto px-6 py-6">
-        <div v-if="loading" class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div class="tw-flex-1 tw-overflow-y-auto tw-px-6 tw-py-6">
+        <div v-if="loading" class="tw-grid tw-grid-cols-1 tw-gap-4 md:tw-grid-cols-2 lg:tw-grid-cols-3 xl:tw-grid-cols-4">
           <el-skeleton v-for="i in 4" :key="i" :rows="3" animated />
         </div>
 
         <template v-else>
           <el-empty v-if="channels.length === 0" description="暂无频道">
             <template slot="image">
-              <Icon icon="lucide:cable" class="mx-auto h-12 w-12 text-muted-foreground" />
+              <Icon icon="lucide:cable" class="tw-mx-auto tw-h-12 tw-w-12 tw-text-muted-foreground" />
             </template>
           </el-empty>
 
           <section v-else>
-            <div class="mb-4 flex items-center gap-2">
-              <span class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">已启用</span>
+            <div class="tw-mb-4 tw-flex tw-items-center tw-gap-2">
+              <span class="tw-text-xs tw-font-semibold tw-uppercase tw-tracking-wide tw-text-muted-foreground">已启用</span>
               <el-tag size="mini" type="info">{{ channels.length }}</el-tag>
             </div>
 
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div class="tw-grid tw-grid-cols-1 tw-gap-4 md:tw-grid-cols-2 lg:tw-grid-cols-3 xl:tw-grid-cols-4">
               <div
                 v-for="ch in channels"
                 :key="ch.id"
-                class="group cursor-pointer rounded-xl border border-border bg-card p-4 shadow-panel transition hover:border-ring/40"
+                class="tw-group tw-cursor-pointer tw-rounded-xl tw-border tw-border-border tw-bg-card tw-p-4 tw-shadow-panel tw-transition hover:tw-border-ring/40"
                 @click="selectedId = ch.id"
               >
-                <div class="mb-3 flex items-start justify-between gap-3">
-                  <div class="flex min-w-0 flex-1 items-center gap-3">
-                    <TypeAvatar :type="typeOf(ch.channel_type)" class="h-9 w-9 rounded-lg" />
-                    <div class="min-w-0 flex-1">
-                      <div class="truncate text-sm font-semibold">{{ ch.name?.trim() || typeOf(ch.channel_type)?.display_name || ch.channel_type }}</div>
-                      <div class="truncate font-mono text-xs text-muted-foreground">{{ typeOf(ch.channel_type)?.display_name || ch.channel_type }}</div>
+                <div class="tw-mb-3 tw-flex tw-items-start tw-justify-between tw-gap-3">
+                  <div class="tw-flex tw-min-w-0 tw-flex-1 tw-items-center tw-gap-3">
+                    <TypeAvatar :type="typeOf(ch.channel_type)" class="tw-h-9 tw-w-9 tw-rounded-lg" />
+                    <div class="tw-min-w-0 tw-flex-1">
+                      <div class="tw-truncate tw-text-sm tw-font-semibold">{{ ch.name?.trim() || typeOf(ch.channel_type)?.display_name || ch.channel_type }}</div>
+                      <div class="tw-truncate tw-font-mono tw-text-xs tw-text-muted-foreground">{{ typeOf(ch.channel_type)?.display_name || ch.channel_type }}</div>
                     </div>
                   </div>
                   <el-switch
@@ -47,21 +47,21 @@
                   />
                 </div>
 
-                <div class="space-y-1 text-xs">
-                  <div class="flex items-center justify-between gap-2">
-                    <span class="text-muted-foreground">助手</span>
-                    <span class="truncate">{{ agentName(lastBinding(ch)?.agent_id) }}</span>
+                <div class="tw-space-y-1 tw-text-xs">
+                  <div class="tw-flex tw-items-center tw-justify-between tw-gap-2">
+                    <span class="tw-text-muted-foreground">助手</span>
+                    <span class="tw-truncate">{{ agentName(lastBinding(ch)?.agent_id) }}</span>
                   </div>
-                  <div class="flex items-center justify-between gap-2">
-                    <span class="text-muted-foreground">路由</span>
-                    <span class="font-mono">{{ ch.routing?.bindings?.length || 0 }} 条规则</span>
+                  <div class="tw-flex tw-items-center tw-justify-between tw-gap-2">
+                    <span class="tw-text-muted-foreground">路由</span>
+                    <span class="tw-font-mono">{{ ch.routing?.bindings?.length || 0 }} 条规则</span>
                   </div>
-                  <div v-if="ch.session?.chat_model_config?.model" class="flex items-center justify-between gap-2">
-                    <span class="text-muted-foreground">模型</span>
-                    <span class="truncate font-mono">{{ ch.session.chat_model_config.model }}</span>
+                  <div v-if="ch.session?.chat_model_config?.model" class="tw-flex tw-items-center tw-justify-between tw-gap-2">
+                    <span class="tw-text-muted-foreground">模型</span>
+                    <span class="tw-truncate tw-font-mono">{{ ch.session.chat_model_config.model }}</span>
                   </div>
-                  <div class="flex items-center justify-between gap-2">
-                    <span class="text-muted-foreground">状态</span>
+                  <div class="tw-flex tw-items-center tw-justify-between tw-gap-2">
+                    <span class="tw-text-muted-foreground">状态</span>
                     <ChannelStatusBadge :enabled="ch.enabled" :status="statuses[ch.id]" />
                   </div>
                 </div>
@@ -69,28 +69,28 @@
             </div>
           </section>
 
-          <div class="my-8 flex items-center gap-4">
-            <span class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-              <Icon icon="lucide:plus" class="h-3.5 w-3.5 text-primary" />
+          <div class="tw-my-8 tw-flex tw-items-center tw-gap-4">
+            <span class="tw-flex tw-items-center tw-gap-2 tw-text-xs tw-font-semibold tw-uppercase tw-tracking-wide tw-text-muted-foreground">
+              <Icon icon="lucide:plus" class="tw-h-3.5 tw-w-3.5 tw-text-primary" />
               添加频道
             </span>
-            <div class="flex-1 border-t border-dashed border-border" />
+            <div class="tw-flex-1 tw-border-t tw-border-dashed tw-border-border" />
           </div>
 
-          <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+          <div class="tw-grid tw-grid-cols-1 tw-gap-3 sm:tw-grid-cols-2 lg:tw-grid-cols-3 2xl:tw-grid-cols-4">
             <button
               v-for="ct in types"
               :key="ct.channel_type"
-              class="group flex items-start gap-3 rounded-xl border border-border bg-card p-4 text-left shadow-panel transition hover:border-ring/40"
+              class="tw-group tw-flex tw-items-start tw-gap-3 tw-rounded-xl tw-border tw-border-border tw-bg-card tw-p-4 tw-text-left tw-shadow-panel tw-transition hover:tw-border-ring/40"
               @click="openCreate(ct.channel_type)"
             >
-              <TypeAvatar :type="ct" class="h-10 w-10 rounded-lg" />
-              <div class="min-w-0 flex-1">
-                <div class="truncate text-sm font-semibold">{{ ct.display_name }}</div>
-                <div v-if="ct.description" class="mt-0.5 line-clamp-2 text-xs text-muted-foreground">{{ ct.description }}</div>
-                <div v-else class="font-mono text-xs text-muted-foreground">{{ ct.channel_type }}</div>
+              <TypeAvatar :type="ct" class="tw-h-10 tw-w-10 tw-rounded-lg" />
+              <div class="tw-min-w-0 tw-flex-1">
+                <div class="tw-truncate tw-text-sm tw-font-semibold">{{ ct.display_name }}</div>
+                <div v-if="ct.description" class="tw-mt-0.5 tw-line-clamp-2 tw-text-xs tw-text-muted-foreground">{{ ct.description }}</div>
+                <div v-else class="tw-font-mono tw-text-xs tw-text-muted-foreground">{{ ct.channel_type }}</div>
               </div>
-              <Icon icon="lucide:plus" class="h-4 w-4 shrink-0 text-muted-foreground opacity-0 transition group-hover:opacity-100" />
+              <Icon icon="lucide:plus" class="tw-h-4 tw-w-4 tw-shrink-0 tw-text-muted-foreground tw-opacity-0 tw-transition group-hover:tw-opacity-100" />
             </button>
           </div>
         </template>

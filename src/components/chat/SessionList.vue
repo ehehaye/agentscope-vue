@@ -1,16 +1,16 @@
 <template>
-  <div class="flex h-full w-60 shrink-0 flex-col gap-3 overflow-hidden tw-rounded-22px bg-card p-3 shadow-panel">
+  <div class="tw-flex tw-h-full tw-w-60 tw-shrink-0 tw-flex-col tw-gap-3 tw-overflow-hidden tw-rounded-22px tw-bg-card tw-p-3 tw-shadow-panel">
     <!-- Agent -->
-    <div class="flex flex-col gap-1.5">
-      <div class="flex items-center justify-between px-1">
-        <span class="text-xs text-muted-foreground">助手</span>
-        <el-button size="mini" type="text" class="h-auto px-1 py-0" @click="$emit('create-agent')">
-          <Icon icon="lucide:plus" class="h-3.5 w-3.5" />
+    <div class="tw-flex tw-flex-col tw-gap-1.5">
+      <div class="tw-flex tw-items-center tw-justify-between tw-px-1">
+        <span class="tw-text-xs tw-text-muted-foreground">助手</span>
+        <el-button size="mini" type="text" class="tw-h-auto tw-px-1 tw-py-0" @click="$emit('create-agent')">
+          <Icon icon="lucide:plus" class="tw-h-3.5 tw-w-3.5" />
         </el-button>
       </div>
-      <div class="flex items-center gap-1">
+      <div class="tw-flex tw-items-center tw-gap-1">
         <AgentSelect
-          class="flex-1 min-w-0"
+          class="tw-flex-1 tw-min-w-0"
           :agents="agents"
           :value="agentId"
           @change="$emit('agent-change', $event)"
@@ -19,21 +19,21 @@
           <el-button
             size="mini"
             type="text"
-            class="h-auto px-1 py-0"
+            class="tw-h-auto tw-px-1 tw-py-0"
             :disabled="!selectedAgent || !selectedAgent.editable"
           >
-            <Icon icon="lucide:ellipsis" class="h-3.5 w-3.5" />
+            <Icon icon="lucide:ellipsis" class="tw-h-3.5 tw-w-3.5" />
           </el-button>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="edit">
-              <span class="inline-flex items-center gap-1.5">
-                <Icon icon="lucide:settings-2" class="h-3.5 w-3.5" />
+              <span class="tw-inline-flex tw-items-center tw-gap-1.5">
+                <Icon icon="lucide:settings-2" class="tw-h-3.5 tw-w-3.5" />
                 设置
               </span>
             </el-dropdown-item>
-            <el-dropdown-item command="delete" class="text-danger">
-              <span class="inline-flex items-center gap-1.5">
-                <Icon icon="lucide:trash-2" class="h-3.5 w-3.5" />
+            <el-dropdown-item command="delete" class="tw-text-danger">
+              <span class="tw-inline-flex tw-items-center tw-gap-1.5">
+                <Icon icon="lucide:trash-2" class="tw-h-3.5 tw-w-3.5" />
                 删除
               </span>
             </el-dropdown-item>
@@ -42,21 +42,23 @@
       </div>
     </div>
 
-    <el-divider class="my-0" />
+    <el-divider class="tw-my-0" />
 
     <!-- Sessions -->
-    <div class="flex min-h-0 flex-col gap-2">
-      <div class="flex items-center justify-between px-1">
-        <span class="text-xs text-muted-foreground">会话</span>
-        <span class="font-mono tw-text-10px text-muted-foreground">{{ sessions.length }}</span>
+    <div class="tw-flex tw-min-h-0 tw-flex-col tw-gap-2">
+      <div class="tw-flex tw-items-center tw-justify-between tw-px-1">
+        <span class="tw-text-xs tw-text-muted-foreground">会话</span>
+        <span class="tw-font-mono tw-text-10px tw-text-muted-foreground">{{ sessions.length }}</span>
       </div>
-      <el-button size="small" class="w-full" :disabled="!agentId" @click="$emit('create-session')">
-        <Icon icon="lucide:plus" class="mr-1 h-3.5 w-3.5" />
-        新会话
+      <el-button size="small" class="tw-w-full" :disabled="!agentId" @click="$emit('create-session')">
+        <span class="tw-flex tw-items-center tw-text-xs tw-text-muted-foreground">
+          <Icon icon="lucide:plus" class="tw-mr-1 tw-h-3.5 tw-w-3.5" />
+          新会话
+        </span>
       </el-button>
 
-      <div v-if="sessionsLoading" class="flex flex-1 flex-col items-center justify-center py-4">
-        <Spinner className="h-5 w-5" />
+      <div v-if="sessionsLoading" class="tw-flex tw-flex-1 tw-flex-col tw-items-center tw-justify-center tw-py-4">
+        <Spinner className="h-5 tw-w-5" />
       </div>
       <PanelEmpty
         v-else-if="sessions.length === 0"
@@ -64,10 +66,10 @@
         title="暂无会话"
         :description="agentId ? '当前助手下还没有会话' : '请先选择一个助手'"
       />
-      <div v-else class="min-h-0 flex-1 overflow-y-auto pr-1">
-        <div v-if="todaySessions.length > 0" class="mb-2">
-          <div class="px-1 py-1 tw-text-10px text-muted-foreground">今天</div>
-          <ul class="flex flex-col gap-0.5">
+      <div v-else class="tw-min-h-0 tw-flex-1 tw-overflow-y-auto tw-pr-1">
+        <div v-if="todaySessions.length > 0" class="tw-mb-2">
+          <div class="tw-px-1 tw-py-1 tw-text-10px tw-text-muted-foreground">今天</div>
+          <ul class="tw-flex tw-flex-col tw-gap-0.5">
             <li v-for="v in todaySessions" :key="v.session.id">
               <SessionListItem
                 :view="v"
@@ -81,8 +83,8 @@
           </ul>
         </div>
         <div v-if="earlierSessions.length > 0">
-          <div class="px-1 py-1 tw-text-10px text-muted-foreground">更早</div>
-          <ul class="flex flex-col gap-0.5">
+          <div class="tw-px-1 tw-py-1 tw-text-10px tw-text-muted-foreground">更早</div>
+          <ul class="tw-flex tw-flex-col tw-gap-0.5">
             <li v-for="v in earlierSessions" :key="v.session.id">
               <SessionListItem
                 :view="v"

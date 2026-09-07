@@ -1,18 +1,18 @@
 <template>
-  <div class="rounded-md border border-border bg-muted p-2 text-sm">
+  <div class="tw-rounded-md tw-border tw-border-border tw-bg-muted tw-p-2 tw-text-sm">
     <Collapsible :default-open="false">
       <template #trigger="{ open }">
-        <div class="flex items-center gap-2 text-muted-foreground" :class="{ shimmer: !allFinished }">
+        <div class="tw-flex tw-items-center tw-gap-2 tw-text-muted-foreground" :class="{ shimmer: !allFinished }">
           <span>{{ title }}</span>
           <DiffStats :insertions="insertions" :deletions="deletions" />
           <Icon
             icon="lucide:chevron-right"
-            class="h-3 w-3 transition-transform"
-            :class="{ 'rotate-90': open }"
+            class="tw-h-3 tw-w-3 tw-transition-transform"
+            :class="{ 'tw-rotate-90': open }"
           />
         </div>
       </template>
-      <div class="mt-2 flex flex-col gap-2">
+      <div class="tw-mt-2 tw-flex tw-flex-col tw-gap-2">
         <ToolCallRow v-for="pair in calls" :key="pair.call.id" :pair="pair" />
       </div>
     </Collapsible>

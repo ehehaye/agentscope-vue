@@ -1,16 +1,16 @@
 <template>
-  <div class="flex h-full flex-col gap-2">
-    <span class="text-sm text-muted-foreground">当前会话已装备的技能。</span>
+  <div class="tw-flex tw-h-full tw-flex-col tw-gap-2">
+    <span class="tw-text-sm tw-text-muted-foreground">当前会话已装备的技能。</span>
     <InputGroup>
       <InputGroupInput v-model="search" placeholder="搜索技能" />
       <InputGroupAddon align="inline-end">
-        <Icon icon="lucide:search" class="h-4 w-4" />
+        <Icon icon="lucide:search" class="tw-h-4 tw-w-4" />
       </InputGroupAddon>
     </InputGroup>
 
-    <div class="flex flex-1 flex-col gap-2 overflow-y-auto">
+    <div class="tw-flex tw-flex-1 tw-flex-col tw-gap-2 tw-overflow-y-auto">
       <template v-if="loading">
-        <div class="flex flex-1 items-center justify-center text-sm text-muted-foreground">加载中…</div>
+        <div class="tw-flex tw-flex-1 tw-items-center tw-justify-center tw-text-sm tw-text-muted-foreground">加载中…</div>
       </template>
       <template v-else-if="filtered.length === 0">
         <PanelEmpty
@@ -20,26 +20,26 @@
         />
       </template>
       <template v-else>
-        <Item v-for="skill in filtered" :key="skill.name" variant="outline" class="group/skill">
+        <Item v-for="skill in filtered" :key="skill.name" variant="outline" class="tw-group/skill">
           <ItemMedia variant="image">
             <img
               v-if="installedByName[skill.name]?.icon_url"
               :src="installedByName[skill.name].icon_url"
               :alt="skill.name"
-              class="size-full object-cover"
+              class="tw-size-full tw-object-cover"
             />
-            <span v-else class="flex size-full items-center justify-center text-sm font-medium">
+            <span v-else class="tw-flex tw-size-full tw-items-center tw-justify-center tw-text-sm tw-font-medium">
               {{ skill.name.slice(0, 1).toUpperCase() }}
             </span>
           </ItemMedia>
           <ItemContent>
             <ItemTitle>
-              <span class="truncate">{{ skill.name }}</span>
-              <span v-if="installedByName[skill.name]?.author" class="text-xs text-muted-foreground">
+              <span class="tw-truncate">{{ skill.name }}</span>
+              <span v-if="installedByName[skill.name]?.author" class="tw-text-xs tw-text-muted-foreground">
                 @{{ installedByName[skill.name].author }}
               </span>
             </ItemTitle>
-            <ItemDescription v-if="skill.description" class="line-clamp-2">
+            <ItemDescription v-if="skill.description" class="tw-line-clamp-2">
               {{ skill.description }}
             </ItemDescription>
           </ItemContent>
@@ -47,10 +47,10 @@
             <el-button
               type="text"
               size="mini"
-              class="opacity-0 group-hover/skill:opacity-100"
+              class="tw-opacity-0 group-hover/skill:tw-opacity-100"
               @click="askRemove(skill.name)"
             >
-              <Icon icon="lucide:trash" class="h-3 w-3" />
+              <Icon icon="lucide:trash" class="tw-h-3 tw-w-3" />
             </el-button>
           </ItemActions>
         </Item>
@@ -58,8 +58,8 @@
     </div>
 
     <router-link to="/skill">
-      <el-button type="primary" size="small" class="w-full">
-        <Icon icon="lucide:plus-circle" class="h-4 w-4" />
+      <el-button type="primary" size="small" class="tw-w-full">
+        <Icon icon="lucide:plus-circle" class="tw-h-4 tw-w-4" />
         添加技能
       </el-button>
     </router-link>

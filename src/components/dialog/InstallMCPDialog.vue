@@ -5,15 +5,15 @@
     width="520px"
     :close-on-click-modal="false"
   >
-    <div v-if="card" class="space-y-4">
-      <div class="flex items-center gap-3">
-        <img v-if="card.icon_url" :src="card.icon_url" class="h-10 w-10 rounded-md object-cover" />
-        <div v-else class="flex h-10 w-10 items-center justify-center rounded-md bg-muted text-sm font-bold">
+    <div v-if="card" class="tw-space-y-4">
+      <div class="tw-flex tw-items-center tw-gap-3">
+        <img v-if="card.icon_url" :src="card.icon_url" class="tw-h-10 tw-w-10 tw-rounded-md tw-object-cover" />
+        <div v-else class="tw-flex tw-h-10 tw-w-10 tw-items-center tw-justify-center tw-rounded-md tw-bg-muted tw-text-sm tw-font-bold">
           {{ (card.display_name || card.name).slice(0, 1).toUpperCase() }}
         </div>
         <div>
-          <div class="font-medium">{{ card.display_name || card.name }}</div>
-          <div class="text-xs text-muted-foreground">{{ card.description }}</div>
+          <div class="tw-font-medium">{{ card.display_name || card.name }}</div>
+          <div class="tw-text-xs tw-text-muted-foreground">{{ card.description }}</div>
         </div>
       </div>
 
@@ -27,7 +27,7 @@
       </el-form>
     </div>
 
-    <span slot="footer" class="dialog-footer">
+    <span slot="footer" class="tw-dialog-footer">
       <el-button @click="dialogVisible = false" :disabled="submitting">取消</el-button>
       <el-button type="primary" :loading="submitting" :disabled="!card" @click="handleSubmit">
         {{ editing ? '保存' : '安装' }}

@@ -1,15 +1,15 @@
 <template>
   <el-dropdown trigger="click" @command="(v) => $emit('change', v)">
-    <span class="el-dropdown-link inline-flex w-full cursor-pointer items-center justify-between gap-2 rounded-md border border-border px-3 py-1.5 text-sm hover:bg-row-hover">
-      <span class="truncate inline-flex items-center gap-2">
-        <Icon icon="lucide:globe" class="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
-        <span class="truncate">{{ displayLabel }}</span>
+    <span class="el-dropdown-link tw-inline-flex tw-w-full tw-cursor-pointer tw-items-center tw-justify-between tw-gap-2 tw-rounded-md tw-border tw-border-border tw-px-3 tw-py-1.5 tw-text-sm hover:tw-bg-row-hover">
+      <span class="tw-truncate tw-inline-flex tw-items-center tw-gap-2">
+        <Icon icon="lucide:globe" class="tw-h-3.5 tw-w-3.5 tw-shrink-0 tw-text-muted-foreground" />
+        <span class="tw-truncate">{{ displayLabel }}</span>
       </span>
-      <Icon icon="lucide:chevron-down" class="h-4 w-4 shrink-0 text-muted-foreground" />
+      <Icon icon="lucide:chevron-down" class="tw-h-4 tw-w-4 tw-shrink-0 tw-text-muted-foreground" />
     </span>
-    <el-dropdown-menu slot="dropdown" class="w-64">
-      <div class="flex items-center gap-2 border-b px-3 py-2">
-        <Icon icon="lucide:search" class="h-3.5 w-3.5 shrink-0 opacity-50" />
+    <el-dropdown-menu slot="dropdown" class="tw-w-64">
+      <div class="tw-flex tw-items-center tw-gap-2 tw-border-b tw-px-3 tw-py-2">
+        <Icon icon="lucide:search" class="tw-h-3.5 tw-w-3.5 tw-shrink-0 tw-opacity-50" />
         <el-input
           v-model="search"
           size="mini"
@@ -18,7 +18,7 @@
           @keydown.native.stop
         />
       </div>
-      <div class="max-h-60 overflow-y-auto">
+      <div class="tw-max-h-60 tw-overflow-y-auto">
         <template v-if="filtered.length === 0">
           <el-dropdown-item disabled>未找到时区</el-dropdown-item>
         </template>
@@ -27,7 +27,7 @@
             v-for="tz in filtered"
             :key="tz"
             :command="tz"
-            :class="{ 'bg-accent': value === tz }"
+            :class="{ 'tw-bg-accent': value === tz }"
           >
             {{ tz }}
           </el-dropdown-item>

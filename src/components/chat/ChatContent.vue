@@ -1,14 +1,14 @@
 <template>
-  <div class="flex h-full w-full flex-col" :class="isEmpty ? 'justify-center' : ''">
-    <div v-if="showSpinner" class="flex flex-1 items-center justify-center">
-      <Spinner class="h-5 w-5 text-muted-foreground" />
+  <div class="tw-flex tw-h-full tw-w-full tw-flex-col" :class="isEmpty ? 'tw-justify-center' : ''">
+    <div v-if="showSpinner" class="tw-flex tw-flex-1 tw-items-center tw-justify-center">
+      <Spinner class="tw-h-5 tw-w-5 tw-text-muted-foreground" />
     </div>
-    <div v-else-if="isEmpty" class="text-center text-4xl font-light tracking-tight text-foreground">
+    <div v-else-if="isEmpty" class="tw-text-center tw-text-4xl tw-font-light tw-tracking-tight tw-text-foreground">
       {{ TEXT.greeting }}
     </div>
-    <MessageScroller v-else :items-length="msgs.length" class="flex-1">
-      <div class="flex flex-col gap-6">
-        <div v-for="(message, index) in msgs" :key="message.id" class="flex flex-col gap-2">
+    <MessageScroller v-else :items-length="msgs.length" class="tw-flex-1">
+      <div class="tw-flex tw-flex-col tw-gap-6">
+        <div v-for="(message, index) in msgs" :key="message.id" class="tw-flex tw-flex-col tw-gap-2">
           <TimeMarker
             v-if="shouldShowMarker(message, msgs[index - 1])"
             :at="new Date(message.created_at)"
@@ -16,23 +16,23 @@
           />
           <ASMessageBubble :message="message" />
         </div>
-        <div v-if="showMaxItersAlert" class="rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-50">
-          <div class="flex items-center gap-2 font-medium">
-            <Icon icon="lucide:triangle-alert" class="h-4 w-4" />
+        <div v-if="showMaxItersAlert" class="tw-rounded-md tw-border tw-border-amber-200 tw-bg-amber-50 tw-p-3 tw-text-sm tw-text-amber-900 dark:tw-border-amber-900 dark:tw-bg-amber-950 dark:tw-text-amber-50">
+          <div class="tw-flex tw-items-center tw-gap-2 tw-font-medium">
+            <Icon icon="lucide:triangle-alert" class="tw-h-4 tw-w-4" />
             {{ TEXT.maxItersExceeded.title }}
           </div>
-          <p class="mt-1 text-xs">{{ TEXT.maxItersExceeded.description }}</p>
-          <el-button size="mini" class="mt-2" @click="continueAfterMaxIters">
+          <p class="tw-mt-1 tw-text-xs">{{ TEXT.maxItersExceeded.description }}</p>
+          <el-button size="mini" class="tw-mt-2" @click="continueAfterMaxIters">
             {{ TEXT.maxItersExceeded.continue }}
           </el-button>
         </div>
       </div>
     </MessageScroller>
 
-    <div v-if="!loading" class="relative w-full p-4">
+    <div v-if="!loading" class="tw-relative tw-w-full tw-p-4">
       <FlipCard
         :visible="showFlipCard"
-        class="absolute bottom-full left-0 right-0 z-50 mb-2 w-full"
+        class="tw-absolute tw-bottom-full tw-left-0 tw-right-0 tw-z-50 tw-mb-2 tw-w-full"
       >
         <ConfirmCard
           v-if="pendingToolCall"
@@ -47,7 +47,7 @@
         />
       </FlipCard>
       <TextInput
-        class="mt-2 w-full tw-rounded-32px bg-muted p-1"
+        class="tw-mt-2 tw-w-full tw-rounded-32px tw-bg-muted tw-p-1"
         :disabled="disabled"
         :phase="phase"
         :allowed-input-types="allowedInputTypes"
@@ -55,7 +55,7 @@
         @interrupt="onInterrupt"
       >
         <template #header>
-          <div class="flex w-full items-center px-2 py-1">
+          <div class="tw-flex tw-w-full tw-items-center tw-px-2 tw-py-1">
             <WorkingDirectoryDialog
               :agent-id="agentId"
               :session-id="sessionId"

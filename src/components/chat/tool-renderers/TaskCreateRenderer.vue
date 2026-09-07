@@ -1,5 +1,5 @@
 <template>
-  <pre class="tw-max-h-200px overflow-auto rounded-sm border bg-background p-2 text-xs whitespace-pre-wrap break-all">{{ resultText || 'Creating task...' }}</pre>
+  <pre class="tw-max-h-200px tw-overflow-auto tw-rounded-sm tw-border tw-bg-background tw-p-2 tw-text-xs tw-whitespace-pre-wrap tw-break-all">{{ resultText || 'Creating task...' }}</pre>
 </template>
 
 <script>

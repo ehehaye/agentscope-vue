@@ -1,44 +1,44 @@
 <template>
-  <div ref="cellRef" class="cursor-pointer overflow-hidden border-r border-b border-border p-2 hover:bg-accent">
-    <div class="mb-1 flex items-start justify-between">
-      <div class="flex h-6 w-6 items-center justify-center">
+  <div ref="cellRef" class="tw-cursor-pointer tw-overflow-hidden tw-border-r tw-border-b tw-border-border tw-p-2 hover:tw-bg-accent">
+    <div class="tw-mb-1 tw-flex tw-items-start tw-justify-between">
+      <div class="tw-flex tw-h-6 tw-w-6 tw-items-center tw-justify-center">
         <div
           :class="[
-            'text-sm',
-            isToday ? 'flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground' : '',
+            'tw-text-sm',
+            isToday ? 'tw-flex tw-h-6 tw-w-6 tw-items-center tw-justify-center tw-rounded-full tw-bg-primary tw-text-primary-foreground' : '',
           ]"
         >
           {{ day }}
         </div>
       </div>
     </div>
-    <div class="space-y-1">
+    <div class="tw-space-y-1">
       <div
         v-for="event in visibleEvents"
         :key="event.id"
-        class="flex cursor-pointer flex-row justify-between rounded-sm px-1 py-0.5 text-xs text-secondary-foreground hover:bg-primary/20"
+        class="tw-flex tw-cursor-pointer tw-flex-row tw-justify-between tw-rounded-sm tw-px-1 tw-py-0.5 tw-text-xs tw-text-secondary-foreground hover:tw-bg-primary/20"
         :title="`${event.time} - ${event.title}`"
         @click.stop="$emit('event-click', event)"
       >
-        <div class="flex flex-1 flex-row items-center gap-x-1 overflow-hidden">
-          <div class="h-full w-1 min-w-1 max-w-1 rounded bg-primary" />
-          <span class="truncate">{{ event.title }}</span>
+        <div class="tw-flex tw-flex-1 tw-flex-row tw-items-center tw-gap-x-1 tw-overflow-hidden">
+          <div class="tw-h-full tw-w-1 tw-min-w-1 tw-max-w-1 tw-rounded tw-bg-primary" />
+          <span class="tw-truncate">{{ event.title }}</span>
         </div>
         <span>{{ event.time }}</span>
       </div>
       <el-dropdown v-if="events.length > maxVisibleEvents" trigger="click" @command="$emit('event-click', $event)">
-        <div class="cursor-pointer px-1 text-xs text-muted-foreground hover:text-foreground hover:underline">
+        <div class="tw-cursor-pointer tw-px-1 tw-text-xs tw-text-muted-foreground hover:tw-text-foreground hover:tw-underline">
           +{{ events.length - maxVisibleEvents }} {{ moreText }}
         </div>
-        <el-dropdown-menu slot="dropdown" class="max-w-64">
+        <el-dropdown-menu slot="dropdown" class="tw-max-w-64">
           <el-dropdown-item
             v-for="event in hiddenEvents"
             :key="event.id"
             :command="event"
-            class="text-xs"
+            class="tw-text-xs"
           >
-            <span class="font-medium">{{ event.time }}</span>
-            <span class="ml-2 truncate">{{ event.title }}</span>
+            <span class="tw-font-medium">{{ event.time }}</span>
+            <span class="tw-ml-2 tw-truncate">{{ event.title }}</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>

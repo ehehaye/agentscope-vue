@@ -1,59 +1,59 @@
 <template>
-  <div class="flex h-full flex-col p-5">
-    <div class="mb-4 flex items-center gap-3">
-      <img v-if="hub?.icon_url" :src="hub.icon_url" class="h-8 w-8 rounded-md object-cover" />
-      <div v-else class="flex h-8 w-8 items-center justify-center rounded-md bg-muted text-sm font-bold">
+  <div class="tw-flex tw-h-full tw-flex-col tw-p-5">
+    <div class="tw-mb-4 tw-flex tw-items-center tw-gap-3">
+      <img v-if="hub?.icon_url" :src="hub.icon_url" class="tw-h-8 tw-w-8 tw-rounded-md tw-object-cover" />
+      <div v-else class="tw-flex tw-h-8 tw-w-8 tw-items-center tw-justify-center tw-rounded-md tw-bg-muted tw-text-sm tw-font-bold">
         {{ (hub?.display_name || hubId).slice(0, 1).toUpperCase() }}
       </div>
       <div>
-        <div class="text-lg font-medium">{{ hub?.display_name || hubId }}</div>
-        <div class="text-xs text-muted-foreground">{{ hub?.description }}</div>
+        <div class="tw-text-lg tw-font-medium">{{ hub?.display_name || hubId }}</div>
+        <div class="tw-text-xs tw-text-muted-foreground">{{ hub?.description }}</div>
       </div>
-      <el-input v-model="query" placeholder="搜索" size="small" class="ml-auto w-48" />
+      <el-input v-model="query" placeholder="搜索" size="small" class="tw-ml-auto tw-w-48" />
     </div>
 
-    <div class="flex-1 overflow-y-auto">
-      <div v-if="loading" class="flex justify-center py-10">
-        <Spinner class="h-6 w-6" />
+    <div class="tw-flex-1 tw-overflow-y-auto">
+      <div v-if="loading" class="tw-flex tw-justify-center tw-py-10">
+        <Spinner class="tw-h-6 tw-w-6" />
       </div>
-      <div v-else-if="error" class="flex flex-col items-center gap-2 py-10 text-center">
-        <Icon icon="lucide:triangle-alert" class="h-8 w-8 text-muted-foreground" />
-        <div class="text-sm font-medium">{{ TEXT.mcp.loadFailedTitle }}</div>
-        <p class="text-xs text-muted-foreground">{{ TEXT.mcp.loadFailedDescription }}</p>
+      <div v-else-if="error" class="tw-flex tw-flex-col tw-items-center tw-gap-2 tw-py-10 tw-text-center">
+        <Icon icon="lucide:triangle-alert" class="tw-h-8 tw-w-8 tw-text-muted-foreground" />
+        <div class="tw-text-sm tw-font-medium">{{ TEXT.mcp.loadFailedTitle }}</div>
+        <p class="tw-text-xs tw-text-muted-foreground">{{ TEXT.mcp.loadFailedDescription }}</p>
         <el-button size="small" @click="refetch">{{ TEXT.mcp.retry }}</el-button>
       </div>
-      <div v-else-if="cards.length === 0" class="flex flex-col items-center gap-2 py-10 text-center">
-        <Icon icon="lucide:blocks" class="h-8 w-8 text-muted-foreground" />
-        <div class="text-sm font-medium">{{ TEXT.mcp.noCardsTitle }}</div>
-        <p class="text-xs text-muted-foreground">{{ TEXT.mcp.noCardsDescription }}</p>
+      <div v-else-if="cards.length === 0" class="tw-flex tw-flex-col tw-items-center tw-gap-2 tw-py-10 tw-text-center">
+        <Icon icon="lucide:blocks" class="tw-h-8 tw-w-8 tw-text-muted-foreground" />
+        <div class="tw-text-sm tw-font-medium">{{ TEXT.mcp.noCardsTitle }}</div>
+        <p class="tw-text-xs tw-text-muted-foreground">{{ TEXT.mcp.noCardsDescription }}</p>
       </div>
-      <div v-else class="space-y-2">
+      <div v-else class="tw-space-y-2">
         <div
           v-for="card in cards"
           :key="`${card.hub_id}:${card.id}`"
-          class="group flex cursor-pointer items-center gap-3 rounded-lg border border-border p-3 transition-colors hover:bg-muted"
+          class="tw-group tw-flex tw-cursor-pointer tw-items-center tw-gap-3 tw-rounded-lg tw-border tw-border-border tw-p-3 tw-transition-colors hover:tw-bg-muted"
           @click="openDetail(card)"
         >
-          <img v-if="card.icon_url" :src="card.icon_url" class="h-10 w-10 rounded-md object-cover" />
-          <div v-else class="flex h-10 w-10 items-center justify-center rounded-md bg-muted text-sm font-bold">
+          <img v-if="card.icon_url" :src="card.icon_url" class="tw-h-10 tw-w-10 tw-rounded-md tw-object-cover" />
+          <div v-else class="tw-flex tw-h-10 tw-w-10 tw-items-center tw-justify-center tw-rounded-md tw-bg-muted tw-text-sm tw-font-bold">
             {{ (card.display_name || card.name).slice(0, 1).toUpperCase() }}
           </div>
-          <div class="min-w-0 flex-1">
-            <div class="flex items-center gap-2">
-              <span class="font-medium">{{ card.display_name || card.name }}</span>
-              <span v-if="card.author" class="text-xs text-muted-foreground">@{{ card.author }}</span>
-              <span v-if="card.auth === 'inputs'" class="rounded-full bg-amber-100 px-2 py-0.5 tw-text-10px text-amber-700 dark:bg-amber-900 dark:text-amber-300">{{ TEXT.mcp.needsConfig }}</span>
-              <span v-for="tag in (card.tags || []).slice(0, 4)" :key="tag" class="rounded-full bg-secondary px-1.5 py-0.5 tw-text-10px">#{{ tag }}</span>
+          <div class="tw-min-w-0 tw-flex-1">
+            <div class="tw-flex tw-items-center tw-gap-2">
+              <span class="tw-font-medium">{{ card.display_name || card.name }}</span>
+              <span v-if="card.author" class="tw-text-xs tw-text-muted-foreground">@{{ card.author }}</span>
+              <span v-if="card.auth === 'inputs'" class="tw-rounded-full tw-bg-amber-100 tw-px-2 tw-py-0.5 tw-text-10px tw-text-amber-700 dark:tw-bg-amber-900 dark:tw-text-amber-300">{{ TEXT.mcp.needsConfig }}</span>
+              <span v-for="tag in (card.tags || []).slice(0, 4)" :key="tag" class="tw-rounded-full tw-bg-secondary tw-px-1.5 tw-py-0.5 tw-text-10px">#{{ tag }}</span>
             </div>
-            <p class="line-clamp-1 text-xs text-muted-foreground">{{ card.description }}</p>
+            <p class="tw-line-clamp-1 tw-text-xs tw-text-muted-foreground">{{ card.description }}</p>
           </div>
-          <div class="flex items-center gap-2">
-            <span v-if="card.installs != null" class="inline-flex items-center gap-1 tw-text-10px text-muted-foreground">
-              <Icon icon="lucide:download" class="h-3 w-3" />
+          <div class="tw-flex tw-items-center tw-gap-2">
+            <span v-if="card.installs != null" class="tw-inline-flex tw-items-center tw-gap-1 tw-text-10px tw-text-muted-foreground">
+              <Icon icon="lucide:download" class="tw-h-3 tw-w-3" />
               {{ card.installs.toLocaleString() }}
             </span>
-            <span v-if="installedNames.has(card.name)" class="inline-flex items-center gap-1 rounded-full bg-muted px-3 py-1 tw-text-11px text-muted-foreground">
-              <Icon icon="lucide:check" class="h-3 w-3" />
+            <span v-if="installedNames.has(card.name)" class="tw-inline-flex tw-items-center tw-gap-1 tw-rounded-full tw-bg-muted tw-px-3 tw-py-1 tw-text-11px tw-text-muted-foreground">
+              <Icon icon="lucide:check" class="tw-h-3 tw-w-3" />
               {{ TEXT.mcp.installed }}
             </span>
             <el-button v-else size="mini" @click.stop="$emit('install', card)">
@@ -62,7 +62,7 @@
           </div>
         </div>
       </div>
-      <div v-if="hasMore" class="mt-4 text-center">
+      <div v-if="hasMore" class="tw-mt-4 tw-text-center">
         <el-button size="small" :loading="loadingMore" @click="loadMore">加载更多</el-button>
       </div>
     </div>
@@ -73,13 +73,13 @@
       direction="rtl"
       size="30rem"
     >
-      <div v-if="detailCard" class="flex h-full flex-col gap-4 p-4">
-        <p class="text-sm text-muted-foreground">{{ detailCard.description }}</p>
+      <div v-if="detailCard" class="tw-flex tw-h-full tw-flex-col tw-gap-4 tw-p-4">
+        <p class="tw-text-sm tw-text-muted-foreground">{{ detailCard.description }}</p>
         <div>
-          <span class="text-xs text-muted-foreground">{{ TEXT.mcp.configLabel }}</span>
-          <pre class="mt-1 overflow-x-auto rounded-md bg-muted p-3 text-xs">{{ JSON.stringify(detailCard.config_template, null, 2) }}</pre>
+          <span class="tw-text-xs tw-text-muted-foreground">{{ TEXT.mcp.configLabel }}</span>
+          <pre class="tw-mt-1 tw-overflow-x-auto tw-rounded-md tw-bg-muted tw-p-3 tw-text-xs">{{ JSON.stringify(detailCard.config_template, null, 2) }}</pre>
         </div>
-        <div v-if="detailCard.readme" class="prose prose-sm max-w-none" v-html="detailCard.readme" />
+        <div v-if="detailCard.readme" class="tw-prose tw-prose-sm tw-max-w-none" v-html="detailCard.readme" />
       </div>
     </el-drawer>
   </div>

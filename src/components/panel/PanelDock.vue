@@ -1,7 +1,7 @@
 <template>
   <transition name="dock-slide">
-    <div v-show="normalizedLayout.length > 0" class="h-full">
-      <splitpanes class="h-full" @resized="onResized">
+    <div v-show="normalizedLayout.length > 0" class="tw-h-full">
+      <splitpanes class="tw-h-full" @resized="onResized">
         <pane
           v-for="(column, colIdx) in normalizedLayout"
           :key="colKey(column)"
@@ -12,7 +12,7 @@
               v-for="key in column"
               :key="key"
               :size="rowSize(column.length)"
-              class="tw-rounded-22px bg-card shadow-panel"
+              class="tw-rounded-22px tw-bg-card tw-shadow-panel"
             >
               <Panel
                 :title="panels[key]?.title || key"
