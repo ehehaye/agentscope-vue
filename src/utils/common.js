@@ -14,8 +14,21 @@ export const copyToClipboard = async (text) => {
 		await navigator.clipboard.writeText(text);
 		return true;
 	} catch (err) {
-		console.error('Failed to copy text: ', err);
-		return false;
+		let success = false;
+		const textarea = document.createElement('textarea');
+		textarea.value = text;
+		textarea.setAttribute('readonly', '');
+		textarea.style.position = 'absolute';
+		textarea.style.left = '-9999px';
+		document.body.appendChild(textarea);
+		textarea.select();
+		try {
+			success = document.execCommand('copy');
+		} catch (execErr) {
+			console.error('Failed to copy text: ', execErr);
+		}
+		document.body.removeChild(textarea);
+		return success;
 	}
 };
 
