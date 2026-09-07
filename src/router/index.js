@@ -84,12 +84,6 @@ const routes = [
 							component: () => import('@/views/dev/MarkdownDevPage.vue'),
 							meta: { title: 'Markdown 渲染验证' },
 						},
-						{
-								path: 'dev/chat',
-								name: 'dev-chat',
-								component: () => import('@/views/dev/ChatDevPage.vue'),
-								meta: { title: 'Chat 回放验证' },
-							},
 		],
 	},
 	{ path: '*', redirect: '/' },
