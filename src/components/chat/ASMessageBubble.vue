@@ -4,7 +4,7 @@
     :class="isUser ? 'justify-end' : 'justify-start'"
     :data-role="message.role"
   >
-    <div class="flex max-w-[85%] flex-col gap-1">
+    <div class="flex tw-max-w-85pct flex-col gap-1">
       <div class="flex flex-col gap-2">
         <template v-for="(block, index) in blocks">
           <Bubble v-if="block.type !== 'data'" :key="index" :variant="isUser ? 'muted' : 'ghost'">

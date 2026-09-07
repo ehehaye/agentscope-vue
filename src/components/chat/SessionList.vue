@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-full w-60 shrink-0 flex-col gap-3 overflow-hidden rounded-[22px] bg-card p-3 shadow-panel">
+  <div class="flex h-full w-60 shrink-0 flex-col gap-3 overflow-hidden tw-rounded-22px bg-card p-3 shadow-panel">
     <!-- Agent -->
     <div class="flex flex-col gap-1.5">
       <div class="flex items-center justify-between px-1">
@@ -48,7 +48,7 @@
     <div class="flex min-h-0 flex-col gap-2">
       <div class="flex items-center justify-between px-1">
         <span class="text-xs text-muted-foreground">会话</span>
-        <span class="font-mono text-[10px] text-muted-foreground">{{ sessions.length }}</span>
+        <span class="font-mono tw-text-10px text-muted-foreground">{{ sessions.length }}</span>
       </div>
       <el-button size="small" class="w-full" :disabled="!agentId" @click="$emit('create-session')">
         <Icon icon="lucide:plus" class="mr-1 h-3.5 w-3.5" />
@@ -66,7 +66,7 @@
       />
       <div v-else class="min-h-0 flex-1 overflow-y-auto pr-1">
         <div v-if="todaySessions.length > 0" class="mb-2">
-          <div class="px-1 py-1 text-[10px] text-muted-foreground">今天</div>
+          <div class="px-1 py-1 tw-text-10px text-muted-foreground">今天</div>
           <ul class="flex flex-col gap-0.5">
             <li v-for="v in todaySessions" :key="v.session.id">
               <SessionListItem
@@ -81,7 +81,7 @@
           </ul>
         </div>
         <div v-if="earlierSessions.length > 0">
-          <div class="px-1 py-1 text-[10px] text-muted-foreground">更早</div>
+          <div class="px-1 py-1 tw-text-10px text-muted-foreground">更早</div>
           <ul class="flex flex-col gap-0.5">
             <li v-for="v in earlierSessions" :key="v.session.id">
               <SessionListItem

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <pre class="max-h-[200px] overflow-auto rounded-sm border bg-background p-2 text-xs whitespace-pre-wrap break-all">{{ inputText }}</pre>
+    <pre class="tw-max-h-200px overflow-auto rounded-sm border bg-background p-2 text-xs whitespace-pre-wrap break-all">{{ inputText }}</pre>
   </div>
 </template>
 

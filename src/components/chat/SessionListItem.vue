@@ -9,7 +9,7 @@
       <span class="truncate text-xs">{{ view.session?.config?.name || view.session?.id }}</span>
     </div>
     <div class="flex shrink-0 items-center gap-1">
-      <span class="font-mono text-[10px] opacity-60">{{ timeLabel }}</span>
+      <span class="font-mono tw-text-10px opacity-60">{{ timeLabel }}</span>
       <el-dropdown trigger="click" size="mini" @command="handleCommand" @click.native.stop>
         <span class="inline-flex h-5 w-5 items-center justify-center rounded opacity-0 transition-opacity duration-150 group-hover:opacity-100 hover:bg-muted">
           <Icon icon="lucide:ellipsis" class="h-3 w-3" />

@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-2 w-full space-y-3 rounded-[28px] bg-card p-3 ring-1 ring-border">
+  <div class="mb-2 w-full space-y-3 tw-rounded-28px bg-card p-3 ring-1 ring-border">
     <div class="flex items-center gap-2 px-2 text-sm font-medium text-secondary-foreground">
       <Icon icon="lucide:users" class="h-4 w-4 shrink-0" />
       <span>{{ TEXT.subagentConfirmTitle(entry.worker_agent_name) }}</span>

@@ -1,8 +1,8 @@
 <template>
   <div class="flex size-full gap-2 p-2">
-    <aside class="flex w-64 min-w-0 flex-col overflow-hidden rounded-[22px] bg-card">
+    <aside class="flex w-64 min-w-0 flex-col overflow-hidden tw-rounded-22px bg-card">
       <div class="flex flex-col gap-y-1 p-5 pb-3">
-        <div class="text-xl font-medium tracking-[-0.02em]">{{ COMMON.knowledge }}</div>
+        <div class="text-xl font-medium tw-tracking-neg-0_02em">{{ COMMON.knowledge }}</div>
         <div class="text-xs text-muted-foreground">{{ TEXT.knowledge.subtitle }}</div>
       </div>
       <div class="flex-1 overflow-y-auto px-2">
@@ -36,7 +36,7 @@
             @click="selectKb(kb)"
           >
             <span class="min-w-0 flex-1 truncate">{{ kb.name }}</span>
-            <span v-if="!kb.editable" class="ml-1 shrink-0 rounded border border-border px-1 text-[10px]">{{ COMMON.readOnly }}</span>
+            <span v-if="!kb.editable" class="ml-1 shrink-0 rounded border border-border px-1 tw-text-10px">{{ COMMON.readOnly }}</span>
             <el-dropdown v-if="kb.editable" trigger="click" @command="handleCommand($event, kb)">
               <span class="ml-1 opacity-0 transition-opacity duration-150 group-hover:opacity-100" @click.stop>
                 <Icon icon="lucide:ellipsis" class="h-3.5 w-3.5" />
@@ -57,7 +57,7 @@
       </div>
     </aside>
 
-    <main class="shadow-panel flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-[22px] bg-card">
+    <main class="shadow-panel flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden tw-rounded-22px bg-card">
       <DetailPanel v-if="selectedKb" :knowledge-base="selectedKb" @test="testOpen = true" />
       <div v-else class="flex h-full items-center justify-center">
         <div class="flex max-w-sm flex-col items-center gap-2 text-center">

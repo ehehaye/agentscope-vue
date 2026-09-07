@@ -42,8 +42,8 @@
             </ItemTitle>
             <ItemDescription v-if="kb.description">{{ kb.description }}</ItemDescription>
             <div class="flex flex-wrap gap-1">
-              <span class="rounded border px-1 py-0 text-[10px]">{{ kb.embedding_model_config?.model }}</span>
-              <span class="rounded border px-1 py-0 text-[10px]">{{ kb.embedding_model_config?.dimensions }}d</span>
+              <span class="rounded border px-1 py-0 tw-text-10px">{{ kb.embedding_model_config?.model }}</span>
+              <span class="rounded border px-1 py-0 tw-text-10px">{{ kb.embedding_model_config?.dimensions }}d</span>
             </div>
           </ItemContent>
         </Item>

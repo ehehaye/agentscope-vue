@@ -35,7 +35,7 @@
             <div class="flex items-center gap-2">
               <span class="font-medium">{{ skill.display_name || skill.name }}</span>
               <span v-if="skill.hub_id" class="text-xs text-muted-foreground">@{{ skill.hub_id }}</span>
-              <span v-for="tag in (skill.tags || []).slice(0, 4)" :key="tag" class="rounded-full bg-secondary px-1.5 py-0.5 text-[10px]">#{{ tag }}</span>
+              <span v-for="tag in (skill.tags || []).slice(0, 4)" :key="tag" class="rounded-full bg-secondary px-1.5 py-0.5 tw-text-10px">#{{ tag }}</span>
             </div>
             <p class="line-clamp-1 text-xs text-muted-foreground">{{ skill.description }}</p>
           </div>

@@ -1,7 +1,7 @@
 <template>
-  <div class="mb-2 w-full space-y-3 rounded-[28px] bg-muted px-5 py-4 ring-1 ring-border">
+  <div class="mb-2 w-full space-y-3 tw-rounded-28px bg-muted px-5 py-4 ring-1 ring-border">
     <div class="text-sm font-medium text-secondary-foreground">{{ displayName }}</div>
-    <div class="max-h-[200px] overflow-y-auto rounded-sm bg-background px-3 py-2 text-xs">
+    <div class="tw-max-h-200px overflow-y-auto rounded-sm bg-background px-3 py-2 text-xs">
       <component :is="renderer" v-if="renderer" :pair="{ call: toolCall }" />
       <pre v-else class="whitespace-pre-wrap break-all">{{ confirmBody }}</pre>
     </div>

@@ -12,7 +12,7 @@
       :model="form"
       label-position="left"
       label-width="100px"
-      class="mt-4 max-h-[75vh] overflow-y-auto pr-2"
+      class="mt-4 tw-max-h-75vh overflow-y-auto pr-2"
     >
       <el-form-item :label="COMMON.name">
         <el-input v-model="form.name" :placeholder="TEXT.schedule.createSchedule.namePlaceholder" />

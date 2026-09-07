@@ -16,7 +16,7 @@
       @rename-session="openRename($event)"
       @delete-session="openDeleteSession($event)"
     />
-    <div class="flex flex-1 overflow-hidden rounded-[22px] bg-card shadow-panel">
+    <div class="flex flex-1 overflow-hidden tw-rounded-22px bg-card shadow-panel">
       <div class="flex h-full w-full min-w-0 flex-col p-2">
         <!-- top bar -->
         <div class="mb-2 flex items-center justify-between gap-2 px-2">
@@ -76,7 +76,7 @@
         <!-- chat area -->
         <div class="relative flex flex-1 min-h-0 justify-center">
           <ChatContent
-            class="w-full max-w-[48rem]"
+            class="w-full tw-max-w-48rem"
             :msgs="msgs"
             :loading="loading"
             :phase="phase"
@@ -98,7 +98,7 @@
 
     <!-- right dock -->
     <PanelDock
-      class="ml-2 h-full w-[22rem] shrink-0"
+      class="ml-2 h-full tw-w-22rem shrink-0"
       :layout="panelLayout"
       :panels="panels"
       @close="closePanel"

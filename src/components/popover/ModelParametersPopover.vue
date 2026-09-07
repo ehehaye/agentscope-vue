@@ -6,7 +6,7 @@
     :disabled="disabled"
     popper-class="model-params-popover"
   >
-    <div class="flex max-h-[70vh] flex-col gap-3 overflow-y-auto">
+    <div class="flex tw-max-h-70vh flex-col gap-3 overflow-y-auto">
       <!-- Fallback 模型 -->
       <div>
         <p class="text-sm font-medium text-foreground">Fallback 模型</p>

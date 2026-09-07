@@ -1,6 +1,6 @@
 <template>
   <div class="flex size-full p-2">
-    <main class="shadow-panel flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-[22px] bg-card">
+    <main class="shadow-panel flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden tw-rounded-22px bg-card">
       <div class="flex items-start justify-between gap-3 px-6 pt-5 pb-4">
         <div>
           <div class="text-2xl font-semibold">{{ COMMON.schedule }}</div>

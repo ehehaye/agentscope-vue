@@ -57,7 +57,7 @@
               v-else-if="isPdf && tokenUrl"
               :src="tokenUrl"
               :title="document.filename"
-              class="h-[60vh] w-full border"
+              class="tw-h-60vh w-full border"
             />
             <img
               v-else-if="isImage && tokenUrl"

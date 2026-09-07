@@ -1,5 +1,5 @@
 <template>
-  <pre class="max-h-[200px] overflow-auto rounded-sm border bg-background p-2 text-xs whitespace-pre-wrap break-all">{{ resultText || 'Searching...' }}</pre>
+  <pre class="tw-max-h-200px overflow-auto rounded-sm border bg-background p-2 text-xs whitespace-pre-wrap break-all">{{ resultText || 'Searching...' }}</pre>
 </template>
 
 <script>
