@@ -20,6 +20,8 @@
 
 > 当前仓库已**直接基于 vue-cli 4 运行**。若你的老项目使用 vue-cli 4 / Vue 2.7，可直接拷贝 `src/` 下组件与视图到现有工程，替换或补充路由、store 后即可接入。
 
+> **Tailwind 类名前缀（`tw-`）**：Tailwind 在 [tailwind.config.js](tailwind.config.js) 中统一配置了 `prefix: 'tw-'`，全项目的工具类均以 `tw-` 开头（如 `tw-flex`、`tw-bg-red-500`）。这样当你把它集成到一个已自带样式体系的现有系统时，Tailwind 的工具类不会与业务全局样式 / 其他框架（如 Element UI）产生 CSS 冲突。如需更改或移除前缀，只需调整该文件里的 `prefix` 配置，并借助代码中统一的 `tw-` 标记做全局查找替换即可，改造成本极低。
+
 ## 运行方式
 
 ```bash
