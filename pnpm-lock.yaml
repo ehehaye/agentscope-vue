@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@agentscope-ai/agentscope':
         specifier: ^0.0.15
-        version: 0.0.15
+        version: 0.0.15(ws@8.21.3)
       '@fontsource-variable/geist':
         specifier: ^5.2.8
         version: 5.3.0
@@ -84,6 +84,9 @@ importers:
       autoprefixer:
         specifier: ^9.8.8
         version: 9.8.8
+      code-inspector-plugin:
+        specifier: ^2.0.8
+        version: 2.0.8
       file-loader:
         specifier: ^6.2.0
         version: 6.2.0(webpack@4.47.0)
@@ -648,6 +651,35 @@ packages:
 
   '@cfworker/json-schema@4.1.1':
     resolution: {integrity: sha512-gAmrUZSGtKc3AiBL71iNWxDsyUC5uMaKKGdvzYsBoTW/xi42JQHl7eKV2OYzCUqvc+D2RCcf7EXY2iCyFIk6og==}
+
+  '@code-inspector/core@2.0.8':
+    resolution: {integrity: sha512-RIGPzE5YGRThjFWvW9coAsg2H02ByJWI1yviOm/mJ6qQVFRliTG9rLwSU4gRzLsMu5V8VF+8hypMp6xSOFH5uQ==}
+    peerDependencies:
+      '@anthropic-ai/claude-agent-sdk': ^0.2.29
+      '@openai/codex-sdk': ^0.106.0
+      '@opencode-ai/sdk': ^1.2.24
+    peerDependenciesMeta:
+      '@anthropic-ai/claude-agent-sdk':
+        optional: true
+      '@openai/codex-sdk':
+        optional: true
+      '@opencode-ai/sdk':
+        optional: true
+
+  '@code-inspector/esbuild@2.0.8':
+    resolution: {integrity: sha512-xnfpBiBKrIOGN0j9IZ+k2p6aGq8TOIeHndGY+W8mxeODhO5KbM9rym0FSgVe3tEm6JcUk3kHP9h/EG61mnqDuw==}
+
+  '@code-inspector/mako@2.0.8':
+    resolution: {integrity: sha512-l243SWfGr4sUACVOCd5NbkjuFRobACnmpWXA2IyDFkedYFeGbYYpjZUwP88lxrVHt1PHZyB81HMiScE24P0ONw==}
+
+  '@code-inspector/turbopack@2.0.8':
+    resolution: {integrity: sha512-iLbGsojN6MwcqClTUQrqTHZHKUgbHBXSyDc4CAicmPytr5EcSYCCyICPrAY238ny+CdmzxGLaobZTA/YpScNiA==}
+
+  '@code-inspector/vite@2.0.8':
+    resolution: {integrity: sha512-qj8lOiA6Q1cZ8iJI2zGSdEd85yok/8EFa0G2KiSrY1PaD3pLZquayRgzWMCLTC2pmLSWGM4L1UbTyDM2c8joDg==}
+
+  '@code-inspector/webpack@2.0.8':
+    resolution: {integrity: sha512-lz6LvkugtibrKbA+t/jFBkdSThveFEcLe1zutr4MUUOJh4XXWo1MYAjFHkUKnSy/+KqMC9MfBnDDtObYICBUmA==}
 
   '@fontsource-variable/geist-mono@5.3.0':
     resolution: {integrity: sha512-vBbuwDEo9AkrqADMXOrlAR3DFcJi4/JxeuU43FoiQERnNwsfXNnvxvReZG02cQKmyk4DZkZdBZX3oTDvy2zBAw==}
@@ -1510,6 +1542,10 @@ packages:
     resolution: {integrity: sha512-4D3B6Wf41KOYRFdszmDqMCGq5VV/uMAB273JILmO+3jAlh8X4qDtdtgCR3fxtbLEMzSx22QdhnDcJvu2u1fVwg==}
     engines: {node: '>=8'}
 
+  chalk@4.1.1:
+    resolution: {integrity: sha512-diHzdDKxcU+bAsUboHLPEDQiw0qEe0qd7SYUn3HgcFlWgbDcfLGswOHYeGrHKzG9z6UYf01d9VFMfZxPM1xZSg==}
+    engines: {node: '>=10'}
+
   chalk@4.1.2:
     resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==}
     engines: {node: '>=10'}
@@ -1580,6 +1616,9 @@ packages:
   coa@2.0.2:
     resolution: {integrity: sha512-q5/jG+YQnSy4nRTV4F7lPepBJZ8qBNJJDBuJdoejDyLXgmL7IEo+Le2JDZudFTFt7mrCqIRaSjws4ygRCTCAXA==}
     engines: {node: '>= 4.0'}
+
+  code-inspector-plugin@2.0.8:
+    resolution: {integrity: sha512-Ig7pHNGdlVprf6zRFLhSFI28D4PrKG72YkqNQ0uxYZHEomvKvD6FwK1DrYypbthz+N7c7g9v/uvAFM7tJn3ntw==}
 
   collection-visit@1.0.0:
     resolution: {integrity: sha512-lNkKvzEeMBBjUGHZ+q6z9pSJla0KWAQPvtzhEV9+iGyQYG+pBpl7xKDhxoNSOZH2hhv0v5k0y2yAM4o4SjoSkw==}
@@ -2204,6 +2243,10 @@ packages:
 
   dotenv-expand@5.1.0:
     resolution: {integrity: sha512-YXQl1DSa4/PQyRfgrv6aoNjhasp/p4qs9FjJ4q4cQk+8m4r6k4ZSiEyytKG8f8W9gi8WsQtIObNmKd+tMzNTmA==}
+
+  dotenv@16.6.1:
+    resolution: {integrity: sha512-uBq4egWHTcTt33a72vpSG0z3HnPuIl6NqYcTrKEg2azoEyl2hpW0zqlxysq2pK9HlDIHyHyakeYaYnSAwd8bow==}
+    engines: {node: '>=12'}
 
   dotenv@8.6.0:
     resolution: {integrity: sha512-IrPdXQsk2BbzvCBGBOTmmSH5SodmqZNt4ERAZDmW4CT+tL8VtvinqywuANaFu4bOMWki16nqf0e4oC0QIaDr/g==}
@@ -3324,6 +3367,9 @@ packages:
   launch-editor@2.14.1:
     resolution: {integrity: sha512-QWBrQsMpH7gPr965dsKD/3cKWiNoTjpATQf++Xq63N6sKRGMwlVXz41O1IZTMfZQgBctD/K5Zt06+/I6pP6+HA==}
 
+  launch-ide@1.4.9:
+    resolution: {integrity: sha512-M67fqPmkMQQuiFnMtsgtMvHuB2a+8KLxEwH9ccftpy0f3CJQNoRCebZvKSn/ujxR42cMDOIBstuC/KXR/IgXeQ==}
+
   less-loader@7.3.0:
     resolution: {integrity: sha512-Mi8915g7NMaLlgi77mgTTQvK022xKRQBIVDSyfl3ErTuBhmZBQab0mjeJjNNqGbdR+qrfTleKXqbGI4uEFavxg==}
     engines: {node: '>= 10.13.0'}
@@ -3645,6 +3691,9 @@ packages:
   no-case@2.3.2:
     resolution: {integrity: sha512-rmTZ9kz+f3rCvK2TD1Ue/oZlns7OGoIWP4fc3llxxRXlOkHKoWPPWJOfFYpITabSow43QJbRIoHQXtt10VldyQ==}
 
+  node-addon-api@7.1.1:
+    resolution: {integrity: sha512-5m3bsyrjFWE1xf7nz7YXdN4udnVtXK6/Yfgn5qnahL6bCkf2yKt4k3nuTKAtT4r3IG8JNR2ncsIMdZuAzJjHQQ==}
+
   node-emoji@1.11.0:
     resolution: {integrity: sha512-wo2DpQkQp7Sjm2A0cq+sN7EHKO6Sl0ctXeBdFZrL9T9+UywORbufTcTZxom8YqpLQt/FqNMUkOpkZrJVYSKD3A==}
 
@@ -3654,6 +3703,9 @@ packages:
 
   node-libs-browser@2.2.1:
     resolution: {integrity: sha512-h/zcD8H9kaDZ9ALUWwlBUDo6TKF8a7qBSCSEGfjTVIYeqsioSKaAX+BN7NgiMGp6iSIXZ3PxgCu8KS3b71YK5Q==}
+
+  node-pty@1.1.0:
+    resolution: {integrity: sha512-20JqtutY6JPXTUnL0ij1uad7Qe1baT46lyolh2sSENDd4sTzKZ4nmAFkeAARDKwmlLjPx6XKRlwRUxwjOy+lUg==}
 
   node-releases@2.0.54:
     resolution: {integrity: sha512-YHs7BmmcsdAI5Ozuf8JZo6PT0mv2GIWC9vMfvUC3dp65M8hn7Ux8CPL+2oBI7juNuj9d0ndhTcznq2ODBps9cQ==}
@@ -5337,6 +5389,18 @@ packages:
       utf-8-validate:
         optional: true
 
+  ws@8.21.3:
+    resolution: {integrity: sha512-201TZ/kPWxoPr/OKWjquZR1SWKXcvxdH+e1xrx89b3YbmzLMFCLfnaG1HFIgWzJOEWZ7MvpK++odZufgYR50Rw==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+
   xtend@4.0.2:
     resolution: {integrity: sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==}
     engines: {node: '>=0.4'}
@@ -5391,7 +5455,7 @@ snapshots:
       event-pubsub: 4.3.0
       js-message: 1.0.7
 
-  '@agentscope-ai/agentscope@0.0.15':
+  '@agentscope-ai/agentscope@0.0.15(ws@8.21.3)':
     dependencies:
       '@cfworker/json-schema': 4.1.1
       '@modelcontextprotocol/sdk': 1.30.0(@cfworker/json-schema@4.1.1)(zod@4.5.4)
@@ -5399,7 +5463,7 @@ snapshots:
       jsonrepair: 3.15.0
       mime-types: 3.0.2
       ollama: 0.6.3
-      openai: 6.49.0(zod@4.5.4)
+      openai: 6.49.0(ws@8.21.3)(zod@4.5.4)
       string-format: 2.0.0
       uuid: 13.0.2
       zod: 4.5.4
@@ -6119,6 +6183,77 @@ snapshots:
       '@babel/helper-validator-identifier': 7.29.7
 
   '@cfworker/json-schema@4.1.1': {}
+
+  '@code-inspector/core@2.0.8':
+    dependencies:
+      '@vue/compiler-dom': 3.5.42
+      chalk: 4.1.2
+      launch-ide: 1.4.9
+      portfinder: 1.0.38(supports-color@6.1.0)
+      ws: 8.21.3
+    optionalDependencies:
+      node-pty: 1.1.0
+    transitivePeerDependencies:
+      - bufferutil
+      - supports-color
+      - utf-8-validate
+
+  '@code-inspector/esbuild@2.0.8':
+    dependencies:
+      '@code-inspector/core': 2.0.8
+    transitivePeerDependencies:
+      - '@anthropic-ai/claude-agent-sdk'
+      - '@openai/codex-sdk'
+      - '@opencode-ai/sdk'
+      - bufferutil
+      - supports-color
+      - utf-8-validate
+
+  '@code-inspector/mako@2.0.8':
+    dependencies:
+      '@code-inspector/core': 2.0.8
+    transitivePeerDependencies:
+      - '@anthropic-ai/claude-agent-sdk'
+      - '@openai/codex-sdk'
+      - '@opencode-ai/sdk'
+      - bufferutil
+      - supports-color
+      - utf-8-validate
+
+  '@code-inspector/turbopack@2.0.8':
+    dependencies:
+      '@code-inspector/core': 2.0.8
+      '@code-inspector/webpack': 2.0.8
+    transitivePeerDependencies:
+      - '@anthropic-ai/claude-agent-sdk'
+      - '@openai/codex-sdk'
+      - '@opencode-ai/sdk'
+      - bufferutil
+      - supports-color
+      - utf-8-validate
+
+  '@code-inspector/vite@2.0.8':
+    dependencies:
+      '@code-inspector/core': 2.0.8
+      chalk: 4.1.1
+    transitivePeerDependencies:
+      - '@anthropic-ai/claude-agent-sdk'
+      - '@openai/codex-sdk'
+      - '@opencode-ai/sdk'
+      - bufferutil
+      - supports-color
+      - utf-8-validate
+
+  '@code-inspector/webpack@2.0.8':
+    dependencies:
+      '@code-inspector/core': 2.0.8
+    transitivePeerDependencies:
+      - '@anthropic-ai/claude-agent-sdk'
+      - '@openai/codex-sdk'
+      - '@opencode-ai/sdk'
+      - bufferutil
+      - supports-color
+      - utf-8-validate
 
   '@fontsource-variable/geist-mono@5.3.0': {}
 
@@ -7421,6 +7556,11 @@ snapshots:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
 
+  chalk@4.1.1:
+    dependencies:
+      ansi-styles: 4.3.0
+      supports-color: 7.2.0
+
   chalk@4.1.2:
     dependencies:
       ansi-styles: 4.3.0
@@ -7527,6 +7667,23 @@ snapshots:
       '@types/q': 1.5.8
       chalk: 2.4.2
       q: 1.5.1
+
+  code-inspector-plugin@2.0.8:
+    dependencies:
+      '@code-inspector/core': 2.0.8
+      '@code-inspector/esbuild': 2.0.8
+      '@code-inspector/mako': 2.0.8
+      '@code-inspector/turbopack': 2.0.8
+      '@code-inspector/vite': 2.0.8
+      '@code-inspector/webpack': 2.0.8
+      chalk: 4.1.1
+    transitivePeerDependencies:
+      - '@anthropic-ai/claude-agent-sdk'
+      - '@openai/codex-sdk'
+      - '@opencode-ai/sdk'
+      - bufferutil
+      - supports-color
+      - utf-8-validate
 
   collection-visit@1.0.0:
     dependencies:
@@ -8083,6 +8240,8 @@ snapshots:
       is-obj: 2.0.0
 
   dotenv-expand@5.1.0: {}
+
+  dotenv@16.6.1: {}
 
   dotenv@8.6.0: {}
 
@@ -9362,6 +9521,11 @@ snapshots:
       picocolors: 1.1.1
       shell-quote: 1.10.0
 
+  launch-ide@1.4.9:
+    dependencies:
+      chalk: 4.1.2
+      dotenv: 16.6.1
+
   less-loader@7.3.0(less@4.9.1)(webpack@4.47.0):
     dependencies:
       klona: 2.0.6
@@ -9699,6 +9863,9 @@ snapshots:
     dependencies:
       lower-case: 1.1.4
 
+  node-addon-api@7.1.1:
+    optional: true
+
   node-emoji@1.11.0:
     dependencies:
       lodash: 4.18.1
@@ -9730,6 +9897,11 @@ snapshots:
       url: 0.11.4
       util: 0.11.1
       vm-browserify: 1.1.2
+
+  node-pty@1.1.0:
+    dependencies:
+      node-addon-api: 7.1.1
+    optional: true
 
   node-releases@2.0.54: {}
 
@@ -9860,8 +10032,9 @@ snapshots:
     dependencies:
       is-wsl: 1.1.0
 
-  openai@6.49.0(zod@4.5.4):
+  openai@6.49.0(ws@8.21.3)(zod@4.5.4):
     optionalDependencies:
+      ws: 8.21.3
       zod: 4.5.4
 
   opener@1.5.2: {}
@@ -11769,6 +11942,8 @@ snapshots:
   ws@6.2.6:
     dependencies:
       async-limiter: 1.0.1
+
+  ws@8.21.3: {}
 
   xtend@4.0.2: {}
 

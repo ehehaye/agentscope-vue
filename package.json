@@ -41,6 +41,7 @@
 		"@vue/cli-plugin-babel": "~4.5.19",
 		"@vue/cli-service": "~4.5.19",
 		"autoprefixer": "^9.8.8",
+		"code-inspector-plugin": "^2.0.8",
 		"file-loader": "^6.2.0",
 		"less": "^4.2.2",
 		"less-loader": "^7.3.0",
