@@ -62,6 +62,7 @@ export default defineComponent({
     team: { type: Object, default: null },
     currentAgentId: { type: String, default: '' },
     currentSessionId: { type: String, default: '' },
+    mainSessionId: { type: String, default: '' },
   },
   setup(props) {
     const router = useRouter();
@@ -75,9 +76,10 @@ export default defineComponent({
 
     function goTo(targetAgentId, targetSessionId, memberId) {
       if (!targetAgentId || !targetSessionId) return;
+      // 已有外层主会话（展示本团队的会话）时保留它，仅切换 memberId，避免丢失主会话
       const query = {
-        agentId: props.currentAgentId || targetAgentId,
-        sessionId: props.currentSessionId || targetSessionId,
+        agentId: props.mainSessionId ? props.currentAgentId : targetAgentId,
+        sessionId: props.mainSessionId || targetSessionId,
       };
       if (memberId) query.memberId = memberId;
       router.push({ path: '/chat', query });

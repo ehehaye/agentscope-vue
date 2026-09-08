@@ -679,7 +679,12 @@ export default defineComponent({
         title: '团队',
         icon: 'lucide:users-round',
         component: TeamPanel,
-        props: { team: view.value?.team || null, currentAgentId: agentId.value, currentSessionId: effectiveSessionId.value },
+        props: {
+          team: view.value?.team || null,
+          currentAgentId: agentId.value,
+          currentSessionId: effectiveSessionId.value,
+          mainSessionId: sessionId.value,
+        },
       },
     }));
 
