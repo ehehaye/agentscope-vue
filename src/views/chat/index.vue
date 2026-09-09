@@ -76,7 +76,7 @@
         <!-- chat area -->
         <div class="tw-relative tw-flex tw-flex-1 tw-min-h-0 tw-justify-center">
           <ChatContent
-            class="tw-w-full tw-max-w-48rem"
+            class="tw-w-full"
             :msgs="msgs"
             :loading="loading"
             :phase="phase"
