@@ -62,15 +62,15 @@ export default defineComponent({
 	data() {
 		return {
 			navItems: [
-					{ to: '/chat', icon: 'lucide:message-square', label: '聊天' },
-					{ to: '/credential', icon: 'lucide:key-round', label: '凭证' },
-					{ to: '/channel', icon: 'lucide:cable', label: '频道' },
-					{ to: '/schedule', icon: 'lucide:calendar-clock', label: '日程' },
-					{ to: '/knowledge', icon: 'lucide:library', label: '知识库' },
-					{ to: '/mcp', icon: 'lucide:plug', label: 'MCP' },
-					{ to: '/skill', icon: 'lucide:blocks', label: '技能' },
-					{ to: '/dev/markdown', icon: 'lucide:file-text', label: 'Markdown 验证' },
-				],
+				{ to: '/chat', icon: 'lucide:message-square', label: '聊天' },
+				{ to: '/credential', icon: 'lucide:key-round', label: '凭证' },
+				{ to: '/channel', icon: 'lucide:cable', label: '频道' },
+				{ to: '/schedule', icon: 'lucide:calendar-clock', label: '日程' },
+				{ to: '/knowledge', icon: 'lucide:library', label: '知识库' },
+				{ to: '/mcp', icon: 'lucide:plug', label: 'MCP' },
+				{ to: '/skill', icon: 'lucide:blocks', label: '技能' },
+				{ to: '/dev/markdown', icon: 'lucide:file-text', label: 'Markdown 验证' },
+			],
 		};
 	},
 	computed: {
