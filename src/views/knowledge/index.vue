@@ -70,13 +70,6 @@
     <CreateKnowledgeBaseDialog :visible.sync="createOpen" @created="handleCreated" />
     <CreateCredentialDialog :visible.sync="credentialOpen" :create-fn="credentialApi.create" @created="credentialTrigger++" />
     <EditKnowledgeBaseDialog :visible.sync="editOpen" :knowledge-base="editTarget" @updated="refetch" />
-    <DeleteDialog
-      :visible.sync="deleteOpen"
-      :title="TEXT.knowledge.dialogDelete.title"
-      :description="deleteDescription"
-      :loading="deleting"
-      @confirm="handleConfirmDelete"
-    />
     <KnowledgeSearchDrawer
       v-if="selectedKb"
       :visible.sync="testOpen"
@@ -88,12 +81,12 @@
 
 <script>
 import { defineComponent, ref, computed, watch } from '@/composables/vue';
+import { MessageBox } from 'element-ui';
 import { Icon } from '@iconify/vue2';
 import { useRoute, useRouter } from '@/composables/vue-router';
 import CreateKnowledgeBaseDialog from '@/components/dialog/CreateKnowledgeBaseDialog.vue';
 import CreateCredentialDialog from '@/components/dialog/CreateCredentialDialog.vue';
 import EditKnowledgeBaseDialog from '@/components/dialog/EditKnowledgeBaseDialog.vue';
-import DeleteDialog from '@/components/dialog/DeleteDialog.vue';
 import KnowledgeSearchDrawer from '@/components/drawer/KnowledgeSearchDrawer.vue';
 import Spinner from '@/components/ui/Spinner.vue';
 import PanelEmpty from '@/components/panel/PanelEmpty.vue';
@@ -112,7 +105,6 @@ export default defineComponent({
     CreateKnowledgeBaseDialog,
     CreateCredentialDialog,
     EditKnowledgeBaseDialog,
-    DeleteDialog,
     KnowledgeSearchDrawer,
     DetailPanel,
   },
@@ -127,9 +119,6 @@ export default defineComponent({
     const credentialTrigger = ref(0);
     const editTarget = ref(null);
     const editOpen = ref(false);
-    const deleteTarget = ref(null);
-    const deleteOpen = ref(false);
-    const deleting = ref(false);
     const testOpen = ref(false);
 
     const selectedKb = computed(() => knowledgeBases.value.find((kb) => kb.id === selectedKbId.value));
@@ -156,9 +145,29 @@ export default defineComponent({
         editTarget.value = kb;
         editOpen.value = true;
       } else if (command === 'delete') {
-        deleteTarget.value = kb;
-        deleteOpen.value = true;
+        askDelete(kb);
       }
+    }
+
+    function askDelete(kb) {
+      if (!kb) return;
+      MessageBox.confirm(
+        TEXT.knowledge.dialogDelete.description(kb.name || ''),
+        TEXT.knowledge.dialogDelete.title,
+        {
+          type: 'warning',
+          confirmButtonText: '删除',
+          cancelButtonText: '取消',
+        },
+      )
+        .then(async () => {
+          await remove(kb.id);
+          if (selectedKbId.value === kb.id) {
+            selectedKbId.value = null;
+            router.replace('/knowledge');
+          }
+        })
+        .catch(() => {});
     }
 
     async function handleCreated(kbId) {
@@ -167,26 +176,6 @@ export default defineComponent({
       router.push(`/knowledge/${kbId}`);
       createOpen.value = false;
     }
-
-    async function handleConfirmDelete() {
-      if (!deleteTarget.value) return;
-      deleting.value = true;
-      try {
-        const id = deleteTarget.value.id;
-        await remove(id);
-        if (selectedKbId.value === id) {
-          selectedKbId.value = null;
-          router.replace('/knowledge');
-        }
-        deleteOpen.value = false;
-      } finally {
-        deleting.value = false;
-      }
-    }
-
-    const deleteDescription = computed(() => {
-      return TEXT.knowledge.dialogDelete.description(deleteTarget.value?.name || '');
-    });
 
     return {
       knowledgeBases,
@@ -198,15 +187,11 @@ export default defineComponent({
       credentialTrigger,
       editTarget,
       editOpen,
-      deleteTarget,
-      deleteOpen,
-      deleting,
       testOpen,
       selectKb,
       handleCommand,
+      askDelete,
       handleCreated,
-      handleConfirmDelete,
-      deleteDescription,
       refetch,
       credentialApi,
       COMMON,

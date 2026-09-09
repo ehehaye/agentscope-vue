@@ -47,28 +47,20 @@
         </div>
 
         <div class="tw-mt-auto tw-pt-2">
-          <el-button type="danger" size="small" @click="openDelete = true">
+          <el-button type="danger" size="small" @click="handleDelete">
             <Icon icon="lucide:trash-2" class="tw-mr-1 tw-h-3 tw-w-3" />
             {{ COMMON.delete }}
           </el-button>
         </div>
       </div>
     </el-drawer>
-
-    <DeleteDialog
-      :visible.sync="openDelete"
-      :title="deleteTitle"
-      :description="COMMON.deleteDescription"
-      :loading="deleting"
-      @confirm="handleDelete"
-    />
   </div>
 </template>
 
 <script>
 import { defineComponent, ref, computed, watch, getCurrentInstance } from '@/composables/vue';
+import { MessageBox } from 'element-ui';
 import { Icon } from '@iconify/vue2';
-import DeleteDialog from '@/components/dialog/DeleteDialog.vue';
 import StatusBadge from '@/components/badge/StatusBadge.vue';
 import { scheduleApi } from '@/api';
 import { COMMON } from '@/constants/text';
@@ -77,7 +69,7 @@ import { parseCronExpression, getFrequencyLabel } from './schedule-utils';
 
 export default defineComponent({
   name: 'ScheduleDetailDrawer',
-  components: { Icon, DeleteDialog, StatusBadge },
+  components: { Icon, StatusBadge },
   props: {
     visible: { type: Boolean, default: false },
     schedule: { type: Object, default: null },
@@ -87,8 +79,6 @@ export default defineComponent({
     const router = instance?.proxy?.$router;
     const sessions = ref([]);
     const sessionsLoading = ref(false);
-    const openDelete = ref(false);
-    const deleting = ref(false);
 
     const agentName = computed(() => {
       return props.schedule?.agent_id || '';
@@ -159,32 +149,32 @@ export default defineComponent({
       emit('update:visible', false);
     }
 
-    async function handleDelete() {
-      if (!props.schedule) return;
-      deleting.value = true;
-      try {
-        await emit('delete', props.schedule.id);
-        openDelete.value = false;
-        emit('update:visible', false);
-      } finally {
-        deleting.value = false;
-      }
+    function handleDelete() {
+      const schedule = props.schedule;
+      if (!schedule) return;
+      MessageBox.confirm(
+        COMMON.deleteDescription,
+        COMMON.deleteTitle(TEXT.schedule.deleteSchedule.entity, schedule.data?.name || ''),
+        {
+          type: 'warning',
+          confirmButtonText: '删除',
+          cancelButtonText: '取消',
+        },
+      )
+        .then(async () => {
+          await emit('delete', schedule.id);
+          emit('update:visible', false);
+        })
+        .catch(() => {});
     }
-
-    const deleteTitle = computed(() => {
-      return COMMON.deleteTitle(TEXT.schedule.deleteSchedule.entity, props.schedule?.data?.name || '');
-    });
 
     return {
       sessions,
       sessionsLoading,
-      openDelete,
-      deleting,
       scheduleInfoItems,
       agentName,
       goToSession,
       handleDelete,
-      deleteTitle,
       COMMON,
       TEXT,
     };

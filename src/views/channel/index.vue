@@ -105,7 +105,7 @@
       :status="statuses[selected?.id]"
       :agent-name="agentName"
       @edit="editOpen = true"
-      @delete="deleteOpen = true"
+      @delete="handleDelete"
     />
 
     <CreateChannelDialog
@@ -122,20 +122,12 @@
       :agents="agents"
       @updated="onUpdated"
     />
-
-    <DeleteDialog
-      v-if="selected"
-      :visible.sync="deleteOpen"
-      :title="deleteTitle"
-      description="删除后无法恢复，是否继续？"
-      :loading="deleteLoading"
-      @confirm="handleDelete"
-    />
   </div>
 </template>
 
 <script>
 import { defineComponent, ref, computed, watch, onBeforeUnmount } from '@/composables/vue';
+import { MessageBox } from 'element-ui';
 import { Icon } from '@iconify/vue2';
 import { channelApi } from '@/api';
 import { useChannels } from '@/composables/useChannels';
@@ -145,7 +137,6 @@ import ChannelStatusBadge from './ChannelStatusBadge.vue';
 import ChannelDetailPanel from './ChannelDetailPanel.vue';
 import CreateChannelDialog from './CreateChannelDialog.vue';
 import EditChannelDialog from './EditChannelDialog.vue';
-import DeleteDialog from '@/components/dialog/DeleteDialog.vue';
 
 export default defineComponent({
   name: 'ChannelPage',
@@ -156,7 +147,6 @@ export default defineComponent({
     ChannelDetailPanel,
     CreateChannelDialog,
     EditChannelDialog,
-    DeleteDialog,
   },
   setup() {
     const { channels, loading, refetch, remove, enable, disable } = useChannels();
@@ -168,8 +158,6 @@ export default defineComponent({
     const createOpen = ref(false);
     const createDefaultType = ref('');
     const editOpen = ref(false);
-    const deleteOpen = ref(false);
-    const deleteLoading = ref(false);
 
     const selected = computed(() => channels.value.find((c) => c.id === selectedId.value) || null);
     const selectedType = computed(() => (selected.value ? typeOf(selected.value.channel_type) : null));
@@ -208,24 +196,21 @@ export default defineComponent({
       }
     }
 
-    async function handleDelete() {
-      if (!selected.value) return;
-      deleteLoading.value = true;
-      try {
-        await remove(selected.value.id);
-        selectedId.value = null;
-        deleteOpen.value = false;
-      } finally {
-        deleteLoading.value = false;
-      }
-    }
-
-    const deleteTitle = computed(() => {
-      if (!selected.value) return '确认删除';
+    function handleDelete() {
       const ch = selected.value;
+      if (!ch) return;
       const name = ch.name?.trim() || `${typeOf(ch.channel_type)?.display_name || ch.channel_type} · ${ch.id.slice(0, 8)}`;
-      return `删除频道「${name}」`;
-    });
+      MessageBox.confirm('删除后无法恢复，是否继续？', `删除频道「${name}」`, {
+        type: 'warning',
+        confirmButtonText: '删除',
+        cancelButtonText: '取消',
+      })
+        .then(async () => {
+          await remove(ch.id);
+          selectedId.value = null;
+        })
+        .catch(() => {});
+    }
 
     const detailOpen = computed({
       get: () => !!selectedId.value,
@@ -284,9 +269,6 @@ export default defineComponent({
       createOpen,
       createDefaultType,
       editOpen,
-      deleteOpen,
-      deleteLoading,
-      deleteTitle,
       detailOpen,
       typeOf,
       agentName,

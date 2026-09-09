@@ -103,13 +103,6 @@
       </div>
     </template>
 
-    <DeleteDialog
-      :visible.sync="deleteVisible"
-      title="删除文档"
-      :description="deleteTarget ? `确定删除「${deleteTarget.filename}」吗？` : ''"
-      :loading="deleting"
-      @confirm="confirmDelete"
-    />
     <DocumentDetailDrawer
       :open.sync="detailVisible"
       :knowledge-base-id="knowledgeBaseId"
@@ -120,10 +113,10 @@
 
 <script>
 import { defineComponent, ref, computed, watch, toRef } from '@/composables/vue';
+import { MessageBox } from 'element-ui';
 import { Icon } from '@iconify/vue2';
 import { knowledgeBaseApi } from '@/api';
 import { toast } from '@/lib/toast';
-import DeleteDialog from '@/components/dialog/DeleteDialog.vue';
 import DocumentDetailDrawer from '@/components/knowledge/DocumentDetailDrawer.vue';
 import { useUploadCenter } from '@/composables/useUploadCenter.js';
 import { useDocumentStatusPolling } from '@/composables/useDocumentStatusPolling.js';
@@ -185,15 +178,12 @@ function statusTone(phase) {
 
 export default defineComponent({
   name: 'KnowledgeDocumentsPanel',
-  components: { Icon, DeleteDialog, DocumentDetailDrawer },
+  components: { Icon, DocumentDetailDrawer },
   props: {
     knowledgeBaseId: { type: String, required: true },
   },
   setup(props) {
     const fileInputRef = ref(null);
-    const deleteVisible = ref(false);
-    const deleteTarget = ref(null);
-    const deleting = ref(false);
     const detailVisible = ref(false);
     const detailDoc = ref(null);
     let lastRefetchedKey = '';
@@ -363,29 +353,27 @@ export default defineComponent({
     }
 
     function handleDelete(doc) {
-      deleteTarget.value = doc;
-      deleteVisible.value = true;
+      if (!doc) return;
+      MessageBox.confirm(`确定删除「${doc.filename}」吗？`, '删除文档', {
+        type: 'warning',
+        confirmButtonText: '删除',
+        cancelButtonText: '取消',
+      })
+        .then(async () => {
+          try {
+            await knowledgeBaseApi.deleteDocument(props.knowledgeBaseId, doc.id);
+            await refetch();
+          } catch {
+            toast.error('删除失败');
+          }
+        })
+        .catch(() => {});
     }
 
     function handleOpenDetail(doc) {
       if (!doc) return;
       detailDoc.value = doc;
       detailVisible.value = true;
-    }
-
-    async function confirmDelete() {
-      if (!deleteTarget.value) return;
-      deleting.value = true;
-      try {
-        await knowledgeBaseApi.deleteDocument(props.knowledgeBaseId, deleteTarget.value.id);
-        deleteVisible.value = false;
-        deleteTarget.value = null;
-        await refetch();
-      } catch {
-        toast.error('删除失败');
-      } finally {
-        deleting.value = false;
-      }
     }
 
     return {
@@ -404,13 +392,9 @@ export default defineComponent({
       handleDismiss,
       handleDelete,
       handleClearFinished,
-      deleteVisible,
-      deleteTarget,
-      deleting,
       detailVisible,
       detailDoc,
       handleOpenDetail,
-      confirmDelete,
     };
   },
 });

@@ -73,7 +73,7 @@
               type="danger"
               icon="el-icon-delete"
               :disabled="!selectedCredential.editable"
-              @click="deleteOpen = true"
+              @click="handleDelete"
             >删除</el-button>
           </div>
         </div>
@@ -161,26 +161,17 @@
       :update-fn="update"
       @updated="onUpdated"
     />
-
-    <DeleteDialog
-      v-if="selectedCredential"
-      :visible.sync="deleteOpen"
-      :title="deleteTitle"
-      description="删除后无法恢复，是否继续？"
-      :loading="deleteLoading"
-      @confirm="handleDelete"
-    />
   </div>
 </template>
 
 <script>
 import { defineComponent } from '@/composables/vue';
+import { MessageBox } from 'element-ui';
 import { Icon } from '@iconify/vue2';
 import { useCredentials } from '@/composables/useCredentials';
 import { credentialApi, modelApi, ttsModelApi, embeddingModelApi } from '@/api';
 import CreateCredentialDialog from '@/components/dialog/CreateCredentialDialog.vue';
 import EditCredentialDialog from '@/components/dialog/EditCredentialDialog.vue';
-import DeleteDialog from '@/components/dialog/DeleteDialog.vue';
 import MaskedValue from './MaskedValue.vue';
 import { formatNumber } from '@/utils/common';
 
@@ -190,7 +181,7 @@ const EMBEDDING_TYPE = 'application/x-embedding';
 
 export default defineComponent({
   name: 'CredentialPage',
-  components: { Icon, CreateCredentialDialog, EditCredentialDialog, DeleteDialog, MaskedValue },
+  components: { Icon, CreateCredentialDialog, EditCredentialDialog, MaskedValue },
   setup() {
     const { credentials, loading, create, update, remove } = useCredentials();
     return { credentials, loading, create, update, remove, THINKING_TYPE };
@@ -202,8 +193,6 @@ export default defineComponent({
       createOpen: false,
       createDefaultType: '',
       editOpen: false,
-      deleteOpen: false,
-      deleteLoading: false,
       modelsLoading: false,
       modelTab: 'llm',
       models: [],
@@ -256,11 +245,6 @@ export default defineComponent({
       if (this.modelTab === 'tts') return this.ttsModels;
       if (this.modelTab === 'embedding') return this.embeddingModels;
       return this.models;
-    },
-    deleteTitle() {
-      if (!this.selectedCredential) return '确认删除';
-      const name = this.selectedCredential.data?.name || this.selectedCredential.id;
-      return `删除凭证「${name}」`;
     },
   },
   watch: {
@@ -329,16 +313,20 @@ export default defineComponent({
     onUpdated() {
       this.loadModels();
     },
-    async handleDelete() {
-      if (!this.selectedCredential) return;
-      this.deleteLoading = true;
-      try {
-        await this.remove(this.selectedCredential.id);
-        this.selectedId = null;
-        this.deleteOpen = false;
-      } finally {
-        this.deleteLoading = false;
-      }
+    handleDelete() {
+      const credential = this.selectedCredential;
+      if (!credential) return;
+      const name = credential.data?.name || credential.id;
+      MessageBox.confirm('删除后无法恢复，是否继续？', `删除凭证「${name}」`, {
+        type: 'warning',
+        confirmButtonText: '删除',
+        cancelButtonText: '取消',
+      })
+        .then(async () => {
+          await this.remove(credential.id);
+          this.selectedId = null;
+        })
+        .catch(() => {});
     },
   },
 });

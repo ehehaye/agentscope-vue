@@ -71,19 +71,12 @@
         添加 MCP
       </el-button>
     </router-link>
-
-    <DeleteDialog
-      :visible.sync="deleteVisible"
-      :title="deleteTitle"
-      description="删除后无法恢复，是否继续？"
-      :loading="deleteLoading"
-      @confirm="doRemove"
-    />
   </div>
 </template>
 
 <script>
 import { defineComponent, ref, computed } from '@/composables/vue';
+import { MessageBox } from 'element-ui';
 import { Icon } from '@iconify/vue2';
 import {
   InputGroup,
@@ -99,7 +92,6 @@ import {
   ItemActions,
 } from '@/components/ui/Item.js';
 import PanelEmpty from './PanelEmpty.vue';
-import DeleteDialog from '@/components/dialog/DeleteDialog.vue';
 import { useMCPs } from '@/composables/useMCPs';
 
 export default defineComponent({
@@ -116,7 +108,6 @@ export default defineComponent({
     ItemDescription,
     ItemActions,
     PanelEmpty,
-    DeleteDialog,
   },
   props: {
     mcps: { type: Array, default: () => [] },
@@ -125,9 +116,6 @@ export default defineComponent({
   },
   setup(props) {
     const search = ref('');
-    const deleteVisible = ref(false);
-    const deleteTarget = ref('');
-    const deleteLoading = ref(false);
 
     const { mcps: library } = useMCPs();
     const installedByName = computed(() => {
@@ -147,23 +135,19 @@ export default defineComponent({
     const emptyDescription = computed(() =>
       search.value ? `没有匹配 "${search.value}" 的 MCP。` : '当前会话尚未装备任何 MCP 服务。',
     );
-    const deleteTitle = computed(() => `删除 MCP "${deleteTarget.value}"？`);
 
     function askRemove(name) {
-      deleteTarget.value = name;
-      deleteVisible.value = true;
-    }
-
-    async function doRemove() {
-      if (!props.onRemove || !deleteTarget.value) return;
-      deleteLoading.value = true;
-      try {
-        await props.onRemove(deleteTarget.value);
-      } finally {
-        deleteLoading.value = false;
-        deleteVisible.value = false;
-        deleteTarget.value = '';
-      }
+      if (!name) return;
+      MessageBox.confirm('删除后无法恢复，是否继续？', `删除 MCP "${name}"？`, {
+        type: 'warning',
+        confirmButtonText: '删除',
+        cancelButtonText: '取消',
+      })
+        .then(async () => {
+          if (!props.onRemove) return;
+          await props.onRemove(name);
+        })
+        .catch(() => {});
     }
 
     return {
@@ -173,12 +157,7 @@ export default defineComponent({
       emptyIcon,
       emptyTitle,
       emptyDescription,
-      deleteTitle,
       askRemove,
-      deleteVisible,
-      deleteTarget,
-      deleteLoading,
-      doRemove,
     };
   },
 });

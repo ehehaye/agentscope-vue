@@ -72,22 +72,14 @@
         <div v-else class="tw-text-xs tw-text-muted-foreground">{{ TEXT.skill.noReadme }}</div>
       </div>
     </el-drawer>
-
-    <DeleteDialog
-      :visible.sync="deleteOpen"
-      :title="COMMON.deleteTitle(TEXT.skill.subtitle, deletingSkill?.display_name || deletingSkill?.name || '')"
-      :description="COMMON.deleteDescription"
-      :loading="deleteLoading"
-      @confirm="confirmRemove"
-    />
   </div>
 </template>
 
 <script>
 import { defineComponent, ref, computed } from '@/composables/vue';
+import { MessageBox } from 'element-ui';
 import { Icon } from '@iconify/vue2';
 import Spinner from '@/components/ui/Spinner.vue';
-import DeleteDialog from '@/components/dialog/DeleteDialog.vue';
 import MarkdownRenderer from '@/components/common/MarkdownRenderer.vue';
 import { skillApi } from '@/api';
 import { COMMON } from '@/constants/text';
@@ -95,7 +87,7 @@ import { TEXT } from './text';
 
 export default defineComponent({
   name: 'SkillMinePanel',
-  components: { Icon, Spinner, DeleteDialog, MarkdownRenderer },
+  components: { Icon, Spinner, MarkdownRenderer },
   props: {
     skills: { type: Array, default: () => [] },
     loading: { type: Boolean, default: false },
@@ -133,25 +125,18 @@ export default defineComponent({
       }
     }
 
-    const deleteOpen = ref(false);
-    const deletingSkill = ref(null);
-    const deleteLoading = ref(false);
-
     function askRemove(skill) {
-      deletingSkill.value = skill;
-      deleteOpen.value = true;
-    }
-
-    async function confirmRemove() {
-      if (!deletingSkill.value) return;
-      deleteLoading.value = true;
-      try {
-        await emit('remove', deletingSkill.value.id);
-        deleteOpen.value = false;
-        deletingSkill.value = null;
-      } finally {
-        deleteLoading.value = false;
-      }
+      if (!skill) return;
+      const name = skill.display_name || skill.name || '';
+      MessageBox.confirm(COMMON.deleteDescription, COMMON.deleteTitle(TEXT.skill.subtitle, name), {
+        type: 'warning',
+        confirmButtonText: '删除',
+        cancelButtonText: '取消',
+      })
+        .then(async () => {
+          await emit('remove', skill.id);
+        })
+        .catch(() => {});
     }
 
     return {
@@ -162,11 +147,7 @@ export default defineComponent({
       detailMarkdown,
       detailLoading,
       openDetail,
-      deleteOpen,
-      deletingSkill,
-      deleteLoading,
       askRemove,
-      confirmRemove,
       COMMON,
       TEXT,
     };

@@ -119,18 +119,6 @@
       :current-name="renamingSession?.session?.config?.name || ''"
       @confirm="handleRenameConfirm"
     />
-    <DeleteDialog
-      :visible.sync="deleteSessionOpen"
-      title="删除会话"
-      :description="sessionToDelete ? `确定删除会话「${sessionToDelete.session?.config?.name || sessionToDelete.session?.id}」吗？` : ''"
-      @confirm="confirmDeleteSession"
-    />
-    <DeleteDialog
-      :visible.sync="deleteAgentOpen"
-      title="删除助手"
-      :description="agentToDelete ? `确定删除助手「${agentToDelete.name || agentToDelete.id}」吗？` : ''"
-      @confirm="confirmDeleteAgent"
-    />
     <CreateCredentialDialog
       :visible.sync="credentialDialogVisible"
       :create-fn="credentialApi.create"
@@ -142,6 +130,7 @@
 <script>
 import { defineComponent, ref, computed, watch, onUnmounted } from '@/composables/vue';
 import { useRoute, useRouter } from '@/composables/vue-router';
+import { MessageBox } from 'element-ui';
 import { useMessages } from '@/composables/useMessages';
 import { useSessions } from '@/composables/useSessions';
 import { useAgents } from '@/composables/useAgents';
@@ -167,7 +156,6 @@ import ModelParametersPopover from '@/components/popover/ModelParametersPopover.
 import AgentDialog from '@/components/dialog/AgentDialog.vue';
 import EditAgentDialog from '@/components/dialog/EditAgentDialog.vue';
 import RenameSessionDialog from '@/components/dialog/RenameSessionDialog.vue';
-import DeleteDialog from '@/components/dialog/DeleteDialog.vue';
 import PermissionModeSelect from '@/components/select/PermissionModeSelect.vue';
 
 export const TEXT = {
@@ -233,7 +221,6 @@ export default defineComponent({
     AgentDialog,
     EditAgentDialog,
     RenameSessionDialog,
-    DeleteDialog,
     ModelParametersPopover,
     CreateCredentialDialog,
   },
@@ -277,10 +264,6 @@ export default defineComponent({
     const editingAgent = ref(null);
     const renameDialogVisible = ref(false);
     const renamingSession = ref(null);
-    const deleteSessionOpen = ref(false);
-    const sessionToDelete = ref(null);
-    const deleteAgentOpen = ref(false);
-    const agentToDelete = ref(null);
     const credentialDialogVisible = ref(false);
     const credentialTrigger = ref(0);
     watch(credentialTrigger, () => {
@@ -345,24 +328,26 @@ export default defineComponent({
     }
 
     function openDeleteSession(session) {
-      sessionToDelete.value = session;
-      deleteSessionOpen.value = true;
-    }
-
-    async function confirmDeleteSession() {
-      if (!sessionToDelete.value) return;
-      const sid = sessionToDelete.value.session.id;
-      await removeSession(sid, agentId.value);
-      deleteSessionOpen.value = false;
-      sessionToDelete.value = null;
-      if (sid === sessionId.value) {
-        const remaining = sessions.value.filter((v) => v.session?.id !== sid);
-        if (remaining.length > 0) {
-          navigateTo(agentId.value, remaining[0].session.id);
-        } else {
-          router.push({ path: '/chat', query: { ...route.query, sessionId: undefined } }).catch(() => {});
-        }
-      }
+      const sid = session?.session?.id;
+      if (!sid) return;
+      const name = session.session?.config?.name || sid;
+      MessageBox.confirm(`确定删除会话「${name}」吗？`, '删除会话', {
+        type: 'warning',
+        confirmButtonText: '删除',
+        cancelButtonText: '取消',
+      })
+        .then(async () => {
+          await removeSession(sid, agentId.value);
+          if (sid === sessionId.value) {
+            const remaining = sessions.value.filter((v) => v.session?.id !== sid);
+            if (remaining.length > 0) {
+              navigateTo(agentId.value, remaining[0].session.id);
+            } else {
+              router.push({ path: '/chat', query: { ...route.query, sessionId: undefined } }).catch(() => {});
+            }
+          }
+        })
+        .catch(() => {});
     }
 
     function openEditAgent(agent) {
@@ -371,19 +356,21 @@ export default defineComponent({
     }
 
     function openDeleteAgent(agent) {
-      agentToDelete.value = agent;
-      deleteAgentOpen.value = true;
-    }
-
-    async function confirmDeleteAgent() {
-      if (!agentToDelete.value) return;
-      await removeAgent(agentToDelete.value.id);
-      deleteAgentOpen.value = false;
-      agentToDelete.value = null;
-      // 删除当前助手后清空路由回到 /chat
-      if (route.query.agentId) {
-        router.push({ path: '/chat', query: {} }).catch(() => {});
-      }
+      if (!agent) return;
+      const name = agent.name || agent.id;
+      MessageBox.confirm(`确定删除助手「${name}」吗？`, '删除助手', {
+        type: 'warning',
+        confirmButtonText: '删除',
+        cancelButtonText: '取消',
+      })
+        .then(async () => {
+          await removeAgent(agent.id);
+          // 删除当前助手后清空路由回到 /chat
+          if (route.query.agentId) {
+            router.push({ path: '/chat', query: {} }).catch(() => {});
+          }
+        })
+        .catch(() => {});
     }
 
     const {
@@ -738,10 +725,6 @@ export default defineComponent({
       editingAgent,
       renameDialogVisible,
       renamingSession,
-      deleteSessionOpen,
-      sessionToDelete,
-      deleteAgentOpen,
-      agentToDelete,
       handleAgentChange,
       handleCreateSession,
       handleSessionCommand,
@@ -749,10 +732,8 @@ export default defineComponent({
       openRename,
       handleRenameConfirm,
       openDeleteSession,
-      confirmDeleteSession,
       openEditAgent,
       openDeleteAgent,
-      confirmDeleteAgent,
       refetchAgents,
       credentialDialogVisible,
       credentialApi,
