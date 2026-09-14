@@ -98,8 +98,6 @@ router.beforeEach((to, _from, next) => {
   const ready = store.getters["app/setupComplete"];
   if (!ready && to.path !== "/setup") {
     next("/setup");
-  } else if (ready && to.path === "/setup") {
-    next("/");
   } else {
     next();
   }
