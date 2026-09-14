@@ -65,8 +65,6 @@ src/
 1. **直接兼容老项目**：将 `src/` 源码迁移到 Vue 2.7 + vue-cli 4 工程中。Element UI 2.x、vue-router 3.x、vuex 3.x 均无需升级，改动成本最低。
 2. **低成本升级至 Vue 3**：当前代码已使用 Vue 2.7 内置 Composition API 风格，Element UI 可替换为 Element Plus，vue-router / vuex 升级至 4.x，整体迁移量可控。
 
-具体迁移步骤、webpack 4 兼容性补丁及非阻塞性问题记录，可参考 `migration/` 目录下的分析文档，特别是 [06.VUE_CLI_MIGRATION_NOTES.md](migration/06.VUE_CLI_MIGRATION_NOTES.md)。
-
 ## 相关链接
 
 - [AgentScope 官方仓库](https://github.com/agentscope-ai/agentscope)
