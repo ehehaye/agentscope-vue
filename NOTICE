@@ -1,0 +1,14 @@
+agentscope-vue
+Copyright 2026 hongxin.tang@hotmail.com
+
+This product, agentscope-vue, is a Vue 2 migration and derivative work based on
+the AgentScope Web UI example developed by the AgentScope project.
+
+    Project:  AgentScope
+    Homepage: https://github.com/agentscope-ai/agentscope
+    Source:   examples/web_ui
+
+The AgentScope project is licensed under the Apache License, Version 2.0, and
+is copyright of the AgentScope contributors. This product is distributed under
+the same license; a copy of the Apache License, Version 2.0 is available in the
+LICENSE file and at http://www.apache.org/licenses/LICENSE-2.0.

@@ -69,3 +69,19 @@ src/
 
 - [AgentScope 官方仓库](https://github.com/agentscope-ai/agentscope)
 - [原 Web UI 示例](https://github.com/agentscope-ai/agentscope/tree/main/examples/web_ui)
+
+## 开源许可
+
+本项目基于 [Apache License 2.0](LICENSE) 许可开源：
+
+```
+Copyright 2026 hongxin.tang@hotmail.com
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+```
+
+本项目衍生自 AgentScope 官方 Web UI 示例（上游同样采用 Apache License 2.0），上游版权与衍生关系说明详见 [NOTICE](NOTICE) 文件。
