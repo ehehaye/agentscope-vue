@@ -15,12 +15,14 @@
             <el-button
               type="text"
               size="mini"
-              class="tw-w-full tw-justify-start tw-gap-2 tw-font-normal"
+              class="team-member-btn tw-w-full tw-font-normal"
               :class="isActive(leaderSessionId) ? 'tw-text-primary' : 'tw-text-foreground'"
               @click="goTo(leaderAgentId, leaderSessionId, null)"
             >
-              <Icon icon="lucide:crown" class="tw-h-3.5 tw-w-3.5 tw-shrink-0" />
-              <span class="tw-truncate">{{ team.leader_agent.data?.name }}</span>
+              <span class="team-member-btn-content">
+                <Icon icon="lucide:crown" class="tw-h-3.5 tw-w-3.5 tw-shrink-0" />
+                <span class="tw-min-w-0 tw-truncate">{{ team.leader_agent.data?.name }}</span>
+              </span>
             </el-button>
           </li>
         </ul>
@@ -33,13 +35,15 @@
             <el-button
               type="text"
               size="mini"
-              class="tw-w-full tw-justify-start tw-gap-2 tw-font-normal"
+              class="team-member-btn tw-w-full tw-font-normal"
               :class="isActive(member.session_id) ? 'tw-text-primary' : 'tw-text-foreground'"
               :disabled="!member.session_id"
               @click="goTo(member.agent?.id, member.session_id, member.agent?.id)"
             >
-              <Icon icon="lucide:bot" class="tw-h-3.5 tw-w-3.5 tw-shrink-0" />
-              <span class="tw-truncate">{{ member.agent?.data?.name }}</span>
+              <span class="team-member-btn-content">
+                <Icon icon="lucide:bot" class="tw-h-3.5 tw-w-3.5 tw-shrink-0" />
+                <span class="tw-min-w-0 tw-truncate">{{ member.agent?.data?.name }}</span>
+              </span>
             </el-button>
           </li>
         </ul>
@@ -94,3 +98,20 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+/* Element 2.x 的 el-button 会把插槽内容包一层内联 span，
+ * 具名 class 让按钮与内容行各自成为 flex 容器，实现图标与文字纵向居中。 */
+.team-member-btn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.team-member-btn-content {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+}
+</style>
