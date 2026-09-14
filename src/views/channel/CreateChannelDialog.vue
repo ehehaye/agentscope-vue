@@ -12,8 +12,8 @@
     <el-alert v-if="error" :title="error" type="error" class="tw-mt-3" :closable="false" show-icon />
 
     <span slot="footer" class="tw-dialog-footer">
-      <el-button @click="visible = false">取消</el-button>
-      <el-button type="primary" :loading="loading" :disabled="!valid" @click="handleSubmit">创建</el-button>
+      <el-button size="small" @click="visible = false">{{ COMMON.cancel }}</el-button>
+      <el-button size="small" type="primary" :loading="loading" :disabled="!valid" @click="handleSubmit">{{ COMMON.create }}</el-button>
     </span>
   </el-dialog>
 </template>
@@ -22,6 +22,7 @@
 import { defineComponent, ref, computed, watch } from '@/composables/vue';
 import { channelApi } from '@/api';
 import ChannelForm, { defaultChannelForm, isChannelFormValid, toCreateRequest } from './ChannelForm.vue';
+import { COMMON } from '@/constants/text';
 
 export default defineComponent({
   name: 'CreateChannelDialog',
@@ -82,7 +83,18 @@ export default defineComponent({
       }
     }
 
-    return { visible: computed({ get: () => props.visible, set: (v) => emit('update:visible', v) }), form, channelTypes, loading, error, title, valid, handleClose, handleSubmit };
+    return {
+      visible: computed({ get: () => props.visible, set: (v) => emit('update:visible', v) }),
+      form,
+      channelTypes,
+      loading,
+      error,
+      title,
+      valid,
+      handleClose,
+      handleSubmit,
+      COMMON,
+    };
   },
 });
 </script>

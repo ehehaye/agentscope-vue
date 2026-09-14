@@ -23,8 +23,10 @@
           :description="TEXT.knowledge.list.emptyDescription"
         >
           <el-button size="small" @click="createOpen = true">
-            <Icon icon="lucide:plus" class="tw-mr-1 tw-h-3.5 tw-w-3.5" />
-            {{ TEXT.knowledge.list.createButton }}
+            <span class="tw-flex tw-items-center tw-text-xs tw-text-muted-foreground">
+              <Icon icon="lucide:plus" class="tw-mr-1 tw-h-3.5 tw-w-3.5" />
+              {{ TEXT.knowledge.list.createButton }}
+            </span>
           </el-button>
         </PanelEmpty>
         <div v-else class="tw-space-y-1">

@@ -91,8 +91,8 @@
     </el-form>
 
     <span slot="footer" class="tw-dialog-footer">
-      <el-button @click="visible = false" :disabled="loading">{{ COMMON.cancel }}</el-button>
-      <el-button type="primary" :loading="loading" :disabled="!isValid" @click="handleSubmit">
+      <el-button size="small" @click="visible = false" :disabled="loading">{{ COMMON.cancel }}</el-button>
+      <el-button size="small" type="primary" :loading="loading" :disabled="!isValid" @click="handleSubmit">
         {{ loading ? COMMON.creating : COMMON.create }}
       </el-button>
     </span>

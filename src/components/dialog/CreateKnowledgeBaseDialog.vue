@@ -67,10 +67,10 @@
     </el-form>
 
     <span slot="footer" class="tw-dialog-footer">
-      <el-button @click="dialogVisible = false" :disabled="submitting">{{ COMMON.cancel }}</el-button>
-      <el-button type="primary" :loading="submitting" :disabled="!canSubmit" @click="handleSubmit">
+      <el-button size="small" @click="dialogVisible = false" :disabled="submitting">{{ COMMON.cancel }}</el-button>
+      <el-button size="small" type="primary" :loading="submitting" :disabled="!canSubmit" @click="handleSubmit">
         {{ submitting ? COMMON.creating : COMMON.create }}
-      </el-button>
+      </el-button> 
     </span>
   </el-dialog>
 </template>

@@ -17,9 +17,9 @@
     </div>
 
     <span slot="footer" class="tw-dialog-footer">
-      <el-button @click="dialogVisible = false" :disabled="submitting">取消</el-button>
-      <el-button type="primary" :loading="submitting" :disabled="!schema" @click="handleSubmit">
-        保存
+      <el-button size="small" @click="dialogVisible = false" :disabled="submitting">{{ COMMON.cancel }}</el-button>
+      <el-button size="small" type="primary" :loading="submitting" :disabled="!schema" @click="handleSubmit">
+        {{ submitting ? COMMON.saving : COMMON.save }}
       </el-button>
     </span>
   </el-dialog>
@@ -29,6 +29,7 @@
 import { defineComponent } from '@/composables/vue';
 import { credentialApi } from '@/api';
 import SchemaForm from '@/components/form/SchemaForm.vue';
+import { COMMON } from '@/constants/text';
 
 export default defineComponent({
   name: 'EditCredentialDialog',
@@ -44,6 +45,7 @@ export default defineComponent({
       loadingSchema: false,
       values: {},
       submitting: false,
+      COMMON,
     };
   },
   computed: {

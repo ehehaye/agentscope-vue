@@ -23,9 +23,9 @@
       {{ errorMsg }}
     </p>
     <span slot="footer" class="tw-dialog-footer">
-      <el-button @click="dialogVisible = false" :disabled="submitting">取消</el-button>
-      <el-button type="primary" :loading="submitting" :disabled="!form.name.trim()" @click="handleSubmit">
-        创建
+      <el-button size="small" @click="dialogVisible = false" :disabled="submitting">{{ COMMON.cancel }}</el-button>
+      <el-button size="small" type="primary" :loading="submitting" :disabled="!form.name.trim()" @click="handleSubmit">
+        {{ COMMON.create }}
       </el-button>
     </span>
   </el-dialog>
@@ -34,6 +34,7 @@
 <script>
 import { defineComponent, ref, computed, reactive } from '@/composables/vue';
 import { useAgents } from '@/composables/useAgents';
+import { COMMON } from '@/constants/text';
 
 export default defineComponent({
   name: 'AgentDialog',
@@ -71,7 +72,7 @@ export default defineComponent({
       }
     }
 
-    return { dialogVisible, form, submitting, errorMsg, handleSubmit };
+    return { dialogVisible, form, submitting, errorMsg, handleSubmit, COMMON };
   },
 });
 </script>
