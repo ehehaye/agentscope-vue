@@ -1,5 +1,6 @@
 <template>
   <el-dialog
+    append-to-body
     :visible.sync="visible"
     title="编辑频道"
     width="560px"

@@ -1,5 +1,6 @@
 <template>
   <el-dialog
+    append-to-body
     :visible.sync="dialogVisible"
     :title="TEXT.schedule.createSchedule.title"
     width="500px"

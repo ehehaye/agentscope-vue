@@ -1,5 +1,6 @@
 <template>
   <el-dialog
+    append-to-body
     :visible.sync="visible"
     :title="title"
     width="560px"

@@ -1,5 +1,6 @@
 <template>
   <el-dialog
+    append-to-body
     :title="editing ? '编辑 MCP' : '安装 MCP'"
     :visible.sync="dialogVisible"
     width="520px"

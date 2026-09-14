@@ -1,6 +1,7 @@
 <template>
   <span>
   <el-dialog
+    append-to-body
     :visible.sync="dialogOpen"
     title="选择工作目录"
     width="560px"

@@ -1,5 +1,6 @@
 <template>
   <el-dialog
+    append-to-body
     title="编辑凭证"
     :visible.sync="dialogVisible"
     width="520px"

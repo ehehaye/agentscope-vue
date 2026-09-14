@@ -1,5 +1,6 @@
 <template>
   <el-dialog
+    append-to-body
     title="编辑知识库"
     :visible.sync="dialogVisible"
     width="500px"
