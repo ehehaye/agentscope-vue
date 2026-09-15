@@ -1,6 +1,6 @@
 /**
  * 组合式 API 统一桥接层。
- * 业务代码一律从这里导入。
+ * 业务代码一律从这里导入。便于后续升级统一替换
  */
 export {
 	ref,
@@ -22,4 +22,4 @@ export {
 	defineComponent,
 	getCurrentInstance,
 	h,
-} from 'vue';
+} from '@vue/composition-api';

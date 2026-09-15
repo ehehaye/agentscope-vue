@@ -19,6 +19,16 @@ module.exports = {
     port: 5173,
     host: "0.0.0.0",
   },
+  chainWebpack(config) {
+    config.module
+      .rule('vue')
+      .use('vue-loader')
+      .tap(options => {
+        // 为 2.6.14 版本的 Vue 编译器启用 ?. 语法
+        options.compiler = require('vue-template-babel-compiler')
+        return options
+      })
+  },
   configureWebpack: {
     plugins: [
       codeInspectorPlugin({
