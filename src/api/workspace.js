@@ -1,4 +1,5 @@
 import { ApiError, client, getBaseUrl, getUserId } from './client';
+import { resolveEndpoint } from './mapping';
 
 /**
  * XHR-based folder upload — `fetch` surfaces no byte-level send
@@ -22,6 +23,8 @@ function uploadSkillXhr(agentId, sessionId, files, options = {}) {
 	);
 	for (const file of files) formData.append('files', file);
 
+	const { path } = resolveEndpoint('workspace.skill.upload');
+
 	return new Promise((resolve, reject) => {
 		if (signal?.aborted) {
 			reject(new DOMException('Aborted', 'AbortError'));
@@ -29,7 +32,7 @@ function uploadSkillXhr(agentId, sessionId, files, options = {}) {
 		}
 
 		const xhr = new XMLHttpRequest();
-		const url = new URL('/workspace/skill/upload', getBaseUrl());
+		const url = new URL(path, getBaseUrl());
 		url.searchParams.set('agent_id', agentId);
 		url.searchParams.set('session_id', sessionId);
 		xhr.open('POST', url.toString(), true);
@@ -88,10 +91,12 @@ export const workspaceApi = {
 	 * echoes the resolved absolute path.
 	 */
 	directories: (agentId, sessionId, path = '') =>
-		client.get('/workspace/directories', {
-			agent_id: agentId,
-			session_id: sessionId,
-			path,
+		client.request('workspace.directories', {
+			params: {
+				agent_id: agentId,
+				session_id: sessionId,
+				path,
+			},
 		}),
 
 	/**
@@ -102,17 +107,25 @@ export const workspaceApi = {
 	 * toast over.
 	 */
 	status: (agentId, sessionId) =>
-		client.get('/workspace/status', { agent_id: agentId, session_id: sessionId }, { silent: true }),
+		client.request('workspace.status', {
+			params: { agent_id: agentId, session_id: sessionId },
+			silent: true,
+		}),
 
 	mcp: {
 		list: (agentId, sessionId) =>
-			client.get('/workspace/mcp', {
-				agent_id: agentId,
-				session_id: sessionId,
+			client.request('workspace.mcp.list', {
+				params: {
+					agent_id: agentId,
+					session_id: sessionId,
+				},
 			}),
 
 		add: (agentId, sessionId, mcp) =>
-			client.post('/workspace/mcp', mcp, { agent_id: agentId, session_id: sessionId }),
+			client.request('workspace.mcp.add', {
+				params: { agent_id: agentId, session_id: sessionId },
+				body: mcp,
+			}),
 
 		/**
 		 * Puts MCPs the user has already installed into this workspace.
@@ -120,31 +133,38 @@ export const workspaceApi = {
 		 * so the client has no way to reconstruct one.
 		 */
 		addFromLibrary: (agentId, sessionId, mcpIds) =>
-			client.post(
-				'/workspace/mcp/from-library',
-				{ mcp_ids: mcpIds },
-				{ agent_id: agentId, session_id: sessionId },
-			),
+			client.request('workspace.mcp.addFromLibrary', {
+				params: { agent_id: agentId, session_id: sessionId },
+				body: { mcp_ids: mcpIds },
+			}),
 
 		remove: (mcpName, agentId, sessionId) =>
-			client.delete(`/workspace/mcp/${mcpName}`, {
-				agent_id: agentId,
-				session_id: sessionId,
+			client.request('workspace.mcp.remove', {
+				pathParams: { mcpName },
+				params: {
+					agent_id: agentId,
+					session_id: sessionId,
+				},
 			}),
 	},
 
 	skill: {
 		list: (agentId, sessionId) =>
-			client.get('/workspace/skill', { agent_id: agentId, session_id: sessionId }),
+			client.request('workspace.skill.list', {
+				params: { agent_id: agentId, session_id: sessionId },
+			}),
 
 		/**
 		 * @deprecated The path is resolved on the server. Use `upload`
 		 * for a local folder or `addFromLibrary` for an installed skill.
 		 */
 		add: (agentId, sessionId, body) =>
-			client.post('/workspace/skill', body, {
-				agent_id: agentId,
-				session_id: sessionId,
+			client.request('workspace.skill.add', {
+				params: {
+					agent_id: agentId,
+					session_id: sessionId,
+				},
+				body,
 			}),
 
 		/** Uploads a picked folder as a skill, reporting send progress. */
@@ -153,16 +173,18 @@ export const workspaceApi = {
 
 		/** Installs skills the user already has, by library record id. */
 		addFromLibrary: (agentId, sessionId, skillIds) =>
-			client.post(
-				'/workspace/skill/from-library',
-				{ skill_ids: skillIds },
-				{ agent_id: agentId, session_id: sessionId },
-			),
+			client.request('workspace.skill.addFromLibrary', {
+				params: { agent_id: agentId, session_id: sessionId },
+				body: { skill_ids: skillIds },
+			}),
 
 		remove: (skillName, agentId, sessionId) =>
-			client.delete(`/workspace/skill/${skillName}`, {
-				agent_id: agentId,
-				session_id: sessionId,
+			client.request('workspace.skill.remove', {
+				pathParams: { skillName },
+				params: {
+					agent_id: agentId,
+					session_id: sessionId,
+				},
 			}),
 	},
 };

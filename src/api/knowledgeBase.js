@@ -1,6 +1,7 @@
 import { ApiError, client, getBaseUrl, getUserId } from './client';
+import { resolveEndpoint } from './mapping';
 
-/** Drop undefined values and stringify the rest for `client` params. */
+/** Drop undefined values and stringify the rest for query params. */
 function toQuery(params) {
   const query = {};
   for (const [key, value] of Object.entries(params)) {
@@ -33,6 +34,10 @@ function uploadDocumentXhr(knowledgeBaseId, file, options = {}) {
   const formData = new FormData();
   formData.append('file', file);
 
+  const { path } = resolveEndpoint('kb.uploadDocument', {
+    pathParams: { knowledgeBaseId },
+  });
+
   return new Promise((resolve, reject) => {
     if (signal?.aborted) {
       reject(new DOMException('Aborted', 'AbortError'));
@@ -40,7 +45,7 @@ function uploadDocumentXhr(knowledgeBaseId, file, options = {}) {
     }
 
     const xhr = new XMLHttpRequest();
-    const url = new URL(`/knowledge_bases/${knowledgeBaseId}/documents`, getBaseUrl());
+    const url = new URL(path, getBaseUrl());
     xhr.open('POST', url.toString(), true);
     xhr.setRequestHeader('X-User-ID', getUserId());
 
@@ -91,7 +96,8 @@ function uploadDocumentXhr(knowledgeBaseId, file, options = {}) {
 }
 
 export const knowledgeBaseApi = {
-  list: (params = {}) => client.get('/knowledge_bases/', toQuery({ ...params })),
+  list: (params = {}) =>
+    client.request('kb.list', { params: toQuery({ ...params }) }),
 
   listAll: (params = {}) =>
     fetchAllPages(async (page, pageSize) => {
@@ -99,23 +105,28 @@ export const knowledgeBaseApi = {
       return { items: res.knowledge_bases, total: res.total };
     }),
 
-  listEmbeddingModels: () => client.get('/knowledge_bases/embedding_models'),
+  listEmbeddingModels: () => client.request('kb.listEmbeddingModels'),
 
-  listChunkers: () => client.get('/knowledge_bases/chunkers'),
+  listChunkers: () => client.request('kb.listChunkers'),
 
   middlewareParametersSchema: () =>
-    client.get('/knowledge_bases/middleware/parameters_schema'),
+    client.request('kb.middlewareParametersSchema'),
 
-  supportedContentTypes: () => client.get('/knowledge_bases/supported_content_types'),
+  supportedContentTypes: () => client.request('kb.supportedContentTypes'),
 
-  create: (body) => client.post('/knowledge_bases/', body),
+  create: (body) => client.request('kb.create', { body }),
 
-  update: (knowledgeBaseId, body) => client.patch(`/knowledge_bases/${knowledgeBaseId}`, body),
+  update: (knowledgeBaseId, body) =>
+    client.request('kb.update', { pathParams: { knowledgeBaseId }, body }),
 
-  delete: (knowledgeBaseId) => client.delete(`/knowledge_bases/${knowledgeBaseId}`),
+  delete: (knowledgeBaseId) =>
+    client.request('kb.delete', { pathParams: { knowledgeBaseId } }),
 
   listDocuments: (knowledgeBaseId, params = {}) =>
-    client.get(`/knowledge_bases/${knowledgeBaseId}/documents`, toQuery({ ...params })),
+    client.request('kb.listDocuments', {
+      pathParams: { knowledgeBaseId },
+      params: toQuery({ ...params }),
+    }),
 
   listAllDocuments: (knowledgeBaseId, params = {}) =>
     fetchAllPages(async (page, pageSize) => {
@@ -128,24 +139,32 @@ export const knowledgeBaseApi = {
     }),
 
   listDocumentChunks: (knowledgeBaseId, documentId, page = 1, pageSize = 30) =>
-    client.get(
-      `/knowledge_bases/${knowledgeBaseId}/documents/${documentId}/chunks`,
-      toQuery({ page, page_size: pageSize }),
-      { silent: true },
-    ),
+    client.request('kb.listDocumentChunks', {
+      pathParams: { knowledgeBaseId, documentId },
+      params: toQuery({ page, page_size: pageSize }),
+      silent: true,
+    }),
 
   createDocumentDownloadToken: (knowledgeBaseId, documentId) =>
-    client.post(`/knowledge_bases/${knowledgeBaseId}/documents/${documentId}/download_token`),
+    client.request('kb.createDocumentDownloadToken', {
+      pathParams: { knowledgeBaseId, documentId },
+    }),
 
   documentContentUrl: (knowledgeBaseId, documentId, token, download = false) => {
-    const url = new URL(`/knowledge_bases/${knowledgeBaseId}/documents/${documentId}`, getBaseUrl());
+    const { path } = resolveEndpoint('kb.documentContent', {
+      pathParams: { knowledgeBaseId, documentId },
+    });
+    const url = new URL(path, getBaseUrl());
     url.searchParams.set('token', token);
     if (download) url.searchParams.set('download', 'true');
     return url.toString();
   },
 
   fetchDocumentText: async (knowledgeBaseId, documentId) => {
-    const res = await client.stream(`/knowledge_bases/${knowledgeBaseId}/documents/${documentId}`);
+    const res = await client.request('kb.fetchDocumentText', {
+      pathParams: { knowledgeBaseId, documentId },
+      stream: true,
+    });
     return res.text();
   },
 
@@ -153,16 +172,22 @@ export const knowledgeBaseApi = {
     if (ids.length === 0) {
       return Promise.resolve({ items: [] });
     }
-    return client.get(`/knowledge_bases/${knowledgeBaseId}/documents/status`, {
-      ids: ids.join(','),
+    return client.request('kb.documentStatus', {
+      pathParams: { knowledgeBaseId },
+      params: {
+        ids: ids.join(','),
+      },
     });
   },
 
-  uploadDocument: (knowledgeBaseId, file, options) => uploadDocumentXhr(knowledgeBaseId, file, options),
+  uploadDocument: (knowledgeBaseId, file, options) =>
+    uploadDocumentXhr(knowledgeBaseId, file, options),
 
   deleteDocument: (knowledgeBaseId, documentId) =>
-    client.delete(`/knowledge_bases/${knowledgeBaseId}/documents/${documentId}`),
+    client.request('kb.deleteDocument', {
+      pathParams: { knowledgeBaseId, documentId },
+    }),
 
   search: (knowledgeBaseId, body) =>
-    client.post(`/knowledge_bases/${knowledgeBaseId}/search`, body),
+    client.request('kb.search', { pathParams: { knowledgeBaseId }, body }),
 };

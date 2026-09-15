@@ -1,13 +1,16 @@
 import { client } from './client';
 
 export const scheduleApi = {
-  list: () => client.get('/schedule/'),
+  list: () => client.request('schedule.list'),
 
-  create: (body) => client.post('/schedule/', body),
+  create: (body) => client.request('schedule.create', { body }),
 
-  update: (scheduleId, body) => client.patch(`/schedule/${scheduleId}`, body),
+  update: (scheduleId, body) =>
+    client.request('schedule.update', { pathParams: { scheduleId }, body }),
 
-  delete: (scheduleId) => client.delete(`/schedule/${scheduleId}`),
+  delete: (scheduleId) =>
+    client.request('schedule.delete', { pathParams: { scheduleId } }),
 
-  listSessions: (scheduleId) => client.get(`/schedule/${scheduleId}/sessions`),
+  listSessions: (scheduleId) =>
+    client.request('schedule.listSessions', { pathParams: { scheduleId } }),
 };

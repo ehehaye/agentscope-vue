@@ -38,13 +38,34 @@ pnpm build
 pnpm preview
 ```
 
-默认端口 `5173`。前端通过 `localStorage.server_url` 直连 Python 后端；若后端起在本机 `8000`，可在 setup 页填写 `http://localhost:8000`。
+默认端口 `5173`。前端支持两种后端接入方式（见下一节）：直连 Python（默认，setup 页填写 `localStorage.server_url`，如本机 `http://localhost:8000`）或经 Java 服务中转（`localStorage.proxy_url`）。
+
+## 接口与后端接入（直连 / Java 中转）
+
+所有请求统一由端点映射表驱动：业务代码只调用 `client.request(key, { pathParams, params, body, ... })`，不再硬编码 URL。
+
+- **映射表**：[src/api/mapping.js](src/api/mapping.js) 是唯一真源（SSOT），每个端点一个 key，分别声明 `direct` 与 `proxy` 两种 `{ method, path }`；路径参数写作 `{xxx}`，由 `resolveEndpoint` 插值并 URL 编码。
+- **模式切换**：由 `localStorage.api_mode` 控制（`direct` 默认 / `proxy`），可运行时调用 `setApiMode(API_MODES.PROXY)` 切换。
+
+| 模式 | Base URL | Method | 说明 |
+| --- | --- | --- | --- |
+| `direct`（默认） | `localStorage.server_url` | GET / POST / PATCH / DELETE | 直连 Python 后端 |
+| `proxy` | `localStorage.proxy_url`（未配置时回退 `server_url`） | 仅 GET / POST | 经 Java 中转：PATCH → `POST {path}/update`，DELETE → `POST {path}/delete` |
+
+```js
+import { setApiMode, API_MODES } from '@/api';
+
+setApiMode(API_MODES.PROXY); // 之后全部请求自动走中转地址与 GET/POST 映射
+```
+
+- **接口文档**：直连清单见 [docs/API.md](docs/API.md)，Java 中转映射版（含映射后 URL/Method、SSE/multipart/文件下载等特殊场景备注）见 [docs/API-java-proxy.md](docs/API-java-proxy.md)。
+- **特殊响应**：SSE 事件流（`stream: true` 拿原始 Response）、multipart 上传（XHR）、带 token 的文件下载同样从映射表取路径，中转层需按文档备注做流式/二进制透传，不能按普通 JSON 处理。
 
 ## 目录结构
 
 ```
 src/
-├── api              # 后端接口封装
+├── api              # 后端接口封装 + 端点映射表（mapping.js：direct 直连 / proxy Java 中转）
 ├── assets           # 图片、字体等静态资源
 ├── components       # 业务组件（chat、dialog、drawer、form、panel 等）
 ├── composables      # 组合式逻辑
@@ -57,6 +78,8 @@ src/
 ├── utils            # 工具函数
 └── views            # 页面视图（chat、setup、knowledge、mcp、schedule、skill 等）
 ```
+
+仓库根目录另有 `docs/`：`API.md`（直连接口清单）与 `API-java-proxy.md`（Java 中转映射版）。
 
 ## 向后兼容 / 升级到 Vue 3
 

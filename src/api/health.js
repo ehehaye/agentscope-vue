@@ -13,7 +13,7 @@ export const healthApi = {
 	 * @param {string} userId  X-User-ID
 	 */
 	check: (baseUrl, userId) =>
-		client.get('/health', undefined, {
+		client.request('health.check', {
 			silent: true,
 			baseUrl,
 			userId,

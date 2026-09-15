@@ -5,5 +5,5 @@
 import { client } from './client';
 
 export const chatApi = {
-  trigger: (body, options) => client.post('/chat/', body, undefined, options),
+  trigger: (body, options) => client.request('chat.trigger', { body, ...options }),
 };

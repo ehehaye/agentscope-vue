@@ -1,7 +1,5 @@
 import { client } from './client';
 
-const segment = (value) => encodeURIComponent(value);
-
 function browseQuery(params = {}) {
   const query = {};
   if (params?.q) query.q = params.q;
@@ -12,28 +10,42 @@ function browseQuery(params = {}) {
 
 export const hubApi = {
   mcp: {
-    listHubs: () => client.get('/hub/mcp'),
+    listHubs: () => client.request('hub.mcp.listHubs'),
 
     listCards: (hubId, params) =>
-      client.get(`/hub/mcp/${segment(hubId)}/cards`, browseQuery(params)),
+      client.request('hub.mcp.listCards', {
+        pathParams: { hubId },
+        params: browseQuery(params),
+      }),
 
     getCard: (hubId, cardId) =>
-      client.get(`/hub/mcp/${segment(hubId)}/cards/${segment(cardId)}`),
+      client.request('hub.mcp.getCard', { pathParams: { hubId, cardId } }),
 
     install: (hubId, cardId, body, options) =>
-      client.post(`/hub/mcp/${segment(hubId)}/cards/${segment(cardId)}/install`, body, undefined, options),
+      client.request('hub.mcp.install', {
+        pathParams: { hubId, cardId },
+        body,
+        ...options,
+      }),
   },
 
   skill: {
-    listHubs: () => client.get('/hub/skill'),
+    listHubs: () => client.request('hub.skill.listHubs'),
 
     listCards: (hubId, params) =>
-      client.get(`/hub/skill/${segment(hubId)}/cards`, browseQuery(params)),
+      client.request('hub.skill.listCards', {
+        pathParams: { hubId },
+        params: browseQuery(params),
+      }),
 
     getCard: (hubId, cardId) =>
-      client.get(`/hub/skill/${segment(hubId)}/cards/${segment(cardId)}`),
+      client.request('hub.skill.getCard', { pathParams: { hubId, cardId } }),
 
     install: (hubId, cardId, name, options) =>
-      client.post(`/hub/skill/${segment(hubId)}/cards/${segment(cardId)}/install`, undefined, name ? { name } : undefined, options),
+      client.request('hub.skill.install', {
+        pathParams: { hubId, cardId },
+        params: name ? { name } : undefined,
+        ...options,
+      }),
   },
 };

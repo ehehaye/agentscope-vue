@@ -1,34 +1,43 @@
 import { client } from './client';
 
 export const channelApi = {
-	listTypes: () => client.get('/channels/types'),
+	listTypes: () => client.request('channel.listTypes'),
 
-	list: () => client.get('/channels/'),
+	list: () => client.request('channel.list'),
 
-	get: (channelId) => client.get(`/channels/${channelId}`),
+	get: (channelId) =>
+		client.request('channel.get', { pathParams: { channelId } }),
 
-	create: (body) => client.post('/channels/', body),
+	create: (body) => client.request('channel.create', { body }),
 
-	update: (channelId, body) => client.patch(`/channels/${channelId}`, body),
+	update: (channelId, body) =>
+		client.request('channel.update', { pathParams: { channelId }, body }),
 
-	delete: (channelId) => client.delete(`/channels/${channelId}`),
+	delete: (channelId) =>
+		client.request('channel.delete', { pathParams: { channelId } }),
 
-	enable: (channelId) => client.post(`/channels/${channelId}/enable`),
+	enable: (channelId) =>
+		client.request('channel.enable', { pathParams: { channelId } }),
 
-	disable: (channelId) => client.post(`/channels/${channelId}/disable`),
+	disable: (channelId) =>
+		client.request('channel.disable', { pathParams: { channelId } }),
 
-	status: (channelId) => client.get(`/channels/${channelId}/status`),
+	status: (channelId) =>
+		client.request('channel.status', { pathParams: { channelId } }),
 
-	listSessions: (channelId) => client.get(`/channels/${channelId}/sessions`),
+	listSessions: (channelId) =>
+		client.request('channel.listSessions', { pathParams: { channelId } }),
 
-	listChatIds: (channelId) => client.get(`/channels/${channelId}/chat_ids`),
+	listChatIds: (channelId) =>
+		client.request('channel.listChatIds', { pathParams: { channelId } }),
 
 	startBinding: (channelType) =>
-		client.post('/channels/bindings', { channel_type: channelType }),
+		client.request('channel.startBinding', { body: { channel_type: channelType } }),
 
 	/** Report the session; this call is also what advances it. */
-	pollBinding: (bindingId) => client.get(`/channels/bindings/${bindingId}`),
+	pollBinding: (bindingId) =>
+		client.request('channel.pollBinding', { pathParams: { bindingId } }),
 
 	cancelBinding: (bindingId, options = {}) =>
-		client.post(`/channels/bindings/${bindingId}/cancel`, undefined, undefined, options),
+		client.request('channel.cancelBinding', { pathParams: { bindingId }, ...options }),
 };

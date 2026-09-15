@@ -1,13 +1,15 @@
 import { client } from './client';
 
 export const credentialApi = {
-	list: () => client.get('/credential/'),
+	list: () => client.request('credential.list'),
 
-	schemas: () => client.get('/credential/schemas'),
+	schemas: () => client.request('credential.schemas'),
 
-	create: (body) => client.post('/credential/', body),
+	create: (body) => client.request('credential.create', { body }),
 
-	update: (credentialId, body) => client.patch(`/credential/${credentialId}`, body),
+	update: (credentialId, body) =>
+		client.request('credential.update', { pathParams: { credentialId }, body }),
 
-	delete: (credentialId) => client.delete(`/credential/${credentialId}`),
+	delete: (credentialId) =>
+		client.request('credential.delete', { pathParams: { credentialId } }),
 };

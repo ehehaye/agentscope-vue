@@ -14,28 +14,44 @@ export function markFreshlyCreated(sessionId) {
 }
 
 export const sessionApi = {
-  list: (agentId) => client.get('/sessions/', { agent_id: agentId }),
+  list: (agentId) =>
+    client.request('session.list', { params: { agent_id: agentId } }),
 
   create: async (body) => {
-    const res = await client.post('/sessions/', body);
+    const res = await client.request('session.create', { body });
     freshlyCreated.add(res.session_id);
     return res;
   },
 
   update: (sessionId, agentId, body, options) =>
-    client.patch(`/sessions/${sessionId}`, body, { agent_id: agentId }, options),
+    client.request('session.update', {
+      pathParams: { sessionId },
+      params: { agent_id: agentId },
+      body,
+      ...options,
+    }),
 
   delete: (sessionId, agentId) =>
-    client.delete(`/sessions/${sessionId}`, { agent_id: agentId }),
+    client.request('session.delete', {
+      pathParams: { sessionId },
+      params: { agent_id: agentId },
+    }),
 
   interrupt: (sessionId, agentId) =>
-    client.post(`/sessions/${sessionId}/interrupt`, null, { agent_id: agentId }),
+    client.request('session.interrupt', {
+      pathParams: { sessionId },
+      params: { agent_id: agentId },
+      body: null,
+    }),
 
   messages: (sessionId, agentId, params) =>
-    client.get(`/sessions/${sessionId}/messages`, {
-      agent_id: agentId,
-      ...(params?.before != null && { before: params.before }),
-      ...(params?.limit != null && { limit: String(params.limit) }),
+    client.request('session.messages', {
+      pathParams: { sessionId },
+      params: {
+        agent_id: agentId,
+        ...(params?.before != null && { before: params.before }),
+        ...(params?.limit != null && { limit: String(params.limit) }),
+      },
     }),
 
   /**
@@ -46,9 +62,10 @@ export const sessionApi = {
    * @returns {AsyncGenerator<import('@agentscope-ai/agentscope/event').AgentEvent>}
    */
   streamEvents: async function* (sessionId, agentId, signal) {
-    const res = await client.stream(`/sessions/${sessionId}/stream`, {
-      method: 'GET',
+    const res = await client.request('session.streamEvents', {
+      pathParams: { sessionId },
       params: { agent_id: agentId },
+      stream: true,
       signal,
     });
 

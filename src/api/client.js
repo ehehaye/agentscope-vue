@@ -1,12 +1,23 @@
 /**
  * HTTP 客户端（原生 fetch 封装，统一注入头与错误归一）。
+ * - 所有请求通过端点 key 从 mapping.js 解析 URL/Method，支持 direct（直连 Python）/ proxy（Java 中转）两种模式
  * - 原生 fetch（非 axios），统一注入 X-User-ID 头（localStorage）
  * - FastAPI/Pydantic 422 错误提取 detail；silent 模式不弹 toast
- * - stream() 只返回 Response，SSE 解析交给上层（见 api/session.js 的 async generator）
+ * - stream: true 只返回 Response，SSE 解析交给上层（见 api/session.js 的 async generator）
  */
 import { toast } from '@/lib/toast';
+import { API_MODES, getApiMode, resolveEndpoint } from './mapping';
 
-export const getBaseUrl = () => localStorage.getItem('server_url') ?? '';
+/**
+ * 当前模式对应的 Base URL。
+ * - direct：localStorage.server_url（Python 后端）
+ * - proxy ：localStorage.proxy_url（Java 中转），未配置时回退 server_url
+ */
+export const getBaseUrl = (mode = getApiMode()) =>
+	mode === API_MODES.PROXY
+		? (localStorage.getItem('proxy_url') ?? localStorage.getItem('server_url') ?? '')
+		: (localStorage.getItem('server_url') ?? '');
+
 export const getUserId = () => localStorage.getItem('username') ?? '';
 
 /** 非 2xx 响应的结构化错误；message 为可读 detail。 */
@@ -65,7 +76,7 @@ async function streamRequest(path, options = {}) {
 	try {
 		res = await fetch(url.toString(), {
 			method,
-			headers: buildHeaders(body !== undefined, userId),
+			headers: buildHeaders(body !== undefined && body !== null, userId),
 			body: body ? JSON.stringify(body) : undefined,
 			signal: combined,
 		});
@@ -89,18 +100,52 @@ async function streamRequest(path, options = {}) {
 	return res;
 }
 
-async function request(path, options = {}) {
-	const res = await streamRequest(path, options);
+/**
+ * 按 mapping 配置发起请求。
+ * @param {string} key ENDPOINTS 端点键
+ * @param {object} [options]
+ * @param {Record<string, string|number>} [options.pathParams] 填充路径中的 {xxx}
+ * @param {Record<string, any>} [options.params] URL Query 参数
+ * @param {any} [options.body] JSON 请求体（null/undefined 时不发送 body）
+ * @param {boolean} [options.stream] 返回原始 Response 而非解析 JSON
+ * @param {boolean} [options.silent] 失败时不弹 toast
+ * @param {AbortSignal} [options.signal]
+ * @param {string} [options.mode] 强制指定 direct/proxy，默认取当前全局模式
+ * @param {string} [options.baseUrl] 覆盖 Base URL
+ * @param {string} [options.userId] 覆盖 X-User-ID
+ * @param {number} [options.timeoutMs] 超时毫秒
+ */
+async function request(key, options = {}) {
+	const {
+		pathParams,
+		params,
+		body,
+		stream: rawStream = false,
+		signal,
+		silent = false,
+		mode = getApiMode(),
+		baseUrl,
+		userId,
+		timeoutMs,
+	} = options;
+
+	const { method, path } = resolveEndpoint(key, { pathParams, mode });
+	const res = await streamRequest(path, {
+		method,
+		body,
+		params,
+		signal,
+		silent,
+		baseUrl: baseUrl ?? getBaseUrl(mode),
+		userId,
+		timeoutMs,
+	});
+
+	if (rawStream) return res;
 	if (res.status === 204) return undefined;
 	return res.json();
 }
 
 export const client = {
-	get: (path, params, options) => request(path, { method: 'GET', params, ...options }),
-	post: (path, body, params, options) =>
-		request(path, { method: 'POST', body, params, silent: options?.silent }),
-	patch: (path, body, params, options) =>
-		request(path, { method: 'PATCH', body, params, silent: options?.silent }),
-	delete: (path, params) => request(path, { method: 'DELETE', params }),
-	stream: (path, options) => streamRequest(path, options),
+	request,
 };
