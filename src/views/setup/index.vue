@@ -83,9 +83,9 @@ export default defineComponent({
 			this.loading = true;
 			try {
 				await healthApi.check(serverUrl, userId);
-				this.$store.dispatch('app/saveConfig', { serverUrl, username: userId });
+				await this.$store.dispatch('app/saveConfig', { serverUrl, username: userId });
 				this.$message.success('连接成功');
-				this.$router.replace('/');
+				await this.$router.replace('/chat');
 			} catch (e) {
 				this.errorMessage = this.mapError(e);
 			} finally {
