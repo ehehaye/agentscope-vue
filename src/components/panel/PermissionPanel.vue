@@ -67,7 +67,7 @@
 
 <script>
 import { defineComponent, computed } from '@/composables/vue';
-import { Icon } from '@iconify/vue2';
+import { Icon } from '@/plugins/iconify';
 import PanelEmpty from './PanelEmpty.vue';
 
 const BEHAVIOR_META = {

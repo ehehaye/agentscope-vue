@@ -71,7 +71,7 @@
 
 <script>
 import { defineComponent, computed, ref, watch, onUnmounted } from '@/composables/vue';
-import { Icon } from '@iconify/vue2';
+import { Icon } from '@/plugins/iconify';
 import { getContentBlocks } from '@agentscope-ai/agentscope/message';
 import { ReplyFinishedReason } from '@agentscope-ai/agentscope/event';
 import Spinner from '@/components/ui/Spinner.vue';

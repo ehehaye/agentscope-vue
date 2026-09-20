@@ -92,7 +92,7 @@
 
 <script>
 import { defineComponent, ref, computed, watch } from '@/composables/vue';
-import { Icon } from '@iconify/vue2';
+import { Icon } from '@/plugins/iconify';
 import Spinner from '@/components/ui/Spinner.vue';
 import { workspaceApi } from '@/api';
 import { COMMON } from '@/constants/text';

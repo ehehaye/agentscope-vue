@@ -14,7 +14,7 @@
 
 <script>
 import { defineComponent, computed } from '@/composables/vue';
-import { Icon } from '@iconify/vue2';
+import { Icon } from '@/plugins/iconify';
 import * as mime from 'mime-types';
 
 export default defineComponent({

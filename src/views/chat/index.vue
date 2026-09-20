@@ -140,7 +140,7 @@ import { useKnowledgeBases } from '@/composables/useKnowledgeBases';
 import { useAvailableModels } from '@/composables/useAvailableModels';
 import { provideAudioCenter, useAudioCenter } from '@/composables/useAudioCenter.js';
 import { sessionApi, credentialApi } from '@/api';
-import { Icon } from '@iconify/vue2';
+import { Icon } from '@/plugins/iconify';
 import ChatContent from '@/components/chat/ChatContent.vue';
 import SessionList from '@/components/chat/SessionList.vue';
 import PanelDock from '@/components/panel/PanelDock.vue';

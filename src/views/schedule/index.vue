@@ -61,7 +61,7 @@
 
 <script>
 import { defineComponent, ref, computed } from '@/composables/vue';
-import { Icon } from '@iconify/vue2';
+import { Icon } from '@/plugins/iconify';
 import { CronExpressionParser } from 'cron-parser';
 import CalendarTabPage from './CalendarTabPage.vue';
 import ListTabPage from './ListTabPage.vue';

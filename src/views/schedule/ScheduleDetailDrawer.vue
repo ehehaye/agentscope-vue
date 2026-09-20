@@ -60,7 +60,7 @@
 <script>
 import { defineComponent, ref, computed, watch, getCurrentInstance } from '@/composables/vue';
 import { MessageBox } from 'element-ui';
-import { Icon } from '@iconify/vue2';
+import { Icon } from '@/plugins/iconify';
 import StatusBadge from '@/components/badge/StatusBadge.vue';
 import { scheduleApi } from '@/api';
 import { COMMON } from '@/constants/text';

@@ -21,7 +21,7 @@
 
 <script>
 import { defineComponent, computed } from '@/composables/vue';
-import { Icon } from '@iconify/vue2';
+import { Icon } from '@/plugins/iconify';
 import Collapsible from '@/components/ui/Collapsible.vue';
 import ToolCallRow from './ToolCallRow.vue';
 import DiffStats from './DiffStats.vue';

@@ -18,7 +18,7 @@
 
 <script>
 import { defineComponent, ref, watch, nextTick } from '@/composables/vue';
-import { Icon } from '@iconify/vue2';
+import { Icon } from '@/plugins/iconify';
 
 export default defineComponent({
   name: 'MessageScroller',

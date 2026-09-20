@@ -59,7 +59,7 @@
 
 <script>
 import { defineComponent, ref, computed, watch, onUnmounted } from '@/composables/vue';
-import { Icon } from '@iconify/vue2';
+import { Icon } from '@/plugins/iconify';
 import MarkdownRenderer from '@/components/common/MarkdownRenderer.vue';
 import Collapsible from '@/components/ui/Collapsible.vue';
 import DataBlockView from './DataBlockView.vue';

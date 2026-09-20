@@ -114,7 +114,7 @@
 <script>
 import { defineComponent, ref, computed, watch, toRef } from '@/composables/vue';
 import { MessageBox } from 'element-ui';
-import { Icon } from '@iconify/vue2';
+import { Icon } from '@/plugins/iconify';
 import { knowledgeBaseApi } from '@/api';
 import { toast } from '@/lib/toast';
 import DocumentDetailDrawer from '@/components/knowledge/DocumentDetailDrawer.vue';

@@ -104,7 +104,7 @@
 
 <script>
 import { defineComponent, computed } from '@/composables/vue';
-import { Icon } from '@iconify/vue2';
+import { Icon } from '@/plugins/iconify';
 import { isToday } from 'date-fns';
 import AgentSelect from '@/components/select/AgentSelect.vue';
 import Spinner from '@/components/ui/Spinner.vue';

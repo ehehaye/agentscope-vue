@@ -31,7 +31,7 @@
 
 <script>
 import { defineComponent, ref, computed, watch, onMounted, onUnmounted, nextTick } from '@/composables/vue';
-import { Icon } from '@iconify/vue2';
+import { Icon } from '@/plugins/iconify';
 import { useAudioBlock } from '@/composables/useAudioCenter.js';
 
 export default defineComponent({

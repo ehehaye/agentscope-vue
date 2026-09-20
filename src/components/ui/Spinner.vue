@@ -4,7 +4,7 @@
 
 <script>
 import { defineComponent } from '@/composables/vue';
-import { Icon } from '@iconify/vue2';
+import { Icon } from '@/plugins/iconify';
 import { cn } from '@/lib/utils';
 
 export default defineComponent({

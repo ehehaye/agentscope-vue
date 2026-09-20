@@ -13,7 +13,7 @@
 
 <script>
 import { defineComponent } from '@/composables/vue';
-import { Icon } from '@iconify/vue2';
+import { Icon } from '@/plugins/iconify';
 import { TEXT } from './text';
 
 export default defineComponent({

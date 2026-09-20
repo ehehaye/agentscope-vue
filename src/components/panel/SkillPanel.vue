@@ -69,7 +69,7 @@
 <script>
 import { defineComponent, ref, computed } from '@/composables/vue';
 import { MessageBox } from 'element-ui';
-import { Icon } from '@iconify/vue2';
+import { Icon } from '@/plugins/iconify';
 import {
   InputGroup,
   InputGroupInput,

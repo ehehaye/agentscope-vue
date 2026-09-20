@@ -35,7 +35,7 @@
 
 <script>
 import { defineComponent, computed } from '@/composables/vue';
-import { Icon } from '@iconify/vue2';
+import { Icon } from '@/plugins/iconify';
 import { format } from 'date-fns';
 
 const SOURCE_ICON = {

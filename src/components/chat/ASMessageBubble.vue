@@ -53,7 +53,7 @@
 
 <script>
 import { defineComponent, ref, computed, watch, onUnmounted } from '@/composables/vue';
-import { Icon } from '@iconify/vue2';
+import { Icon } from '@/plugins/iconify';
 import { copyToClipboard, formatNumber, formatTime } from '@/utils/common';
 import { TEXT } from './text';
 import Bubble from '@/components/ui/Bubble.vue';

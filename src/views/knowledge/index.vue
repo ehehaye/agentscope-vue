@@ -84,7 +84,7 @@
 <script>
 import { defineComponent, ref, computed, watch } from '@/composables/vue';
 import { MessageBox } from 'element-ui';
-import { Icon } from '@iconify/vue2';
+import { Icon } from '@/plugins/iconify';
 import { useRoute, useRouter } from '@/composables/vue-router';
 import CreateKnowledgeBaseDialog from '@/components/dialog/CreateKnowledgeBaseDialog.vue';
 import CreateCredentialDialog from '@/components/dialog/CreateCredentialDialog.vue';

@@ -17,7 +17,7 @@
 
 <script>
 import { defineComponent, computed } from '@/composables/vue';
-import { Icon } from '@iconify/vue2';
+import { Icon } from '@/plugins/iconify';
 import ConfirmCard from './ConfirmCard.vue';
 import { TEXT } from './text';
 
