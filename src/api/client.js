@@ -45,6 +45,17 @@ async function extractErrorDetail(res) {
 	try {
 		const json = JSON.parse(text);
 		if (typeof json.detail === 'string') return json.detail;
+		// FastAPI 422：detail 为 pydantic 错误数组，只保留可读的 msg 字段
+		if (Array.isArray(json.detail)) {
+			const msgs = json.detail
+				.map((item) =>
+					item && typeof item === 'object' && 'msg' in item
+						? String(item.msg)
+						: null,
+				)
+				.filter(Boolean);
+			if (msgs.length > 0) return msgs.join('\n');
+		}
 		if (json.detail !== undefined) return JSON.stringify(json.detail);
 	} catch {
 		// 非 JSON，回落纯文本
