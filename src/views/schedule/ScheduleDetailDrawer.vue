@@ -149,10 +149,10 @@ export default defineComponent({
       emit('update:visible', false);
     }
 
-    function handleDelete() {
+    async function handleDelete() {
       const schedule = props.schedule;
       if (!schedule) return;
-      MessageBox.confirm(
+      await MessageBox.confirm(
         COMMON.deleteDescription,
         COMMON.deleteTitle(TEXT.schedule.deleteSchedule.entity, schedule.data?.name || ''),
         {
@@ -160,12 +160,9 @@ export default defineComponent({
           confirmButtonText: '删除',
           cancelButtonText: '取消',
         },
-      )
-        .then(async () => {
-          await emit('delete', schedule.id);
-          emit('update:visible', false);
-        })
-        .catch(() => {});
+      );
+      await emit('delete', schedule.id);
+      emit('update:visible', false);
     }
 
     return {

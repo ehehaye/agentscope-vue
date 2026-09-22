@@ -128,18 +128,15 @@ export default defineComponent({
       search.value ? `没有匹配 "${search.value}" 的技能。` : '当前会话尚未装备任何技能。',
     );
 
-    function askRemove(name) {
+    async function askRemove(name) {
       if (!name) return;
-      MessageBox.confirm('删除后无法恢复，是否继续？', `删除技能 "${name}"？`, {
+      await MessageBox.confirm('删除后无法恢复，是否继续？', `删除技能 "${name}"？`, {
         type: 'warning',
         confirmButtonText: '删除',
         cancelButtonText: '取消',
-      })
-        .then(async () => {
-          if (!props.onRemove) return;
-          await props.onRemove(name);
-        })
-        .catch(() => {});
+      });
+      if (!props.onRemove) return;
+      await props.onRemove(name);
     }
 
     return {

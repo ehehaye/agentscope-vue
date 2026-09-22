@@ -47,20 +47,15 @@ export default defineComponent({
 
     watch(
       () => props.visible,
-      (open) => {
-        if (open) {
-          form.value = defaultChannelForm(props.agents[0]?.id || '');
-          form.value.channelType = props.initialType || 'feishu';
-          error.value = '';
-          channelApi
-            .listTypes()
-            .then((types) => {
-              channelTypes.value = types || [];
-              if (!types.some((ct) => ct.channel_type === form.value.channelType)) {
-                form.value.channelType = types[0]?.channel_type || form.value.channelType;
-              }
-            })
-            .catch(() => {});
+      async (open) => {
+        if (!open) return;
+        form.value = defaultChannelForm(props.agents[0]?.id || '');
+        form.value.channelType = props.initialType || 'feishu';
+        error.value = '';
+        const types = (await channelApi.listTypes()) || [];
+        channelTypes.value = types;
+        if (!types.some((ct) => ct.channel_type === form.value.channelType)) {
+          form.value.channelType = types[0]?.channel_type || form.value.channelType;
         }
       },
     );

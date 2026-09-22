@@ -151,9 +151,9 @@ export default defineComponent({
       }
     }
 
-    function askDelete(kb) {
+    async function askDelete(kb) {
       if (!kb) return;
-      MessageBox.confirm(
+      await MessageBox.confirm(
         TEXT.knowledge.dialogDelete.description(kb.name || ''),
         TEXT.knowledge.dialogDelete.title,
         {
@@ -161,15 +161,12 @@ export default defineComponent({
           confirmButtonText: '删除',
           cancelButtonText: '取消',
         },
-      )
-        .then(async () => {
-          await remove(kb.id);
-          if (selectedKbId.value === kb.id) {
-            selectedKbId.value = null;
-            router.replace('/knowledge');
-          }
-        })
-        .catch(() => {});
+      );
+      await remove(kb.id);
+      if (selectedKbId.value === kb.id) {
+        selectedKbId.value = null;
+        router.replace('/knowledge');
+      }
     }
 
     async function handleCreated(kbId) {

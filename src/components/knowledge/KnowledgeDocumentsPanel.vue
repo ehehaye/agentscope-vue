@@ -352,22 +352,15 @@ export default defineComponent({
       clearFinishedForKb(props.knowledgeBaseId);
     }
 
-    function handleDelete(doc) {
+    async function handleDelete(doc) {
       if (!doc) return;
-      MessageBox.confirm(`确定删除「${doc.filename}」吗？`, '删除文档', {
+        await MessageBox.confirm(`确定删除「${doc.filename}」吗？`, '删除文档', {
         type: 'warning',
         confirmButtonText: '删除',
         cancelButtonText: '取消',
-      })
-        .then(async () => {
-          try {
-            await knowledgeBaseApi.deleteDocument(props.knowledgeBaseId, doc.id);
-            await refetch();
-          } catch {
-            toast.error('删除失败');
-          }
-        })
-        .catch(() => {});
+      });
+      await knowledgeBaseApi.deleteDocument(props.knowledgeBaseId, doc.id);
+      await refetch();
     }
 
     function handleOpenDetail(doc) {

@@ -125,18 +125,15 @@ export default defineComponent({
       }
     }
 
-    function askRemove(skill) {
+    async function askRemove(skill) {
       if (!skill) return;
       const name = skill.display_name || skill.name || '';
-      MessageBox.confirm(COMMON.deleteDescription, COMMON.deleteTitle(TEXT.skill.subtitle, name), {
+      await MessageBox.confirm(COMMON.deleteDescription, COMMON.deleteTitle(TEXT.skill.subtitle, name), {
         type: 'warning',
         confirmButtonText: '删除',
         cancelButtonText: '取消',
-      })
-        .then(async () => {
-          await emit('remove', skill.id);
-        })
-        .catch(() => {});
+      });
+      await emit('remove', skill.id);
     }
 
     return {

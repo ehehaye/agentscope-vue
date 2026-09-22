@@ -327,27 +327,24 @@ export default defineComponent({
       await updateSession(renamingSession.value.session.id, agentId.value, { name });
     }
 
-    function openDeleteSession(session) {
+    async function openDeleteSession(session) {
       const sid = session?.session?.id;
       if (!sid) return;
       const name = session.session?.config?.name || sid;
-      MessageBox.confirm(`确定删除会话「${name}」吗？`, '删除会话', {
+      await MessageBox.confirm(`确定删除会话「${name}」吗？`, '删除会话', {
         type: 'warning',
         confirmButtonText: '删除',
         cancelButtonText: '取消',
       })
-        .then(async () => {
-          await removeSession(sid, agentId.value);
-          if (sid === sessionId.value) {
-            const remaining = sessions.value.filter((v) => v.session?.id !== sid);
-            if (remaining.length > 0) {
-              navigateTo(agentId.value, remaining[0].session.id);
-            } else {
-              router.push({ path: '/chat', query: { ...route.query, sessionId: undefined } }).catch(() => {});
-            }
-          }
-        })
-        .catch(() => {});
+      await removeSession(sid, agentId.value);
+      if (sid === sessionId.value) {
+        const remaining = sessions.value.filter((v) => v.session?.id !== sid);
+        if (remaining.length > 0) {
+          navigateTo(agentId.value, remaining[0].session.id);
+        } else {
+          router.push({ path: '/chat', query: { ...route.query, sessionId: undefined } }).catch(() => {});
+        }
+      }
     }
 
     function openEditAgent(agent) {
@@ -355,22 +352,19 @@ export default defineComponent({
       editAgentDialogVisible.value = true;
     }
 
-    function openDeleteAgent(agent) {
+    async function openDeleteAgent(agent) {
       if (!agent) return;
       const name = agent.name || agent.id;
-      MessageBox.confirm(`确定删除助手「${name}」吗？`, '删除助手', {
+      await MessageBox.confirm(`确定删除助手「${name}」吗？`, '删除助手', {
         type: 'warning',
         confirmButtonText: '删除',
         cancelButtonText: '取消',
       })
-        .then(async () => {
-          await removeAgent(agent.id);
-          // 删除当前助手后清空路由回到 /chat
-          if (route.query.agentId) {
-            router.push({ path: '/chat', query: {} }).catch(() => {});
-          }
-        })
-        .catch(() => {});
+      await removeAgent(agent.id);
+      // 删除当前助手后清空路由回到 /chat
+      if (route.query.agentId) {
+        router.push({ path: '/chat', query: {} }).catch(() => {});
+      }
     }
 
     const {
@@ -571,7 +565,7 @@ export default defineComponent({
 
     watch(
       view,
-      (nextView) => {
+      async (nextView) => {
         if (!nextView || !sessionId.value || !agentId.value) return;
         const config = nextView.session.config || {};
         if (config.chat_model_config) {
@@ -580,10 +574,8 @@ export default defineComponent({
           const first = getFirstAvailableModel();
           if (first) {
             selectedModel.value = first;
-            sessionApi
-              .update(sessionId.value, agentId.value, { chat_model_config: first }, { silent: true })
-              .then(() => refetchSessions())
-              .catch(() => {});
+            await sessionApi.update(sessionId.value, agentId.value, { chat_model_config: first }, { silent: true });
+            await refetchSessions();
           }
         }
         selectedFallbackModel.value = config.fallback_chat_model_config ?? null;

@@ -313,20 +313,17 @@ export default defineComponent({
     onUpdated() {
       this.loadModels();
     },
-    handleDelete() {
+    async handleDelete() {
       const credential = this.selectedCredential;
       if (!credential) return;
       const name = credential.data?.name || credential.id;
-      MessageBox.confirm('删除后无法恢复，是否继续？', `删除凭证「${name}」`, {
+      await MessageBox.confirm('删除后无法恢复，是否继续？', `删除凭证「${name}」`, {
         type: 'warning',
         confirmButtonText: '删除',
         cancelButtonText: '取消',
-      })
-        .then(async () => {
-          await this.remove(credential.id);
-          this.selectedId = null;
-        })
-        .catch(() => {});
+      });
+      await this.remove(credential.id);
+      this.selectedId = null;
     },
   },
 });

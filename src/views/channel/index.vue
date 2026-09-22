@@ -196,20 +196,17 @@ export default defineComponent({
       }
     }
 
-    function handleDelete() {
+    async function handleDelete() {
       const ch = selected.value;
       if (!ch) return;
       const name = ch.name?.trim() || `${typeOf(ch.channel_type)?.display_name || ch.channel_type} · ${ch.id.slice(0, 8)}`;
-      MessageBox.confirm('删除后无法恢复，是否继续？', `删除频道「${name}」`, {
+      await MessageBox.confirm('删除后无法恢复，是否继续？', `删除频道「${name}」`, {
         type: 'warning',
         confirmButtonText: '删除',
         cancelButtonText: '取消',
-      })
-        .then(async () => {
-          await remove(ch.id);
-          selectedId.value = null;
-        })
-        .catch(() => {});
+      });
+      await remove(ch.id);
+      selectedId.value = null;
     }
 
     const detailOpen = computed({
@@ -220,22 +217,34 @@ export default defineComponent({
     });
 
     // 加载 channel types
-    channelApi.listTypes().then((res) => {
-      types.value = res || [];
-    }).catch(() => {});
+    async function loadTypes() {
+      try {
+        const res = await channelApi.listTypes();
+        types.value = res || [];
+      } catch {
+        // 忽略加载失败
+      }
+    }
+    loadTypes();
 
     // 轮询已启用 channel 状态
     let timer = null;
     let alive = true;
+    async function fetchStatus(id) {
+      try {
+        const s = await channelApi.status(id);
+        return [id, s];
+      } catch {
+        return null;
+      }
+    }
     async function pollStatuses() {
       const ids = channels.value.filter((c) => c.enabled).map((c) => c.id);
       if (ids.length === 0) {
         statuses.value = {};
         return;
       }
-      const results = await Promise.all(
-        ids.map((id) => channelApi.status(id).then((s) => [id, s]).catch(() => null)),
-      );
+      const results = await Promise.all(ids.map((id) => fetchStatus(id)));
       if (!alive) return;
       const next = {};
       for (const r of results) if (r) next[r[0]] = r[1];

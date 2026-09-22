@@ -42,17 +42,11 @@ export default defineComponent({
 
     watch(
       () => [props.visible, props.channel],
-      ([open]) => {
-        if (open && props.channel) {
-          form.value = channelFormFromRecord(props.channel);
-          error.value = '';
-          channelApi
-            .listTypes()
-            .then((types) => {
-              channelTypes.value = types || [];
-            })
-            .catch(() => {});
-        }
+      async ([open]) => {
+        if (!open || !props.channel) return;
+        form.value = channelFormFromRecord(props.channel);
+        error.value = '';
+        channelTypes.value = (await channelApi.listTypes()) || [];
       },
     );
 
