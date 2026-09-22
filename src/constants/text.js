@@ -58,10 +58,3 @@ export const COMMON = {
 	tts: 'TTS',
 	embedding: '向量',
 };
-
-// ── 错误边界（RouteError）（error） ──
-export const ERROR = {
-	description: '页面遇到意外错误。你可以重试或返回首页。',
-	retry: '重试',
-	home: '返回首页',
-};
