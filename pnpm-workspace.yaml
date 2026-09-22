@@ -1,0 +1,5 @@
+allowBuilds:
+  core-js: true
+  ejs: true
+  fsevents: true
+  node-pty: true
