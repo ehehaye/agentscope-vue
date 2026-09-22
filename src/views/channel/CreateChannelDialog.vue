@@ -1,18 +1,18 @@
 <template>
   <el-dialog
     append-to-body
-    :visible.sync="visible"
+    :visible.sync="internalVisible"
     :title="title"
     width="560px"
     :close-on-click-modal="false"
     @closed="handleClose"
   >
-    <ChannelForm v-if="visible" v-model="form" mode="create" :agents="agents" :channel-types="channelTypes" />
+    <ChannelForm v-if="internalVisible" v-model="form" mode="create" :agents="agents" :channel-types="channelTypes" />
 
     <el-alert v-if="error" :title="error" type="error" class="tw-mt-3" :closable="false" show-icon />
 
     <span slot="footer" class="tw-dialog-footer">
-      <el-button size="small" @click="visible = false">{{ COMMON.cancel }}</el-button>
+      <el-button size="small" @click="internalVisible = false">{{ COMMON.cancel }}</el-button>
       <el-button size="small" type="primary" :loading="loading" :disabled="!valid" @click="handleSubmit">{{ COMMON.create }}</el-button>
     </span>
   </el-dialog>
@@ -79,7 +79,7 @@ export default defineComponent({
     }
 
     return {
-      visible: computed({ get: () => props.visible, set: (v) => emit('update:visible', v) }),
+      internalVisible: computed({ get: () => props.visible, set: (v) => emit('update:visible', v) }),
       form,
       channelTypes,
       loading,
