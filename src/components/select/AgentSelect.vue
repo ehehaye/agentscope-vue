@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { defineComponent, computed } from '@/composables/vue';
+import { defineComponent, computed, watch } from '@/composables/vue';
 
 export default defineComponent({
 	name: 'AgentSelect',
@@ -49,6 +49,16 @@ export default defineComponent({
 			emit('input', id);
 			emit('change', id);
 		}
+
+		watch(
+			() => [props.value, props.agents],
+			([value, agents]) => {
+				if (!value && agents.length > 0) {
+					handleChange(agents[0].id);
+				}
+			},
+			{ immediate: true },
+		);
 
 		return { hasShared, yours, shared, handleChange };
 	},
