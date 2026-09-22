@@ -59,15 +59,17 @@ export const sessionApi = {
    * @param {string} sessionId
    * @param {string} agentId
    * @param {AbortSignal} [signal]
+   * @param {() => void} [onReady] 连接建立后（响应头到达）回调
    * @returns {AsyncGenerator<import('@agentscope-ai/agentscope/event').AgentEvent>}
    */
-  streamEvents: async function* (sessionId, agentId, signal) {
+  streamEvents: async function* (sessionId, agentId, signal, onReady) {
     const res = await client.request('session.streamEvents', {
       pathParams: { sessionId },
       params: { agent_id: agentId },
       stream: true,
       signal,
     });
+    onReady?.();
 
     const reader = res.body.getReader();
     const decoder = new TextDecoder();

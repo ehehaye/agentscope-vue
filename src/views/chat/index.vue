@@ -86,7 +86,7 @@
             :agent-id="effectiveAgentId"
             :session-id="effectiveSessionId"
             :cwd="cwd"
-            @send="send"
+            @send="handleSend"
             @user-confirm="handleUserConfirm"
             @subagent-confirm="handleSubagentConfirm"
             @interrupt="interrupt"
@@ -130,6 +130,7 @@
 <script>
 import { defineComponent, ref, computed, watch, onUnmounted } from '@/composables/vue';
 import { useRoute, useRouter } from '@/composables/vue-router';
+import { useStore } from '@/composables/vuex';
 import { MessageBox } from 'element-ui';
 import { useMessages } from '@/composables/useMessages';
 import { useSessions } from '@/composables/useSessions';
@@ -159,7 +160,7 @@ import RenameSessionDialog from '@/components/dialog/RenameSessionDialog.vue';
 import PermissionModeSelect from '@/components/select/PermissionModeSelect.vue';
 
 export const TEXT = {
-  noSession: '请选择会话',
+  noSession: '新对话',
 };
 
 const PANEL_LAYOUT_KEY = 'chat_panel_layout';
@@ -227,6 +228,7 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const router = useRouter();
+    const store = useStore();
     const agentId = computed(() => route.query.agentId || null);
     const sessionId = computed(() => route.query.sessionId || null);
     const memberId = computed(() => route.query.memberId || null);
@@ -284,7 +286,8 @@ export default defineComponent({
       focusedMember.value?.session_id ? focusedMember.value.session_id : sessionId.value,
     );
     const sessionName = computed(() => view.value?.session?.config?.name || route.query.name || '');
-    const cwd = computed(() => view.value?.session?.config?.cwd ?? null);
+    const pendingCwd = ref(null);
+    const cwd = computed(() => view.value?.session?.config?.cwd ?? pendingCwd.value ?? null);
 
     function navigateTo(aid, sid) {
       router.push({ path: '/chat', query: { ...route.query, agentId: aid, sessionId: sid, memberId: undefined } }).catch(() => {});
@@ -302,18 +305,100 @@ export default defineComponent({
       }
     }
 
-    async function handleCreateSession() {
+    /**
+     * “新会话”按钮：结束当前回复（如有）、清空当前会话，回到无会话状态。
+     * 后续发送第一条消息时会自动创建会话。
+     */
+    function handleCreateSession() {
+      if (phase.value === 'streaming' || phase.value === 'interrupting') {
+        interrupt().catch(() => {});
+      }
+      abort();
+      router
+        .push({ path: '/chat', query: { ...route.query, sessionId: undefined, memberId: undefined } })
+        .catch(() => {});
+    }
+
+    /**
+     * 从内容块中提取会话标题（取文本内容，最长 50 字符）。
+     */
+    function extractTitle(contentBlocks) {
+      const text = (contentBlocks || [])
+        .filter((b) => b.type === 'text')
+        .map((b) => b.text || '')
+        .join(' ')
+        .trim();
+      if (!text) return '';
+      return text.length > 50 ? text.slice(0, 50) : text;
+    }
+
+    /**
+     * 根据当前选择构造创建会话的请求体。
+     */
+    function buildSessionBody(title) {
+      const body = { agent_id: agentId.value };
+      if (selectedModel.value) body.chat_model_config = selectedModel.value;
+      if (selectedFallbackModel.value) body.fallback_chat_model_config = selectedFallbackModel.value;
+      if (selectedTTSModel.value) body.tts_model_config = selectedTTSModel.value;
+      if (selectedPermissionMode.value && selectedPermissionMode.value !== 'default') {
+        body.permission_mode = selectedPermissionMode.value;
+      }
+      if (selectedKnowledgeConfig.value) body.knowledge_config = selectedKnowledgeConfig.value;
+      if (pendingCwd.value) body.cwd = pendingCwd.value;
+      if (title) body.name = title;
+      return body;
+    }
+
+    /**
+     * 等待指定会话的 SSE 连接建立。
+     * 超时后仍 resolve（尽力发送，避免流程卡死）。
+     */
+    function waitForConversationReady(aid, sid) {
+      const targetKey = `${aid}:${sid}`;
+      const TIMEOUT_MS = 10000;
+      return new Promise((resolve) => {
+        let done = false;
+        const finish = () => {
+          if (done) return;
+          done = true;
+          unwatch();
+          clearTimeout(timer);
+          resolve();
+        };
+        if (store.state.chat.currentKey === targetKey && store.state.chat.streamConnected) {
+          resolve();
+          return;
+        }
+        const unwatch = watch(
+          [() => store.state.chat.currentKey, () => store.state.chat.streamConnected],
+          ([key, connected]) => {
+            if (key === targetKey && connected) finish();
+          },
+        );
+        const timer = setTimeout(finish, TIMEOUT_MS);
+      });
+    }
+
+    /**
+     * 发送消息入口：
+     * - 已有会话：直接发送。
+     * - 无会话：以消息为标题创建会话并选中，待连接就绪后发送。
+     */
+    async function handleSend(contentBlocks) {
+      if (sessionId.value) {
+        send(contentBlocks);
+        return;
+      }
       if (!agentId.value) return;
       try {
-        const seedConfig = view.value?.session?.config ?? sessions.value[0]?.session?.config;
-        const body = { agent_id: agentId.value };
-        if (seedConfig?.chat_model_config) body.chat_model_config = seedConfig.chat_model_config;
-        if (seedConfig?.fallback_chat_model_config) body.fallback_chat_model_config = seedConfig.fallback_chat_model_config;
-        if (seedConfig?.tts_model_config) body.tts_model_config = seedConfig.tts_model_config;
-        const res = await createSession(body);
-        navigateTo(agentId.value, res.session_id);
+        const title = extractTitle(contentBlocks);
+        const res = await createSession(buildSessionBody(title));
+        const newSessionId = res.session_id;
+        navigateTo(agentId.value, newSessionId);
+        await waitForConversationReady(agentId.value, newSessionId);
+        send(contentBlocks);
       } catch (e) {
-        console.error('Failed to create session', e);
+        console.error('Failed to create session for sending', e);
       }
     }
 
@@ -423,6 +508,7 @@ export default defineComponent({
       onUserConfirm,
       onSubagentConfirm,
       interrupt,
+      abort,
     } = useMessages(effectiveAgentId, effectiveSessionId, {
       onTeamUpdated: handleTeamUpdated,
       onStateUpdated: handleStateUpdated,
@@ -479,7 +565,7 @@ export default defineComponent({
       );
     });
 
-    const sendDisabled = computed(() => !sessionId.value || !selectedModel.value);
+    const sendDisabled = computed(() => !agentId.value || !selectedModel.value);
 
     async function patchConfig(body, apply) {
       if (!sessionId.value || !agentId.value) return;
@@ -495,53 +581,89 @@ export default defineComponent({
 
     async function handleLlmChange(config) {
       if (!config) return;
-      await patchConfig({ chat_model_config: config }, () => {
+      if (sessionId.value) {
+        await patchConfig({ chat_model_config: config }, () => {
+          selectedModel.value = config;
+        });
+      } else {
         selectedModel.value = config;
-      });
+      }
     }
 
     async function handleModelParamsChange(parameters) {
       if (!selectedModel.value) return;
       const config = { ...selectedModel.value, parameters };
-      await patchConfig({ chat_model_config: config }, () => {
+      if (sessionId.value) {
+        await patchConfig({ chat_model_config: config }, () => {
+          selectedModel.value = config;
+        });
+      } else {
         selectedModel.value = config;
-      });
+      }
     }
 
     async function handleFallbackModelChange(config) {
-      await patchConfig({ fallback_chat_model_config: config }, () => {
+      if (sessionId.value) {
+        await patchConfig({ fallback_chat_model_config: config }, () => {
+          selectedFallbackModel.value = config;
+        });
+      } else {
         selectedFallbackModel.value = config;
-      });
+      }
     }
 
     async function handleTTSChange(config) {
-      await patchConfig({ tts_model_config: config }, () => {
+      if (sessionId.value) {
+        await patchConfig({ tts_model_config: config }, () => {
+          selectedTTSModel.value = config;
+        });
+      } else {
         selectedTTSModel.value = config;
-      });
+      }
     }
 
     async function handleCwdChange(cwdValue) {
-      await patchConfig({ cwd: cwdValue }, () => {});
+      if (sessionId.value) {
+        await patchConfig({ cwd: cwdValue }, () => {});
+      } else {
+        pendingCwd.value = cwdValue;
+      }
     }
 
     async function handlePermissionModeChange(mode) {
-      await patchConfig({ permission_mode: mode }, () => {
+      if (sessionId.value) {
+        await patchConfig({ permission_mode: mode }, () => {
+          selectedPermissionMode.value = mode;
+        });
+      } else {
         selectedPermissionMode.value = mode;
-      });
+      }
     }
 
     async function handleKnowledgeConfigChange(next) {
-      await patchConfig({ knowledge_config: next }, () => {
+      if (sessionId.value) {
+        await patchConfig({ knowledge_config: next }, () => {
+          selectedKnowledgeConfig.value = next;
+        });
+      } else {
         selectedKnowledgeConfig.value = next;
-      });
+      }
     }
 
-    watch(sessionId, () => {
-      selectedModel.value = null;
+    watch(sessionId, (newSid) => {
       selectedPermissionMode.value = 'default';
       selectedKnowledgeConfig.value = null;
       tasksContext.value = null;
       permissionContext.value = null;
+      pendingCwd.value = null;
+      if (!newSid) {
+        // 进入无会话状态：保留已选模型，若无则自动选择首个可用模型
+        if (!selectedModel.value) {
+          selectedModel.value = getFirstAvailableModel();
+        }
+      } else {
+        selectedModel.value = null;
+      }
     });
 
     let seededSessionId = null;
@@ -696,6 +818,7 @@ export default defineComponent({
       handlePermissionModeChange,
       handleUserConfirm,
       handleSubagentConfirm,
+      handleSend,
       send,
       interrupt,
       isPanelOpen,

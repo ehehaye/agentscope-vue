@@ -47,6 +47,8 @@ export default {
     currentKey: null,
     subagentHitl: [],
     currentReplyId: null,
+    /** SSE 流是否已建立连接 */
+    streamConnected: false,
     /** @type {AbortController|null} */
     abortController: null,
     interruptTimer: null,
@@ -77,6 +79,9 @@ export default {
     SET_ABORT_CONTROLLER(state, controller) {
       state.abortController = controller;
     },
+    SET_STREAM_CONNECTED(state, connected) {
+      state.streamConnected = connected;
+    },
     SET_INTERRUPT_TIMER(state, timer) {
       state.interruptTimer = timer;
     },
@@ -94,6 +99,7 @@ export default {
       state.currentKey = null;
       state.subagentHitl = [];
       state.currentReplyId = null;
+      state.streamConnected = false;
       if (state.abortController) {
         state.abortController.abort();
         state.abortController = null;
@@ -155,7 +161,14 @@ export default {
 
         if (state.currentKey !== key) return;
 
-        for await (const event of sessionApi.streamEvents(sessionId, agentId, controller.signal)) {
+        for await (const event of sessionApi.streamEvents(
+          sessionId,
+          agentId,
+          controller.signal,
+          () => {
+            if (state.currentKey === key) commit('SET_STREAM_CONNECTED', true);
+          },
+        )) {
           if (state.currentKey !== key) break;
           dispatch('processEvent', { event, callbacks });
         }
