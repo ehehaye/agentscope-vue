@@ -24,7 +24,7 @@
             <!-- Agent 选择 -->
             <div class="tw-flex tw-min-w-0 tw-items-center tw-gap-2 tw-text-sm">
               <Icon icon="lucide:message-square" class="tw-h-4 tw-w-4 tw-shrink-0 tw-text-muted-foreground" />
-              <span class="tw-truncate tw-font-medium">{{ sessionName || TEXT.noSession }}</span>
+              <span class="tw-truncate tw-font-medium">{{ sessionName || TEXT.newSession }}</span>
               <el-tag v-if="focusedMember" size="mini" type="info" class="tw-ml-1 tw-shrink-0">
                 成员：{{ focusedMember.agent?.data?.name }}
               </el-tag>
@@ -160,7 +160,7 @@ import RenameSessionDialog from '@/components/dialog/RenameSessionDialog.vue';
 import PermissionModeSelect from '@/components/select/PermissionModeSelect.vue';
 
 export const TEXT = {
-  noSession: '新对话',
+  newSession: '新对话',
 };
 
 const PANEL_LAYOUT_KEY = 'chat_panel_layout';
