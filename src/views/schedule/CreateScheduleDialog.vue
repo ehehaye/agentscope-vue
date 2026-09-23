@@ -2,12 +2,12 @@
   <el-dialog
     append-to-body
     :visible.sync="dialogVisible"
-    :title="TEXT.schedule.createSchedule.title"
+    :title="'创建日程'"
     width="500px"
     :close-on-click-modal="false"
     @open="resetForm"
   >
-    <p class="tw-text-sm tw-text-muted-foreground">{{ TEXT.schedule.createSchedule.description }}</p>
+    <p class="tw-text-sm tw-text-muted-foreground">为智能体设置定时或一次性的计划任务。</p>
     <el-form
       ref="formRef"
       :model="form"
@@ -15,73 +15,73 @@
       label-width="100px"
       class="tw-mt-4 tw-max-h-75vh tw-overflow-y-auto tw-pr-2"
     >
-      <el-form-item :label="COMMON.name">
-        <el-input v-model="form.name" :placeholder="TEXT.schedule.createSchedule.namePlaceholder" />
+      <el-form-item label="名称">
+        <el-input v-model="form.name" placeholder="例如：每日报告" />
       </el-form-item>
 
-      <el-form-item :label="TEXT.schedule.createSchedule.descriptionLabel">
+      <el-form-item label="描述">
         <el-input
           v-model="form.description"
           type="textarea"
           :rows="4"
-          :placeholder="TEXT.schedule.createSchedule.descriptionPlaceholder"
+          placeholder="描述这个计划任务的用途..."
         />
       </el-form-item>
 
-      <el-form-item :label="COMMON.date">
+      <el-form-item label="日期">
         <div class="tw-flex tw-gap-3">
-          <el-date-picker v-model="form.date" type="date" :placeholder="TEXT.schedule.pickDate" value-format="yyyy-MM-dd" />
+          <el-date-picker v-model="form.date" type="date" placeholder="选择日期" value-format="yyyy-MM-dd" />
           <el-time-picker v-model="form.time" placeholder="选择时间" value-format="HH:mm:ss" class="tw-w-40" />
         </div>
       </el-form-item>
 
-      <el-form-item :label="TEXT.schedule.timezone">
+      <el-form-item label="时区">
         <TimezoneSelect :value="form.timezone" @change="(v) => form.timezone = v" />
       </el-form-item>
 
-      <el-form-item :label="TEXT.schedule.frequency">
+      <el-form-item label="频率">
         <el-select v-model="form.freq" class="tw-w-full">
-          <el-option value="once" :label="TEXT.schedule.freqOnce" />
-          <el-option value="daily" :label="TEXT.schedule.freqDaily" />
-          <el-option value="weekly" :label="TEXT.schedule.freqWeekly" />
-          <el-option value="monthly" :label="TEXT.schedule.freqMonthly" />
+          <el-option value="once" label="一次" />
+          <el-option value="daily" label="每天" />
+          <el-option value="weekly" label="每周" />
+          <el-option value="monthly" label="每月" />
         </el-select>
       </el-form-item>
 
-      <el-form-item :label="TEXT.schedule.endAt">
+      <el-form-item label="结束日期">
         <el-date-picker
           v-model="form.endDate"
           type="date"
-          :placeholder="TEXT.schedule.pickDate"
+          placeholder="选择日期"
           value-format="yyyy-MM-dd"
           :disabled="form.freq === 'once'"
           class="tw-w-full"
         />
       </el-form-item>
 
-      <el-form-item :label="COMMON.agent">
+      <el-form-item label="智能体">
         <AgentSelect
           :agents="agents"
           :value="form.agentId"
-          :placeholder="COMMON.selectAgent"
+          placeholder="选择智能体"
           class="tw-w-full"
           @change="(id) => form.agentId = id"
         />
       </el-form-item>
 
-      <el-form-item :label="COMMON.model">
+      <el-form-item label="模型">
         <LlmSelect :value="form.chatModelConfig" @change="(v) => form.chatModelConfig = v" />
       </el-form-item>
 
-      <el-form-item :label="TEXT.schedule.permissionMode">
+      <el-form-item label="权限模式">
         <PermissionModeSelect :value="form.permissionMode" @change="(v) => form.permissionMode = v" />
       </el-form-item>
 
       <el-form-item>
         <div class="tw-flex tw-w-full tw-items-center tw-justify-between">
           <div class="tw-flex tw-flex-col tw-gap-0.5">
-            <span class="tw-text-sm tw-font-medium">{{ TEXT.schedule.stateful }}</span>
-            <span class="tw-text-xs tw-text-muted-foreground">{{ TEXT.schedule.statefulDesc }}</span>
+            <span class="tw-text-sm tw-font-medium">有状态</span>
+            <span class="tw-text-xs tw-text-muted-foreground">开启后，每次触发复用同一个会话以累积上下文；关闭则每次触发都创建新会话。</span>
           </div>
           <el-switch v-model="form.stateful" />
         </div>
@@ -91,9 +91,9 @@
     </el-form>
 
     <span slot="footer" class="tw-dialog-footer">
-      <el-button size="small" @click="visible = false" :disabled="loading">{{ COMMON.cancel }}</el-button>
+      <el-button size="small" @click="visible = false" :disabled="loading">取消</el-button>
       <el-button size="small" type="primary" :loading="loading" :disabled="!isValid" @click="handleSubmit">
-        {{ loading ? COMMON.creating : COMMON.create }}
+        {{ loading ? '创建中…' : '创建' }}
       </el-button>
     </span>
   </el-dialog>
@@ -105,8 +105,6 @@ import AgentSelect from '@/components/select/AgentSelect.vue';
 import LlmSelect from '@/components/select/LlmSelect.vue';
 import PermissionModeSelect from '@/components/select/PermissionModeSelect.vue';
 import TimezoneSelect from '@/components/select/TimezoneSelect.vue';
-import { COMMON } from '@/constants/text';
-import { TEXT } from './text';
 
 export default defineComponent({
   name: 'CreateScheduleDialog',
@@ -239,8 +237,6 @@ export default defineComponent({
       dialogVisible,
       resetForm,
       handleSubmit,
-      COMMON,
-      TEXT,
     };
   },
 });

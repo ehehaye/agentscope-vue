@@ -15,9 +15,9 @@
         <div v-if="message.finished_reason === 'error'" class="tw-rounded-md tw-border tw-border-red-200 tw-bg-red-50 tw-p-3 tw-text-sm tw-text-red-900 dark:tw-border-red-900 dark:tw-bg-red-950 dark:tw-text-red-50">
           <div class="tw-flex tw-items-center tw-gap-2 tw-font-medium">
             <Icon icon="lucide:triangle-alert" class="tw-h-4 tw-w-4" />
-            {{ TEXT.errorTitle }}
+            回复出错
           </div>
-          <p class="tw-mt-1 tw-text-xs">{{ message.error?.message || TEXT.errorUnknown }}</p>
+          <p class="tw-mt-1 tw-text-xs">{{ message.error?.message || '未知错误' }}</p>
         </div>
       </div>
 
@@ -55,7 +55,6 @@
 import { defineComponent, ref, computed, watch, onUnmounted } from '@/composables/vue';
 import { Icon } from '@/plugins/iconify';
 import { copyToClipboard, formatNumber, formatTime } from '@/utils/common';
-import { TEXT } from './text';
 import Bubble from '@/components/ui/Bubble.vue';
 import Badge from '@/components/ui/Badge.vue';
 import ASBlock from './ASBlock.vue';
@@ -200,7 +199,6 @@ export default defineComponent({
       blocks,
       dataBlocks,
       audioBlocks,
-      TEXT,
       formatNumber,
     };
   },

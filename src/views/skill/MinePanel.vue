@@ -2,10 +2,10 @@
   <div class="tw-flex tw-h-full tw-flex-col tw-p-5">
     <div class="tw-mb-4 tw-flex tw-items-center tw-justify-between">
       <div>
-        <div class="tw-text-lg tw-font-medium">{{ COMMON['my-skill'] }}</div>
-        <div class="tw-text-xs tw-text-muted-foreground">{{ TEXT.skill.mineDescription }}</div>
+        <div class="tw-text-lg tw-font-medium">已安装的技能</div>
+        <div class="tw-text-xs tw-text-muted-foreground">你已安装的技能</div>
       </div>
-      <el-input v-if="skills.length > 0" v-model="query" :placeholder="TEXT.skill.mineSearchPlaceholder" size="small" class="tw-w-48" />
+      <el-input v-if="skills.length > 0" v-model="query" placeholder="搜索你的技能" size="small" class="tw-w-48" />
     </div>
 
     <div class="tw-flex-1 tw-overflow-y-auto">
@@ -14,11 +14,11 @@
       </div>
       <div v-else-if="skills.length === 0" class="tw-flex tw-flex-col tw-items-center tw-gap-2 tw-py-10 tw-text-center">
         <Icon icon="lucide:plug" class="tw-h-8 tw-w-8 tw-text-muted-foreground" />
-        <div class="tw-text-sm tw-font-medium">{{ TEXT.skill.mineEmptyTitle }}</div>
-        <p class="tw-text-xs tw-text-muted-foreground">{{ TEXT.skill.mineEmptyDescription }}</p>
+        <div class="tw-text-sm tw-font-medium">还没有技能</div>
+        <p class="tw-text-xs tw-text-muted-foreground">从左侧的来源中安装一个。</p>
       </div>
       <div v-else-if="shown.length === 0" class="tw-py-10 tw-text-center tw-text-sm tw-text-muted-foreground">
-        {{ TEXT.skill.noCardsTitle }}
+        没有找到内容
       </div>
       <div v-else class="tw-space-y-2">
         <div
@@ -61,15 +61,15 @@
       <div v-else-if="detailSkill" class="tw-flex tw-h-full tw-flex-col tw-gap-4 tw-p-4">
         <p class="tw-text-sm tw-text-muted-foreground">{{ detailSkill.description }}</p>
         <div v-if="detailSkill.version" class="tw-text-xs tw-text-muted-foreground">
-          {{ TEXT.skill.versionLabel }}: {{ detailSkill.version }}
+          版本: {{ detailSkill.version }}
         </div>
         <div v-if="detailSkill.hub_id" class="tw-text-xs tw-text-muted-foreground">
-          {{ TEXT.skill.hubLabel }}: {{ detailSkill.hub_id }}
+          来源: {{ detailSkill.hub_id }}
         </div>
         <div v-if="detailMarkdown" class="tw-flex-1 tw-overflow-y-auto">
           <MarkdownRenderer :content="detailMarkdown" />
         </div>
-        <div v-else class="tw-text-xs tw-text-muted-foreground">{{ TEXT.skill.noReadme }}</div>
+        <div v-else class="tw-text-xs tw-text-muted-foreground">该技能没有提供 SKILL.md 正文。</div>
       </div>
     </el-drawer>
   </div>
@@ -82,8 +82,6 @@ import { Icon } from '@/plugins/iconify';
 import Spinner from '@/components/ui/Spinner.vue';
 import MarkdownRenderer from '@/components/common/MarkdownRenderer.vue';
 import { skillApi } from '@/api';
-import { COMMON } from '@/constants/text';
-import { TEXT } from './text';
 
 export default defineComponent({
   name: 'SkillMinePanel',
@@ -128,7 +126,7 @@ export default defineComponent({
     async function askRemove(skill) {
       if (!skill) return;
       const name = skill.display_name || skill.name || '';
-      await MessageBox.confirm(COMMON.deleteDescription, COMMON.deleteTitle(TEXT.skill.subtitle, name), {
+      await MessageBox.confirm('此操作无法撤销。', `删除浏览并安装技能 "${name}"？`, {
         type: 'warning',
         confirmButtonText: '删除',
         cancelButtonText: '取消',
@@ -145,8 +143,6 @@ export default defineComponent({
       detailLoading,
       openDetail,
       askRemove,
-      COMMON,
-      TEXT,
     };
   },
 });

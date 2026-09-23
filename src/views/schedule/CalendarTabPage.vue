@@ -3,17 +3,17 @@
     <div class="tw-flex tw-items-center tw-justify-between tw-p-4">
       <h2 class="tw-text-xl tw-font-semibold">{{ monthLabel }}</h2>
       <div class="tw-flex tw-items-center tw-gap-2">
-        <el-button size="small" @click="goToToday">{{ TEXT.schedule.today }}</el-button>
-        <el-tooltip :content="TEXT.schedule.previousYear" placement="top">
+        <el-button size="small" @click="goToToday">今天</el-button>
+        <el-tooltip content="上一年" placement="top">
           <el-button size="small" icon="el-icon-d-arrow-left" @click="goToPrevYear" />
         </el-tooltip>
-        <el-tooltip :content="TEXT.schedule.previousMonth" placement="top">
+        <el-tooltip content="上个月" placement="top">
           <el-button size="small" icon="el-icon-arrow-left" @click="goToPrevMonth" />
         </el-tooltip>
-        <el-tooltip :content="TEXT.schedule.nextMonth" placement="top">
+        <el-tooltip content="下个月" placement="top">
           <el-button size="small" icon="el-icon-arrow-right" @click="goToNextMonth" />
         </el-tooltip>
-        <el-tooltip :content="TEXT.schedule.nextYear" placement="top">
+        <el-tooltip content="下一年" placement="top">
           <el-button size="small" icon="el-icon-d-arrow-right" @click="goToNextYear" />
         </el-tooltip>
       </div>
@@ -41,7 +41,7 @@
           :day="day"
           :is-today="isToday(day)"
           :events="getEventsForDate(day)"
-          :more-text="TEXT.schedule.more"
+          :more-text="'更多'"
           @event-click="$emit('event-click', $event)"
         />
 
@@ -60,7 +60,6 @@
 <script>
 import { defineComponent, computed } from '@/composables/vue';
 import DateCell from './DateCell.vue';
-import { TEXT } from './text';
 
 export default defineComponent({
   name: 'CalendarTabPage',
@@ -103,13 +102,13 @@ export default defineComponent({
     });
 
     const weekDays = computed(() => [
-      TEXT.schedule.sunday,
-      TEXT.schedule.monday,
-      TEXT.schedule.tuesday,
-      TEXT.schedule.wednesday,
-      TEXT.schedule.thursday,
-      TEXT.schedule.friday,
-      TEXT.schedule.saturday,
+      '周日',
+      '周一',
+      '周二',
+      '周三',
+      '周四',
+      '周五',
+      '周六',
     ]);
 
     function isToday(day) {
@@ -157,7 +156,6 @@ export default defineComponent({
       goToPrevYear,
       goToNextYear,
       goToToday,
-      TEXT,
     };
   },
 });

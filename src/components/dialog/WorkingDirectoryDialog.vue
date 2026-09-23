@@ -66,7 +66,7 @@
     </div>
 
     <span slot="footer">
-      <el-button size="small" :disabled="saving" @click="dialogOpen = false">{{ COMMON.cancel }}</el-button>
+      <el-button size="small" :disabled="saving" @click="dialogOpen = false">取消</el-button>
       <el-button
         size="small"
         type="primary"
@@ -74,7 +74,7 @@
         :disabled="listedPath !== path"
         @click="onConfirm"
       >
-        {{ COMMON.confirm }}
+        确认
       </el-button>
     </span>
   </el-dialog>
@@ -95,7 +95,6 @@ import { defineComponent, ref, computed, watch } from '@/composables/vue';
 import { Icon } from '@/plugins/iconify';
 import Spinner from '@/components/ui/Spinner.vue';
 import { workspaceApi } from '@/api';
-import { COMMON } from '@/constants/text';
 
 function basename(p) {
   if (!p) return '';
@@ -186,7 +185,6 @@ export default defineComponent({
       load,
       onOpen,
       onConfirm,
-      COMMON,
     };
   },
 });

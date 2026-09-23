@@ -1,14 +1,14 @@
 <template>
   <div class="tw-flex tw-flex-col tw-gap-y-3">
-    <h3 class="tw-text-13_5px tw-font-medium tw-text-foreground">{{ TEXT.knowledge.config.title }}</h3>
+    <h3 class="tw-text-13_5px tw-font-medium tw-text-foreground">配置信息</h3>
     <div class="tw-grid tw-grid-cols-2 tw-gap-x-4 tw-gap-y-3 tw-rounded-lg tw-border tw-border-border tw-bg-card tw-p-3 sm:tw-grid-cols-3">
-      <ConfigItem :label="TEXT.knowledge.config.embeddingModel" :value="embedding.model" />
-      <ConfigItem :label="TEXT.knowledge.config.dimensions" :value="String(embedding.dimensions || '—')" />
-      <ConfigItem :label="TEXT.knowledge.config.credential" :value="knowledgeBase.credential_name || embedding.credential_id" />
-      <ConfigItem :label="TEXT.knowledge.config.chunker" :value="chunkerValue" />
-      <ConfigItem :label="TEXT.knowledge.config.counts" :value="countsValue" />
-      <ConfigItem v-if="statusValue" :label="TEXT.knowledge.config.status" :value="statusValue" />
-      <ConfigItem :label="TEXT.knowledge.config.createdAt" :value="createdAt" />
+      <ConfigItem label="嵌入模型" :value="embedding.model" />
+      <ConfigItem label="维度" :value="String(embedding.dimensions || '—')" />
+      <ConfigItem label="凭证" :value="knowledgeBase.credential_name || embedding.credential_id" />
+      <ConfigItem label="分块器" :value="chunkerValue" />
+      <ConfigItem label="统计" :value="countsValue" />
+      <ConfigItem v-if="statusValue" label="状态" :value="statusValue" />
+      <ConfigItem label="创建时间" :value="createdAt" />
     </div>
   </div>
 </template>
@@ -16,7 +16,6 @@
 <script>
 import { defineComponent, computed } from '@/composables/vue';
 import ConfigItem from './ConfigItem.vue';
-import { TEXT } from './text';
 
 export default defineComponent({
   name: 'KnowledgeConfigCard',
@@ -38,10 +37,7 @@ export default defineComponent({
     });
 
     const countsValue = computed(() => {
-      return TEXT.knowledge.config.countsValue(
-        props.knowledgeBase.document_count || 0,
-        props.knowledgeBase.chunk_count || 0,
-      );
+      return `${props.knowledgeBase.document_count || 0} 文档 · ${props.knowledgeBase.chunk_count || 0} 分块`;
     });
 
     const unfinished = computed(() => {
@@ -52,7 +48,7 @@ export default defineComponent({
     const statusValue = computed(() => {
       const c = counts.value;
       if (c.error > 0 || unfinished.value > 0) {
-        return TEXT.knowledge.config.statusValue(c.ready || 0, unfinished.value, c.error || 0);
+        return `就绪 ${c.ready || 0} · 索引中 ${unfinished.value} · 失败 ${c.error || 0}`;
       }
       return null;
     });
@@ -62,7 +58,7 @@ export default defineComponent({
       return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
     });
 
-    return { embedding, chunkerValue, countsValue, statusValue, createdAt, TEXT };
+    return { embedding, chunkerValue, countsValue, statusValue, createdAt };
   },
 });
 </script>

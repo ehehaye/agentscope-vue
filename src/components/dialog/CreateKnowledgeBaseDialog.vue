@@ -1,23 +1,23 @@
 <template>
   <el-dialog
     append-to-body
-    :title="TEXT.knowledge.dialogCreate.title"
+    :title="'新建知识库'"
     :visible.sync="dialogVisible"
     width="500px"
     :close-on-click-modal="false"
     @open="reset"
   >
-    <p class="tw-text-sm tw-text-muted-foreground">{{ TEXT.knowledge.dialogCreate.description }}</p>
+    <p class="tw-text-sm tw-text-muted-foreground">配置嵌入模型与分块器以创建知识库。</p>
     <el-form label-position="top" class="tw-mt-4 tw-space-y-4">
-      <el-form-item :label="TEXT.knowledge.dialogCreate.nameLabel">
-        <el-input v-model="name" :placeholder="TEXT.knowledge.dialogCreate.namePlaceholder" />
+      <el-form-item label="名称">
+        <el-input v-model="name" placeholder="例如：产品文档库" />
       </el-form-item>
 
-      <el-form-item :label="TEXT.knowledge.dialogCreate.descriptionLabel">
-        <el-input v-model="description" type="textarea" :rows="3" :placeholder="TEXT.knowledge.dialogCreate.descriptionPlaceholder" />
+      <el-form-item label="描述">
+        <el-input v-model="description" type="textarea" :rows="3" placeholder="描述这个知识库的用途..." />
       </el-form-item>
 
-      <el-form-item :label="TEXT.knowledge.dialogCreate.embeddingModelLabel">
+      <el-form-item label="嵌入模型">
         <el-select v-model="selectedEmbedding" value-key="key" class="tw-w-full" :loading="loadingModels" placeholder="选择嵌入模型">
           <el-option-group
             v-for="provider in providers"
@@ -34,7 +34,7 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item :label="TEXT.knowledge.dialogCreate.dimensionLabel">
+      <el-form-item label="维度">
         <el-select v-model="dimension" class="tw-w-full" placeholder="选择维度">
           <el-option
             v-for="d in dimensionOptions"
@@ -45,7 +45,7 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item :label="TEXT.knowledge.dialogCreate.chunkerLabel">
+      <el-form-item label="分块器">
         <el-select v-model="selectedChunkerType" class="tw-w-full" placeholder="选择分块器">
           <el-option
             v-for="chunker in chunkers"
@@ -67,9 +67,9 @@
     </el-form>
 
     <span slot="footer" class="tw-dialog-footer">
-      <el-button size="small" @click="dialogVisible = false" :disabled="submitting">{{ COMMON.cancel }}</el-button>
+      <el-button size="small" @click="dialogVisible = false" :disabled="submitting">取消</el-button>
       <el-button size="small" type="primary" :loading="submitting" :disabled="!canSubmit" @click="handleSubmit">
-        {{ submitting ? COMMON.creating : COMMON.create }}
+        {{ submitting ? '创建中…' : '创建' }}
       </el-button> 
     </span>
   </el-dialog>
@@ -78,24 +78,7 @@
 <script>
 import { defineComponent, ref, computed, watch } from '@/composables/vue';
 import { knowledgeBaseApi } from '@/api';
-import { COMMON } from '@/constants/text';
 import SchemaForm from '@/components/form/SchemaForm.vue';
-
-const TEXT = {
-  knowledge: {
-    dialogCreate: {
-      title: '新建知识库',
-      description: '配置嵌入模型与分块器以创建知识库。',
-      nameLabel: '名称',
-      namePlaceholder: '例如：产品文档库',
-      descriptionLabel: '描述',
-      descriptionPlaceholder: '描述这个知识库的用途...',
-      embeddingModelLabel: '嵌入模型',
-      dimensionLabel: '维度',
-      chunkerLabel: '分块器',
-    },
-  },
-};
 
 export default defineComponent({
   name: 'CreateKnowledgeBaseDialog',
@@ -272,8 +255,6 @@ export default defineComponent({
       embeddingKey,
       embeddingValue,
       reset,
-      COMMON,
-      TEXT,
     };
   },
 });

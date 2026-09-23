@@ -41,19 +41,18 @@ export function parseCronExpression(cronExpression, startedAt) {
 /**
  * 获取频率中文标签。
  * @param {ParsedSchedule} parsed
- * @param {Record<string, string|Function>} t 文案对象
  * @returns {string}
  */
-export function getFrequencyLabel(parsed, t) {
+export function getFrequencyLabel(parsed) {
   switch (parsed.frequency) {
     case 'daily':
-      return t.freqDaily;
+      return '每天';
     case 'weekly':
-      return t.freqWeekly;
+      return '每周';
     case 'monthly':
-      return t.freqMonthly;
+      return '每月';
     case 'once':
-      return t.freqOnce;
+      return '一次';
     default:
       return 'Custom';
   }

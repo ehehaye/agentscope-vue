@@ -6,7 +6,7 @@
       <pre v-else class="tw-whitespace-pre-wrap tw-break-all">{{ confirmBody }}</pre>
     </div>
     <div class="tw-space-y-1 tw-text-sm">
-      <div class="tw-mb-1 tw-font-medium tw-text-secondary-foreground">{{ TEXT.confirmToolCall }}</div>
+      <div class="tw-mb-1 tw-font-medium tw-text-secondary-foreground">确认执行该工具调用？</div>
 
       <button
         type="button"
@@ -18,9 +18,9 @@
       >
         <Spinner v-if="hasConfirmed && selected === 'yes'" class="tw-h-4 tw-w-4" />
         <Icon v-else icon="lucide:chevron-right" class="tw-h-4 tw-w-4" :class="selected === 'yes' ? 'tw-visible' : 'tw-invisible'" />
-        <span>1. {{ TEXT.yes }}</span>
+        <span>1. 是</span>
         <span v-if="selected === 'yes'" class="tw-ml-auto tw-text-xs tw-text-muted-foreground">
-          (<Kbd className="text-xs">Enter</Kbd> {{ TEXT.toConfirm }})
+          (<Kbd className="text-xs">Enter</Kbd> 确认)
         </span>
       </button>
 
@@ -37,7 +37,7 @@
         <Icon v-else icon="lucide:chevron-right" class="tw-mt-0.5 tw-h-4 tw-w-4 tw-shrink-0" :class="selected === 'yes_with_rule' ? 'tw-visible' : 'tw-invisible'" />
         <span class="tw-min-w-0 tw-break-words">2. {{ yesWithRuleText }}</span>
         <span v-if="selected === 'yes_with_rule'" class="tw-ml-auto tw-shrink-0 tw-text-xs tw-text-muted-foreground">
-          (<Kbd className="text-xs">Enter</Kbd> {{ TEXT.toConfirm }})
+          (<Kbd className="text-xs">Enter</Kbd> 确认)
         </span>
       </button>
 
@@ -51,9 +51,9 @@
       >
         <Spinner v-if="hasConfirmed && selected === 'no'" class="tw-h-4 tw-w-4" />
         <Icon v-else icon="lucide:chevron-right" class="tw-h-4 tw-w-4" :class="selected === 'no' ? 'tw-visible' : 'tw-invisible'" />
-        <span>{{ hasSuggestedRules ? '3' : '2' }}. {{ TEXT.no }}</span>
+        <span>{{ hasSuggestedRules ? '3' : '2' }}. 否</span>
         <span v-if="selected === 'no'" class="tw-ml-auto tw-text-xs tw-text-muted-foreground">
-          (<Kbd className="text-xs">Enter</Kbd> {{ TEXT.toConfirm }})
+          (<Kbd className="text-xs">Enter</Kbd> 确认)
         </span>
       </button>
     </div>
@@ -66,7 +66,6 @@ import { Icon } from '@/plugins/iconify';
 import Spinner from '@/components/ui/Spinner.vue';
 import Kbd from '@/components/ui/Kbd.vue';
 import { parseInput } from './tool-utils';
-import { TEXT } from './text';
 import { getRenderer } from './tool-renderers';
 
 export default defineComponent({
@@ -106,7 +105,7 @@ export default defineComponent({
     const yesWithRuleText = computed(() => {
       const rule = props.toolCall.suggested_rules?.[0];
       if (!rule) return '';
-      return TEXT.yesWithRule(rule.tool_name, rule.rule_content);
+      return `总是允许 ${rule.tool_name}: ${rule.rule_content}`;
     });
 
     async function handleConfirm(confirm, rules) {
@@ -152,7 +151,6 @@ export default defineComponent({
       confirmBody,
       yesWithRuleText,
       handleConfirm,
-      TEXT,
     };
   },
 });

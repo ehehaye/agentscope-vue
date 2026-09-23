@@ -2,8 +2,8 @@
   <div class="tw-flex tw-h-full tw-flex-col tw-p-5">
     <div class="tw-mb-4 tw-flex tw-items-center tw-justify-between">
       <div>
-        <div class="tw-text-lg tw-font-medium">{{ COMMON['my-mcp'] }}</div>
-        <div class="tw-text-xs tw-text-muted-foreground">{{ TEXT.mcp.mineDescription }}</div>
+        <div class="tw-text-lg tw-font-medium">已安装的 MCP</div>
+        <div class="tw-text-xs tw-text-muted-foreground">当前用户已安装到库的 MCP。</div>
       </div>
       <el-input v-if="mcps.length > 0" v-model="query" placeholder="搜索" size="small" class="tw-w-48" />
     </div>
@@ -14,11 +14,11 @@
       </div>
       <div v-else-if="mcps.length === 0" class="tw-flex tw-flex-col tw-items-center tw-gap-2 tw-py-10 tw-text-center">
         <Icon icon="lucide:plug" class="tw-h-8 tw-w-8 tw-text-muted-foreground" />
-        <div class="tw-text-sm tw-font-medium">{{ TEXT.mcp.mineEmptyTitle }}</div>
-        <p class="tw-text-xs tw-text-muted-foreground">{{ TEXT.mcp.mineEmptyDescription }}</p>
+        <div class="tw-text-sm tw-font-medium">暂无已安装 MCP</div>
+        <p class="tw-text-xs tw-text-muted-foreground">从 Hub 市场安装 MCP 到库中。</p>
       </div>
       <div v-else-if="shown.length === 0" class="tw-py-10 tw-text-center tw-text-sm tw-text-muted-foreground">
-        {{ TEXT.mcp.noCardsTitle }}
+        无结果
       </div>
       <div v-else class="tw-space-y-2">
         <div
@@ -34,7 +34,7 @@
             <div class="tw-flex tw-items-center tw-gap-2">
               <span class="tw-font-medium">{{ mcp.display_name || mcp.name }}</span>
               <span v-if="mcp.author" class="tw-text-xs tw-text-muted-foreground">@{{ mcp.author }}</span>
-              <span v-if="mcp.is_stateful" class="tw-text-xs tw-text-muted-foreground">#{{ TEXT.mcp.stateful }}</span>
+              <span v-if="mcp.is_stateful" class="tw-text-xs tw-text-muted-foreground">#有状态</span>
             </div>
             <p class="tw-line-clamp-1 tw-text-xs tw-text-muted-foreground">{{ mcp.description }}</p>
           </div>
@@ -57,8 +57,6 @@
 import { defineComponent, ref, computed } from '@/composables/vue';
 import { Icon } from '@/plugins/iconify';
 import Spinner from '@/components/ui/Spinner.vue';
-import { COMMON } from '@/constants/text';
-import { TEXT } from './text';
 
 export default defineComponent({
   name: 'MCPMinePanel',
@@ -78,7 +76,7 @@ export default defineComponent({
           .some((field) => field.toLowerCase().includes(needle)),
       );
     });
-    return { query, shown, COMMON, TEXT };
+    return { query, shown };
   },
 });
 </script>

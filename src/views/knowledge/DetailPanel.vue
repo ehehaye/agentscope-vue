@@ -6,8 +6,8 @@
           <span class="tw-truncate tw-text-lg tw-font-medium tw-tracking-neg-0_015em tw-text-foreground">
             {{ knowledgeBase.name }}
           </span>
-          <span v-if="!knowledgeBase.editable" class="tw-rounded-md tw-border tw-border-border tw-bg-secondary tw-px-1.5 tw-py-0.5 tw-text-10px tw-font-medium" :title="COMMON.readOnlyTooltip">
-            {{ COMMON.readOnly }}
+          <span v-if="!knowledgeBase.editable" class="tw-rounded-md tw-border tw-border-border tw-bg-secondary tw-px-1.5 tw-py-0.5 tw-text-10px tw-font-medium" title="该资源以只读方式共享给你，编辑和删除均被禁用。">
+            只读
           </span>
         </div>
         <p v-if="knowledgeBase.description" class="tw-text-sm tw-text-muted-foreground">{{ knowledgeBase.description }}</p>
@@ -15,7 +15,7 @@
       <div class="tw-flex tw-shrink-0 tw-items-center tw-gap-x-2">
         <el-button size="small" @click="$emit('test')">
           <Icon icon="lucide:flask-conical" class="tw-mr-1 tw-h-3.5 tw-w-3.5" />
-          {{ TEXT.knowledge.test.button }}
+          检索测试
         </el-button>
       </div>
     </div>
@@ -36,8 +36,6 @@ import { defineComponent } from '@/composables/vue';
 import { Icon } from '@/plugins/iconify';
 import KnowledgeDocumentsPanel from '@/components/knowledge/KnowledgeDocumentsPanel.vue';
 import ConfigCard from './ConfigCard.vue';
-import { COMMON } from '@/constants/text';
-import { TEXT } from './text';
 
 export default defineComponent({
   name: 'KnowledgeDetailPanel',
@@ -46,7 +44,7 @@ export default defineComponent({
     knowledgeBase: { type: Object, required: true },
   },
   setup() {
-    return { COMMON, TEXT };
+    return {};
   },
 });
 </script>

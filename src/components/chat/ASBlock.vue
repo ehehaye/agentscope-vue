@@ -105,12 +105,12 @@ export default defineComponent({
         : now.value;
       const seconds = Math.max(0, (endMs - startMs) / 1000);
       const duration = formatTime(seconds);
-      return seconds < 1 ? TEXT.thinking : TEXT.thinkingFor(duration);
+      return seconds < 1 ? '思考中' : `思考中 ${duration}`;
     });
 
     const hintLabel = computed(() => {
       if (props.block.type !== 'hint') return '';
-      if (!props.block.source) return TEXT.message;
+      if (!props.block.source) return '消息';
       try {
         const parsed = JSON.parse(props.block.source);
         const label = parsed.label || props.block.source;
@@ -150,10 +150,4 @@ function formatTime(seconds) {
   const s = Math.floor(seconds % 60);
   return `${m}m ${s}s`;
 }
-
-const TEXT = {
-  message: '消息',
-  thinking: '思考中',
-  thinkingFor: (duration) => `思考中 ${duration}`,
-};
 </script>

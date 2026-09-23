@@ -18,14 +18,14 @@
       </div>
       <div v-else-if="error" class="tw-flex tw-flex-col tw-items-center tw-gap-2 tw-py-10 tw-text-center">
         <Icon icon="lucide:triangle-alert" class="tw-h-8 tw-w-8 tw-text-muted-foreground" />
-        <div class="tw-text-sm tw-font-medium">{{ TEXT.mcp.loadFailedTitle }}</div>
-        <p class="tw-text-xs tw-text-muted-foreground">{{ TEXT.mcp.loadFailedDescription }}</p>
-        <el-button size="small" @click="refetch">{{ TEXT.mcp.retry }}</el-button>
+        <div class="tw-text-sm tw-font-medium">加载失败</div>
+        <p class="tw-text-xs tw-text-muted-foreground">无法获取 MCP 数据，请检查网络或重试。</p>
+        <el-button size="small" @click="refetch">重试</el-button>
       </div>
       <div v-else-if="cards.length === 0" class="tw-flex tw-flex-col tw-items-center tw-gap-2 tw-py-10 tw-text-center">
         <Icon icon="lucide:blocks" class="tw-h-8 tw-w-8 tw-text-muted-foreground" />
-        <div class="tw-text-sm tw-font-medium">{{ TEXT.mcp.noCardsTitle }}</div>
-        <p class="tw-text-xs tw-text-muted-foreground">{{ TEXT.mcp.noCardsDescription }}</p>
+        <div class="tw-text-sm tw-font-medium">无结果</div>
+        <p class="tw-text-xs tw-text-muted-foreground">未找到匹配的 MCP 卡片。</p>
       </div>
       <div v-else class="tw-space-y-2">
         <div
@@ -42,7 +42,7 @@
             <div class="tw-flex tw-items-center tw-gap-2">
               <span class="tw-font-medium">{{ card.display_name || card.name }}</span>
               <span v-if="card.author" class="tw-text-xs tw-text-muted-foreground">@{{ card.author }}</span>
-              <span v-if="card.auth === 'inputs'" class="tw-rounded-full tw-bg-amber-100 tw-px-2 tw-py-0.5 tw-text-10px tw-text-amber-700 dark:tw-bg-amber-900 dark:tw-text-amber-300">{{ TEXT.mcp.needsConfig }}</span>
+              <span v-if="card.auth === 'inputs'" class="tw-rounded-full tw-bg-amber-100 tw-px-2 tw-py-0.5 tw-text-10px tw-text-amber-700 dark:tw-bg-amber-900 dark:tw-text-amber-300">需配置</span>
               <span v-for="tag in (card.tags || []).slice(0, 4)" :key="tag" class="tw-rounded-full tw-bg-secondary tw-px-1.5 tw-py-0.5 tw-text-10px">#{{ tag }}</span>
             </div>
             <p class="tw-line-clamp-1 tw-text-xs tw-text-muted-foreground">{{ card.description }}</p>
@@ -54,10 +54,10 @@
             </span>
             <span v-if="installedNames.has(card.name)" class="tw-inline-flex tw-items-center tw-gap-1 tw-rounded-full tw-bg-muted tw-px-3 tw-py-1 tw-text-11px tw-text-muted-foreground">
               <Icon icon="lucide:check" class="tw-h-3 tw-w-3" />
-              {{ TEXT.mcp.installed }}
+              已安装
             </span>
             <el-button v-else size="mini" @click.stop="$emit('install', card)">
-              {{ TEXT.mcp.install }}
+              安装
             </el-button>
           </div>
         </div>
@@ -76,7 +76,7 @@
       <div v-if="detailCard" class="tw-flex tw-h-full tw-flex-col tw-gap-4 tw-p-4">
         <p class="tw-text-sm tw-text-muted-foreground">{{ detailCard.description }}</p>
         <div>
-          <span class="tw-text-xs tw-text-muted-foreground">{{ TEXT.mcp.configLabel }}</span>
+          <span class="tw-text-xs tw-text-muted-foreground">配置模板</span>
           <pre class="tw-mt-1 tw-overflow-x-auto tw-rounded-md tw-bg-muted tw-p-3 tw-text-xs">{{ JSON.stringify(detailCard.config_template, null, 2) }}</pre>
         </div>
         <div v-if="detailCard.readme" class="tw-prose tw-prose-sm tw-max-w-none" v-html="detailCard.readme" />
@@ -90,7 +90,6 @@ import { defineComponent, ref, computed } from '@/composables/vue';
 import { Icon } from '@/plugins/iconify';
 import Spinner from '@/components/ui/Spinner.vue';
 import { useMCPHubCards } from '@/composables/useMCPHubCards';
-import { TEXT } from './text';
 
 export default defineComponent({
   name: 'MCPHubPanel',
@@ -126,7 +125,6 @@ export default defineComponent({
       detailOpen,
       detailCard,
       openDetail,
-      TEXT,
     };
   },
 });

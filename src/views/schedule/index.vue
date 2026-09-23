@@ -3,8 +3,8 @@
     <main class="tw-shadow-panel tw-flex tw-h-full tw-min-h-0 tw-min-w-0 tw-flex-1 tw-flex-col tw-overflow-hidden tw-rounded-22px tw-bg-card">
       <div class="tw-flex tw-items-start tw-justify-between tw-gap-3 tw-px-6 tw-pt-5 tw-pb-4">
         <div>
-          <div class="tw-text-2xl tw-font-semibold">{{ COMMON.schedule }}</div>
-          <div class="tw-mt-1 tw-text-sm tw-text-muted-foreground">{{ TEXT.schedule.subtitle }}</div>
+          <div class="tw-text-2xl tw-font-semibold">日程</div>
+          <div class="tw-mt-1 tw-text-sm tw-text-muted-foreground">为智能体设置定时或一次性的计划任务</div>
         </div>
         <div class="tw-flex tw-items-center tw-gap-2">
           <el-button size="small" @click="createVisible = true">
@@ -14,13 +14,13 @@
             <el-radio-button label="calendar">
               <span class="tw-inline-flex tw-items-center tw-gap-1">
                 <Icon icon="lucide:calendar" class="tw-h-4 tw-w-4" />
-                <span>{{ TEXT.schedule.calendar }}</span>
+                <span>日历</span>
               </span>
             </el-radio-button>
             <el-radio-button label="list">
               <span class="tw-inline-flex tw-items-center tw-gap-1">
                 <Icon icon="lucide:list" class="tw-h-4 tw-w-4" />
-                <span>{{ TEXT.schedule.list }}</span>
+                <span>列表</span>
               </span>
             </el-radio-button>
           </el-radio-group>
@@ -69,8 +69,6 @@ import ScheduleDetailDrawer from './ScheduleDetailDrawer.vue';
 import CreateScheduleDialog from './CreateScheduleDialog.vue';
 import { useSchedules } from '@/composables/useSchedules';
 import { useAgents } from '@/composables/useAgents';
-import { COMMON } from '@/constants/text';
-import { TEXT } from './text';
 
 function expandScheduleToEvents(schedule, rangeStart, rangeEnd) {
   const events = [];
@@ -153,8 +151,6 @@ export default defineComponent({
       events,
       handleEventClick,
       handleCreate,
-      COMMON,
-      TEXT,
     };
   },
 });

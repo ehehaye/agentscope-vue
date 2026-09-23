@@ -2,12 +2,12 @@
   <div class="tw-flex tw-size-full tw-gap-2 tw-p-2">
     <aside class="tw-flex tw-w-64 tw-min-w-0 tw-flex-col tw-overflow-hidden tw-rounded-22px tw-bg-card">
       <div class="tw-flex tw-flex-col tw-gap-y-1 tw-p-5 tw-pb-3">
-        <div class="tw-text-xl tw-font-medium tw-tracking-neg-0_02em">{{ COMMON.knowledge }}</div>
-        <div class="tw-text-xs tw-text-muted-foreground">{{ TEXT.knowledge.subtitle }}</div>
+        <div class="tw-text-xl tw-font-medium tw-tracking-neg-0_02em">知识库</div>
+        <div class="tw-text-xs tw-text-muted-foreground">管理智能体可检索的知识库与文档。</div>
       </div>
       <div class="tw-flex-1 tw-overflow-y-auto tw-px-2">
         <div class="tw-mb-2 tw-flex tw-items-center tw-justify-between tw-px-2 tw-text-xs tw-font-medium tw-text-muted-foreground">
-          <span>{{ TEXT.knowledge.list.label }}</span>
+          <span>知识库列表</span>
           <el-button type="text" size="mini" @click="createOpen = true">
             <Icon icon="lucide:plus" class="tw-h-3.5 tw-w-3.5" />
           </el-button>
@@ -19,13 +19,13 @@
         <PanelEmpty
           v-else-if="knowledgeBases.length === 0"
           icon="lucide:files"
-          :title="TEXT.knowledge.list.emptyTitle"
-          :description="TEXT.knowledge.list.emptyDescription"
+          :title="'暂无知识库'"
+          :description="'创建知识库并上传文档，供智能体检索。'"
         >
           <el-button size="small" @click="createOpen = true">
             <span class="tw-flex tw-items-center tw-text-xs tw-text-muted-foreground">
               <Icon icon="lucide:plus" class="tw-mr-1 tw-h-3.5 tw-w-3.5" />
-              {{ TEXT.knowledge.list.createButton }}
+              新建知识库
             </span>
           </el-button>
         </PanelEmpty>
@@ -38,7 +38,7 @@
             @click="selectKb(kb)"
           >
             <span class="tw-min-w-0 tw-flex-1 tw-truncate">{{ kb.name }}</span>
-            <span v-if="!kb.editable" class="tw-ml-1 tw-shrink-0 tw-rounded tw-border tw-border-border tw-px-1 tw-text-10px">{{ COMMON.readOnly }}</span>
+            <span v-if="!kb.editable" class="tw-ml-1 tw-shrink-0 tw-rounded tw-border tw-border-border tw-px-1 tw-text-10px">只读</span>
             <el-dropdown v-if="kb.editable" trigger="click" @command="handleCommand($event, kb)">
               <span class="tw-ml-1 tw-opacity-0 tw-transition-opacity tw-duration-150 group-hover:tw-opacity-100" @click.stop>
                 <Icon icon="lucide:ellipsis" class="tw-h-3.5 tw-w-3.5" />
@@ -46,11 +46,11 @@
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item command="edit">
                   <Icon icon="lucide:pencil" class="tw-mr-1 tw-h-3.5 tw-w-3.5" />
-                  {{ COMMON.edit }}
+                  编辑
                 </el-dropdown-item>
                 <el-dropdown-item command="delete" divided>
                   <Icon icon="lucide:trash-2" class="tw-mr-1 tw-h-3.5 tw-w-3.5" />
-                  {{ COMMON.delete }}
+                  删除
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -63,8 +63,8 @@
       <DetailPanel v-if="selectedKb" :knowledge-base="selectedKb" @test="testOpen = true" />
       <div v-else class="tw-flex tw-h-full tw-items-center tw-justify-center">
         <div class="tw-flex tw-max-w-sm tw-flex-col tw-items-center tw-gap-2 tw-text-center">
-          <div class="tw-text-sm tw-font-medium">{{ TEXT.knowledge.selectHint }}</div>
-          <p class="tw-text-xs tw-text-muted-foreground">{{ TEXT.knowledge.selectHintDescription }}</p>
+          <div class="tw-text-sm tw-font-medium">选择知识库</div>
+          <p class="tw-text-xs tw-text-muted-foreground">从左侧列表选择一个知识库查看详情。</p>
         </div>
       </div>
     </main>
@@ -95,8 +95,6 @@ import PanelEmpty from '@/components/panel/PanelEmpty.vue';
 import DetailPanel from './DetailPanel.vue';
 import { useKnowledgeBases } from '@/composables/useKnowledgeBases';
 import { credentialApi } from '@/api';
-import { COMMON } from '@/constants/text';
-import { TEXT } from './text';
 
 export default defineComponent({
   name: 'KnowledgePage',
@@ -154,8 +152,8 @@ export default defineComponent({
     async function askDelete(kb) {
       if (!kb) return;
       await MessageBox.confirm(
-        TEXT.knowledge.dialogDelete.description(kb.name || ''),
-        TEXT.knowledge.dialogDelete.title,
+        `确定删除知识库 "${kb.name || ''}"？相关文档与索引将一并删除，不可恢复。`,
+        '删除知识库',
         {
           type: 'warning',
           confirmButtonText: '删除',
@@ -193,8 +191,6 @@ export default defineComponent({
       handleCreated,
       refetch,
       credentialApi,
-      COMMON,
-      TEXT,
     };
   },
 });

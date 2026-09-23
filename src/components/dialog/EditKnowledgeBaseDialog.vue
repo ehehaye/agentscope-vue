@@ -15,8 +15,8 @@
       </el-form-item>
     </el-form>
     <span slot="footer" class="tw-dialog-footer">
-      <el-button size="small" @click="dialogVisible = false" :disabled="submitting">{{ COMMON.cancel }}</el-button>
-      <el-button size="small" type="primary" :loading="submitting" @click="handleSubmit">{{ COMMON.save }}</el-button>
+      <el-button size="small" @click="dialogVisible = false" :disabled="submitting">取消</el-button>
+      <el-button size="small" type="primary" :loading="submitting" @click="handleSubmit">保存</el-button>
     </span>
   </el-dialog>
 </template>
@@ -24,7 +24,6 @@
 <script>
 import { defineComponent, ref, computed, watch } from '@/composables/vue';
 import { knowledgeBaseApi } from '@/api';
-import { COMMON } from '@/constants/text';
 
 export default defineComponent({
   name: 'EditKnowledgeBaseDialog',
@@ -62,7 +61,7 @@ export default defineComponent({
       }
     }
 
-    return { dialogVisible, form, submitting, handleSubmit, COMMON };
+    return { dialogVisible, form, submitting, handleSubmit };
   },
 });
 </script>

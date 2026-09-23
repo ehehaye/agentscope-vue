@@ -9,7 +9,7 @@
         <div class="tw-text-lg tw-font-medium">{{ hub?.display_name || hubId }}</div>
         <div class="tw-text-xs tw-text-muted-foreground">{{ hub?.description }}</div>
       </div>
-      <el-input v-model="query" :placeholder="TEXT.skill.searchPlaceholder" size="small" class="tw-ml-auto tw-w-48" />
+      <el-input v-model="query" placeholder="在该来源中搜索" size="small" class="tw-ml-auto tw-w-48" />
     </div>
 
     <div class="tw-flex-1 tw-overflow-y-auto">
@@ -18,14 +18,14 @@
       </div>
       <div v-else-if="error" class="tw-flex tw-flex-col tw-items-center tw-gap-2 tw-py-10 tw-text-center">
         <Icon icon="lucide:triangle-alert" class="tw-h-8 tw-w-8 tw-text-muted-foreground" />
-        <div class="tw-text-sm tw-font-medium">{{ TEXT.skill.loadFailedTitle }}</div>
-        <p class="tw-text-xs tw-text-muted-foreground">{{ TEXT.skill.loadFailedDescription }}</p>
-        <el-button size="small" @click="refetch">{{ TEXT.skill.retry }}</el-button>
+        <div class="tw-text-sm tw-font-medium">无法连接服务</div>
+        <p class="tw-text-xs tw-text-muted-foreground">请检查服务地址，以及服务是否已启动。</p>
+        <el-button size="small" @click="refetch">重试</el-button>
       </div>
       <div v-else-if="cards.length === 0" class="tw-flex tw-flex-col tw-items-center tw-gap-2 tw-py-10 tw-text-center">
         <Icon icon="lucide:blocks" class="tw-h-8 tw-w-8 tw-text-muted-foreground" />
-        <div class="tw-text-sm tw-font-medium">{{ TEXT.skill.noCardsTitle }}</div>
-        <p class="tw-text-xs tw-text-muted-foreground">{{ TEXT.skill.noCardsDescription }}</p>
+        <div class="tw-text-sm tw-font-medium">没有找到内容</div>
+        <p class="tw-text-xs tw-text-muted-foreground">换个关键词试试。</p>
       </div>
       <div v-else class="tw-space-y-2">
         <div
@@ -52,14 +52,14 @@
               {{ card.downloads.toLocaleString() }}
             </span>
             <span v-if="card.updated_at" class="tw-text-10px tw-text-muted-foreground">
-              {{ now - card.updated_at < 3600 ? TEXT.skill.updatedRecently : TEXT.skill.updatedAgo(formatTime(now - card.updated_at, { leadingUnitOnly: true })) }}
+              {{ now - card.updated_at < 3600 ? '刚刚更新' : `${formatTime(now - card.updated_at, { leadingUnitOnly: true })}前更新` }}
             </span>
             <span v-if="installedNames.has(card.name)" class="tw-inline-flex tw-items-center tw-gap-1 tw-rounded-full tw-bg-muted tw-px-3 tw-py-1 tw-text-11px tw-text-muted-foreground">
               <Icon icon="lucide:check" class="tw-h-3 tw-w-3" />
-              {{ TEXT.skill.installed }}
+              已安装
             </span>
             <el-button v-else size="mini" :loading="installingId === card.id" @click.stop="handleInstall(card)">
-              {{ TEXT.skill.install }}
+              安装
             </el-button>
           </div>
         </div>
@@ -83,7 +83,7 @@
         <div v-if="detailCard.markdown" class="tw-flex-1 tw-overflow-y-auto">
           <MarkdownRenderer :content="detailCard.markdown" />
         </div>
-        <div v-else class="tw-text-xs tw-text-muted-foreground">{{ TEXT.skill.noReadme }}</div>
+        <div v-else class="tw-text-xs tw-text-muted-foreground">该技能没有提供 SKILL.md 正文。</div>
       </div>
     </el-drawer>
   </div>
@@ -97,7 +97,6 @@ import MarkdownRenderer from '@/components/common/MarkdownRenderer.vue';
 import { useSkillHubCards } from '@/composables/useSkillHubCards';
 import { hubApi } from '@/api';
 import { formatTime } from '@/utils/common';
-import { TEXT } from './text';
 
 export default defineComponent({
   name: 'SkillHubPanel',
@@ -163,7 +162,6 @@ export default defineComponent({
       detailLoading,
       openDetail,
       formatTime,
-      TEXT,
     };
   },
 });

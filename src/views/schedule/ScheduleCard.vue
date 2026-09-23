@@ -16,7 +16,7 @@
       <div data-slot="item-description" class="tw-line-clamp-2 tw-flex tw-items-center tw-gap-2 tw-text-left tw-text-xs tw-text-muted-foreground">
         <span v-if="!schedule.data.enabled" class="tw-inline-flex tw-items-center tw-gap-1 tw-rounded-md tw-border tw-border-transparent tw-bg-secondary tw-px-2 tw-py-0.5 tw-text-xs tw-font-medium tw-text-secondary-foreground">
           <Icon icon="lucide:pause" class="tw-h-3 tw-w-3" />
-          <span>{{ COMMON.disabled }}</span>
+          <span>已禁用</span>
         </span>
         <span class="tw-inline-flex tw-items-center tw-gap-1 tw-pl-0 tw-text-xs tw-font-medium tw-text-primary">
           <Icon icon="lucide:calendar" class="tw-h-3 tw-w-3" data-icon="inline-start" />
@@ -40,8 +40,6 @@
 import { defineComponent, computed } from '@/composables/vue';
 import { Icon } from '@/plugins/iconify';
 import { parseCronExpression, getFrequencyLabel } from './schedule-utils';
-import { TEXT } from './text';
-import { COMMON } from '@/constants/text';
 
 export default defineComponent({
   name: 'ScheduleCard',
@@ -51,8 +49,8 @@ export default defineComponent({
   },
   setup(props) {
     const parsed = computed(() => parseCronExpression(props.schedule.data.cron_expression, props.schedule.data.started_at));
-    const frequencyLabel = computed(() => getFrequencyLabel(parsed.value, TEXT.schedule));
-    return { parsed, frequencyLabel, COMMON };
+    const frequencyLabel = computed(() => getFrequencyLabel(parsed.value));
+    return { parsed, frequencyLabel };
   },
 });
 </script>

@@ -13,7 +13,7 @@
         <p class="tw-text-sm tw-text-muted-foreground">{{ schedule.data.description }}</p>
 
         <div class="tw-flex tw-flex-col tw-gap-2">
-          <h3 class="tw-text-sm tw-font-semibold tw-text-secondary-foreground">{{ COMMON.information }}</h3>
+          <h3 class="tw-text-sm tw-font-semibold tw-text-secondary-foreground">信息</h3>
           <div class="tw-flex tw-flex-col tw-gap-2">
             <div
               v-for="item in scheduleInfoItems"
@@ -29,10 +29,10 @@
         <el-divider />
 
         <div class="tw-flex tw-flex-1 tw-flex-col tw-gap-2 tw-overflow-hidden">
-          <h3 class="tw-text-sm tw-font-semibold">{{ TEXT.schedule.executionHistory }}</h3>
+          <h3 class="tw-text-sm tw-font-semibold">执行历史</h3>
           <div class="tw-flex-1 tw-overflow-y-auto tw-space-y-1">
-            <div v-if="sessionsLoading" class="tw-py-4 tw-text-center tw-text-sm tw-text-muted-foreground">{{ COMMON.loading }}</div>
-            <div v-else-if="sessions.length === 0" class="tw-py-4 tw-text-center tw-text-sm tw-text-muted-foreground">{{ COMMON.noData }}</div>
+            <div v-if="sessionsLoading" class="tw-py-4 tw-text-center tw-text-sm tw-text-muted-foreground">加载中...</div>
+            <div v-else-if="sessions.length === 0" class="tw-py-4 tw-text-center tw-text-sm tw-text-muted-foreground">暂无数据</div>
             <div
               v-for="session in sessions"
               v-else
@@ -49,7 +49,7 @@
         <div class="tw-mt-auto tw-pt-2">
           <el-button type="danger" size="small" @click="handleDelete">
             <Icon icon="lucide:trash-2" class="tw-mr-1 tw-h-3 tw-w-3" />
-            {{ COMMON.delete }}
+            删除
           </el-button>
         </div>
       </div>
@@ -63,8 +63,6 @@ import { MessageBox } from 'element-ui';
 import { Icon } from '@/plugins/iconify';
 import StatusBadge from '@/components/badge/StatusBadge.vue';
 import { scheduleApi } from '@/api';
-import { COMMON } from '@/constants/text';
-import { TEXT } from './text';
 import { parseCronExpression, getFrequencyLabel } from './schedule-utils';
 
 export default defineComponent({
@@ -85,13 +83,13 @@ export default defineComponent({
     });
 
     const weekdayNames = [
-      TEXT.schedule.sunday,
-      TEXT.schedule.monday,
-      TEXT.schedule.tuesday,
-      TEXT.schedule.wednesday,
-      TEXT.schedule.thursday,
-      TEXT.schedule.friday,
-      TEXT.schedule.saturday,
+      '周日',
+      '周一',
+      '周二',
+      '周三',
+      '周四',
+      '周五',
+      '周六',
     ];
 
     const scheduleInfoItems = computed(() => {
@@ -105,7 +103,7 @@ export default defineComponent({
           triggerTimeDisplay = `${weekdayNames[parsed.weekday ?? 0]} ${parsed.time}`;
           break;
         case 'monthly':
-          triggerTimeDisplay = `${parsed.dayOfMonth ?? 1}${TEXT.schedule.dayOfMonthSuffix} ${parsed.time}`;
+          triggerTimeDisplay = `${parsed.dayOfMonth ?? 1}日 ${parsed.time}`;
           break;
         case 'once':
           triggerTimeDisplay = parsed.date
@@ -116,13 +114,13 @@ export default defineComponent({
       triggerTimeDisplay += ` (${data.timezone})`;
 
       return [
-        { title: TEXT.schedule.frequency, content: getFrequencyLabel(parsed, TEXT.schedule) },
-        { title: TEXT.schedule.triggerTime, content: triggerTimeDisplay },
-        { title: TEXT.schedule.createdAt, content: new Date(props.schedule.created_at).toLocaleString() },
-        { title: TEXT.schedule.end_at, content: data.ended_at ? new Date(data.ended_at).toLocaleString() : COMMON.noData },
-        { title: COMMON.agent, content: agentName.value },
-        { title: TEXT.schedule.permissionMode, content: data.permission_mode },
-        { title: TEXT.schedule.stateful, content: data.stateful ? COMMON.yes : COMMON.no },
+        { title: '频率', content: getFrequencyLabel(parsed) },
+        { title: '触发时间', content: triggerTimeDisplay },
+        { title: '创建时间', content: new Date(props.schedule.created_at).toLocaleString() },
+        { title: '结束时间', content: data.ended_at ? new Date(data.ended_at).toLocaleString() : '暂无数据' },
+        { title: '智能体', content: agentName.value },
+        { title: '权限模式', content: data.permission_mode },
+        { title: '有状态', content: data.stateful ? '是' : '否' },
       ];
     });
 
@@ -153,8 +151,8 @@ export default defineComponent({
       const schedule = props.schedule;
       if (!schedule) return;
       await MessageBox.confirm(
-        COMMON.deleteDescription,
-        COMMON.deleteTitle(TEXT.schedule.deleteSchedule.entity, schedule.data?.name || ''),
+        '此操作无法撤销。',
+        `删除日程 "${schedule.data?.name || ''}"？`,
         {
           type: 'warning',
           confirmButtonText: '删除',
@@ -172,8 +170,6 @@ export default defineComponent({
       agentName,
       goToSession,
       handleDelete,
-      COMMON,
-      TEXT,
     };
   },
 });

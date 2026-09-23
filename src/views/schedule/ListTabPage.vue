@@ -13,7 +13,7 @@
     </div>
     <div class="tw-size-full tw-overflow-y-auto tw-p-4">
       <div v-if="loading" class="tw-flex tw-h-full tw-items-center tw-justify-center tw-text-muted-foreground">
-        {{ COMMON.loading }}
+        加载中...
       </div>
       <EmptyState v-else-if="filteredSchedules.length === 0" />
       <div v-else class="tw-space-y-3">
@@ -40,7 +40,6 @@ import { CronExpressionParser } from 'cron-parser';
 import ScheduleCard from './ScheduleCard.vue';
 import ScheduleDetailDrawer from './ScheduleDetailDrawer.vue';
 import EmptyState from './EmptyState.vue';
-import { COMMON } from '@/constants/text';
 
 export default defineComponent({
   name: 'ListTabPage',
@@ -89,7 +88,7 @@ export default defineComponent({
       return props.schedules.filter((schedule) => scheduleHasOccurrencesInRange(schedule, rangeStart, rangeEnd));
     });
 
-    return { dateRange, selectedSchedule, detailVisible, filteredSchedules, COMMON };
+    return { dateRange, selectedSchedule, detailVisible, filteredSchedules };
   },
 });
 </script>
