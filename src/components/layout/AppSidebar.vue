@@ -1,11 +1,14 @@
 <template>
 	<aside
-		class="tw-app-sidebar tw-flex tw-w-14 tw-flex-col tw-items-center tw-gap-1 tw-border-r tw-border-border tw-bg-surface-muted tw-py-2 md:tw-w-56 md:tw-items-stretch md:tw-px-2"
+		:class="[
+			'tw-app-sidebar tw-flex tw-w-14 tw-flex-col tw-items-center tw-gap-1 tw-border-r tw-border-border tw-bg-surface-muted tw-py-2',
+			collapsed ? 'md:tw-w-14 md:tw-items-center md:tw-px-0' : 'md:tw-w-56 md:tw-items-stretch md:tw-px-2',
+		]"
 	>
 		<!-- Logo -->
 		<div class="tw-mb-2 tw-flex tw-items-center tw-gap-2 tw-px-1 tw-py-1.5">
 			<img src="/agentscope.svg" alt="AgentScope" class="tw-h-7 tw-w-7 tw-shrink-0" />
-			<span class="tw-hidden tw-text-sm tw-font-semibold tw-text-foreground md:tw-inline">AgentScope</span>
+			<span :class="['tw-text-sm tw-font-semibold tw-text-foreground', collapsed ? 'tw-hidden' : 'tw-hidden md:tw-inline']">AgentScope</span>
 		</div>
 
 		<!-- 导航 -->
@@ -18,35 +21,49 @@
 				active-class="!bg-accent !text-foreground font-medium"
 				:title="item.label"
 			>
-				<Icon :icon="item.icon" class="tw-h-5 tw-w-5 tw-shrink-0" />
-				<span class="tw-hidden md:tw-inline">{{ item.label }}</span>
+				<el-tooltip :content="item.label" placement="right" :disabled="!collapsed" :show-after="100">
+					<Icon :icon="item.icon" class="tw-h-5 tw-w-5 tw-shrink-0" />
+				</el-tooltip>
+				<span :class="collapsed ? 'tw-hidden' : 'tw-hidden md:tw-inline'">{{ item.label }}</span>
 			</router-link>
 		</nav>
 
 		<div class="tw-flex-1"></div>
 
-		<!-- 深色模式 -->
-		<div class="tw-flex tw-items-center tw-gap-3 tw-px-2 tw-py-2 tw-text-sm tw-text-muted-foreground">
-			<Icon icon="lucide:moon" class="tw-h-5 tw-w-5 tw-shrink-0" />
-			<span class="tw-hidden tw-flex-1 md:tw-inline">深色模式</span>
-			<el-switch
-				:value="dark"
-				@change="onToggleDark"
-				class="tw-hidden md:tw-inline-block"
-			/>
-		</div>
-
 		<!-- 服务器信息 -->
 		<div class="tw-hidden tw-border-t tw-border-border tw-pt-2 md:tw-block">
-			<div class="tw-truncate tw-px-2 tw-text-xs tw-text-text-tertiary" :title="serverUrl">
+			<div v-if="!collapsed" class="tw-truncate tw-px-2 tw-text-xs tw-text-text-tertiary" :title="serverUrl">
 				{{ serverUrl }}
 			</div>
 			<div class="tw-flex tw-items-center tw-gap-2 tw-px-2 tw-py-1 tw-text-xs tw-text-muted-foreground">
-				<Icon icon="lucide:user" class="tw-h-3.5 tw-w-3.5" />
-				<span class="tw-truncate">{{ username }}</span>
-				<router-link to="/setup" class="tw-ml-auto tw-text-primary hover:tw-underline" title="重新设置">
-					<Icon icon="lucide:settings" class="tw-h-4 tw-w-4" />
-				</router-link>
+				<template v-if="!collapsed">
+					<Icon icon="lucide:user" class="tw-h-3.5 tw-w-3.5" />
+					<span class="tw-truncate tw-flex-1">{{ username }}</span>
+					<router-link to="/setup" class="tw-text-primary hover:tw-underline" title="重新设置">
+						<Icon icon="lucide:settings" class="tw-h-4 tw-w-4" />
+					</router-link>
+					<!-- 深色模式 -->
+					<button
+						type="button"
+						:class="['tw-text-primary hover:tw-underline', collapsed ? 'tw-mx-auto' : 'tw-ml-auto']"
+						:title="dark ? '切换到浅色模式' : '切换到深色模式'"
+						@click="onToggleDark"
+					>
+						<Icon
+							:icon="dark ? 'lucide:moon' : 'lucide:sun'"
+							 class="tw-h-4 tw-w-4"
+						/>
+					</button>
+				</template>
+				<!-- 侧边栏展开/收起 -->
+				<button
+					type="button"
+					:class="['tw-text-primary hover:tw-underline', collapsed ? 'tw-mx-auto' : 'tw-ml-auto']"
+					:title="collapsed ? '展开侧边栏' : '收起侧边栏'"
+					@click="toggleCollapsed"
+				>
+					<Icon :icon="collapsed ? 'lucide:chevrons-right' : 'lucide:chevrons-left'" class="tw-h-4 tw-w-4" />
+				</button>
 			</div>
 		</div>
 	</aside>
@@ -61,6 +78,7 @@ export default defineComponent({
 	components: { Icon },
 	data() {
 		return {
+			collapsed: false,
 			navItems: [
 				{ to: '/chat', icon: 'lucide:message-square', label: '聊天' },
 				{ to: '/credential', icon: 'lucide:key-round', label: '凭证' },
@@ -72,6 +90,12 @@ export default defineComponent({
 				{ to: '/dev/markdown', icon: 'lucide:file-text', label: 'Markdown 验证' },
 			],
 		};
+	},
+	mounted() {
+		const saved = localStorage.getItem('sidebarCollapsed');
+		if (saved !== null) {
+			this.collapsed = saved === 'true';
+		}
 	},
 	computed: {
 		dark() {
@@ -87,6 +111,10 @@ export default defineComponent({
 	methods: {
 		onToggleDark() {
 			this.$store.dispatch('app/toggleDark');
+		},
+		toggleCollapsed() {
+			this.collapsed = !this.collapsed;
+			localStorage.setItem('sidebarCollapsed', String(this.collapsed));
 		},
 	},
 });
