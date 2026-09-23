@@ -9,8 +9,11 @@
     <el-form label-position="top">
       <el-form-item label="会话名称">
         <el-input
-          v-model="name"
+          clearable
+          v-model.trim="name"
           placeholder="输入新的会话名称"
+          maxlength="50"
+          show-word-limit
           @keyup.enter.native="handleConfirm"
         />
       </el-form-item>
