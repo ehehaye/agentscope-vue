@@ -6,7 +6,7 @@
       @click="toggle"
     >
       <!-- chevron 由各调用方在 trigger 插槽内自行渲染 -->
-      <slot name="trigger" :open="open" />
+      <slot name="trigger" :open="isOpen" />
     </div>
     <transition
       name="collapse"
