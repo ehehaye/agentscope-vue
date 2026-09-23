@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { ref, watch, unref } from '@/composables/vue';
 import { workspaceApi } from '@/api';
 
@@ -84,7 +85,10 @@ export function useWorkspace(agentId, sessionId) {
 
   watch(
     () => [unref(agentId), unref(sessionId)],
-    () => refetch(),
+    (next, prev) => {
+      if (_.isEqual(next, prev)) return;
+      refetch();
+    },
     { immediate: true },
   );
 
