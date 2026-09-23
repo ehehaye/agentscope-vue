@@ -85,8 +85,8 @@ export const sessionApi = {
         buffer = lines.pop() ?? '';
 
         for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            const json = line.slice(6).trim();
+          if (line.startsWith('data:')) {
+            const json = line.slice(5).trim();
             if (json) yield JSON.parse(json);
           }
         }
