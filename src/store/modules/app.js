@@ -4,6 +4,8 @@
  * localStorage 键：server_url / username；主题用 theme。
  */
 
+import { API_MODES, MODE_STORAGE_KEY } from "@/api/mapping";
+
 const THEME_KEY = 'theme';
 const SERVER_URL_KEY = 'server_url';
 const USERNAME_KEY = 'username';
@@ -20,6 +22,7 @@ export default {
 		dark: initialDark(),
 		serverUrl: localStorage.getItem(SERVER_URL_KEY) ?? '',
 		username: localStorage.getItem(USERNAME_KEY) ?? '',
+		apiMode: localStorage.getItem(MODE_STORAGE_KEY) ?? API_MODES.DIRECT,
 	}),
 
 	getters: {
@@ -37,12 +40,14 @@ export default {
 				/* 隐私模式等场景下降级为仅当前会话 */
 			}
 		},
-		SET_CONFIG(state, { serverUrl, username }) {
+		SET_CONFIG(state, { serverUrl, username, apiMode }) {
 			state.serverUrl = serverUrl;
 			state.username = username;
+			state.apiMode = apiMode;
 			try {
 				localStorage.setItem(SERVER_URL_KEY, serverUrl);
 				localStorage.setItem(USERNAME_KEY, username);
+				localStorage.setItem(MODE_STORAGE_KEY, apiMode);
 			} catch {
 				/* ignore */
 			}

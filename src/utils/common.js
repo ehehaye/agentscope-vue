@@ -131,3 +131,12 @@ export const avatarTint = (seed) => {
 		color: `oklch(0.41 0.075 ${hue})`,
 	};
 };
+
+export const isValidJsonStr = (str = '') => {
+	try {
+		JSON.parse(str);
+		return true;
+	} catch (e) {
+		return false;
+	}
+}

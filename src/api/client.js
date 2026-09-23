@@ -7,16 +7,9 @@
  */
 import { toast } from '@/lib/toast';
 import { API_MODES, getApiMode, resolveEndpoint } from './mapping';
+import { isValidJsonStr } from '@/utils/common';
 
-/**
- * 当前模式对应的 Base URL。
- * - direct：localStorage.server_url（Python 后端）
- * - proxy ：localStorage.proxy_url（Java 中转），未配置时回退 server_url
- */
-export const getBaseUrl = (mode = getApiMode()) =>
-	mode === API_MODES.PROXY
-		? (localStorage.getItem('proxy_url') ?? localStorage.getItem('server_url') ?? '')
-		: (localStorage.getItem('server_url') ?? '');
+export const getBaseUrl = (mode = getApiMode()) => (localStorage.getItem('server_url') ?? '')
 
 export const getUserId = () => localStorage.getItem('username') ?? '';
 
@@ -41,7 +34,7 @@ function buildHeaders(hasBody, userId) {
 
 /** 解析响应体，优先提取 JSON detail。 */
 async function extractErrorDetail(res) {
-	const text = await res.text();
+	const text = await res.clone().text();
 	try {
 		const json = JSON.parse(text);
 		if (typeof json.detail === 'string') return json.detail;
@@ -74,7 +67,9 @@ async function streamRequest(path, options = {}) {
 		userId,
 		timeoutMs,
 	} = options;
-	const url = new URL(path, baseUrl ?? getBaseUrl());
+	
+	const { pathname, origin } = new URL(baseUrl ?? getBaseUrl())
+	const url = new URL(`${pathname}/${path}/`.replace(/\/{2,}/g, '/'), origin); 
 	if (params) {
 		Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
 	}
@@ -106,6 +101,19 @@ async function streamRequest(path, options = {}) {
 		const error = new ApiError(res.status, detail);
 		if (!silent) toast.error(detail);
 		throw error;
+	}
+	
+	// 提取代理错误（在此填写你的自定义校验逻辑）
+	if (getApiMode() === API_MODES.PROXY && res.headers.get('content-type')?.includes('application/json')) {
+		const text = await res.clone().text();
+		if (isValidJsonStr(text)) {
+			const json = JSON.parse(text);
+			if (json.success === false) {
+				const error = new ApiError(json.code, json.message);
+				toast.error(json.message);
+				throw error;
+			}
+		}
 	}
 
 	return res;

@@ -14,16 +14,16 @@ function normalize(message, options = {}) {
 
 export const toast = {
 	success(message, options) {
-		return Message({ type: 'success', ...normalize(message, options) });
+		return Message({ type: 'success', showClose: true, ...normalize(message, options) });
 	},
 	error(message, options) {
-		return Message({ type: 'error', duration: 5000, ...normalize(message, options) });
+		return Message({ type: 'error', showClose: true, duration: 5000, ...normalize(message, options) });
 	},
 	warning(message, options) {
-		return Message({ type: 'warning', ...normalize(message, options) });
+		return Message({ type: 'warning', showClose: true, ...normalize(message, options) });
 	},
 	info(message, options) {
-		return Message({ type: 'info', ...normalize(message, options) });
+		return Message({ type: 'info', showClose: true, ...normalize(message, options) });
 	},
 	/**
 	 * 带标题/描述的通知（固定 top-right 位姿）。

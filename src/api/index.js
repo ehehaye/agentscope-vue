@@ -6,7 +6,6 @@ export {
 	ENDPOINTS,
 	API_MODES,
 	getApiMode,
-	setApiMode,
 	resolveEndpoint,
 } from './mapping';
 export { healthApi } from './health';

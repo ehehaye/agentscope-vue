@@ -19,21 +19,27 @@
 			/>
 
 			<el-form label-position="top" @submit.native.prevent>
-				<el-form-item label="服务器地址" required>
+				<el-form-item label="服务器地址" required :rules="[{ required: true, message: '请填写' }]">
 					<el-input
-						v-model="form.serverUrl"
+						v-model.trim="form.serverUrl"
 						placeholder="http://localhost:8000"
 						clearable
 						@keyup.enter.native="onSubmit"
 					/>
 				</el-form-item>
-				<el-form-item label="用户名" required>
+				<el-form-item label="用户名" required :rules="[{ required: true, message: '请填写' }]">
 					<el-input
-						v-model="form.userId"
+						v-model.trim="form.username"
 						placeholder="user"
 						clearable
 						@keyup.enter.native="onSubmit"
 					/>
+				</el-form-item>
+				<el-form-item label="模式" required :rules="[{ required: true, message: '请选择' }]">
+					<el-radio-group v-model="form.apiMode">
+						<el-radio :label="API_MODES.DIRECT">直连</el-radio>
+						<el-radio :label="API_MODES.PROXY">代理</el-radio>
+					</el-radio-group>
 				</el-form-item>
 			</el-form>
 
@@ -51,15 +57,18 @@
 
 <script>
 import { defineComponent } from '@/composables/vue';
-import { healthApi, ApiError, TIMEOUT_STATUS } from '@/api';
+import { healthApi, ApiError, TIMEOUT_STATUS, API_MODES } from '@/api';
+import { MODE_STORAGE_KEY } from '@/api/mapping';
 
 export default defineComponent({
 	name: 'SetupPage',
 	data() {
 		return {
+			API_MODES,
 			form: {
-				serverUrl: 'http://localhost:8000',
-				userId: 'user',
+				serverUrl: localStorage.getItem('server_url') ?? 'http://localhost:8000',
+				username: localStorage.getItem('username') ?? 'demo',
+				apiMode: localStorage.getItem(MODE_STORAGE_KEY) ?? API_MODES.DIRECT,
 			},
 			loading: false,
 			errorMessage: '',
@@ -68,22 +77,10 @@ export default defineComponent({
 	methods: {
 		async onSubmit() {
 			this.errorMessage = '';
-			const serverUrl = this.form.serverUrl.trim().replace(/\/+$/, '');
-			const userId = this.form.userId.trim();
-
-			if (!serverUrl) {
-				this.errorMessage = '请填写服务器地址。';
-				return;
-			}
-			if (!userId) {
-				this.errorMessage = '请填写用户名。';
-				return;
-			}
-
 			this.loading = true;
 			try {
-				await healthApi.check(serverUrl, userId);
-				await this.$store.dispatch('app/saveConfig', { serverUrl, username: userId });
+				await healthApi.check(this.form.serverUrl, this.form.username);
+				await this.$store.dispatch('app/saveConfig', this.form);
 				this.$message.success('连接成功');
 				await this.$router.replace('/chat');
 			} catch (e) {
@@ -93,7 +90,10 @@ export default defineComponent({
 			}
 		},
 		mapError(e) {
-			if (!(e instanceof ApiError)) return '连接失败，请检查服务器地址和网络。';
+			if (!(e instanceof ApiError)) {
+				console.error(e);
+				return '连接失败，请检查服务器地址和网络。';
+			}
 			switch (e.status) {
 				case 0:
 					return '无法连接到服务器，请检查地址是否正确、服务是否已启动。';

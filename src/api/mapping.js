@@ -3,7 +3,7 @@
  *
  * 两种模式（对应 docs/API.md 与 docs/API-java-proxy.md）：
  * - direct：前端直连 Python 后端（GET/POST/PATCH/DELETE），Base URL 为 localStorage.server_url；
- * - proxy ：经 Java 中转服务，仅开放 GET/POST，Base URL 为 localStorage.proxy_url（缺省回退 server_url）。
+ * - proxy ：经 Java 中转服务，仅开放 GET/POST，Base URL 为 Base URL 为 localStorage.server_url，支持到路径：如 :http://hostname/proxy/api/
  *   PATCH  -> POST {path}/update
  *   DELETE -> POST {path}/delete
  *
@@ -18,19 +18,12 @@ export const API_MODES = {
 	PROXY: 'proxy',
 };
 
-const MODE_STORAGE_KEY = 'api_mode';
+export const MODE_STORAGE_KEY = 'api_mode';
 
 export function getApiMode() {
 	return localStorage.getItem(MODE_STORAGE_KEY) === API_MODES.PROXY
 		? API_MODES.PROXY
 		: API_MODES.DIRECT;
-}
-
-export function setApiMode(mode) {
-	if (mode !== API_MODES.DIRECT && mode !== API_MODES.PROXY) {
-		throw new Error(`Unknown api mode: ${mode}`);
-	}
-	localStorage.setItem(MODE_STORAGE_KEY, mode);
 }
 
 /**
