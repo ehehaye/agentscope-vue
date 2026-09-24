@@ -133,7 +133,7 @@ import { useRoute, useRouter } from '@/composables/vue-router';
 import { useStore } from '@/composables/vuex';
 import { MessageBox } from 'element-ui';
 import { useMessages } from '@/composables/useMessages';
-import { useSessions } from '@/composables/useSessions';
+import { useSessions, waitForConversationReady } from '@/composables/useSessions';
 import { useAgents } from '@/composables/useAgents';
 import { useWorkspace } from '@/composables/useWorkspace';
 import { useWorkspaceStatus } from '@/composables/useWorkspaceStatus';
@@ -343,36 +343,6 @@ export default defineComponent({
       if (pendingCwd.value) body.cwd = pendingCwd.value;
       if (title) body.name = title;
       return body;
-    }
-
-    /**
-     * 等待指定会话的 SSE 连接建立。
-     * 超时后仍 resolve（尽力发送，避免流程卡死）。
-     */
-    function waitForConversationReady(aid, sid) {
-      const targetKey = `${aid}:${sid}`;
-      const TIMEOUT_MS = 10000;
-      return new Promise((resolve) => {
-        let done = false;
-        const finish = () => {
-          if (done) return;
-          done = true;
-          unwatch();
-          clearTimeout(timer);
-          resolve();
-        };
-        if (store.state.chat.currentKey === targetKey && store.state.chat.streamConnected) {
-          resolve();
-          return;
-        }
-        const unwatch = watch(
-          [() => store.state.chat.currentKey, () => store.state.chat.streamConnected],
-          ([key, connected]) => {
-            if (key === targetKey && connected) finish();
-          },
-        );
-        const timer = setTimeout(finish, TIMEOUT_MS);
-      });
     }
 
     /**
