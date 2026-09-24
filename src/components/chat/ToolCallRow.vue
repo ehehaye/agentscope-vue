@@ -1,16 +1,10 @@
 <template>
   <Collapsible :expandable="expandable">
-    <template #trigger="{ open }">
+    <template #trigger>
       <div class="tw-group tw-flex tw-items-center tw-gap-2">
         <span class="tw-shrink-0">{{ displayName }}</span>
         <span v-if="arg" class="tw-min-w-0 tw-truncate tw-font-medium">{{ arg }}</span>
         <ToolStateIcon :state="pair.result?.state" />
-        <Icon
-          v-if="expandable"
-          icon="lucide:chevron-right"
-          class="tw-h-3 tw-w-3 tw-shrink-0 tw-transition-transform"
-          :class="{ 'tw-rotate-90': open }"
-        />
       </div>
     </template>
     <div class="tw-mt-2">
@@ -21,7 +15,6 @@
 
 <script>
 import { defineComponent, computed } from '@/composables/vue';
-import { Icon } from '@/plugins/iconify';
 import Collapsible from '@/components/ui/Collapsible.vue';
 import ToolStateIcon from './ToolStateIcon.vue';
 import { parseInput, tryGetFileName, tryGetFilePath } from './tool-utils';
@@ -30,7 +23,7 @@ import DefaultRenderer from './tool-renderers/DefaultRenderer.vue';
 
 export default defineComponent({
   name: 'ToolCallRow',
-  components: { Collapsible, Icon, ToolStateIcon },
+  components: { Collapsible, ToolStateIcon },
   props: {
     pair: { type: Object, required: true },
   },

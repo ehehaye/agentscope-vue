@@ -70,16 +70,12 @@
           :key="group.key"
           class="tw-mb-2"
           default-open
+          trigger-class="tw-text-muted-foreground"
         >
-          <template #trigger="{ open }">
-            <span class="tw-text-xs tw-text-muted-foreground tw-px-1">{{ group.label }}</span>
-            <span class="tw-font-mono tw-text-xs tw-text-muted-foreground tw-opacity-60">{{ group.items.length }}</span>
+          <template #trigger>
+            <span class="tw-text-xs tw-px-1">{{ group.label }}</span>
+            <span class="tw-font-mono tw-text-xs tw-opacity-60">{{ group.items.length }}</span>
             <span class="tw-flex-1"></span>
-            <Icon
-              icon="lucide:chevron-right"
-              class="tw-h-3 tw-w-3 tw-shrink-0 tw-text-muted-foreground tw-transition-transform"
-              :class="{ 'tw-rotate-90': open }"
-            />
           </template>
           <ul class="tw-flex tw-flex-col tw-gap-0.5">
             <li v-for="v in group.items" :key="v.session.id">

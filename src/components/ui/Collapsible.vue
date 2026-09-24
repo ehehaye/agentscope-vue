@@ -2,11 +2,19 @@
   <div class="tw-collapsible">
     <div
       class="tw-collapsible-trigger tw-flex tw-cursor-pointer tw-items-center tw-gap-2"
-      :class="{ 'tw-cursor-default': !expandable }"
+      :class="[triggerClass, { 'tw-cursor-default': !expandable }]"
       @click="toggle"
     >
-      <!-- chevron 由各调用方在 trigger 插槽内自行渲染 -->
       <slot name="trigger" :open="isOpen" />
+      <!-- 默认折叠指示图标，可用 #icon="{ open }" 插槽覆盖 -->
+      <slot name="icon" :open="isOpen">
+        <Icon
+          v-if="expandable"
+          icon="lucide:chevron-right"
+          class="tw-h-3 tw-w-3 tw-shrink-0 tw-transition-transform"
+          :class="{ 'tw-rotate-90': isOpen }"
+        />
+      </slot>
     </div>
     <transition
       name="collapse"
@@ -23,13 +31,16 @@
 
 <script>
 import { defineComponent, ref, computed } from '@/composables/vue';
+import { Icon } from '@/plugins/iconify';
 
 export default defineComponent({
   name: 'Collapsible',
+  components: { Icon },
   props: {
     defaultOpen: { type: Boolean, default: false },
     expandable: { type: Boolean, default: true },
     open: { type: Boolean, default: undefined },
+    triggerClass: { type: String, default: '' },
   },
   setup(props, { emit }) {
     const internalOpen = ref(props.defaultOpen);

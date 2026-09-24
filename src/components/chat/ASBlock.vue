@@ -5,18 +5,10 @@
     </template>
 
     <template v-else-if="block.type === 'thinking'">
-      <Collapsible>
-        <template #trigger="{ open }">
-          <div
-            class="tw-flex tw-items-center tw-gap-2 tw-text-sm tw-text-muted-foreground"
-            :class="{ shimmer: isThinkingRunning }"
-          >
+      <Collapsible trigger-class="tw-text-sm tw-text-muted-foreground">
+        <template #trigger>
+          <div class="tw-flex tw-items-center tw-gap-2" :class="{ shimmer: isThinkingRunning }">
             <span>{{ thinkingTitle }}</span>
-            <Icon
-              icon="lucide:chevron-right"
-              class="tw-h-3 tw-w-3 tw-transition-transform"
-              :class="{ 'tw-rotate-90': open }"
-            />
           </div>
         </template>
         <div class="tw-mt-2 tw-rounded-md tw-bg-muted tw-p-2 tw-text-sm tw-text-muted-foreground">
@@ -26,15 +18,10 @@
     </template>
 
     <template v-else-if="block.type === 'hint'">
-      <Collapsible>
-        <template #trigger="{ open }">
-          <div class="tw-flex tw-items-center tw-gap-2 tw-text-sm tw-text-muted-foreground">
+      <Collapsible trigger-class="tw-text-sm tw-text-muted-foreground">
+        <template #trigger>
+          <div class="tw-flex tw-items-center tw-gap-2">
             <span>{{ hintLabel }}</span>
-            <Icon
-              icon="lucide:chevron-right"
-              class="tw-h-3 tw-w-3 tw-transition-transform"
-              :class="{ 'tw-rotate-90': open }"
-            />
           </div>
         </template>
         <div class="tw-mt-2 tw-rounded-md tw-bg-muted tw-p-2 tw-text-sm">
@@ -59,7 +46,6 @@
 
 <script>
 import { defineComponent, ref, computed, watch, onUnmounted } from '@/composables/vue';
-import { Icon } from '@/plugins/iconify';
 import MarkdownRenderer from '@/components/common/MarkdownRenderer.vue';
 import Collapsible from '@/components/ui/Collapsible.vue';
 import DataBlockView from './DataBlockView.vue';
@@ -67,7 +53,7 @@ import ToolCallGroup from './ToolCallGroup.vue';
 
 export default defineComponent({
   name: 'ASBlock',
-  components: { MarkdownRenderer, Collapsible, Icon, DataBlockView, ToolCallGroup },
+  components: { MarkdownRenderer, Collapsible, DataBlockView, ToolCallGroup },
   props: {
     block: { type: Object, required: true },
   },

@@ -1,15 +1,10 @@
 <template>
   <div class="tw-rounded-md tw-border tw-border-border tw-bg-muted tw-p-2 tw-text-sm">
-    <Collapsible :default-open="false">
-      <template #trigger="{ open }">
-        <div class="tw-flex tw-items-center tw-gap-2 tw-text-muted-foreground" :class="{ shimmer: !allFinished }">
+    <Collapsible :default-open="false" trigger-class="tw-text-muted-foreground">
+      <template #trigger>
+        <div class="tw-flex tw-items-center tw-gap-2" :class="{ shimmer: !allFinished }">
           <span>{{ title }}</span>
           <DiffStats :insertions="insertions" :deletions="deletions" />
-          <Icon
-            icon="lucide:chevron-right"
-            class="tw-h-3 tw-w-3 tw-transition-transform"
-            :class="{ 'tw-rotate-90': open }"
-          />
         </div>
       </template>
       <div class="tw-mt-2 tw-flex tw-flex-col tw-gap-2">
@@ -21,7 +16,6 @@
 
 <script>
 import { defineComponent, computed } from '@/composables/vue';
-import { Icon } from '@/plugins/iconify';
 import Collapsible from '@/components/ui/Collapsible.vue';
 import ToolCallRow from './ToolCallRow.vue';
 import DiffStats from './DiffStats.vue';
@@ -29,7 +23,7 @@ import { summarizeToolGroup, countDiffStats, getResultDiff } from './tool-utils'
 
 export default defineComponent({
   name: 'ToolCallGroup',
-  components: { Collapsible, Icon, ToolCallRow, DiffStats },
+  components: { Collapsible, ToolCallRow, DiffStats },
   props: {
     calls: { type: Array, required: true },
   },
