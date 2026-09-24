@@ -115,6 +115,41 @@ export const formatTime = (seconds, options = {}) => {
 };
 
 /**
+ * Convert an OKLCH colour to a 6-digit hex string for broad browser compatibility.
+ * @param {number} L - Perceived lightness (0..1).
+ * @param {number} C - Chroma (0..~0.4).
+ * @param {number} H - Hue in degrees (0..360).
+ * @returns {string} The colour as a hex string (e.g. "#d7f2ec").
+ */
+export const oklchToHex = (L, C, H) => {
+	const hrad = (H * Math.PI) / 180;
+	const a = C * Math.cos(hrad);
+	const b = C * Math.sin(hrad);
+	const l_ = L + 0.3963377774 * a + 0.2158037573 * b;
+	const m_ = L - 0.1055613458 * a - 0.0638541728 * b;
+	const s_ = L - 0.0894841775 * a - 1.291485548 * b;
+	const l = l_ ** 3;
+	const m = m_ ** 3;
+	const s = s_ ** 3;
+	const channels = [
+		4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
+		-1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
+		-0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s,
+	];
+	return (
+		'#' +
+		channels
+			.map((c) => {
+				const v = c <= 0.0031308 ? 12.92 * c : 1.055 * c ** (1 / 2.4) - 0.055;
+				return Math.round(Math.min(Math.max(v, 0), 1) * 255)
+					.toString(16)
+					.padStart(2, '0');
+			})
+			.join('')
+	);
+};
+
+/**
  * A deterministic, readable colour pair for a fallback avatar.
  * @param {string} seed - Stable identity, e.g. the card or hub name.
  * @returns {{ backgroundColor: string, color: string }}
@@ -127,8 +162,8 @@ export const avatarTint = (seed) => {
 	}
 	const hue = Math.abs(hash) % 360;
 	return {
-		backgroundColor: `oklch(0.94 0.03 ${hue})`,
-		color: `oklch(0.41 0.075 ${hue})`,
+		backgroundColor: oklchToHex(0.94, 0.03, hue),
+		color: oklchToHex(0.41, 0.075, hue),
 	};
 };
 
