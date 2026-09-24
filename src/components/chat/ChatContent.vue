@@ -3,8 +3,10 @@
     <div v-if="showSpinner" class="tw-flex tw-flex-1 tw-items-center tw-justify-center">
       <Spinner class="tw-h-5 tw-w-5 tw-text-muted-foreground" />
     </div>
-    <div v-else-if="isEmpty" class="tw-text-center tw-text-4xl tw-font-light tw-tracking-tight tw-text-foreground">
-      有什么可以帮你的？
+    <div v-else-if="isEmpty" class="tw-flex tw-flex-1 tw-items-center tw-justify-center">
+      <div class="tw-text-center tw-text-4xl tw-font-light tw-tracking-tight tw-text-foreground">
+        有什么可以帮你的？
+      </div>
     </div>
     <MessageScroller v-else :items-length="msgs.length" class="tw-flex-1">
       <div class="tw-flex tw-flex-col tw-gap-6">
