@@ -19,7 +19,6 @@
 				:to="item.to"
 				class="tw-flex tw-items-center tw-gap-3 tw-rounded-md tw-px-2 tw-py-2 tw-text-sm tw-text-muted-foreground tw-transition-colors hover:tw-bg-row-hover hover:tw-text-foreground"
 				active-class="!bg-accent !text-foreground font-medium"
-				:title="item.label"
 			>
 				<el-tooltip :content="item.label" placement="right" :disabled="!collapsed" :show-after="100">
 					<Icon :icon="item.icon" class="tw-h-5 tw-w-5 tw-shrink-0" />
@@ -39,31 +38,36 @@
 				<template v-if="!collapsed">
 					<Icon icon="lucide:user" class="tw-h-3.5 tw-w-3.5" />
 					<span class="tw-truncate tw-flex-1">{{ username }}</span>
-					<router-link to="/setup" class="tw-text-primary hover:tw-underline" title="重新设置">
-						<Icon icon="lucide:settings" class="tw-h-4 tw-w-4" />
-					</router-link>
+					<el-tooltip content="重新设置" placement="top" :show-after="100">
+						<router-link to="/setup" class="tw-text-primary hover:tw-underline">
+							<Icon icon="lucide:settings" class="tw-h-4 tw-w-4" />
+						</router-link>
+					</el-tooltip>
 					<!-- 深色模式 -->
+					<el-tooltip :content="dark ? '切换到浅色模式' : '切换到深色模式'" placement="top" :show-after="100">
+						<button
+							type="button"
+							:class="['tw-text-primary hover:tw-underline', collapsed ? 'tw-mx-auto' : 'tw-ml-auto']"
+							@click="onToggleDark"
+						>
+							<Icon
+								:icon="dark ? 'lucide:moon' : 'lucide:sun'"
+								 class="tw-h-4 tw-w-4"
+							/>
+						</button>
+					</el-tooltip>
+				</template>
+
+				<!-- 侧边栏展开/收起 -->
+				<el-tooltip :content="collapsed ? '展开侧边栏' : '收起侧边栏'" placement="top" :show-after="100">
 					<button
 						type="button"
 						:class="['tw-text-primary hover:tw-underline', collapsed ? 'tw-mx-auto' : 'tw-ml-auto']"
-						:title="dark ? '切换到浅色模式' : '切换到深色模式'"
-						@click="onToggleDark"
+						@click="toggleCollapsed"
 					>
-						<Icon
-							:icon="dark ? 'lucide:moon' : 'lucide:sun'"
-							 class="tw-h-4 tw-w-4"
-						/>
+						<Icon :icon="collapsed ? 'lucide:chevrons-right' : 'lucide:chevrons-left'" class="tw-h-4 tw-w-4" />
 					</button>
-				</template>
-				<!-- 侧边栏展开/收起 -->
-				<button
-					type="button"
-					:class="['tw-text-primary hover:tw-underline', collapsed ? 'tw-mx-auto' : 'tw-ml-auto']"
-					:title="collapsed ? '展开侧边栏' : '收起侧边栏'"
-					@click="toggleCollapsed"
-				>
-					<Icon :icon="collapsed ? 'lucide:chevrons-right' : 'lucide:chevrons-left'" class="tw-h-4 tw-w-4" />
-				</button>
+				</el-tooltip>
 			</div>
 		</div>
 	</aside>
