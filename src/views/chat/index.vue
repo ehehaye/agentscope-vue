@@ -756,6 +756,7 @@ export default defineComponent({
     }));
 
     onUnmounted(() => {
+      abort();
       audioManager?.disposeAll();
     });
 
