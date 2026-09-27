@@ -15,12 +15,19 @@
 | 路由 | vue-router 3.x | — |
 | 状态管理 | vuex 3.x | — |
 | UI 组件库 | Element UI 2.15.x | — |
-| 组合式 API | `@vue/composition-api` | 业务代码统一从 `vue` / `src/composables` 桥接导入，升级时只需替换桥接层 |
-| 样式 | Tailwind CSS v2（`@tailwindcss/postcss7-compat`）+ Less | — |
+| 组合式 API | `@vue/composition-api` | 由 [src/plugins/composition-api.js](src/plugins/composition-api.js) 统一注册；业务代码统一从 `vue` / `src/composables` 桥接导入，升级时只需替换桥接层 |
+| 样式 | Tailwind CSS v2（`@tailwindcss/postcss7-compat`）+ Less | 类名、CSS 变量、根容器均做了命名空间隔离，见下文 |
+| 旧浏览器兼容 | `abort-signal-polyfill` + core-js | 启动时经 [src/polyfills/index.js](src/polyfills/index.js) 引入，为不支持 `AbortSignal.any / timeout / abort` 的旧浏览器补齐能力（按 CJS 路径引入，规避老构建工具的 `exports` 字段限制） |
 
 > 当前仓库已**直接基于 vue-cli 4 运行**。若你的老项目使用 vue-cli 4 / Vue 2.6，可直接拷贝 `src/` 下组件与视图到现有工程，替换或补充路由、store 后即可接入。
 
-> **Tailwind 类名前缀（`tw-`）**：Tailwind 在 [tailwind.config.js](tailwind.config.js) 中统一配置了 `prefix: 'tw-'`，全项目的工具类均以 `tw-` 开头（如 `tw-flex`、`tw-bg-red-500`）。这样当你把它集成到一个已自带样式体系的现有系统时，Tailwind 的工具类不会与业务全局样式 / 其他框架（如 Element UI）产生 CSS 冲突。如需更改或移除前缀，只需调整该文件里的 `prefix` 配置，并借助代码中统一的 `tw-` 标记做全局查找替换即可，改造成本极低。
+> **命名空间隔离（`tw-` / `--as-` / `#as-app`）**：为最大限度降低接入已有样式体系时的冲突，项目对「类名、CSS 变量、根容器」三个层面都做了统一前缀：
+>
+> - **Tailwind 类名**：在 [tailwind.config.js](tailwind.config.js) 中配置 `prefix: 'tw-'`，工具类均以 `tw-` 开头（如 `tw-flex`、`tw-bg-red-500`），不会与业务全局样式或 Element UI 冲突。
+> - **CSS 变量**：所有设计令牌（design token）统一以 `--as-` 前缀声明（如 `--as-primary`、`--as-border`），集中定义在 [src/styles/index.css](src/styles/index.css) 的 `:root` / `.dark`；Tailwind 主题色再映射到这些变量（如 `colors.primary: 'var(--as-primary)'`）。
+> - **根容器**：应用根节点 id 为 `as-app`（见 [src/App.vue](src/App.vue)）。Tailwind 的 `@tailwind base` 预检样式被拷贝为 [src/styles/base.css](src/styles/base.css)，并为全部选择器加上 `:where(#as-app)` 作用域，仅作用于 `#as-app` 内部，避免影响宿主系统；该文件由 [src/styles/index.css](src/styles/index.css) 首行 `@import` 引入。若不需要作用域控制，直接清空 base.css 并改回 `@tailwind base` 即可。
+>
+> 另有少量从 Tailwind 任意值语法抽离出的原子类，统一放在 `as-` 前缀的 [src/styles/atomic.css](src/styles/atomic.css) 中。如需更改或移除前缀，只需调整上述配置，并借助代码中统一的 `tw-` / `--as-` 标记做全局查找替换即可，改造成本极低。
 
 ## 运行方式
 
@@ -67,14 +74,14 @@ setApiMode(API_MODES.PROXY); // 之后全部请求自动走中转地址与 GET/P
 src/
 ├── api              # 后端接口封装 + 端点映射表（mapping.js：direct 直连 / proxy Java 中转）
 ├── assets           # 图片、字体等静态资源
-├── components       # 业务组件（chat、dialog、drawer、form、panel 等）
+├── components       # 业务组件（chat、panel、dialog、drawer、form、layout、ui、iconify 等）
 ├── composables      # 组合式逻辑
-├── constants        # 常量
 ├── lib              # 工具库/第三方适配
-├── plugins          # 插件注册
+├── plugins          # 插件注册（composition-api、element、fonts、styles 各自独立的 setup 函数）
+├── polyfills        # 旧浏览器能力补齐（AbortSignal 等）
 ├── router           # 路由
 ├── store            # Vuex 状态
-├── styles           # 全局样式、Less 变量
+├── styles           # 全局样式：base.css（作用域化的 @tailwind base 预检）、index.css（Tailwind + CSS 变量）、atomic.css、element-overrides.less、Less 变量
 ├── utils            # 工具函数
 └── views            # 页面视图（chat、setup、knowledge、mcp、schedule、skill 等）
 ```
@@ -85,8 +92,8 @@ src/
 
 本仓库提供两种接入思路：
 
-1. **直接兼容老项目**：将 `src/` 源码迁移到 Vue 2.6.14 + vue-cli 4 工程中。Element UI 2.x、vue-router 3.x、vuex 3.x 均无需升级，改动成本最低。
-2. **低成本升级至 Vue 3**：当前代码已统一使用 Composition API 风格（通过 `src/composables` 桥接层导入），升级时替换桥接层为 Vue 3 内置 API 即可；Element UI 可替换为 Element Plus，vue-router / vuex 升级至 4.x，整体迁移量可控。
+1. **直接兼容老项目**：将 `src/` 源码迁移到 Vue 2.6.14 + vue-cli 4 工程中。Element UI 2.x、vue-router 3.x、vuex 3.x 均无需升级，改动成本最低。全局依赖（`@vue/composition-api`、Element UI、字体、样式）已拆分为 `src/plugins` 下各自独立的 setup 函数，入口只需调用 `setupPlugins(Vue)`；对旧版浏览器则通过 `src/polyfills` 补齐 `AbortSignal` 等能力。
+2. **低成本升级至 Vue 3**：当前代码已统一使用 Composition API 风格（通过 `src/composables` 桥接层导入），升级时替换桥接层与 `src/plugins` 中的注册逻辑为 Vue 3 内置 API 即可；Element UI 可替换为 Element Plus，vue-router / vuex 升级至 4.x，整体迁移量可控。
 
 ## 相关链接
 

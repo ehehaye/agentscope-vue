@@ -1,6 +1,18 @@
-#as-app {
-	@tailwind base;
+/* 首行 @import './base.css' 即加了作用域的 @tailwind base：
+ * 等价于 Tailwind Preflight 的全部规则统一加 :where(#as-app) 作用域，仅作用于应用根容器（详见 base.css 顶部说明）。
+ * 若不需要作用域控制，可清空 base.css，并把本行改回 @tailwind base。
+ */
+@import './base.css';
+
+:where(#as-app) * {
+	border-color: var(--as-border);
+	outline-color: var(--as-ring);
 }
+
+#as-app {
+	@apply tw-bg-canvas tw-text-foreground tw-font-sans;
+}
+
 @tailwind components;
 @tailwind utilities;
 
@@ -134,15 +146,4 @@
 
 .dark #as-app {
 	color-scheme: dark;
-}
-
-@layer base {
-	/* :where() 保持 0 特异性，避免以 #as-app 的 ID 特异性压死 tw-border-* / tw-outline-* 工具类 */
-	:where(#as-app) * {
-		border-color: var(--as-border);
-		outline-color: var(--as-ring);
-	}
-	#as-app {
-		@apply tw-bg-canvas tw-text-foreground tw-font-sans;
-	}
 }
