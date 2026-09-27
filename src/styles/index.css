@@ -114,7 +114,7 @@
  * 背景与文字色由下方 @layer base 的 tw-bg-canvas / tw-text-foreground 提供
  * （与原 body 规则一致，保持默认文字色为 foreground 而非 text）。
  * 高度用 100vh 兜底（不再依赖 html/body 的 height），宿主页仅在 index.html 里提供 margin:0。 */
-#app {
+#as-app {
 	color-scheme: light;
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
@@ -125,22 +125,22 @@
 }
 
 @media (max-width: 1024px) {
-	#app {
+	#as-app {
 		font-size: 16px;
 	}
 }
 
-.dark #app {
+.dark #as-app {
 	color-scheme: dark;
 }
 
 @layer base {
-	/* :where() 保持 0 特异性，避免以 #app 的 ID 特异性压死 tw-border-* / tw-outline-* 工具类 */
-	:where(#app) * {
+	/* :where() 保持 0 特异性，避免以 #as-app 的 ID 特异性压死 tw-border-* / tw-outline-* 工具类 */
+	:where(#as-app) * {
 		border-color: var(--as-border);
 		outline-color: var(--as-ring);
 	}
-	#app {
+	#as-app {
 		@apply tw-bg-canvas tw-text-foreground tw-font-sans;
 	}
 }

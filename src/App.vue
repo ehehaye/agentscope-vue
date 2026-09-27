@@ -1,6 +1,8 @@
 <template>
 	<div id="app" class="tw-h-full tw-w-full">
-		<router-view />
+		<div id="as-app" class="tw-h-full tw-w-full">
+			<router-view />
+		</div>
 	</div>
 </template>
 
