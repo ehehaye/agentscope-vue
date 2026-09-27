@@ -202,7 +202,7 @@ export default defineComponent({
 }
 .workdir-dialog .el-dialog__footer {
   padding: 16px 24px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--as-border);
 }
 </style>
 
@@ -213,13 +213,13 @@ export default defineComponent({
   justify-content: center;
   padding: 4px;
   border-radius: 9999px;
-  color: var(--muted-foreground);
+  color: var(--as-muted-foreground);
   cursor: pointer;
   transition: color 0.15s, background-color 0.15s;
 }
 .workdir-icon-btn:hover {
-  color: var(--foreground);
-  background-color: var(--accent);
+  color: var(--as-foreground);
+  background-color: var(--as-accent);
 }
 .workdir-row {
   display: flex;
@@ -230,12 +230,12 @@ export default defineComponent({
   padding: 7px 12px;
   font-size: 14px;
   text-align: left;
-  color: var(--foreground);
+  color: var(--as-foreground);
   cursor: pointer;
   transition: background-color 0.15s;
 }
 .workdir-row:hover:not(:disabled) {
-  background-color: var(--accent);
+  background-color: var(--as-accent);
 }
 .workdir-row:disabled {
   cursor: not-allowed;

@@ -266,14 +266,14 @@ export default defineComponent({
   border: 0;
   border-radius: 0;
   box-shadow: none;
-  color: var(--foreground);
+  color: var(--as-foreground);
   font-size: 14px;
   line-height: 21px;
 }
 
 .chat-textarea.is-disabled >>> .el-textarea__inner {
   background-color: transparent;
-  color: var(--foreground);
+  color: var(--as-foreground);
   cursor: not-allowed;
   opacity: 0.5;
 }

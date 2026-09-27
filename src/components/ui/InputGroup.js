@@ -25,7 +25,7 @@ export const InputGroup = defineComponent({
 });
 
 const addonClass =
-	"tw-flex tw-h-auto tw-cursor-text tw-items-center tw-justify-center tw-gap-2 tw-py-1.5 tw-text-sm tw-font-medium tw-text-muted-foreground tw-select-none group-data-[disabled=true]/input-group:tw-opacity-50 [&>kbd]:tw-rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:tw-size-4";
+	"tw-flex tw-h-auto tw-cursor-text tw-items-center tw-justify-center tw-gap-2 tw-py-1.5 tw-text-sm tw-font-medium tw-text-muted-foreground tw-select-none group-data-[disabled=true]/input-group:tw-opacity-50 [&>kbd]:tw-rounded-[calc(var(--as-radius)-5px)] [&>svg:not([class*='size-'])]:tw-size-4";
 
 const addonAlign = {
 	'tw-inline-start': 'tw-order-first tw-pl-2 has-[>button]:tw-ml-[-0.3rem] has-[>kbd]:tw-ml-[-0.15rem]',

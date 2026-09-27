@@ -10,8 +10,8 @@
 .tw-rounded-32px { border-radius: 32px; }
 
 /* ── rounded-[calc/min]（含 CSS 变量） ─────────────────── */
-.tw-rounded-calc-r-3px { border-radius: calc(var(--radius) - 3px); }
-.tw-rounded-min-r-md-12px { border-radius: min(var(--radius-md), 12px); }
+.tw-rounded-calc-r-3px { border-radius: calc(var(--as-radius) - 3px); }
+.tw-rounded-min-r-md-12px { border-radius: min(var(--as-radius-md), 12px); }
 
 /* ── w-[xxx] / max-w-[xxx] ────────────────────────────── */
 .tw-w-22rem { width: 22rem; }
@@ -47,8 +47,8 @@
 
 /* ── focus-visible:ring-[3px] ──────────────────────────
  * 原代码片段为 `focus-visible:ring-[3px] focus-visible:ring-ring/50`，
- * ring-[3px] 是任意值，ring-ring/50 是配色（50% 透明 var(--ring)）。
+ * ring-[3px] 是任意值，ring-ring/50 是配色（50% 透明 var(--as-ring)）。
  * 为 1:1 复刻原视觉，本类直接接管 ring 行为，原 ring-ring/50 同步删除。 */
 .tw-focus-ring-3px:focus-visible {
-	box-shadow: 0 0 0 3px color-mix(in srgb, var(--ring) 50%, transparent);
+	box-shadow: 0 0 0 3px color-mix(in srgb, var(--as-ring) 50%, transparent);
 }

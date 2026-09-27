@@ -10,25 +10,25 @@
 .el-card,
 .el-popover,
 .el-popper {
-	background-color: var(--card);
-	color: var(--card-foreground);
+	background-color: var(--as-card);
+	color: var(--as-card-foreground);
 }
 
 .el-dialog__title,
 .el-drawer__title,
 .el-card__header {
-	color: var(--foreground);
+	color: var(--as-foreground);
 }
 
 // ── 输入控件 ──
 .el-input__inner,
 .el-textarea__inner {
-	background-color: var(--background);
-	border-color: var(--input);
-	color: var(--foreground);
+	background-color: var(--as-background);
+	border-color: var(--as-input);
+	color: var(--as-foreground);
 
 	&::placeholder {
-		color: var(--muted-foreground);
+		color: var(--as-muted-foreground);
 	}
 }
 
@@ -37,40 +37,40 @@
 .el-table tr,
 .el-table th.el-table__cell,
 .el-table td.el-table__cell {
-	background-color: var(--card);
-	color: var(--foreground);
+	background-color: var(--as-card);
+	color: var(--as-foreground);
 }
 
 .el-table th.el-table__cell {
-	background-color: var(--muted);
+	background-color: var(--as-muted);
 }
 
 // ── Tabs ──
 .el-tabs__item {
-	color: var(--muted-foreground);
+	color: var(--as-muted-foreground);
 
 	&.is-active {
-		color: var(--foreground);
+		color: var(--as-foreground);
 	}
 }
 
 // ── 菜单 / 下拉项 ──
 .el-dropdown-menu__item,
 .el-select-dropdown__item {
-	color: var(--foreground);
+	color: var(--as-foreground);
 
 	&.hover,
 	&:hover,
 	&.selected {
-		background-color: var(--muted);
-		color: var(--foreground);
+		background-color: var(--as-muted);
+		color: var(--as-foreground);
 	}
 }
 
 .el-select-dropdown,
 .el-dropdown-menu {
-	background-color: var(--card);
-	border-color: var(--border);
+	background-color: var(--as-card);
+	border-color: var(--as-border);
 }
 
 // ── popper 挂 body：深色前缀兜底 ──
@@ -78,23 +78,23 @@
 .dark .el-dropdown-menu,
 .dark .el-popper,
 .dark .el-message-box {
-	background-color: var(--card);
-	border-color: var(--border);
+	background-color: var(--as-card);
+	border-color: var(--as-border);
 }
 
 .dark .el-popper .el-popper__arrow::before {
-	background-color: var(--card);
-	border-color: var(--border);
+	background-color: var(--as-card);
+	border-color: var(--as-border);
 }
 
 // ── 按钮（default 对齐 secondary 表面） ──
 .el-button--default {
-	background-color: var(--secondary);
-	border-color: var(--border);
-	color: var(--secondary-foreground);
+	background-color: var(--as-secondary);
+	border-color: var(--as-border);
+	color: var(--as-secondary-foreground);
 }
 
 // ── 分割线 ──
 .el-divider {
-	background-color: var(--border);
+	background-color: var(--as-border);
 }
