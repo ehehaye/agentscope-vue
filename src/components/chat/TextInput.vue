@@ -105,6 +105,14 @@ export default defineComponent({
           onClick: () => emit('interrupt'),
         };
       }
+      // 会话准备中（新建会话首发等待连接就绪），禁止重复发送
+      if (props.phase === 'preparing') {
+        return {
+          icon: 'lucide:arrow-up',
+          disabled: true,
+          onClick: handleSend,
+        };
+      }
       return {
         icon: 'lucide:arrow-up',
         disabled: props.disabled || !value.value.trim(),

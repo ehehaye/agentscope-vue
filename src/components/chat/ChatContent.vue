@@ -1,6 +1,6 @@
 <template>
   <div class="tw-flex tw-h-full tw-w-full tw-flex-col" :class="isEmpty ? 'tw-justify-center' : ''">
-    <div v-if="showSpinner" class="tw-flex tw-flex-1 tw-items-center tw-justify-center">
+    <div v-if="showSpinner || isPreparing" class="tw-flex tw-flex-1 tw-items-center tw-justify-center">
       <Spinner class="tw-h-5 tw-w-5 tw-text-muted-foreground" />
     </div>
     <div v-else-if="isEmpty" class="tw-flex tw-flex-1 tw-items-center tw-justify-center">
@@ -107,6 +107,9 @@ export default defineComponent({
   setup(props, { emit }) {
     const isEmpty = computed(() => !props.loading && props.msgs.length === 0);
 
+    // 新会话首发准备期：内容区显示 spinner，但输入框保持挂载
+    const isPreparing = computed(() => props.phase === 'preparing');
+
     // spinner 延迟显示，避免短加载闪烁
     const showSpinner = ref(false);
     let spinnerTimer = null;
@@ -194,6 +197,7 @@ export default defineComponent({
 
     return {
       isEmpty,
+      isPreparing,
       showSpinner,
       pendingToolCall,
       showFlipCard,

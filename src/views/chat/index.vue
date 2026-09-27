@@ -79,7 +79,7 @@
             class="tw-w-full"
             :msgs="msgs"
             :loading="loading"
-            :phase="phase"
+            :phase="chatPhase"
             :disabled="sendDisabled"
             :allowed-input-types="allowedInputTypes"
             :subagent-hitl="subagentHitl"
@@ -253,6 +253,8 @@ export default defineComponent({
     const tasksContext = ref(null);
     const permissionContext = ref(null);
     const configPending = ref(false);
+    // 新会话首次发送前的“建会话 + 等连接就绪”期间，用于展示 loading
+    const conversationPreparing = ref(false);
     const panelLayout = ref(loadLayout());
     const taskPanelOpenedFor = ref(null);
 
@@ -356,6 +358,7 @@ export default defineComponent({
         return;
       }
       if (!agentId.value) return;
+      conversationPreparing.value = true;
       try {
         const title = extractTitle(contentBlocks);
         const res = await createSession(buildSessionBody(title));
@@ -365,6 +368,8 @@ export default defineComponent({
         send(contentBlocks);
       } catch (e) {
         console.error('Failed to create session for sending', e);
+      } finally {
+        conversationPreparing.value = false;
       }
     }
 
@@ -484,6 +489,9 @@ export default defineComponent({
       onAudioEnd: (blockId) => audioManager?.end(blockId),
       onAudioStopAll: () => audioManager?.stopAllPlayback(),
     });
+
+    // 新会话首发准备期呈现为 preparing 阶段（保持输入框挂载，避免闪烁）
+    const chatPhase = computed(() => (conversationPreparing.value ? 'preparing' : phase.value));
 
     watch(phase, (next, prev) => {
       if (prev !== 'idle' && next === 'idle') {
@@ -763,7 +771,7 @@ export default defineComponent({
     return {
       msgs,
       loading,
-      phase,
+      chatPhase,
       subagentHitl,
       sessionName,
       cwd,
