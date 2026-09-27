@@ -322,6 +322,7 @@ export default defineComponent({
     function extractTitle(contentBlocks) {
       const text = (contentBlocks || [])
         .filter((b) => b.type === 'text')
+        .slice(0, 1)
         .map((b) => b.text || '')
         .join(' ')
         .trim();
