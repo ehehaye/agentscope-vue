@@ -55,41 +55,48 @@
         </span>
       </el-button>
 
-      <div v-if="sessionsLoading" class="tw-flex tw-flex-1 tw-flex-col tw-items-center tw-justify-center tw-py-4">
-        <Spinner className="h-5 tw-w-5" />
-      </div>
-      <PanelEmpty
-        v-else-if="sessions.length === 0"
-        icon="lucide:message-square-dashed"
-        title="暂无会话"
-        :description="agentId ? '当前助手下还没有会话' : '请先选择一个助手'"
-      />
-      <div v-else class="tw-min-h-0 tw-flex-1 tw-overflow-y-auto tw-py-2">
-        <Collapsible
-          v-for="(group, index) in dayGroups"
-          :key="group.key"
-          class="tw-mb-2"
-          default-open
-          trigger-class="tw-text-muted-foreground"
+      <div class="tw-relative tw-flex tw-min-h-0 tw-flex-1 tw-flex-col">
+        <PanelEmpty
+          v-if="sessions.length === 0 && !sessionsLoading"
+          icon="lucide:message-square-dashed"
+          title="暂无会话"
+          :description="agentId ? '当前助手下还没有会话' : '请先选择一个助手'"
+        />
+        <div v-else-if="sessions.length > 0" class="tw-min-h-0 tw-flex-1 tw-overflow-y-auto tw-py-2">
+          <Collapsible
+            v-for="(group, index) in dayGroups"
+            :key="group.key"
+            class="tw-mb-2"
+            default-open
+            trigger-class="tw-text-muted-foreground"
+          >
+            <template #trigger>
+              <span class="tw-text-xs tw-px-1">{{ group.label }}</span>
+              <span class="tw-font-mono tw-text-xs tw-opacity-60">{{ group.items.length }}</span>
+              <span class="tw-flex-1"></span>
+            </template>
+            <ul class="tw-flex tw-flex-col tw-gap-0.5">
+              <li v-for="v in group.items" :key="v.session.id">
+                <SessionListItem
+                  :view="v"
+                  :active="v.session.id === sessionId"
+                  :show-source-icon="showSourceIcons"
+                  @click="$emit('session-change', v.session.id)"
+                  @rename="$emit('rename-session', v)"
+                  @delete="$emit('delete-session', v)"
+                />
+              </li>
+            </ul>
+          </Collapsible>
+        </div>
+
+        <div
+          v-if="sessionsLoading"
+          class="tw-absolute tw-inset-0 tw-z-10 tw-flex tw-items-center tw-justify-center"
         >
-          <template #trigger>
-            <span class="tw-text-xs tw-px-1">{{ group.label }}</span>
-            <span class="tw-font-mono tw-text-xs tw-opacity-60">{{ group.items.length }}</span>
-            <span class="tw-flex-1"></span>
-          </template>
-          <ul class="tw-flex tw-flex-col tw-gap-0.5">
-            <li v-for="v in group.items" :key="v.session.id">
-              <SessionListItem
-                :view="v"
-                :active="v.session.id === sessionId"
-                :show-source-icon="showSourceIcons"
-                @click="$emit('session-change', v.session.id)"
-                @rename="$emit('rename-session', v)"
-                @delete="$emit('delete-session', v)"
-              />
-            </li>
-          </ul>
-        </Collapsible>
+          <div class="tw-absolute tw-inset-0 tw-bg-card tw-opacity-60"></div>
+          <Spinner className="tw-relative tw-z-10 h-5 tw-w-5" />
+        </div>
       </div>
     </div>
   </div>
