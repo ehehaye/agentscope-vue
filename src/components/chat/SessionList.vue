@@ -43,7 +43,7 @@
     </div>
 
     <!-- Sessions -->
-    <div class="tw-flex tw-min-h-0 tw-flex-col tw-gap-2">
+    <div class="tw-flex tw-min-h-0 tw-flex-1 tw-flex-col tw-gap-2">
       <div class="tw-flex tw-items-center tw-justify-between tw-px-1">
         <span class="tw-text-sm tw-text-muted-foreground">会话</span>
         <!-- <span class="tw-font-mono tw-text-xs tw-text-muted-foreground">{{ sessions.length }}</span> -->
