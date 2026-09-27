@@ -23,7 +23,6 @@
           <div class="tw-flex tw-min-w-0 tw-flex-1 tw-items-center tw-gap-2">
             <!-- Agent 选择 -->
             <div class="tw-flex tw-min-w-0 tw-items-center tw-gap-2 tw-text-sm">
-              <Icon icon="lucide:message-square" class="tw-h-4 tw-w-4 tw-shrink-0 tw-text-muted-foreground" />
               <span class="tw-truncate tw-font-medium">{{ sessionName || '新对话' }}</span>
               <el-tag v-if="focusedMember" size="mini" type="info" class="tw-ml-1 tw-shrink-0">
                 成员：{{ focusedMember.agent?.data?.name }}
