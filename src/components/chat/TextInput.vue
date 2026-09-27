@@ -93,6 +93,7 @@ export default defineComponent({
     // 占位符与发送按钮状态保持一致，提示当前不可发送的原因
     const placeholder = computed(() => {
       if (props.phase === 'preparing') return '正在准备会话...';
+      if (props.phase === 'loading') return '正在加载会话...';
       if (props.phase === 'interrupting') return '正在中断回复...';
       if (props.disabled) return '请先选择助手与模型';
       return '输入消息...';
@@ -113,8 +114,8 @@ export default defineComponent({
           onClick: () => emit('interrupt'),
         };
       }
-      // 会话准备中（新建会话首发等待连接就绪），禁止重复发送
-      if (props.phase === 'preparing') {
+      // 会话准备/加载中，禁止重复发送
+      if (props.phase === 'preparing' || props.phase === 'loading') {
         return {
           icon: 'lucide:arrow-up',
           disabled: true,

@@ -31,7 +31,7 @@
       </div>
     </MessageScroller>
 
-    <div v-if="!loading" class="tw-relative tw-w-full tw-p-4">
+    <div class="tw-relative tw-w-full tw-p-4">
       <FlipCard
         :visible="showFlipCard"
         class="tw-absolute tw-bottom-full tw-left-0 tw-right-0 tw-z-50 tw-mb-2 tw-w-full"
@@ -51,7 +51,7 @@
       <TextInput
         class="tw-mt-2 tw-w-full tw-rounded-32px tw-bg-muted tw-p-1"
         :disabled="disabled"
-        :phase="phase"
+        :phase="inputPhase"
         :allowed-input-types="allowedInputTypes"
         @send="onSend"
         @interrupt="onInterrupt"
@@ -109,6 +109,9 @@ export default defineComponent({
 
     // 新会话首发准备期：内容区显示 spinner，但输入框保持挂载
     const isPreparing = computed(() => props.phase === 'preparing');
+
+    // 切换会话加载历史期间：输入框保持挂载，避免被内容区加载态遮挡
+    const inputPhase = computed(() => (props.loading ? 'loading' : props.phase));
 
     // spinner 延迟显示，避免短加载闪烁
     const showSpinner = ref(false);
@@ -198,6 +201,7 @@ export default defineComponent({
     return {
       isEmpty,
       isPreparing,
+      inputPhase,
       showSpinner,
       pendingToolCall,
       showFlipCard,
