@@ -15,7 +15,7 @@
 | 路由 | vue-router 3.x | — |
 | 状态管理 | vuex 3.x | — |
 | UI 组件库 | Element UI 2.15.x | — |
-| 组合式 API | `@vue/composition-api` | 由 [src/plugins/composition-api.js](src/plugins/composition-api.js) 统一注册；业务代码统一从 `vue` / `src/composables` 桥接导入，升级时只需替换桥接层 |
+| 组合式 API | `@vue/composition-api` | 由 [src/plugins/composition-api.js](src/plugins/composition-api.js) 统一注册；业务代码统一从 [src/composables/vue.js](src/composables/vue.js) 桥接导入，升级时只需替换桥接层 |
 | 样式 | Tailwind CSS v2（`@tailwindcss/postcss7-compat`）+ Less | 类名、CSS 变量、根容器均做了命名空间隔离，见下文 |
 | 旧浏览器兼容 | `abort-signal-polyfill` + core-js | 启动时经 [src/polyfills/index.js](src/polyfills/index.js) 引入，为不支持 `AbortSignal.any / timeout / abort` 的旧浏览器补齐能力（按 CJS 路径引入，规避老构建工具的 `exports` 字段限制） |
 
