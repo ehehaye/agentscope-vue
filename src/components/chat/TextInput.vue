@@ -22,7 +22,7 @@
           ref="textareaRef"
           v-model="value"
           :disabled="disabled"
-          :placeholder="'输入消息...'"
+          :placeholder="placeholder"
           rows="1"
           class="tw-block tw-min-w-0 tw-flex-1 tw-resize-none tw-rounded-md tw-border-0 tw-bg-transparent tw-px-3 tw-py-3 tw-text-sm tw-outline-none placeholder:tw-text-muted-foreground focus:tw-outline-none disabled:tw-cursor-not-allowed disabled:tw-opacity-50"
           style="min-height: 52px; max-height: 168px; line-height: 21px; overflow-y: auto"
@@ -89,6 +89,14 @@ export default defineComponent({
     const attachDisabled = computed(
       () => props.disabled || (props.allowedInputTypes !== undefined && props.allowedInputTypes.length === 0),
     );
+
+    // 占位符与发送按钮状态保持一致，提示当前不可发送的原因
+    const placeholder = computed(() => {
+      if (props.phase === 'preparing') return '正在准备会话...';
+      if (props.phase === 'interrupting') return '正在中断回复...';
+      if (props.disabled) return '请先选择助手与模型';
+      return '输入消息...';
+    });
 
     const sendButton = computed(() => {
       if (props.phase === 'streaming') {
@@ -230,6 +238,7 @@ export default defineComponent({
       fileInputRef,
       acceptAttr,
       attachDisabled,
+      placeholder,
       sendButton,
       handleKeyDown,
       handleSend,
