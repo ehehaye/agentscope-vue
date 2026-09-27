@@ -1,7 +1,9 @@
-import Vue from 'vue';
 import setupCompositionApi from './composition-api';
 import setupElement from './element';
-import '../components/iconify/index';
+import './fonts';
+import './styles';
 
-setupCompositionApi(Vue);
-setupElement(Vue);
+export default function setupPlugins(Vue) {
+  setupCompositionApi(Vue);
+  setupElement(Vue);
+}
