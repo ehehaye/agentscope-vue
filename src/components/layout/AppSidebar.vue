@@ -7,7 +7,7 @@
 	>
 		<!-- Logo -->
 		<div class="tw-mb-2 tw-flex tw-items-center tw-gap-2 tw-px-1 tw-py-1.5">
-			<img src="/agentscope.svg" alt="AgentScope" class="tw-h-7 tw-w-7 tw-shrink-0" />
+			<img :src="agentscopeLogo" alt="AgentScope" class="tw-h-7 tw-w-7 tw-shrink-0" />
 			<span :class="['tw-text-sm tw-font-semibold tw-text-foreground', collapsed ? 'tw-hidden' : 'tw-hidden md:tw-inline']">AgentScope</span>
 		</div>
 
@@ -76,12 +76,14 @@
 <script>
 import { defineComponent } from '@/composables/vue';
 import { Icon } from '@/components/iconify/index';
+import agentscopeLogo from '@/assets/imgs/agentscope.svg';
 
 export default defineComponent({
 	name: 'AppSidebar',
 	components: { Icon },
 	data() {
 		return {
+			agentscopeLogo,
 			collapsed: false,
 			navItems: [
 				{ to: '/chat', icon: 'lucide:message-square', label: '聊天' },

@@ -2,7 +2,7 @@
 	<div class="tw-setup-page tw-flex tw-min-h-full tw-items-center tw-justify-center tw-bg-canvas tw-p-6">
 		<div class="tw-w-full tw-max-w-md tw-rounded-xl tw-border tw-border-border tw-bg-card tw-p-8 tw-shadow-panel">
 			<div class="tw-mb-6 tw-flex tw-flex-col tw-items-center tw-text-center">
-				<img src="/agentscope.svg" alt="AgentScope" class="tw-mb-3 tw-h-12 tw-w-12" />
+				<img :src="agentscopeLogo" alt="AgentScope" class="tw-mb-3 tw-h-12 tw-w-12" />
 				<h1 class="tw-text-xl tw-font-semibold tw-text-foreground">AgentScope</h1>
 				<p class="tw-mt-2 tw-text-sm tw-text-muted-foreground">
 					输入服务器地址和你的用户名即可开始。
@@ -59,12 +59,14 @@
 import { defineComponent } from '@/composables/vue';
 import { healthApi, ApiError, TIMEOUT_STATUS, API_MODES } from '@/api';
 import { MODE_STORAGE_KEY } from '@/api/mapping';
+import agentscopeLogo from '@/assets/imgs/agentscope.svg';
 
 export default defineComponent({
 	name: 'SetupPage',
 	data() {
 		return {
 			API_MODES,
+			agentscopeLogo,
 			form: {
 				serverUrl: localStorage.getItem('server_url') ?? 'http://localhost:8000',
 				username: localStorage.getItem('username') ?? 'demo',
