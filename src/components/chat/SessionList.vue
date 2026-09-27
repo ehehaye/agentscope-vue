@@ -72,8 +72,8 @@
           >
             <template #trigger>
               <span class="tw-text-xs tw-px-1">{{ group.label }}</span>
-              <span class="tw-font-mono tw-text-xs tw-opacity-60">{{ group.items.length }}</span>
               <span class="tw-flex-1"></span>
+              <span class="tw-font-mono tw-text-xs tw-opacity-60">{{ group.items.length }}</span>
             </template>
             <ul class="tw-flex tw-flex-col tw-gap-0.5">
               <li v-for="v in group.items" :key="v.session.id">
