@@ -57,7 +57,7 @@
       </template>
     </div>
 
-    <router-link to="/skill">
+    <router-link :to="{ name: 'skill' }">
       <el-button type="primary" size="small" class="tw-w-full">
         <Icon icon="lucide:plus-circle" class="tw-h-4 tw-w-4" />
         添加技能

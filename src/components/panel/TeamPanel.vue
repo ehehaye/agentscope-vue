@@ -86,7 +86,7 @@ export default defineComponent({
         sessionId: props.mainSessionId || targetSessionId,
       };
       if (memberId) query.memberId = memberId;
-      router.push({ path: '/chat', query });
+      router.push({ name: 'chat', query });
     }
 
     return {

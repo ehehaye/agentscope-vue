@@ -143,7 +143,7 @@ export default defineComponent({
     watch(() => [props.schedule, props.visible], fetchSessions, { immediate: true });
 
     function goToSession(session) {
-      router.push(`/chat/${props.schedule.agent_id}/${session.id}`);
+      router.push({ name: 'chat', query: { agentId: props.schedule.agent_id, sessionId: session.id } });
       emit('update:visible', false);
     }
 

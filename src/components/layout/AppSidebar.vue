@@ -39,7 +39,7 @@
 					<Icon icon="lucide:user" class="tw-h-3.5 tw-w-3.5" />
 					<span class="tw-truncate tw-flex-1">{{ username }}</span>
 					<el-tooltip content="重新设置" placement="top" :show-after="100">
-						<router-link to="/setup" class="tw-text-primary hover:tw-underline">
+						<router-link :to="{ name: 'setup' }" class="tw-text-primary hover:tw-underline">
 							<Icon icon="lucide:settings" class="tw-h-4 tw-w-4" />
 						</router-link>
 					</el-tooltip>
@@ -86,14 +86,14 @@ export default defineComponent({
 			agentscopeLogo,
 			collapsed: false,
 			navItems: [
-				{ to: '/chat', icon: 'lucide:message-square', label: '聊天' },
-				{ to: '/credential', icon: 'lucide:key-round', label: '凭证' },
-				{ to: '/channel', icon: 'lucide:cable', label: '频道' },
-				{ to: '/schedule', icon: 'lucide:calendar-clock', label: '日程' },
-				{ to: '/knowledge', icon: 'lucide:library', label: '知识库' },
-				{ to: '/mcp', icon: 'lucide:plug', label: 'MCP' },
-				{ to: '/skill', icon: 'lucide:blocks', label: '技能' },
-				{ to: '/dev/markdown', icon: 'lucide:file-text', label: 'Markdown 验证' },
+				{ to: { name: 'chat' }, icon: 'lucide:message-square', label: '聊天' },
+				{ to: { name: 'credential' }, icon: 'lucide:key-round', label: '凭证' },
+				{ to: { name: 'channel' }, icon: 'lucide:cable', label: '频道' },
+				{ to: { name: 'schedule' }, icon: 'lucide:calendar-clock', label: '日程' },
+				{ to: { name: 'knowledge' }, icon: 'lucide:library', label: '知识库' },
+				{ to: { name: 'mcp' }, icon: 'lucide:plug', label: 'MCP' },
+				{ to: { name: 'skill' }, icon: 'lucide:blocks', label: '技能' },
+				{ to: { name: 'dev-markdown' }, icon: 'lucide:file-text', label: 'Markdown 验证' },
 			],
 		};
 	},

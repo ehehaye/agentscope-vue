@@ -137,7 +137,7 @@ export default defineComponent({
 
     function selectKb(kb) {
       selectedKbId.value = kb.id;
-      router.push(`/knowledge/${kb.id}`);
+      router.push({ name: 'knowledge', params: { kbId: kb.id } });
     }
 
     function handleCommand(command, kb) {
@@ -170,7 +170,7 @@ export default defineComponent({
     async function handleCreated(kbId) {
       await refetch();
       selectedKbId.value = kbId;
-      router.push(`/knowledge/${kbId}`);
+      router.push({ name: 'knowledge', params: { kbId } });
       createOpen.value = false;
     }
 

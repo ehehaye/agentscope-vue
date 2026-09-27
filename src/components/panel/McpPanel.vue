@@ -65,7 +65,7 @@
       </template>
     </div>
 
-    <router-link to="/mcp">
+    <router-link :to="{ name: 'mcp' }">
       <el-button type="primary" size="small" class="tw-w-full">
         <Icon icon="lucide:plus-circle" class="tw-h-4 tw-w-4" />
         添加 MCP

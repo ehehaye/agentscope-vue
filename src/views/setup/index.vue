@@ -84,7 +84,7 @@ export default defineComponent({
 				await healthApi.check(this.form.serverUrl, this.form.username);
 				await this.$store.dispatch('app/saveConfig', this.form);
 				this.$message.success('连接成功');
-				await this.$router.replace('/chat');
+				await this.$router.replace({ name: 'chat' });
 			} catch (e) {
 				this.errorMessage = this.mapError(e);
 			} finally {

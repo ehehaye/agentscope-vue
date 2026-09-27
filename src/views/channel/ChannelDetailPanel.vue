@@ -74,7 +74,7 @@
           </el-table-column>
           <el-table-column width="50">
             <template slot-scope="scope">
-              <router-link :to="`/chat/${scope.row.agent_id}/${scope.row.id}`" title="打开聊天">
+              <router-link :to="{ name: 'chat', params: { agent_id: scope.row.agent_id, id: scope.row.id } }" title="打开聊天">
                 <Icon icon="lucide:chevron-right" class="tw-h-4 tw-w-4 tw-text-muted-foreground" />
               </router-link>
             </template>

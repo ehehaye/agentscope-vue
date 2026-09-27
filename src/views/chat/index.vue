@@ -287,11 +287,11 @@ export default defineComponent({
     const cwd = computed(() => view.value?.session?.config?.cwd ?? pendingCwd.value ?? null);
 
     function navigateTo(aid, sid) {
-      router.push({ path: '/chat', query: { ...route.query, agentId: aid, sessionId: sid, memberId: undefined } }).catch(() => {});
+      router.push({ name: 'chat', query: { ...route.query, agentId: aid, sessionId: sid, memberId: undefined } }).catch(() => {});
     }
 
     function handleAgentChange(aid) {
-      router.push({ path: '/chat', query: { ...route.query, agentId: aid, sessionId: undefined, memberId: undefined } }).catch(() => {});
+      router.push({ name: 'chat', query: { ...route.query, agentId: aid, sessionId: undefined, memberId: undefined } }).catch(() => {});
     }
 
     function handleSessionCommand(command) {
@@ -398,7 +398,7 @@ export default defineComponent({
         if (remaining.length > 0) {
           navigateTo(agentId.value, remaining[0].session.id);
         } else {
-          router.push({ path: '/chat', query: { ...route.query, sessionId: undefined } }).catch(() => {});
+          router.push({ name: 'chat', query: { ...route.query, sessionId: undefined } }).catch(() => {});
         }
       }
     }
@@ -419,7 +419,7 @@ export default defineComponent({
       await removeAgent(agent.id);
       // 删除当前助手后清空路由回到 /chat
       if (route.query.agentId) {
-        router.push({ path: '/chat', query: {} }).catch(() => {});
+        router.push({ name: 'chat', query: {} }).catch(() => {});
       }
     }
 

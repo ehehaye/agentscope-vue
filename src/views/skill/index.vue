@@ -10,7 +10,7 @@
         <div
           class="tw-flex tw-cursor-pointer tw-items-center tw-gap-2 tw-rounded-md tw-px-2 tw-py-1.5 tw-text-sm tw-transition-colors hover:tw-bg-muted"
           :class="{ 'tw-bg-muted': !hubId }"
-          @click="$router.push('/skill')"
+          @click="$router.push({ name: 'skill' })"
         >
           <Icon icon="lucide:plug" class="tw-h-4 tw-w-4" />
           <span class="tw-flex-1 tw-truncate">已安装的技能</span>
@@ -31,7 +31,7 @@
             class="tw-flex tw-cursor-pointer tw-items-center tw-gap-2 tw-rounded-md tw-px-2 tw-py-1.5 tw-text-sm tw-transition-colors hover:tw-bg-muted"
             :class="{ 'tw-bg-muted': hubId === hub.hub_id }"
             :title="hub.description"
-            @click="$router.push(`/skill/${hub.hub_id}`)"
+            @click="$router.push({ name: 'skill-hub', params: { hubId: hub.hub_id } })"
           >
             <img v-if="hub.icon_url" :src="hub.icon_url" class="tw-h-4 tw-w-4 tw-rounded-sm tw-object-cover" />
             <div v-else class="tw-flex tw-h-4 tw-w-4 tw-items-center tw-justify-center tw-rounded-sm tw-bg-muted tw-text-10px tw-font-bold">
