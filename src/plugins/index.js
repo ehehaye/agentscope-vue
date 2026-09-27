@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import setupCompositionApi from './composition-api';
 import setupElement from './element';
-import './iconify';
+import '../components/iconify/index';
 
 setupCompositionApi(Vue);
 setupElement(Vue);

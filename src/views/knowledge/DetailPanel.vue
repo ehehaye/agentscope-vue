@@ -33,7 +33,7 @@
 
 <script>
 import { defineComponent } from '@/composables/vue';
-import { Icon } from '@/plugins/iconify';
+import { Icon } from '@/components/iconify/index.js';
 import KnowledgeDocumentsPanel from '@/components/knowledge/KnowledgeDocumentsPanel.vue';
 import ConfigCard from './ConfigCard.vue';
 

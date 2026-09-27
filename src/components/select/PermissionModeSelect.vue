@@ -23,7 +23,7 @@
 
 <script>
 import { defineComponent, computed } from '@/composables/vue';
-import { Icon } from '@/plugins/iconify';
+import { Icon } from '@/components/iconify/index';
 
 const MODES = [
   { value: 'default', label: 'Default', desc: '默认权限策略' },

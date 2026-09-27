@@ -167,7 +167,7 @@
 <script>
 import { defineComponent } from '@/composables/vue';
 import { MessageBox } from 'element-ui';
-import { Icon } from '@/plugins/iconify';
+import { Icon } from '@/components/iconify/index.js';
 import { useCredentials } from '@/composables/useCredentials';
 import { credentialApi, modelApi, ttsModelApi, embeddingModelApi } from '@/api';
 import CreateCredentialDialog from '@/components/dialog/CreateCredentialDialog.vue';

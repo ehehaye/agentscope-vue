@@ -9,7 +9,7 @@
 
 <script>
 import { defineComponent } from '@/composables/vue';
-import { Icon } from '@/plugins/iconify';
+import { Icon } from '@/components/iconify/index';
 
 export default defineComponent({
   name: 'MaskedValue',

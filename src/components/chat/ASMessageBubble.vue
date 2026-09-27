@@ -55,7 +55,7 @@
 
 <script>
 import { defineComponent, ref, computed, watch, onUnmounted } from '@/composables/vue';
-import { Icon } from '@/plugins/iconify';
+import { Icon } from '@/components/iconify/index.js';
 import { format } from 'date-fns';
 import { copyToClipboard, formatNumber, formatTime } from '@/utils/common';
 import Bubble from '@/components/ui/Bubble.vue';

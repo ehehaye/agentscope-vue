@@ -58,7 +58,7 @@
 
 <script>
 import { defineComponent } from '@/composables/vue';
-import { Icon } from '@/plugins/iconify';
+import { Icon } from '@/components/iconify/index';
 import AgentSelect from '@/components/select/AgentSelect.vue';
 
 export default defineComponent({

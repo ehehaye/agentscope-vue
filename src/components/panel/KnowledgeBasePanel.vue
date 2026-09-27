@@ -54,7 +54,7 @@
 
 <script>
 import { defineComponent, ref, computed } from '@/composables/vue';
-import { Icon } from '@/plugins/iconify';
+import { Icon } from '@/components/iconify/index.js';
 import {
   InputGroup,
   InputGroupInput,

@@ -75,7 +75,7 @@
 
 <script>
 import { defineComponent, computed } from '@/composables/vue';
-import { Icon } from '@/plugins/iconify';
+import { Icon } from '@/components/iconify/index';
 import { useAvailableModels } from '@/composables/useAvailableModels';
 import { credentialLabel } from '@/utils/common';
 

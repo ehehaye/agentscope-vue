@@ -62,7 +62,7 @@
 
 <script>
 import { defineComponent, ref, computed, onMounted, onUnmounted } from '@/composables/vue';
-import { Icon } from '@/plugins/iconify';
+import { Icon } from '@/components/iconify/index';
 import Spinner from '@/components/ui/Spinner.vue';
 import Kbd from '@/components/ui/Kbd.vue';
 import { parseInput } from './tool-utils';

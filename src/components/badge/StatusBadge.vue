@@ -15,7 +15,7 @@
 
 <script>
 import { defineComponent } from '@/composables/vue';
-import { Icon } from '@/plugins/iconify';
+import { Icon } from '@/components/iconify/index';
 import Spinner from '@/components/ui/Spinner.vue';
 
 export default defineComponent({

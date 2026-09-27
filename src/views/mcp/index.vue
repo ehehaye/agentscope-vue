@@ -73,7 +73,7 @@
 
 <script>
 import { defineComponent, ref, computed } from '@/composables/vue';
-import { Icon } from '@/plugins/iconify';
+import { Icon } from '@/components/iconify/index.js';
 import Spinner from '@/components/ui/Spinner.vue';
 import InstallMCPDialog from '@/components/dialog/InstallMCPDialog.vue';
 import MinePanel from './MinePanel.vue';

@@ -64,7 +64,7 @@
 
 <script>
 import { defineComponent, ref, computed } from '@/composables/vue';
-import { Icon } from '@/plugins/iconify';
+import { Icon } from '@/components/iconify/index.js';
 import Spinner from '@/components/ui/Spinner.vue';
 import MinePanel from './MinePanel.vue';
 import HubPanel from './HubPanel.vue';

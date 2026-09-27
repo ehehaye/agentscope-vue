@@ -55,7 +55,7 @@
 
 <script>
 import { defineComponent, computed } from '@/composables/vue';
-import { Icon } from '@/plugins/iconify';
+import { Icon } from '@/components/iconify/index.js';
 import { useRouter } from '@/composables/vue-router';
 import PanelEmpty from './PanelEmpty.vue';
 
