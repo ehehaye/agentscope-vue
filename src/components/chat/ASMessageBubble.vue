@@ -21,11 +21,12 @@
         </div>
       </div>
 
-      <div v-if="dataBlocks.length > 0" class="tw-flex tw-flex-wrap tw-gap-2">
+      <div v-if="dataBlocks.length > 0" class="tw-flex tw-flex-wrap tw-gap-4">
         <ASBlock v-for="(block, index) in dataBlocks" :key="`data-${index}`" :block="block" />
       </div>
 
-      <div v-if="!isUser" class="tw-flex tw-items-center tw-gap-1">
+      <div v-if="!isUser" class="tw-flex tw-items-center tw-gap-1 tw-pl-2">
+        <span class="tw-font-mono tw-text-xs tw-text-muted-foreground">{{ timeText }}</span>
         <Badge v-if="elapsedText" class="tw-font-mono">
           <Icon v-if="isRunning" icon="lucide:loader-2" class="tw-h-3 tw-w-3 tw-animate-spin" />
           <Icon v-else icon="lucide:check-circle" class="tw-h-3 tw-w-3" />
@@ -42,8 +43,9 @@
           <Icon :icon="copied ? 'lucide:check' : 'lucide:copy'" class="tw-h-3 tw-w-3" />
         </el-button>
       </div>
-      <div v-else-if="plainText" class="tw-flex tw-justify-end">
-        <el-button type="text" size="mini" @click="copyText">
+      <div v-else class="tw-flex tw-items-center tw-justify-end tw-gap-1">
+        <span class="tw-font-mono tw-text-xs tw-text-muted-foreground">{{ timeText }}</span>
+        <el-button v-if="plainText" type="text" size="mini" @click="copyText">
           <Icon :icon="copied ? 'lucide:check' : 'lucide:copy'" class="tw-h-3 tw-w-3" />
         </el-button>
       </div>
@@ -54,6 +56,7 @@
 <script>
 import { defineComponent, ref, computed, watch, onUnmounted } from '@/composables/vue';
 import { Icon } from '@/plugins/iconify';
+import { format } from 'date-fns';
 import { copyToClipboard, formatNumber, formatTime } from '@/utils/common';
 import Bubble from '@/components/ui/Bubble.vue';
 import Badge from '@/components/ui/Badge.vue';
@@ -94,6 +97,7 @@ export default defineComponent({
     });
 
     const startMs = new Date(props.message.created_at).getTime();
+    const timeText = computed(() => format(startMs, 'MM-dd HH:mm:ss'));
     const elapsedText = computed(() => {
       const endMs = isRunning.value ? now.value : new Date(props.message.finished_at).getTime();
       return formatTime(Math.max(0, (endMs - startMs) / 1000));
@@ -191,6 +195,7 @@ export default defineComponent({
     return {
       isUser,
       isRunning,
+      timeText,
       elapsedText,
       hasUsage,
       plainText,
