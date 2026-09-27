@@ -3,26 +3,36 @@
 // 浅色/深色由 .dark 单点翻转。挂 body 的 popper 类（select 下拉 / dropdown /
 // tooltip / message-box）一律用 .dark .el-xxx 前缀，确保 <html>.dark 时全局生效。
 // 本文件在 main.js 中于 element css 之后引入。
+//
+// 作用域：所有选择器统一加 @as-scope。append-to-body 的弹窗 / 抽屉 / 消息框及全部 popper
+// 都挂在 body 上、位于 #as-app 之外，若只加 :where(#as-app)（同 base.css），会连带弹窗内的
+// 输入框、按钮、表格等一起失效；故把它们的挂载根 body > .el-*-wrapper / body > .el-popper
+// 一并纳入作用域。:where() 保持 0 特异性，不改变原有覆盖优先级。
+// 提示：body 上的弹窗 / popper 与宿主页面自身的 Element 实例在 DOM 上无法区分，
+// 若要彻底隔离，还需在用法处补 popper-class / custom-class 等标记类。
+// 不需要作用域控制时，去掉前缀（或把 @as-scope 换回 :where(#as-app)）即可。
+
+@as-scope: ~":where(#as-app, .el-dialog__wrapper, .el-drawer__wrapper, .el-message-box__wrapper, body > .el-popper)";
 
 // ── 表面与文字 ──
-.el-dialog,
-.el-drawer,
-.el-card,
-.el-popover,
-.el-popper {
+// 注：body > .el-popper 覆盖 el-popover / el-select-dropdown / el-dropdown-menu 等 popper 根
+@{as-scope} .el-dialog,
+@{as-scope} .el-drawer,
+@{as-scope} .el-card,
+body > .el-popper {
 	background-color: var(--as-card);
 	color: var(--as-card-foreground);
 }
 
-.el-dialog__title,
-.el-drawer__title,
-.el-card__header {
+@{as-scope} .el-dialog__title,
+@{as-scope} .el-drawer__title,
+@{as-scope} .el-card__header {
 	color: var(--as-foreground);
 }
 
 // ── 输入控件 ──
-.el-input__inner,
-.el-textarea__inner {
+@{as-scope} .el-input__inner,
+@{as-scope} .el-textarea__inner {
 	background-color: var(--as-background);
 	border-color: var(--as-input);
 	color: var(--as-foreground);
@@ -33,20 +43,20 @@
 }
 
 // ── 表格 ──
-.el-table,
-.el-table tr,
-.el-table th.el-table__cell,
-.el-table td.el-table__cell {
+@{as-scope} .el-table,
+@{as-scope} .el-table tr,
+@{as-scope} .el-table th.el-table__cell,
+@{as-scope} .el-table td.el-table__cell {
 	background-color: var(--as-card);
 	color: var(--as-foreground);
 }
 
-.el-table th.el-table__cell {
+@{as-scope} .el-table th.el-table__cell {
 	background-color: var(--as-muted);
 }
 
 // ── Tabs ──
-.el-tabs__item {
+@{as-scope} .el-tabs__item {
 	color: var(--as-muted-foreground);
 
 	&.is-active {
@@ -54,9 +64,9 @@
 	}
 }
 
-// ── 菜单 / 下拉项 ──
-.el-dropdown-menu__item,
-.el-select-dropdown__item {
+// ── 菜单 / 下拉项（在 popper 内，由 @as-scope 的 body > .el-popper 命中） ──
+@{as-scope} .el-dropdown-menu__item,
+@{as-scope} .el-select-dropdown__item {
 	color: var(--as-foreground);
 
 	&.hover,
@@ -67,34 +77,34 @@
 	}
 }
 
-.el-select-dropdown,
-.el-dropdown-menu {
+body > .el-select-dropdown,
+body > .el-dropdown-menu {
 	background-color: var(--as-card);
 	border-color: var(--as-border);
 }
 
 // ── popper 挂 body：深色前缀兜底 ──
-.dark .el-select-dropdown,
-.dark .el-dropdown-menu,
-.dark .el-popper,
-.dark .el-message-box {
+.dark body > .el-select-dropdown,
+.dark body > .el-dropdown-menu,
+.dark body > .el-popper,
+.dark body > .el-message-box__wrapper .el-message-box {
 	background-color: var(--as-card);
 	border-color: var(--as-border);
 }
 
-.dark .el-popper .el-popper__arrow::before {
+.dark body > .el-popper .el-popper__arrow::before {
 	background-color: var(--as-card);
 	border-color: var(--as-border);
 }
 
 // ── 按钮（default 对齐 secondary 表面） ──
-.el-button--default {
+@{as-scope} .el-button--default {
 	background-color: var(--as-secondary);
 	border-color: var(--as-border);
 	color: var(--as-secondary-foreground);
 }
 
 // ── 分割线 ──
-.el-divider {
+@{as-scope} .el-divider {
 	background-color: var(--as-border);
 }
