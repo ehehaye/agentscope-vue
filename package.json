@@ -23,6 +23,7 @@
 		"@iconify-json/lucide": "^1.2.134",
 		"@iconify/vue2": "^2.1.0",
 		"@vue/composition-api": "^1.7.2",
+		"abort-signal-polyfill": "^1.0.0",
 		"clsx": "^2.1.1",
 		"core-js": "^3.38.0",
 		"cron-parser": "^5.5.0",
