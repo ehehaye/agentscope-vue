@@ -62,7 +62,7 @@
           title="暂无会话"
           :description="agentId ? '当前助手下还没有会话' : '请先选择一个助手'"
         />
-        <div v-else-if="sessions.length > 0" class="tw-min-h-0 tw-flex-1 tw-overflow-y-auto tw-py-2">
+        <div v-else-if="sessions.length > 0" class="tw-min-h-0 tw-flex-1 tw-overflow-x-hidden tw-overflow-y-auto tw-py-2">
           <Collapsible
             v-for="(group, index) in dayGroups"
             :key="group.key"

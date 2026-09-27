@@ -39,6 +39,12 @@
 .tw-p-18_18_16px { padding: 18px 18px 16px; }
 .tw-p-20_18_24px { padding: 20px 18px 24px; }
 
+/* ── overflow-x-hidden ─────────────────────────────────
+ * Tailwind 的 JIT 在 webpack 下不会因模板新增工具类而重新产出 CSS，
+ * 这里手写兜底。用于 overflow-y-auto 的滚动容器：否则 overflow-x 会
+ * 被计算为 auto，折叠动画中 chevron 旋转导致的 1~2px 瞬时溢出会渲染出横向滚动条。 */
+.tw-overflow-x-hidden { overflow-x: hidden; }
+
 /* ── focus-visible:ring-[3px] ──────────────────────────
  * 原代码片段为 `focus-visible:ring-[3px] focus-visible:ring-ring/50`，
  * ring-[3px] 是任意值，ring-ring/50 是配色（50% 透明 var(--ring)）。
