@@ -1,5 +1,5 @@
 <template>
-  <div class="tw-collapsible">
+  <div class="tw-collapsible" :class="cls(isOpen)">
     <div
       class="tw-collapsible-trigger tw-flex tw-cursor-pointer tw-items-center tw-gap-2"
       :class="[triggerClass, { 'tw-cursor-default': !expandable }]"
@@ -22,7 +22,7 @@
       @after-enter="afterEnter"
       @leave="leave"
     >
-      <div v-show="isOpen" class="tw-collapsible-content tw-overflow-hidden">
+      <div v-show="isOpen" class="tw-collapsible-content tw-overflow-hidden" :class="contentClass">
         <slot />
       </div>
     </transition>
@@ -41,6 +41,11 @@ export default defineComponent({
     expandable: { type: Boolean, default: true },
     open: { type: Boolean, default: undefined },
     triggerClass: { type: String, default: '' },
+    contentClass: { type: String, default: '' },
+    cls: {
+      type: Function,
+      default: (isOpen) => '',
+    }
   },
   setup(props, { emit }) {
     const internalOpen = ref(props.defaultOpen);

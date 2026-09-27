@@ -66,7 +66,8 @@
           <Collapsible
             v-for="(group, index) in dayGroups"
             :key="group.key"
-            class="tw-mb-2"
+            :cls="(isOpen) => (isOpen ? 'tw-mb-1' : 'tw-mb-4')"
+            content-class="tw-mt-2 tw-mb-1"
             default-open
             trigger-class="tw-text-muted-foreground"
           >
@@ -162,8 +163,8 @@ export default defineComponent({
       if (isToday(date)) return '今天';
       if (isYesterday(date)) return '昨天';
       return date.getFullYear() === new Date().getFullYear()
-        ? format(date, 'M月d日')
-        : format(date, 'yyyy年M月d日');
+        ? format(date, 'MM月dd日')
+        : format(date, 'yyyy年MM月dd日');
     }
 
     function handleAgentCommand(command) {
