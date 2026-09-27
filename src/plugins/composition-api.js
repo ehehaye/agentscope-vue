@@ -1,4 +1,5 @@
-import Vue from 'vue';
 import CompositionApi from '@vue/composition-api';
 
-Vue.use(CompositionApi);
+export default function setupCompositionApi(Vue) {
+  Vue.use(CompositionApi);
+}
