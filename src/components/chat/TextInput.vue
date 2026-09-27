@@ -18,15 +18,19 @@
         </div>
       </div>
       <div class="tw-relative tw-flex tw-flex-wrap tw-items-end tw-justify-end">
-        <textarea
+        <el-input
           ref="textareaRef"
           v-model="value"
+          class="chat-textarea tw-min-w-0 tw-flex-1"
+          type="textarea"
+          :autosize="{ minRows: 1, maxRows: 8 }"
+          resize="none"
+          clearable
+          :maxlength="200"
+          show-world-limit
           :disabled="disabled"
           :placeholder="placeholder"
-          rows="1"
-          class="tw-block tw-min-w-0 tw-flex-1 tw-resize-none tw-rounded-md tw-border-0 tw-bg-transparent tw-px-3 tw-py-3 tw-text-sm tw-outline-none placeholder:tw-text-muted-foreground focus:tw-outline-none disabled:tw-cursor-not-allowed disabled:tw-opacity-50"
-          style="min-height: 52px; max-height: 168px; line-height: 21px; overflow-y: auto"
-          @keydown="handleKeyDown"
+          @keydown.native="handleKeyDown"
         />
         <div class="tw-flex tw-shrink-0 tw-items-center tw-gap-2 tw-py-2">
           <el-button
@@ -250,3 +254,27 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+/* 还原原 textarea 的外观：容器已提供边框，这里只保留内边距与透明背景；
+   高度交给 autosize 按行数计算（1~8 行），单行最小高度固定为 50px */
+.chat-textarea >>> .el-textarea__inner {
+  padding: 12px;
+  min-height: 50px !important; /* autosize 会写入 45px 的行内 minHeight，需覆盖 */
+  overflow-y: auto;
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  color: var(--foreground);
+  font-size: 14px;
+  line-height: 21px;
+}
+
+.chat-textarea.is-disabled >>> .el-textarea__inner {
+  background-color: transparent;
+  color: var(--foreground);
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+</style>
