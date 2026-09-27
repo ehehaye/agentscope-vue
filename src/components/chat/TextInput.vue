@@ -13,7 +13,7 @@
           <Icon
             icon="lucide:x"
             class="tw-h-3 tw-w-3 tw-shrink-0 tw-cursor-pointer"
-            @click="removeFile(index)"
+            @click.native="removeFile(index)"
           />
         </div>
       </div>
