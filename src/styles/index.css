@@ -1,12 +1,18 @@
-/* 作用域化的 @tailwind base：把预检写在 :where(#as-app) 规则内部，
+/* 作用域化的 @tailwind base：把预检写在 :where(...) 规则内部，
  * Tailwind 会就地展开 @tailwind base，产物为嵌套规则，
- * 等价于给 Preflight 的每个选择器都加上 :where(#as-app) 前缀，
- * 因此只作用于应用根容器 #as-app 内部，不影响宿主页面。
+ * 等价于给 Preflight 的每个选择器统一加上作用域前缀，
+ * 因此只作用于应用内，不影响宿主页面。
+ *
+ * 作用域与 element-overrides.less 的 @as-scope 保持一致：除 #as-app 外，
+ * 还包含 append-to-body 后挂在 body 上的弹窗 / 抽屉 / 消息框及全部 popper 根，
+ * 否则这些弹层位于 #as-app 之外，其内的按钮、输入框等原生元素失去预检重置，
+ * 弹窗样式（如 WorkingDirectoryDialog）会整体失效。
  *
  * 两点注意：
- * 1. 预检中面向 html / body 的规则展开后是 :where(#as-app) html / :where(#as-app) body，
- *    永远不匹配（html / body 不可能是 #as-app 的后代），故这些根级声明
- *    （tab-size、line-height: 1.5、-webkit-text-size-adjust 等）不再作用于 #as-app 自身。
+ * 1. 预检中面向 html / body 的规则展开后是 :where(...) html / :where(...) body，
+ *    永远不匹配（html / body 不可能是作用域根的后代），故这些根级声明
+ *    （tab-size、line-height: 1.5、-webkit-text-size-adjust 等）不再作用于作用域根自身；
+ *    弹层根本应继承的字体与行高由下方规则单独补齐。
  *    宿主页面自身的重置见下方顶层 html, body { margin: 0 }，未加作用域。
  * 2. 产物是原生 CSS 嵌套，构建链路（@tailwindcss/postcss7-compat + autoprefixer）不做降级，
  *    依赖浏览器支持 CSS Nesting（Chrome/Edge 112+、Safari 16.5+、Firefox 117+）。
@@ -15,13 +21,22 @@ html, body {
 	margin: 0;
 }
 
-:where(#as-app) {
+:where(#as-app, .el-dialog__wrapper, .el-drawer__wrapper, .el-message-box__wrapper, body > .el-popper) {
 	@tailwind base;
 	/* 归入 base 层，避免压制工具类 */
 	@layer base {
 		border-color: var(--as-border);
 		outline-color: var(--as-ring);
 	}
+}
+
+/* 挂 body 的弹层根：预检里 html / body 级声明嵌套展开后永不匹配，
+ * 弹层又在 #as-app 之外、继承不到应用字体，这里把全局预检时代
+ * 由 html 继承下来的字体与行高直接补到弹层根上。
+ * :where() 保持 0 特异性，不压制 Element 自身样式与 tw-* 工具类。 */
+:where(.el-dialog__wrapper, .el-drawer__wrapper, .el-message-box__wrapper, body > .el-popper) {
+	@apply tw-font-sans;
+	line-height: 1.5;
 }
 
 @tailwind components;
