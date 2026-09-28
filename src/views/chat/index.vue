@@ -85,6 +85,7 @@
             :agent-id="effectiveAgentId"
             :session-id="effectiveSessionId"
             :cwd="cwd"
+            :on-ask-user-submit="handleAskUserSubmit"
             @send="handleSend"
             @user-confirm="handleUserConfirm"
             @subagent-confirm="handleSubagentConfirm"
@@ -478,6 +479,7 @@ export default defineComponent({
       send,
       onUserConfirm,
       onSubagentConfirm,
+      onAskUserSubmit,
       interrupt,
       abort,
     } = useMessages(effectiveAgentId, effectiveSessionId, {
@@ -713,6 +715,10 @@ export default defineComponent({
       onSubagentConfirm(entry, toolCall, confirm, rules);
     }
 
+    function handleAskUserSubmit(toolCall, replyId, answers) {
+      return onAskUserSubmit(toolCall, replyId, answers);
+    }
+
     const panels = computed(() => ({
       plan: {
         title: '任务',
@@ -793,6 +799,7 @@ export default defineComponent({
       handlePermissionModeChange,
       handleUserConfirm,
       handleSubagentConfirm,
+      handleAskUserSubmit,
       handleSend,
       send,
       interrupt,

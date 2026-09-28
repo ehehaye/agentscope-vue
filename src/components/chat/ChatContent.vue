@@ -41,6 +41,12 @@
           :tool-call="pendingToolCall.toolCall"
           @confirm="(confirm, rules) => onUserConfirm(pendingToolCall.toolCall, confirm, pendingToolCall.replyId, rules)"
         />
+        <AskUserCard
+          v-if="pendingAskUser"
+          :key="pendingAskUser.toolCall.id"
+          :tool-call="pendingAskUser.toolCall"
+          :on-submit="submitAskUser"
+        />
         <SubagentHitlCard
           v-for="entry in subagentHitl"
           :key="hitlKey(entry)"
@@ -82,6 +88,7 @@ import ASMessageBubble from './ASMessageBubble.vue';
 import TextInput from './TextInput.vue';
 import FlipCard from './FlipCard.vue';
 import ConfirmCard from './ConfirmCard.vue';
+import AskUserCard from './AskUserCard.vue';
 import SubagentHitlCard from './SubagentHitlCard.vue';
 import TimeMarker from './TimeMarker.vue';
 import WorkingDirectoryDialog from '@/components/dialog/WorkingDirectoryDialog.vue';
@@ -91,7 +98,7 @@ const SPINNER_DELAY_MS = 150;
 
 export default defineComponent({
   name: 'ChatContent',
-  components: { Icon, Spinner, MessageScroller, ASMessageBubble, TextInput, FlipCard, ConfirmCard, SubagentHitlCard, TimeMarker, WorkingDirectoryDialog },
+  components: { Icon, Spinner, MessageScroller, ASMessageBubble, TextInput, FlipCard, ConfirmCard, AskUserCard, SubagentHitlCard, TimeMarker, WorkingDirectoryDialog },
   props: {
     msgs: { type: Array, default: () => [] },
     loading: { type: Boolean, default: false },
@@ -102,6 +109,8 @@ export default defineComponent({
     agentId: { type: String, default: null },
     sessionId: { type: String, default: null },
     cwd: { type: String, default: null },
+    /** 提交 AskUser 答案（外部执行 HITL），返回 Promise。 */
+    onAskUserSubmit: { type: Function, default: null },
   },
   emits: ['send', 'user-confirm', 'subagent-confirm', 'interrupt', 'cwd-change'],
   setup(props, { emit }) {
@@ -143,9 +152,26 @@ export default defineComponent({
       return { replyId: lastMsg.id, toolCall: asking[0] };
     });
 
+    // AskUser 调用停在 submitted 状态（外部 HITL），与询问确认的 asking 不同
+    const pendingAskUser = computed(() => {
+      if (props.msgs.length === 0) return null;
+      const lastMsg = props.msgs[props.msgs.length - 1];
+      const pending = getContentBlocks(lastMsg, 'tool_call').filter(
+        (tc) => tc.name === 'AskUser' && tc.state === 'submitted',
+      );
+      if (pending.length === 0) return null;
+      return { replyId: lastMsg.id, toolCall: pending[0] };
+    });
+
     const showFlipCard = computed(
-      () => !!pendingToolCall.value || props.subagentHitl.length > 0,
+      () => !!pendingToolCall.value || !!pendingAskUser.value || props.subagentHitl.length > 0,
     );
+
+    function submitAskUser(answers) {
+      if (!pendingAskUser.value || !props.onAskUserSubmit) return Promise.resolve();
+      const { toolCall, replyId } = pendingAskUser.value;
+      return props.onAskUserSubmit(toolCall, replyId, answers);
+    }
 
     const showMaxItersAlert = computed(
       () =>
@@ -204,12 +230,14 @@ export default defineComponent({
       inputPhase,
       showSpinner,
       pendingToolCall,
+      pendingAskUser,
       showFlipCard,
       showMaxItersAlert,
       shouldShowMarker,
       previousTimestamp,
       onSend,
       onUserConfirm,
+      submitAskUser,
       hitlKey,
       onSubagentConfirm,
       onInterrupt,

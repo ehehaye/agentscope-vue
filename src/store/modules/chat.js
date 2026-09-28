@@ -326,6 +326,64 @@ export default {
     },
 
     /**
+     * 回答 AskUser 工具调用（外部执行 HITL）。
+     * 构造 ExternalExecutionResultEvent 并通过 chatApi 回传，会话随即恢复。
+     * @param {object} ctx
+     * @param {{ toolCall: object, replyId: string, answers: object[] }} payload
+     */
+    async askUserSubmit({ commit, state }, { toolCall, replyId, answers }) {
+      const [agentId, sessionId] = (state.currentKey || '').split(':');
+      if (!agentId || !sessionId) return;
+
+      const targetReplyId =
+        replyId || state.currentReplyId || state.messages[state.messages.length - 1]?.id;
+      if (!targetReplyId) return;
+
+      // 恢复 currentReplyId，让续写事件（无 REPLY_START）有目标可落到
+      commit('SET_CURRENT_REPLY_ID', targetReplyId);
+
+      // 面向模型的可读输出
+      const output = answers
+        .map((a) => {
+          const picked = a.other ? [...a.selected, a.other] : a.selected;
+          return `Q: ${a.question}\nA: ${picked.join(', ')}`;
+        })
+        .join('\n\n');
+
+      const now = new Date().toISOString();
+      const event = {
+        type: EventType.EXTERNAL_EXECUTION_RESULT,
+        id: crypto.randomUUID(),
+        created_at: now,
+        reply_id: targetReplyId,
+        execution_results: [
+          {
+            type: 'tool_result',
+            id: toolCall.id,
+            name: toolCall.name,
+            output,
+            state: 'success',
+            metadata: { answers },
+            created_at: now,
+            finished_at: now,
+          },
+        ],
+      };
+
+      try {
+        const { chatApi } = await import('@/api');
+        await chatApi.trigger({
+          agent_id: agentId,
+          session_id: sessionId,
+          input: event,
+        });
+      } catch (e) {
+        commit('SET_ERROR', e);
+        throw e;
+      }
+    },
+
+    /**
      * 确认/拒绝子代理 HITL。
      * @param {object} ctx
      * @param {{ entry: object, toolCall: object, confirm: boolean, rules?: object[] }} payload
