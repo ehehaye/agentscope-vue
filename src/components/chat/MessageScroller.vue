@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, watch, nextTick } from '@/composables/vue';
+import { defineComponent, ref, watch, nextTick, onMounted, onUnmounted } from '@/composables/vue';
 import { Icon } from '@/components/iconify/index';
 
 export default defineComponent({
@@ -62,6 +62,20 @@ export default defineComponent({
         });
       },
     );
+
+    // 容器高度变化（如底部卡片推挤）时，若用户未上翻则保持钉在底部
+    let resizeObserver = null;
+    onMounted(() => {
+      resizeObserver = new ResizeObserver(() => {
+        if (!props.autoScroll || userScrolledUp) return;
+        scrollToBottom();
+      });
+      if (viewport.value) resizeObserver.observe(viewport.value);
+    });
+    onUnmounted(() => {
+      resizeObserver?.disconnect();
+      resizeObserver = null;
+    });
 
     return { viewport, content, showScrollButton, onScroll, scrollToBottom };
   },

@@ -1,5 +1,5 @@
 <template>
-	<div class="flip-card" :class="$attrs.class">
+	<div class="flip-card" :class="[$attrs.class, { 'flip-card-open': visible }]">
 		<transition name="flip">
 			<div v-if="visible" class="flip-card-inner">
 				<slot />
@@ -27,12 +27,21 @@ export default defineComponent({
 .flip-card {
 	perspective: 800px;
 	perspective-origin: 50% 100%;
+	display: grid;
+	grid-template-rows: 0fr;
+	transition: grid-template-rows 0.45s cubic-bezier(0.34, 1.2, 0.64, 1);
+	overflow: hidden;
+}
+
+.flip-card-open {
+	grid-template-rows: 1fr;
 }
 
 .flip-card-inner {
 	transform-origin: bottom center;
 	transform-style: preserve-3d;
 	will-change: transform, opacity;
+	min-height: 0;
 }
 
 .flip-enter-active,

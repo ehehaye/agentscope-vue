@@ -34,7 +34,7 @@
     <div class="tw-relative tw-w-full tw-p-4">
       <FlipCard
         :visible="showFlipCard"
-        class="tw-absolute tw-bottom-full tw-left-0 tw-right-0 tw-z-50 tw-mb-2 tw-w-full"
+        class="tw-w-full"
       >
         <ConfirmCard
           v-if="pendingToolCall"
