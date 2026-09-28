@@ -54,6 +54,10 @@ export function useMessages(agentId, sessionId, options = {}) {
     return store.dispatch('chat/askUserSubmit', { toolCall, replyId, answers });
   }
 
+  function onSubagentAskUserSubmit(entry, toolCall, answers) {
+    return store.dispatch('chat/subagentAskUserSubmit', { entry, toolCall, answers });
+  }
+
   function interrupt() {
     return store.dispatch('chat/interrupt');
   }
@@ -72,6 +76,7 @@ export function useMessages(agentId, sessionId, options = {}) {
     onUserConfirm,
     onSubagentConfirm,
     onAskUserSubmit,
+    onSubagentAskUserSubmit,
     interrupt,
     abort,
   };

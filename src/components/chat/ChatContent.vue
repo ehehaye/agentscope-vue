@@ -51,6 +51,7 @@
           v-for="entry in subagentHitl"
           :key="hitlKey(entry)"
           :entry="entry"
+          :on-ask-user-submit="(toolCall, answers) => submitSubagentAskUser(entry, toolCall, answers)"
           @confirm="(toolCall, confirm, rules) => onSubagentConfirm(entry, toolCall, confirm, rules)"
         />
       </FlipCard>
@@ -111,6 +112,8 @@ export default defineComponent({
     cwd: { type: String, default: null },
     /** 提交 AskUser 答案（外部执行 HITL），返回 Promise。 */
     onAskUserSubmit: { type: Function, default: null },
+    /** 提交子代理 AskUser 答案（外部执行 HITL），返回 Promise。 */
+    onSubagentAskUserSubmit: { type: Function, default: null },
   },
   emits: ['send', 'user-confirm', 'subagent-confirm', 'interrupt', 'cwd-change'],
   setup(props, { emit }) {
@@ -171,6 +174,11 @@ export default defineComponent({
       if (!pendingAskUser.value || !props.onAskUserSubmit) return Promise.resolve();
       const { toolCall, replyId } = pendingAskUser.value;
       return props.onAskUserSubmit(toolCall, replyId, answers);
+    }
+
+    function submitSubagentAskUser(entry, toolCall, answers) {
+      if (!props.onSubagentAskUserSubmit) return Promise.resolve();
+      return props.onSubagentAskUserSubmit(entry, toolCall, answers);
     }
 
     const showMaxItersAlert = computed(
@@ -238,6 +246,7 @@ export default defineComponent({
       onSend,
       onUserConfirm,
       submitAskUser,
+      submitSubagentAskUser,
       hitlKey,
       onSubagentConfirm,
       onInterrupt,

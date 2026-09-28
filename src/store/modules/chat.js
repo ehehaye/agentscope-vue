@@ -425,6 +425,70 @@ export default {
     },
 
     /**
+     * 回答子代理的 AskUser 工具调用（外部执行 HITL）。
+     * 与 confirm 类似，事件发到 leader 前门，后端按 worker 的 reply_id 转发；
+     * 区别是回传 ExternalExecutionResultEvent 而非 UserConfirmResultEvent。
+     * @param {object} ctx
+     * @param {{ entry: object, toolCall: object, answers: object[] }} payload
+     */
+    async subagentAskUserSubmit({ commit, state }, { entry, toolCall, answers }) {
+      const [agentId, sessionId] = (state.currentKey || '').split(':');
+      if (!agentId || !sessionId) return;
+
+      // 面向模型的可读输出
+      const output = answers
+        .map((a) => {
+          const picked = a.other ? [...a.selected, a.other] : a.selected;
+          return `Q: ${a.question}\nA: ${picked.join(', ')}`;
+        })
+        .join('\n\n');
+
+      const now = new Date().toISOString();
+      const event = {
+        type: EventType.EXTERNAL_EXECUTION_RESULT,
+        id: crypto.randomUUID(),
+        created_at: now,
+        reply_id: entry.reply_id, // worker 的 reply_id；后端据此转发
+        execution_results: [
+          {
+            type: 'tool_result',
+            id: toolCall.id,
+            name: toolCall.name,
+            output,
+            state: 'success',
+            metadata: { answers },
+            created_at: now,
+            finished_at: now,
+          },
+        ],
+      };
+
+      try {
+        const { chatApi } = await import('@/api');
+        await chatApi.trigger({
+          agent_id: agentId,
+          session_id: sessionId,
+          input: event,
+        });
+      } catch (e) {
+        commit('SET_ERROR', e);
+        throw e;
+      }
+
+      // 只移除刚回答的那个调用；entry 可能还挂着其它待办调用
+      commit(
+        'SET_SUBAGENT_HITL',
+        state.subagentHitl.flatMap((x) => {
+          if (hitlKey(x) !== hitlKey(entry)) return [x];
+          const remaining = (x.event.tool_calls || []).filter((tc) => tc.id !== toolCall.id);
+          return remaining.length > 0
+            ? [{ ...x, event: { ...x.event, tool_calls: remaining } }]
+            : [];
+        }),
+      );
+    },
+
+    /**
      * 请求中断当前回复。
      */
     async interrupt({ commit, state }) {
