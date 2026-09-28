@@ -1,16 +1,27 @@
-/* 首行 @import './base.css' 即加了作用域的 @tailwind base：
- * 等价于 Tailwind Preflight 的全部规则统一加 :where(#as-app) 作用域，仅作用于应用根容器（详见 base.css 顶部说明）。
- * 若不需要作用域控制，可清空 base.css，并把本行改回 @tailwind base。
+/* 作用域化的 @tailwind base：把预检写在 :where(#as-app) 规则内部，
+ * Tailwind 会就地展开 @tailwind base，产物为嵌套规则，
+ * 等价于给 Preflight 的每个选择器都加上 :where(#as-app) 前缀，
+ * 因此只作用于应用根容器 #as-app 内部，不影响宿主页面。
+ *
+ * 两点注意：
+ * 1. 预检中面向 html / body 的规则展开后是 :where(#as-app) html / :where(#as-app) body，
+ *    永远不匹配（html / body 不可能是 #as-app 的后代），故这些根级声明
+ *    （tab-size、line-height: 1.5、-webkit-text-size-adjust 等）不再作用于 #as-app 自身。
+ *    宿主页面自身的重置见下方顶层 html, body { margin: 0 }，未加作用域。
+ * 2. 产物是原生 CSS 嵌套，构建链路（@tailwindcss/postcss7-compat + autoprefixer）不做降级，
+ *    依赖浏览器支持 CSS Nesting（Chrome/Edge 112+、Safari 16.5+、Firefox 117+）。
  */
-@import './base.css';
-
-:where(#as-app) * {
-	border-color: var(--as-border);
-	outline-color: var(--as-ring);
+html, body {
+	margin: 0;
 }
 
-#as-app {
-	@apply tw-bg-canvas tw-text-foreground tw-font-sans;
+:where(#as-app) {
+	@tailwind base;
+	/* 归入 base 层，避免压制工具类 */
+	@layer base {
+		border-color: var(--as-border);
+		outline-color: var(--as-ring);
+	}
 }
 
 @tailwind components;
@@ -124,11 +135,8 @@
 	--as-tab-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-/* 应用根容器：承载原先写在 :root / html / body 上的页面级样式声明，仅作用于 #app。
- * 背景与文字色由下方 @layer base 的 tw-bg-canvas / tw-text-foreground 提供
- * （与原 body 规则一致，保持默认文字色为 foreground 而非 text）。
- * 高度用 100vh 兜底（不再依赖 html/body 的 height），宿主页仅在 index.html 里提供 margin:0。 */
 #as-app {
+	@apply tw-bg-canvas tw-text-foreground tw-font-sans;
 	color-scheme: light;
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;

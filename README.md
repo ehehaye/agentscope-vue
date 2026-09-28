@@ -25,7 +25,7 @@
 >
 > - **Tailwind 类名**：在 [tailwind.config.js](tailwind.config.js) 中配置 `prefix: 'tw-'`，工具类均以 `tw-` 开头（如 `tw-flex`、`tw-bg-red-500`），不会与业务全局样式或 Element UI 冲突。
 > - **CSS 变量**：所有设计令牌（design token）统一以 `--as-` 前缀声明（如 `--as-primary`、`--as-border`），集中定义在 [src/styles/index.css](src/styles/index.css) 的 `:root` / `.dark`；Tailwind 主题色再映射到这些变量（如 `colors.primary: 'var(--as-primary)'`）。
-> - **根容器**：应用根节点 id 为 `as-app`（见 [src/App.vue](src/App.vue)）。Tailwind 的 `@tailwind base` 预检样式被拷贝为 [src/styles/base.css](src/styles/base.css)，并为全部选择器加上 `:where(#as-app)` 作用域，仅作用于 `#as-app` 内部，避免影响宿主系统；该文件由 [src/styles/index.css](src/styles/index.css) 首行 `@import` 引入。若不需要作用域控制，直接清空 base.css 并改回 `@tailwind base` 即可。
+> - **根容器**：应用根节点 id 为 `as-app`（见 [src/App.vue](src/App.vue)）。Tailwind 的 `@tailwind base` 预检写在 [src/styles/index.css](src/styles/index.css) 的 `:where(#as-app) { @tailwind base; }` 内，展开后每个预检选择器都带上 `:where(#as-app)` 作用域，仅作用于 `#as-app` 内部，避免影响宿主系统。注意预检里面向 `html` / `body` 的规则会变成 `:where(#as-app) html` 而永不匹配，故根级声明（`tab-size`、`line-height` 等）不再作用于 `#as-app` 自身；宿主页面自身的 `html, body { margin: 0 }` 保留在文件顶层、未加作用域。该写法的产物是原生 CSS 嵌套，依赖浏览器支持 CSS Nesting（Chrome/Edge 112+、Safari 16.5+、Firefox 117+）。
 >
 > 另有少量从 Tailwind 任意值语法抽离出的原子类，统一放在 `as-` 前缀的 [src/styles/atomic.css](src/styles/atomic.css) 中。如需更改或移除前缀，只需调整上述配置，并借助代码中统一的 `tw-` / `--as-` 标记做全局查找替换即可，改造成本极低。
 
@@ -81,7 +81,7 @@ src/
 ├── polyfills        # 旧浏览器能力补齐（AbortSignal 等）
 ├── router           # 路由
 ├── store            # Vuex 状态
-├── styles           # 全局样式：base.css（作用域化的 @tailwind base 预检）、index.css（Tailwind + CSS 变量）、atomic.css、element-overrides.less、Less 变量
+├── styles           # 全局样式：index.css（作用域化的 @tailwind base 预检 + Tailwind + CSS 变量）、atomic.css、element-overrides.less、Less 变量
 ├── utils            # 工具函数
 └── views            # 页面视图（chat、setup、knowledge、mcp、schedule、skill 等）
 ```
