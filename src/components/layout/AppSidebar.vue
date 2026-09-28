@@ -15,7 +15,7 @@
 		<nav class="tw-flex tw-flex-col tw-gap-1">
 			<router-link
 				v-for="item in navItems"
-				:key="item.to"
+				:key="item.label"
 				:to="item.to"
 				class="tw-flex tw-items-center tw-gap-3 tw-rounded-md tw-px-2 tw-py-2 tw-text-sm tw-text-muted-foreground tw-transition-colors hover:tw-bg-row-hover hover:tw-text-foreground"
 				active-class="!bg-accent !text-foreground font-medium"
