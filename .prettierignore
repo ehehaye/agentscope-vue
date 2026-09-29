@@ -1,0 +1,7 @@
+node_modules
+dist
+public
+docs
+pnpm-lock.yaml
+*.min.js
+*.min.css

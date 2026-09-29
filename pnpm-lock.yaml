@@ -89,10 +89,10 @@ importers:
         version: 2.2.17
       '@vue/cli-plugin-babel':
         specifier: ~4.5.19
-        version: 4.5.19(@vue/cli-service@4.5.19(@vue/compiler-sfc@3.5.42)(less-loader@7.3.0(less@4.9.1(supports-color@6.1.0))(webpack@4.47.0(supports-color@6.1.0)))(lodash@4.18.1)(prettier@2.8.8)(supports-color@6.1.0)(vue-template-compiler@2.6.14)(vue@2.6.14))(core-js@3.50.0)(supports-color@6.1.0)(vue@2.6.14)
+        version: 4.5.19(@vue/cli-service@4.5.19(@vue/compiler-sfc@3.5.42)(less-loader@7.3.0(less@4.9.1(supports-color@6.1.0))(webpack@4.47.0(supports-color@6.1.0)))(lodash@4.18.1)(prettier@3.9.9)(supports-color@6.1.0)(vue-template-compiler@2.6.14)(vue@2.6.14))(core-js@3.50.0)(supports-color@6.1.0)(vue@2.6.14)
       '@vue/cli-service':
         specifier: ~4.5.19
-        version: 4.5.19(@vue/compiler-sfc@3.5.42)(less-loader@7.3.0(less@4.9.1(supports-color@6.1.0))(webpack@4.47.0(supports-color@6.1.0)))(lodash@4.18.1)(prettier@2.8.8)(supports-color@6.1.0)(vue-template-compiler@2.6.14)(vue@2.6.14)
+        version: 4.5.19(@vue/compiler-sfc@3.5.42)(less-loader@7.3.0(less@4.9.1(supports-color@6.1.0))(webpack@4.47.0(supports-color@6.1.0)))(lodash@4.18.1)(prettier@3.9.9)(supports-color@6.1.0)(vue-template-compiler@2.6.14)(vue@2.6.14)
       autoprefixer:
         specifier: ^9.8.8
         version: 9.8.8
@@ -111,6 +111,9 @@ importers:
       postcss:
         specifier: ^7.0.39
         version: 7.0.39
+      prettier:
+        specifier: ^3.9.9
+        version: 3.9.9
       vue-template-babel-compiler:
         specifier: ^2.0.0
         version: 2.0.0(supports-color@6.1.0)(vue-template-compiler@2.6.14)
@@ -4310,6 +4313,11 @@ packages:
     engines: {node: '>=10.13.0'}
     hasBin: true
 
+  prettier@3.9.9:
+    resolution: {integrity: sha512-Z/CJHIkdujO/OtN7nXUii0Rf3VT5SRuhjBA82Xvu2XhBUgX3nhP67T0LHceBdQLex7OOFGTox+Q5Yg8Jk2Qivg==}
+    engines: {node: '>=14'}
+    hasBin: true
+
   pretty-error@2.1.2:
     resolution: {integrity: sha512-EY5oDzmsX5wvuynAByrmY0P0hcp+QpnAKbJng2A2MPjVKXCxrDSUkzghVJ4ZGPIv+JC4gX8fPUWscC0RtjsWGw==}
 
@@ -6757,11 +6765,11 @@ snapshots:
 
   '@vue/cli-overlay@4.5.19': {}
 
-  '@vue/cli-plugin-babel@4.5.19(@vue/cli-service@4.5.19(@vue/compiler-sfc@3.5.42)(less-loader@7.3.0(less@4.9.1(supports-color@6.1.0))(webpack@4.47.0(supports-color@6.1.0)))(lodash@4.18.1)(prettier@2.8.8)(supports-color@6.1.0)(vue-template-compiler@2.6.14)(vue@2.6.14))(core-js@3.50.0)(supports-color@6.1.0)(vue@2.6.14)':
+  '@vue/cli-plugin-babel@4.5.19(@vue/cli-service@4.5.19(@vue/compiler-sfc@3.5.42)(less-loader@7.3.0(less@4.9.1(supports-color@6.1.0))(webpack@4.47.0(supports-color@6.1.0)))(lodash@4.18.1)(prettier@3.9.9)(supports-color@6.1.0)(vue-template-compiler@2.6.14)(vue@2.6.14))(core-js@3.50.0)(supports-color@6.1.0)(vue@2.6.14)':
     dependencies:
       '@babel/core': 7.29.7(supports-color@6.1.0)
       '@vue/babel-preset-app': 4.5.19(@babel/core@7.29.7(supports-color@6.1.0))(core-js@3.50.0)(supports-color@6.1.0)(vue@2.6.14)
-      '@vue/cli-service': 4.5.19(@vue/compiler-sfc@3.5.42)(less-loader@7.3.0(less@4.9.1(supports-color@6.1.0))(webpack@4.47.0(supports-color@6.1.0)))(lodash@4.18.1)(prettier@2.8.8)(supports-color@6.1.0)(vue-template-compiler@2.6.14)(vue@2.6.14)
+      '@vue/cli-service': 4.5.19(@vue/compiler-sfc@3.5.42)(less-loader@7.3.0(less@4.9.1(supports-color@6.1.0))(webpack@4.47.0(supports-color@6.1.0)))(lodash@4.18.1)(prettier@3.9.9)(supports-color@6.1.0)(vue-template-compiler@2.6.14)(vue@2.6.14)
       '@vue/cli-shared-utils': 4.5.19
       babel-loader: 8.4.1(@babel/core@7.29.7(supports-color@6.1.0))(webpack@4.47.0(supports-color@6.1.0))
       cache-loader: 4.1.0(webpack@4.47.0(supports-color@6.1.0))
@@ -6774,16 +6782,16 @@ snapshots:
       - webpack-cli
       - webpack-command
 
-  '@vue/cli-plugin-router@4.5.19(@vue/cli-service@4.5.19(@vue/compiler-sfc@3.5.42)(less-loader@7.3.0(less@4.9.1(supports-color@6.1.0))(webpack@4.47.0(supports-color@6.1.0)))(lodash@4.18.1)(prettier@2.8.8)(supports-color@6.1.0)(vue-template-compiler@2.6.14)(vue@2.6.14))':
+  '@vue/cli-plugin-router@4.5.19(@vue/cli-service@4.5.19(@vue/compiler-sfc@3.5.42)(less-loader@7.3.0(less@4.9.1(supports-color@6.1.0))(webpack@4.47.0(supports-color@6.1.0)))(lodash@4.18.1)(prettier@3.9.9)(supports-color@6.1.0)(vue-template-compiler@2.6.14)(vue@2.6.14))':
     dependencies:
-      '@vue/cli-service': 4.5.19(@vue/compiler-sfc@3.5.42)(less-loader@7.3.0(less@4.9.1(supports-color@6.1.0))(webpack@4.47.0(supports-color@6.1.0)))(lodash@4.18.1)(prettier@2.8.8)(supports-color@6.1.0)(vue-template-compiler@2.6.14)(vue@2.6.14)
+      '@vue/cli-service': 4.5.19(@vue/compiler-sfc@3.5.42)(less-loader@7.3.0(less@4.9.1(supports-color@6.1.0))(webpack@4.47.0(supports-color@6.1.0)))(lodash@4.18.1)(prettier@3.9.9)(supports-color@6.1.0)(vue-template-compiler@2.6.14)(vue@2.6.14)
       '@vue/cli-shared-utils': 4.5.19
 
-  '@vue/cli-plugin-vuex@4.5.19(@vue/cli-service@4.5.19(@vue/compiler-sfc@3.5.42)(less-loader@7.3.0(less@4.9.1(supports-color@6.1.0))(webpack@4.47.0(supports-color@6.1.0)))(lodash@4.18.1)(prettier@2.8.8)(supports-color@6.1.0)(vue-template-compiler@2.6.14)(vue@2.6.14))':
+  '@vue/cli-plugin-vuex@4.5.19(@vue/cli-service@4.5.19(@vue/compiler-sfc@3.5.42)(less-loader@7.3.0(less@4.9.1(supports-color@6.1.0))(webpack@4.47.0(supports-color@6.1.0)))(lodash@4.18.1)(prettier@3.9.9)(supports-color@6.1.0)(vue-template-compiler@2.6.14)(vue@2.6.14))':
     dependencies:
-      '@vue/cli-service': 4.5.19(@vue/compiler-sfc@3.5.42)(less-loader@7.3.0(less@4.9.1(supports-color@6.1.0))(webpack@4.47.0(supports-color@6.1.0)))(lodash@4.18.1)(prettier@2.8.8)(supports-color@6.1.0)(vue-template-compiler@2.6.14)(vue@2.6.14)
+      '@vue/cli-service': 4.5.19(@vue/compiler-sfc@3.5.42)(less-loader@7.3.0(less@4.9.1(supports-color@6.1.0))(webpack@4.47.0(supports-color@6.1.0)))(lodash@4.18.1)(prettier@3.9.9)(supports-color@6.1.0)(vue-template-compiler@2.6.14)(vue@2.6.14)
 
-  '@vue/cli-service@4.5.19(@vue/compiler-sfc@3.5.42)(less-loader@7.3.0(less@4.9.1(supports-color@6.1.0))(webpack@4.47.0(supports-color@6.1.0)))(lodash@4.18.1)(prettier@2.8.8)(supports-color@6.1.0)(vue-template-compiler@2.6.14)(vue@2.6.14)':
+  '@vue/cli-service@4.5.19(@vue/compiler-sfc@3.5.42)(less-loader@7.3.0(less@4.9.1(supports-color@6.1.0))(webpack@4.47.0(supports-color@6.1.0)))(lodash@4.18.1)(prettier@3.9.9)(supports-color@6.1.0)(vue-template-compiler@2.6.14)(vue@2.6.14)':
     dependencies:
       '@intervolga/optimize-cssnano-plugin': 1.0.6(webpack@4.47.0(supports-color@6.1.0))
       '@soda/friendly-errors-webpack-plugin': 1.8.1(webpack@4.47.0(supports-color@6.1.0))
@@ -6792,8 +6800,8 @@ snapshots:
       '@types/webpack': 4.41.40
       '@types/webpack-dev-server': 3.11.6(debug@4.4.3(supports-color@6.1.0))
       '@vue/cli-overlay': 4.5.19
-      '@vue/cli-plugin-router': 4.5.19(@vue/cli-service@4.5.19(@vue/compiler-sfc@3.5.42)(less-loader@7.3.0(less@4.9.1(supports-color@6.1.0))(webpack@4.47.0(supports-color@6.1.0)))(lodash@4.18.1)(prettier@2.8.8)(supports-color@6.1.0)(vue-template-compiler@2.6.14)(vue@2.6.14))
-      '@vue/cli-plugin-vuex': 4.5.19(@vue/cli-service@4.5.19(@vue/compiler-sfc@3.5.42)(less-loader@7.3.0(less@4.9.1(supports-color@6.1.0))(webpack@4.47.0(supports-color@6.1.0)))(lodash@4.18.1)(prettier@2.8.8)(supports-color@6.1.0)(vue-template-compiler@2.6.14)(vue@2.6.14))
+      '@vue/cli-plugin-router': 4.5.19(@vue/cli-service@4.5.19(@vue/compiler-sfc@3.5.42)(less-loader@7.3.0(less@4.9.1(supports-color@6.1.0))(webpack@4.47.0(supports-color@6.1.0)))(lodash@4.18.1)(prettier@3.9.9)(supports-color@6.1.0)(vue-template-compiler@2.6.14)(vue@2.6.14))
+      '@vue/cli-plugin-vuex': 4.5.19(@vue/cli-service@4.5.19(@vue/compiler-sfc@3.5.42)(less-loader@7.3.0(less@4.9.1(supports-color@6.1.0))(webpack@4.47.0(supports-color@6.1.0)))(lodash@4.18.1)(prettier@3.9.9)(supports-color@6.1.0)(vue-template-compiler@2.6.14)(vue@2.6.14))
       '@vue/cli-shared-utils': 4.5.19
       '@vue/component-compiler-utils': 3.3.0(lodash@4.18.1)
       '@vue/preload-webpack-plugin': 1.1.2(html-webpack-plugin@3.2.0(webpack@4.47.0(supports-color@6.1.0)))(webpack@4.47.0(supports-color@6.1.0))
@@ -6833,7 +6841,7 @@ snapshots:
       terser-webpack-plugin: 1.4.6(webpack@4.47.0(supports-color@6.1.0))
       thread-loader: 2.1.3(webpack@4.47.0(supports-color@6.1.0))
       url-loader: 2.3.0(file-loader@4.3.0(webpack@4.47.0(supports-color@6.1.0)))(webpack@4.47.0(supports-color@6.1.0))
-      vue-loader: 15.11.1(@vue/compiler-sfc@3.5.42)(cache-loader@4.1.0(webpack@4.47.0(supports-color@6.1.0)))(css-loader@3.6.0(webpack@4.47.0(supports-color@6.1.0)))(lodash@4.18.1)(prettier@2.8.8)(vue-template-compiler@2.6.14)(webpack@4.47.0(supports-color@6.1.0))
+      vue-loader: 15.11.1(@vue/compiler-sfc@3.5.42)(cache-loader@4.1.0(webpack@4.47.0(supports-color@6.1.0)))(css-loader@3.6.0(webpack@4.47.0(supports-color@6.1.0)))(lodash@4.18.1)(prettier@3.9.9)(vue-template-compiler@2.6.14)(webpack@4.47.0(supports-color@6.1.0))
       vue-style-loader: 4.1.3
       webpack: 4.47.0(supports-color@6.1.0)
       webpack-bundle-analyzer: 3.9.0(supports-color@6.1.0)
@@ -10595,6 +10603,8 @@ snapshots:
   prettier@2.8.8:
     optional: true
 
+  prettier@3.9.9: {}
+
   pretty-error@2.1.2:
     dependencies:
       lodash: 4.18.1
@@ -11726,7 +11736,7 @@ snapshots:
 
   vue-hot-reload-api@2.3.4: {}
 
-  vue-loader@15.11.1(@vue/compiler-sfc@3.5.42)(cache-loader@4.1.0(webpack@4.47.0(supports-color@6.1.0)))(css-loader@3.6.0(webpack@4.47.0(supports-color@6.1.0)))(lodash@4.18.1)(prettier@2.8.8)(vue-template-compiler@2.6.14)(webpack@4.47.0(supports-color@6.1.0)):
+  vue-loader@15.11.1(@vue/compiler-sfc@3.5.42)(cache-loader@4.1.0(webpack@4.47.0(supports-color@6.1.0)))(css-loader@3.6.0(webpack@4.47.0(supports-color@6.1.0)))(lodash@4.18.1)(prettier@3.9.9)(vue-template-compiler@2.6.14)(webpack@4.47.0(supports-color@6.1.0)):
     dependencies:
       '@vue/component-compiler-utils': 3.3.0(lodash@4.18.1)
       css-loader: 3.6.0(webpack@4.47.0(supports-color@6.1.0))
@@ -11738,7 +11748,7 @@ snapshots:
     optionalDependencies:
       '@vue/compiler-sfc': 3.5.42
       cache-loader: 4.1.0(webpack@4.47.0(supports-color@6.1.0))
-      prettier: 2.8.8
+      prettier: 3.9.9
       vue-template-compiler: 2.6.14
     transitivePeerDependencies:
       - arc-templates
