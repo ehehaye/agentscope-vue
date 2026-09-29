@@ -12,16 +12,7 @@
 				>
 					<span class="flip-card-collapsed-dot" aria-hidden="true"></span>
 					<span class="flip-card-collapsed-label">{{ title }}</span>
-					<svg class="flip-card-chevron" viewBox="0 0 24 24" aria-hidden="true">
-						<path
-							d="M18 15l-6-6-6 6"
-							stroke="currentColor"
-							stroke-width="2"
-							fill="none"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						/>
-					</svg>
+					<Icon icon="lucide:chevron-up" class="flip-card-chevron" />
 				</button>
 				<!-- 展开态：浮动小按钮，叠在 ConfirmCard 右上角内 -->
 				<button
@@ -32,20 +23,10 @@
 					title="收起"
 					@click="toggle"
 				>
-					<svg
+					<Icon
+						icon="lucide:chevron-up"
 						class="flip-card-chevron is-collapsed"
-						viewBox="0 0 24 24"
-						aria-hidden="true"
-					>
-						<path
-							d="M18 15l-6-6-6 6"
-							stroke="currentColor"
-							stroke-width="2"
-							fill="none"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						/>
-					</svg>
+					/>
 				</button>
 				<div
 					class="flip-card-body"
@@ -62,6 +43,7 @@
 
 <script>
 import { defineComponent, ref, watch } from '@/composables/vue';
+import { Icon } from '@/components/iconify';
 
 /**
  * 3D 翻转卡片容器。
@@ -72,6 +54,7 @@ import { defineComponent, ref, watch } from '@/composables/vue';
  */
 export default defineComponent({
 	name: 'FlipCard',
+	components: { Icon },
 	props: {
 		visible: { type: Boolean, default: false },
 		collapsible: { type: Boolean, default: true },
