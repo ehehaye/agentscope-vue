@@ -23,7 +23,7 @@ function hasPendingToolCall(msg) {
   return false;
 }
 
-function hitlKey(e) {
+export function hitlKey(e) {
   return `${e.worker_session_id}:${e.reply_id}`;
 }
 

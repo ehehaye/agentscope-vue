@@ -83,6 +83,7 @@ import { defineComponent, computed, ref, watch, onUnmounted } from '@/composable
 import { Icon } from '@/components/iconify/index.js';
 import { getContentBlocks } from '@agentscope-ai/agentscope/message';
 import { ReplyFinishedReason } from '@agentscope-ai/agentscope/event';
+import { hitlKey } from '@/store/modules/chat.js';
 import Spinner from '@/components/ui/Spinner.vue';
 import MessageScroller from './MessageScroller.vue';
 import ASMessageBubble from './ASMessageBubble.vue';
@@ -206,10 +207,6 @@ export default defineComponent({
 
     function onUserConfirm(toolCall, confirm, replyId, rules) {
       emit('user-confirm', { toolCall, confirm, replyId, rules });
-    }
-
-    function hitlKey(entry) {
-      return `${entry.worker_session_id}:${entry.reply_id}`;
     }
 
     function onSubagentConfirm(entry, toolCall, confirm, rules) {
