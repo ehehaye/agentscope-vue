@@ -86,7 +86,12 @@ src/
 └── views            # 页面视图（chat、setup、knowledge、mcp、schedule、skill 等）
 ```
 
-仓库根目录另有 `docs/`：`API.md`（直连接口清单）与 `API-java-proxy.md`（Java 中转映射版）。
+仓库根目录另有 `docs/`：
+
+- [API.md](docs/API.md)：直连清单（与 `direct` 模式一一对应）。
+- [API-java-proxy.md](docs/API-java-proxy.md)：Java 中转映射版（含映射后 URL/Method、SSE/multipart/文件下载等特殊场景备注）。
+- [STRUCTURE.md](docs/STRUCTURE.md)：项目文件结构对照（当前 Vue 项目 ↔ 官方 React 项目）。
+- [DATA-FLOW.md](docs/DATA-FLOW.md)：数据流向（以 `src/views/chat/index.vue` 发起会话为例的端到端追踪）。
 
 ## 向后兼容 / 升级到 Vue 3
 
