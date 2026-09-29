@@ -110,6 +110,11 @@ export default defineComponent({
     sessionId: { type: String, default: null },
     value: { type: String, default: null },
     disabled: { type: Boolean, default: false },
+    /**
+     * 保存回调，需返回 Promise。优先使用它以便等待父级异步保存结果，
+     * 保存失败时留在弹窗内联报错；未提供时回落到 `change` 事件。
+     */
+    onChange: { type: Function, default: null },
   },
   emits: ['change'],
   setup(props, { emit }) {
@@ -156,7 +161,12 @@ export default defineComponent({
       saving.value = true;
       error.value = null;
       try {
-        await emit('change', path.value);
+        if (props.onChange) {
+          // 父级回调返回 Promise，等它落地再关闭；失败则留在弹窗内提示。
+          await props.onChange(path.value);
+        } else {
+          emit('change', path.value);
+        }
         dialogOpen.value = false;
       } catch (e) {
         error.value = e?.message || '保存失败';

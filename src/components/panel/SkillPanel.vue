@@ -55,12 +55,7 @@
       </template>
     </div>
 
-    <router-link :to="{ name: 'skill' }">
-      <el-button type="primary" size="small" class="tw-w-full">
-        <Icon icon="lucide:plus-circle" class="tw-h-4 tw-w-4" />
-        添加技能
-      </el-button>
-    </router-link>
+    <AddSkillDialog :present="presentNames" :on-upload="onUpload" :on-add-from-library="onAddFromLibrary" />
   </div>
 </template>
 
@@ -71,6 +66,7 @@ import { Icon } from '@/components/iconify/index.js';
 import { InputGroup, InputGroupInput, InputGroupAddon } from '@/components/ui/InputGroup.js';
 import { Item, ItemMedia, ItemContent, ItemTitle, ItemDescription, ItemActions } from '@/components/ui/Item.js';
 import PanelEmpty from './PanelEmpty.vue';
+import AddSkillDialog from '@/components/dialog/AddSkillDialog.vue';
 import { useSkills } from '@/composables/useSkills';
 
 export default defineComponent({
@@ -87,14 +83,18 @@ export default defineComponent({
     ItemDescription,
     ItemActions,
     PanelEmpty,
+    AddSkillDialog,
   },
   props: {
     skills: { type: Array, default: () => [] },
     loading: { type: Boolean, default: false },
+    onUpload: { type: Function, default: null },
+    onAddFromLibrary: { type: Function, default: null },
     onRemove: { type: Function, default: null },
   },
   setup(props) {
     const search = ref('');
+    const presentNames = computed(() => new Set(props.skills.map((s) => s.name)));
 
     const { skills: library } = useSkills();
     const installedByName = computed(() => {
@@ -128,6 +128,7 @@ export default defineComponent({
 
     return {
       search,
+      presentNames,
       filtered,
       installedByName,
       emptyIcon,

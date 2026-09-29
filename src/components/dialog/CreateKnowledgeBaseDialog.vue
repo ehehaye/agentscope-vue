@@ -5,9 +5,28 @@
     :visible.sync="dialogVisible"
     width="500px"
     :close-on-click-modal="false"
-    @open="reset"
   >
     <p class="tw-text-sm tw-text-muted-foreground">配置嵌入模型与分块器以创建知识库。</p>
+
+    <!-- 后端锁定了唯一维度时，所有知识库必须共用同一套嵌入模型。 -->
+    <el-alert
+      v-if="isLockedPolicy && policy && policy.dimension != null"
+      type="info"
+      :closable="false"
+      class="tw-mt-4"
+      :title="`嵌入维度已固定为 ${policy.dimension}`"
+    >
+      当前服务已锁定统一的嵌入维度，只能选择维度为 {{ policy.dimension }} 的模型。
+    </el-alert>
+
+    <el-alert v-if="noCompatibleModels" type="error" :closable="false" class="tw-mt-4" title="没有可用的嵌入模型">
+      {{
+        isLockedPolicy && policy && policy.dimension != null
+          ? `没有维度为 ${policy.dimension} 的可用嵌入模型，请先添加对应凭证。`
+          : '请先到「凭证」页添加一个嵌入模型凭证。'
+      }}
+    </el-alert>
+
     <el-form label-position="top" class="tw-mt-4 tw-space-y-4">
       <el-form-item label="名称">
         <el-input v-model="name" placeholder="例如：产品文档库" />
@@ -18,22 +37,25 @@
       </el-form-item>
 
       <el-form-item label="嵌入模型">
-        <el-select
-          v-model="selectedEmbedding"
-          value-key="key"
-          class="tw-w-full"
-          :loading="loadingModels"
-          placeholder="选择嵌入模型"
-        >
-          <el-option-group v-for="provider in providers" :key="provider.type" :label="provider.type">
-            <el-option
-              v-for="model in provider.models"
-              :key="embeddingKey(provider, model)"
-              :label="model.label || model.name"
-              :value="embeddingValue(provider, model)"
-            />
-          </el-option-group>
-        </el-select>
+        <div class="tw-flex tw-w-full tw-items-center tw-gap-2">
+          <el-select
+            v-model="selectedEmbedding"
+            value-key="key"
+            class="tw-flex-1"
+            :loading="loadingModels"
+            placeholder="选择嵌入模型"
+          >
+            <el-option-group v-for="provider in providers" :key="provider.type" :label="provider.type">
+              <el-option
+                v-for="model in provider.models"
+                :key="embeddingKey(provider, model)"
+                :label="model.label || model.name"
+                :value="embeddingValue(provider, model)"
+              />
+            </el-option-group>
+          </el-select>
+          <el-button v-if="onAddCredential" size="small" @click="onAddCredential">添加凭证</el-button>
+        </div>
       </el-form-item>
 
       <el-form-item label="维度">
@@ -60,7 +82,13 @@
 
     <span slot="footer" class="tw-dialog-footer">
       <el-button size="small" @click="dialogVisible = false" :disabled="submitting">取消</el-button>
-      <el-button size="small" type="primary" :loading="submitting" :disabled="!canSubmit" @click="handleSubmit">
+      <el-button
+        size="small"
+        type="primary"
+        :loading="submitting"
+        :disabled="!canSubmit || noCompatibleModels"
+        @click="handleSubmit"
+      >
         {{ submitting ? '创建中…' : '创建' }}
       </el-button>
     </span>
@@ -71,12 +99,17 @@
 import { defineComponent, ref, computed, watch } from '@/composables/vue';
 import { knowledgeBaseApi } from '@/api';
 import SchemaForm from '@/components/form/SchemaForm.vue';
+import { useKbEmbeddingModels } from '@/composables/useKbEmbeddingModels';
 
 export default defineComponent({
   name: 'CreateKnowledgeBaseDialog',
   components: { SchemaForm },
   props: {
     visible: { type: Boolean, default: false },
+    /** 打开「新建凭证」的入口；由页面提供。 */
+    onAddCredential: { type: Function, default: null },
+    /** 外部递增以触发嵌入模型重新拉取（如凭证创建完成）。 */
+    credentialRefetchTrigger: { type: Number, default: 0 },
   },
   setup(props, { emit }) {
     const dialogVisible = computed({
@@ -84,10 +117,11 @@ export default defineComponent({
       set: (v) => emit('update:visible', v),
     });
 
+    const trigger = computed(() => props.credentialRefetchTrigger);
+    const { providers, policy, loading: loadingModels } = useKbEmbeddingModels(trigger);
+
     const name = ref('');
     const description = ref('');
-    const providers = ref([]);
-    const loadingModels = ref(false);
     const selectedEmbedding = ref(null);
     const dimension = ref(null);
     const chunkers = ref([]);
@@ -95,6 +129,9 @@ export default defineComponent({
     const chunkerParams = ref({});
     const submitting = ref(false);
     const error = ref('');
+
+    const isLockedPolicy = computed(() => !!policy.value && policy.value.kind !== 'any');
+    const noCompatibleModels = computed(() => !loadingModels.value && providers.value.length === 0);
 
     const selectedChunker = computed(() => chunkers.value.find((c) => c.type === selectedChunkerType.value) || null);
     const chunkerParamSchema = computed(() => selectedChunker.value?.parameter_schema || null);
@@ -125,28 +162,29 @@ export default defineComponent({
       async (open) => {
         if (!open) return;
         reset();
-        loadingModels.value = true;
+        // 嵌入模型由 composable 在挂载时/凭证变更时拉取，这里只补默认选中。
+        if (!selectedEmbedding.value && providers.value.length > 0) {
+          const p = providers.value[0];
+          if (p.models && p.models.length > 0) selectedEmbedding.value = embeddingValue(p, p.models[0]);
+        }
         try {
-          const [modelsRes, chunkersRes] = await Promise.all([
-            knowledgeBaseApi.listEmbeddingModels(),
-            knowledgeBaseApi.listChunkers().catch(() => ({ chunkers: [] })),
-          ]);
-          providers.value = modelsRes.providers || [];
+          const chunkersRes = await knowledgeBaseApi.listChunkers();
           chunkers.value = chunkersRes.chunkers || [];
           if (chunkers.value.length > 0) {
             selectedChunkerType.value = chunkers.value[0].type;
           }
-          if (providers.value.length > 0) {
-            const p = providers.value[0];
-            if (p.models && p.models.length > 0) {
-              selectedEmbedding.value = embeddingValue(p, p.models[0]);
-            }
-          }
-        } finally {
-          loadingModels.value = false;
+        } catch {
+          chunkers.value = [];
         }
       },
     );
+
+    watch(providers, (list) => {
+      if (props.visible && !selectedEmbedding.value && list.length > 0) {
+        const p = list[0];
+        if (p.models && p.models.length > 0) selectedEmbedding.value = embeddingValue(p, p.models[0]);
+      }
+    });
 
     watch(selectedEmbedding, (sel) => {
       if (!sel) {
@@ -229,6 +267,9 @@ export default defineComponent({
       name,
       description,
       providers,
+      policy,
+      isLockedPolicy,
+      noCompatibleModels,
       loadingModels,
       selectedEmbedding,
       dimension,
@@ -245,6 +286,7 @@ export default defineComponent({
       embeddingKey,
       embeddingValue,
       reset,
+      onAddCredential: props.onAddCredential,
     };
   },
 });

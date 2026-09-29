@@ -108,3 +108,29 @@ body > .el-dropdown-menu {
 @{as-scope} .el-divider {
   background-color: var(--as-border);
 }
+
+// ── 弹窗高度约束（对所有 el-dialog 生效） ──
+// 起因：Element 把滚动交给 .el-dialog__wrapper（fixed + inset:0 + overflow:auto），
+// 并用 top prop 内联 margin-top:15vh、基础样式再留 margin-bottom:50px。只要内容偏高，
+// 15vh + 内容 + 50px 就超过 100vh，wrapper 便出现整条纵向滚动条（贴在窗口右侧，
+// 看起来像页面滚动条），且标题/按钮会跟着滚走。
+//
+// 这里统一改成 flex 纵向布局：弹窗自身限高、内容区内部滚动、头尾固定。
+// 注意 margin-top 是内联样式，普通类选择器覆盖不了，所以不去碰它，只约束自身高度：
+//   15vh(top) + 80vh(max-height) + 0(去掉底部 50px) = 95vh，始终不出视口。
+@{as-scope} .el-dialog:not(.is-fullscreen) {
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh;
+  margin-bottom: 0;
+
+  .el-dialog__header,
+  .el-dialog__footer {
+    flex: 0 0 auto;
+  }
+
+  .el-dialog__body {
+    flex: 1 1 auto;
+    overflow-y: auto;
+  }
+}

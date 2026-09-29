@@ -65,12 +65,7 @@
       >
         <template #header>
           <div class="tw-flex tw-w-full tw-items-center tw-px-2 tw-py-1">
-            <WorkingDirectoryDialog
-              :agent-id="agentId"
-              :session-id="sessionId"
-              :value="cwd"
-              @change="(v) => $emit('cwd-change', v)"
-            />
+            <WorkingDirectoryDialog :agent-id="agentId" :session-id="sessionId" :value="cwd" :on-change="onCwdChange" />
           </div>
         </template>
       </TextInput>
@@ -127,8 +122,10 @@ export default defineComponent({
     onAskUserSubmit: { type: Function, default: null },
     /** 提交子代理 AskUser 答案（外部执行 HITL），返回 Promise。 */
     onSubagentAskUserSubmit: { type: Function, default: null },
+    /** 保存工作目录，返回 Promise，失败时留在弹窗内提示。 */
+    onCwdChange: { type: Function, default: null },
   },
-  emits: ['send', 'user-confirm', 'subagent-confirm', 'interrupt', 'cwd-change'],
+  emits: ['send', 'user-confirm', 'subagent-confirm', 'interrupt'],
   setup(props, { emit }) {
     const isEmpty = computed(() => !props.loading && props.msgs.length === 0);
 

@@ -80,7 +80,12 @@
       </div>
     </main>
 
-    <CreateKnowledgeBaseDialog :visible.sync="createOpen" @created="handleCreated" />
+    <CreateKnowledgeBaseDialog
+      :visible.sync="createOpen"
+      :on-add-credential="openCredential"
+      :credential-refetch-trigger="credentialTrigger"
+      @created="handleCreated"
+    />
     <CreateCredentialDialog
       :visible.sync="credentialOpen"
       :create-fn="credentialApi.create"
@@ -189,6 +194,10 @@ export default defineComponent({
       }
     }
 
+    function openCredential() {
+      credentialOpen.value = true;
+    }
+
     async function handleCreated(kbId) {
       await refetch();
       selectedKbId.value = kbId;
@@ -211,6 +220,7 @@ export default defineComponent({
       handleCommand,
       askDelete,
       handleCreated,
+      openCredential,
       refetch,
       credentialApi,
     };

@@ -63,12 +63,7 @@
       </template>
     </div>
 
-    <router-link :to="{ name: 'mcp' }">
-      <el-button type="primary" size="small" class="tw-w-full">
-        <Icon icon="lucide:plus-circle" class="tw-h-4 tw-w-4" />
-        添加 MCP
-      </el-button>
-    </router-link>
+    <AddMCPDialog :present="presentNames" :on-add="onAdd" :on-add-from-library="onAddFromLibrary" />
   </div>
 </template>
 
@@ -79,6 +74,7 @@ import { Icon } from '@/components/iconify/index.js';
 import { InputGroup, InputGroupInput, InputGroupAddon } from '@/components/ui/InputGroup.js';
 import { Item, ItemMedia, ItemContent, ItemTitle, ItemDescription, ItemActions } from '@/components/ui/Item.js';
 import PanelEmpty from './PanelEmpty.vue';
+import AddMCPDialog from '@/components/dialog/AddMCPDialog.vue';
 import { useMCPs } from '@/composables/useMCPs';
 
 export default defineComponent({
@@ -95,14 +91,18 @@ export default defineComponent({
     ItemDescription,
     ItemActions,
     PanelEmpty,
+    AddMCPDialog,
   },
   props: {
     mcps: { type: Array, default: () => [] },
     loading: { type: Boolean, default: false },
+    onAdd: { type: Function, default: null },
+    onAddFromLibrary: { type: Function, default: null },
     onRemove: { type: Function, default: null },
   },
   setup(props) {
     const search = ref('');
+    const presentNames = computed(() => new Set(props.mcps.map((m) => m.name)));
 
     const { mcps: library } = useMCPs();
     const installedByName = computed(() => {
@@ -136,6 +136,7 @@ export default defineComponent({
 
     return {
       search,
+      presentNames,
       filtered,
       installedByName,
       emptyIcon,

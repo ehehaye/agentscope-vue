@@ -45,14 +45,36 @@ export function useWorkspace(agentId, sessionId) {
     }
   }
 
-  async function addMcps(agentIdValue, sessionIdValue, configs) {
-    await workspaceApi.mcp.add(agentIdValue, sessionIdValue, configs);
+  async function addMcps(configs) {
+    const aid = unref(agentId);
+    const sid = unref(sessionId);
+    if (!aid || !sid) throw new Error('未选择智能体或会话');
+    const existing = new Set(mcps.value.map((m) => m.name));
+    for (const mcp of configs) {
+      if (existing.has(mcp.name)) throw new Error(`MCP 服务「${mcp.name}」已存在于当前工作区。`);
+    }
+    const batch = new Set();
+    for (const mcp of configs) {
+      if (batch.has(mcp.name)) throw new Error(`配置中存在重复的 MCP 服务名「${mcp.name}」。`);
+      batch.add(mcp.name);
+    }
+    for (const mcp of configs) {
+      await workspaceApi.mcp.add(aid, sid, mcp);
+    }
     await refetch();
   }
 
-  async function addMcpsFromLibrary(agentIdValue, sessionIdValue, mcpIds) {
-    await workspaceApi.mcp.addFromLibrary(agentIdValue, sessionIdValue, mcpIds);
+  async function addMcpsFromLibrary(mcpIds) {
+    const aid = unref(agentId);
+    const sid = unref(sessionId);
+    if (!aid || !sid) throw new Error('未选择智能体或会话');
+    const result = await workspaceApi.mcp.addFromLibrary(aid, sid, mcpIds);
     await refetch();
+    // 后端逐条上报结果，部分成功也算成功，只抛出没落地的那些。
+    const failures = Object.entries(result?.failed || {});
+    if (failures.length > 0) {
+      throw new Error(failures.map(([name, why]) => `${name}: ${why}`).join('\n'));
+    }
   }
 
   async function removeMcp(name) {
@@ -65,6 +87,7 @@ export function useWorkspace(agentId, sessionId) {
   async function uploadSkill(files, options) {
     const aid = unref(agentId);
     const sid = unref(sessionId);
+    if (!aid || !sid) throw new Error('未选择智能体或会话');
     await workspaceApi.skill.upload(aid, sid, files, options);
     await refetch();
   }
@@ -72,8 +95,14 @@ export function useWorkspace(agentId, sessionId) {
   async function addSkillsFromLibrary(skillIds) {
     const aid = unref(agentId);
     const sid = unref(sessionId);
-    await workspaceApi.skill.addFromLibrary(aid, sid, skillIds);
+    if (!aid || !sid) throw new Error('未选择智能体或会话');
+    const result = await workspaceApi.skill.addFromLibrary(aid, sid, skillIds);
     await refetch();
+    // 后端逐条上报结果，部分成功也算成功，只抛出没落地的那些。
+    const failures = Object.entries(result?.failed || {});
+    if (failures.length > 0) {
+      throw new Error(failures.map(([name, why]) => `${name}: ${why}`).join('\n'));
+    }
   }
 
   async function removeSkill(name) {

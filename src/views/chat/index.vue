@@ -90,7 +90,7 @@
             @user-confirm="handleUserConfirm"
             @subagent-confirm="handleSubagentConfirm"
             @interrupt="interrupt"
-            @cwd-change="handleCwdChange"
+            :on-cwd-change="handleCwdChange"
           />
         </div>
       </div>
@@ -429,7 +429,11 @@ export default defineComponent({
       mcps,
       skills,
       loading: workspaceLoading,
+      addMcps,
+      addMcpsFromLibrary,
       removeMcp,
+      uploadSkill,
+      addSkillsFromLibrary,
       removeSkill,
     } = useWorkspace(effectiveAgentId, effectiveSessionId);
 
@@ -728,13 +732,25 @@ export default defineComponent({
         title: 'MCP',
         icon: 'lucide:plug',
         component: McpPanel,
-        props: { mcps: mcps.value, loading: workspaceLoading.value, onRemove: removeMcp },
+        props: {
+          mcps: mcps.value,
+          loading: workspaceLoading.value,
+          onAdd: addMcps,
+          onAddFromLibrary: addMcpsFromLibrary,
+          onRemove: removeMcp,
+        },
       },
       skill: {
         title: '技能',
         icon: 'lucide:book-text',
         component: SkillPanel,
-        props: { skills: skills.value, loading: workspaceLoading.value, onRemove: removeSkill },
+        props: {
+          skills: skills.value,
+          loading: workspaceLoading.value,
+          onUpload: uploadSkill,
+          onAddFromLibrary: addSkillsFromLibrary,
+          onRemove: removeSkill,
+        },
       },
       permission: {
         title: '权限',
