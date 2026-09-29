@@ -24,12 +24,7 @@
           :title="'暂无知识库'"
           :description="'创建知识库并上传文档，供智能体检索。'"
         >
-          <el-button size="small" @click="createOpen = true">
-            <span class="tw-flex tw-items-center tw-text-xs tw-text-muted-foreground">
-              <Icon icon="lucide:plus" class="tw-mr-1 tw-h-3.5 tw-w-3.5" />
-              新建知识库
-            </span>
-          </el-button>
+          <el-button size="small" @click="createOpen = true"> 新建知识库 </el-button>
         </PanelEmpty>
         <div v-else class="tw-space-y-1">
           <div

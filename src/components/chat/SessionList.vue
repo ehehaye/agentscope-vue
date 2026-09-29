@@ -51,10 +51,7 @@
         <!-- <span class="tw-font-mono tw-text-xs tw-text-muted-foreground">{{ sessions.length }}</span> -->
       </div>
       <el-button size="small" class="tw-w-full" :disabled="!agentId" @click="$emit('create-session')">
-        <span class="tw-flex tw-items-center tw-text-sm tw-text-muted-foreground">
-          <Icon icon="lucide:plus" class="tw-mr-1 tw-h-3.5 tw-w-3.5" />
-          新会话
-        </span>
+        新会话
       </el-button>
 
       <div class="tw-relative tw-flex tw-min-h-0 tw-flex-1 tw-flex-col">

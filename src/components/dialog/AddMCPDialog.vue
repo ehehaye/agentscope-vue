@@ -1,11 +1,6 @@
 <template>
   <span class="tw-block">
-    <el-button type="primary" size="small" class="tw-w-full" @click="open = true">
-      <slot>
-        <Icon icon="lucide:plus-circle" class="tw-h-4 tw-w-4" />
-        添加 MCP
-      </slot>
-    </el-button>
+    <el-button type="primary" size="small" class="tw-w-full" @click="open = true"> 添加 MCP </el-button>
 
     <el-dialog
       title="添加 MCP"

@@ -1,11 +1,6 @@
 <template>
   <span class="tw-block">
-    <el-button type="primary" size="small" class="tw-w-full" @click="open = true">
-      <slot>
-        <Icon icon="lucide:plus-circle" class="tw-h-4 tw-w-4" />
-        添加技能
-      </slot>
-    </el-button>
+    <el-button type="primary" size="small" class="tw-w-full" @click="open = true"> 添加技能 </el-button>
 
     <el-dialog
       title="添加技能"
@@ -31,7 +26,11 @@
                 v-for="skill in skills"
                 :key="skill.id"
                 class="tw-flex tw-items-center tw-gap-3 tw-rounded-lg tw-border tw-border-border tw-p-2 tw-transition-colors"
-                :class="present.has(skill.name) ? 'tw-cursor-not-allowed tw-opacity-60' : 'tw-cursor-pointer hover:tw-bg-muted'"
+                :class="
+                  present.has(skill.name)
+                    ? 'tw-cursor-not-allowed tw-opacity-60'
+                    : 'tw-cursor-pointer hover:tw-bg-muted'
+                "
               >
                 <el-checkbox
                   :value="present.has(skill.name) || picked.has(skill.id)"
@@ -59,15 +58,7 @@
 
         <el-tab-pane label="上传文件夹" name="upload">
           <div class="tw-max-h-80 tw-overflow-y-auto">
-            <input
-              ref="fileInput"
-              type="file"
-              class="tw-hidden"
-              webkitdirectory
-              directory
-              multiple
-              @change="onPick"
-            />
+            <input ref="fileInput" type="file" class="tw-hidden" webkitdirectory directory multiple @change="onPick" />
             <div v-if="files.length === 0" class="tw-flex tw-flex-col tw-items-center tw-gap-3 tw-py-10 tw-text-center">
               <Icon icon="lucide:folder-up" class="tw-h-8 tw-w-8 tw-text-muted-foreground" />
               <div class="tw-text-sm tw-font-medium">选择一个技能文件夹</div>
