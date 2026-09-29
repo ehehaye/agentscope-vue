@@ -1,12 +1,7 @@
 <template>
   <div class="tw-flex tw-h-full tw-flex-col tw-gap-2">
     <span class="tw-text-sm tw-text-muted-foreground">当前会话已装备的 MCP 服务。</span>
-    <InputGroup>
-      <InputGroupInput v-model="search" placeholder="搜索 MCP" />
-      <InputGroupAddon align="inline-end">
-        <Icon icon="lucide:search" class="tw-h-4 tw-w-4" />
-      </InputGroupAddon>
-    </InputGroup>
+    <el-input v-model="search" placeholder="搜索 MCP"></el-input>
 
     <div class="tw-flex tw-flex-1 tw-flex-col tw-gap-2 tw-overflow-y-auto">
       <template v-if="loading">
@@ -71,7 +66,6 @@
 import { defineComponent, ref, computed } from '@/composables/vue';
 import { MessageBox } from 'element-ui';
 import { Icon } from '@/components/iconify/index.js';
-import { InputGroup, InputGroupInput, InputGroupAddon } from '@/components/ui/InputGroup.js';
 import { Item, ItemMedia, ItemContent, ItemTitle, ItemDescription, ItemActions } from '@/components/ui/Item.js';
 import PanelEmpty from './PanelEmpty.vue';
 import AddMCPDialog from '@/components/dialog/AddMCPDialog.vue';
@@ -81,9 +75,6 @@ export default defineComponent({
   name: 'McpPanel',
   components: {
     Icon,
-    InputGroup,
-    InputGroupInput,
-    InputGroupAddon,
     Item,
     ItemMedia,
     ItemContent,
