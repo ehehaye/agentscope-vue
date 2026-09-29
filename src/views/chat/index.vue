@@ -1,5 +1,5 @@
 <template>
-  <main class="tw-flex tw-h-full tw-w-full tw-gap-2 tw-p-2">
+  <main class="tw-relative tw-flex tw-h-full tw-w-full tw-gap-2 tw-p-2">
     <SessionList
       class="tw-h-full tw-shrink-0"
       :agents="agents"

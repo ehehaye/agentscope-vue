@@ -2,7 +2,7 @@
   <transition name="dock-slide">
     <div v-show="normalizedLayout.length > 0" class="tw-h-full">
       <splitpanes class="tw-h-full" @resized="onResized">
-        <pane v-for="(column, colIdx) in normalizedLayout" :key="colKey(column)" :size="columnSize">
+        <pane v-for="(column, colIdx) in normalizedLayout" :key="column[0]" :size="columnSize">
           <splitpanes horizontal @resized="onResized">
             <pane
               v-for="key in column"
@@ -52,10 +52,6 @@ export default defineComponent({
       return count > 0 ? 100 / count : 100;
     }
 
-    function colKey(column) {
-      return column.join('-');
-    }
-
     function close(key) {
       emit('close', key);
     }
@@ -68,7 +64,6 @@ export default defineComponent({
       normalizedLayout,
       columnSize,
       rowSize,
-      colKey,
       close,
       onResized,
     };
@@ -85,14 +80,27 @@ export default defineComponent({
   &-enter-active,
   &-leave-active {
     transition:
-      transform 0.25s ease,
-      opacity 0.25s ease;
+      transform 0.2s cubic-bezier(0.2, 0, 0, 1),
+      opacity 0.2s cubic-bezier(0.2, 0, 1);
+    will-change: transform, opacity;
   }
 
-  &-enter,
+  /* 关闭最后一个面板时脱离 flex 布局流：主内容立即补位，dock 在原位淡出，
+     避免 22rem 区域停留 200ms 才塌缩造成的页面卡顿。 */
+  &-leave-active {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    width: 22rem;
+    margin-left: 0;
+    pointer-events: none;
+  }
+
+  &-enter-from,
   &-leave-to {
-    transform: translateX(20px);
     opacity: 0;
+    transform: translateX(8px);
   }
 }
 </style>
