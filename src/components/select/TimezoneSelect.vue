@@ -75,12 +75,14 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-.timezone-search-input >>> .el-input__inner {
-  border: 0;
-  padding: 0;
-  background: transparent;
-  box-shadow: none;
-  font-size: 12px;
+<style lang="less" scoped>
+.timezone-search-input {
+  ::v-deep .el-input__inner {
+    border: 0;
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+    font-size: 12px;
+  }
 }
 </style>

@@ -309,10 +309,9 @@ export default defineComponent({
      * 后续发送第一条消息时会自动创建会话。
      */
     function handleCreateSession() {
-      // TODO: ask for confirm
-      // if (phase.value === 'streaming' || phase.value === 'interrupting') {
-      //   interrupt().catch(() => {});
-      // }
+      if (phase.value === 'streaming' || phase.value === 'interrupting') {
+        interrupt().catch(() => {});
+      }
       abort();
       router
         .push({ path: '/chat', query: { ...route.query, sessionId: undefined, memberId: undefined } })

@@ -90,9 +90,11 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-.collapse-enter-active,
-.collapse-leave-active {
-  transition: height 200ms ease;
+<style lang="less" scoped>
+.collapse {
+  &-enter-active,
+  &-leave-active {
+    transition: height 200ms ease;
+  }
 }
 </style>

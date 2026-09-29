@@ -99,19 +99,20 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 /* Element 2.x 的 el-button 会把插槽内容包一层内联 span，
  * 具名 class 让按钮与内容行各自成为 flex 容器，实现图标与文字纵向居中。 */
 .team-member-btn {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-}
-.team-member-btn-content {
-  display: flex;
-  width: 100%;
-  min-width: 0;
-  align-items: center;
-  gap: 8px;
+
+  &-content {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    align-items: center;
+    gap: 8px;
+  }
 }
 </style>

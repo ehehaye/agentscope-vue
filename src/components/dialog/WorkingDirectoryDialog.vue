@@ -190,23 +190,26 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style lang="less">
 .workdir-dialog {
   border-radius: 20px;
-}
-.workdir-dialog .el-dialog__header {
-  padding: 24px 24px 0;
-}
-.workdir-dialog .el-dialog__body {
-  padding: 16px 24px 24px;
-}
-.workdir-dialog .el-dialog__footer {
-  padding: 16px 24px;
-  border-top: 1px solid var(--as-border);
+
+  .el-dialog__header {
+    padding: 24px 24px 0;
+  }
+
+  .el-dialog__body {
+    padding: 16px 24px 24px;
+  }
+
+  .el-dialog__footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--as-border);
+  }
 }
 </style>
 
-<style scoped>
+<style lang="less" scoped>
 .workdir-icon-btn {
   display: inline-flex;
   align-items: center;
@@ -216,11 +219,13 @@ export default defineComponent({
   color: var(--as-muted-foreground);
   cursor: pointer;
   transition: color 0.15s, background-color 0.15s;
+
+  &:hover {
+    color: var(--as-foreground);
+    background-color: var(--as-accent);
+  }
 }
-.workdir-icon-btn:hover {
-  color: var(--as-foreground);
-  background-color: var(--as-accent);
-}
+
 .workdir-row {
   display: flex;
   width: 100%;
@@ -233,11 +238,13 @@ export default defineComponent({
   color: var(--as-foreground);
   cursor: pointer;
   transition: background-color 0.15s;
-}
-.workdir-row:hover:not(:disabled) {
-  background-color: var(--as-accent);
-}
-.workdir-row:disabled {
-  cursor: not-allowed;
+
+  &:hover:not(:disabled) {
+    background-color: var(--as-accent);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 }
 </style>

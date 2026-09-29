@@ -96,6 +96,7 @@ export default defineComponent({
   padding: 0;
   color: inherit;
   transition: opacity 0.15s;
+
   &:hover {
     opacity: 0.7;
   }
@@ -106,16 +107,16 @@ export default defineComponent({
   align-items: center;
   gap: 1px;
   height: 12px;
-}
 
-.audio-wave-bar {
-  display: inline-block;
-  width: 2px;
-  height: 100%;
-  background: currentColor;
-  border-radius: 1px;
-  transform-origin: center;
-  animation: audioWave 0.8s ease-in-out infinite;
+  &-bar {
+    display: inline-block;
+    width: 2px;
+    height: 100%;
+    background: currentColor;
+    border-radius: 1px;
+    transform-origin: center;
+    animation: audioWave 0.8s ease-in-out infinite;
+  }
 }
 
 @keyframes audioWave {

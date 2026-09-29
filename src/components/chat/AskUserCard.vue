@@ -186,71 +186,78 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .ask-options {
   display: flex;
   flex-direction: column;
-}
-.ask-options >>> .el-radio-group,
-.ask-options >>> .el-checkbox-group {
-  display: flex;
-  flex-direction: column;
-  font-size: inherit;
-  line-height: inherit;
-}
 
-/* 选项整行卡片化：全宽、大行高可点区域、hover 底色反馈 */
-.ask-options >>> .el-radio,
-.ask-options >>> .el-checkbox {
-  display: flex;
-  align-items: flex-start;
-  width: 100%;
-  height: auto;
-  margin-right: 0;
-  padding: 6px 8px;
-  border-radius: 6px;
-  color: var(--as-foreground);
-  line-height: 1.5;
-  white-space: normal;
-  transition: background-color 0.15s;
-}
-.ask-options >>> .el-radio:hover,
-.ask-options >>> .el-checkbox:hover {
-  background-color: var(--as-accent);
-}
+  ::v-deep .el-radio-group,
+  ::v-deep .el-checkbox-group {
+    display: flex;
+    flex-direction: column;
+    font-size: inherit;
+    line-height: inherit;
+  }
 
-/* 圈点与首行文字对齐 */
-.ask-options >>> .el-radio__input,
-.ask-options >>> .el-checkbox__input {
-  margin-top: 2px;
-  line-height: 1;
-}
-.ask-options >>> .el-checkbox__inner,
-.ask-options >>> .el-radio__inner {
-  width: 16px;
-  height: 16px;
-}
-.ask-options >>> .el-radio__inner::after {
-  width: 6px;
-  height: 6px;
-}
-.ask-options >>> .el-checkbox__inner::after {
-  left: 5px;
-  top: 2px;
-}
+  /* 选项整行卡片化：全宽、大行高可点区域、hover 底色反馈 */
+  ::v-deep .el-radio,
+  ::v-deep .el-checkbox {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    height: auto;
+    margin-right: 0;
+    padding: 6px 8px;
+    border-radius: 6px;
+    color: var(--as-foreground);
+    line-height: 1.5;
+    white-space: normal;
+    transition: background-color 0.15s;
+  }
 
-.ask-options >>> .el-radio__label,
-.ask-options >>> .el-checkbox__label {
-  flex: 1;
-  min-width: 0;
-  padding-left: 8px;
-  font-size: inherit;
-  font-weight: normal;
-  line-height: inherit;
+  ::v-deep .el-radio:hover,
+  ::v-deep .el-checkbox:hover {
+    background-color: var(--as-accent);
+  }
+
+  /* 圈点与首行文字对齐 */
+  ::v-deep .el-radio__input,
+  ::v-deep .el-checkbox__input {
+    margin-top: 2px;
+    line-height: 1;
+  }
+
+  ::v-deep .el-checkbox__inner,
+  ::v-deep .el-radio__inner {
+    width: 16px;
+    height: 16px;
+  }
+
+  ::v-deep .el-radio__inner::after {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::v-deep .el-checkbox__inner::after {
+    left: 5px;
+    top: 2px;
+  }
+
+  ::v-deep .el-radio__label,
+  ::v-deep .el-checkbox__label {
+    flex: 1;
+    min-width: 0;
+    padding-left: 8px;
+    font-size: inherit;
+    font-weight: normal;
+    line-height: inherit;
+  }
 }
 
 /* tw-rounded-28px 只作用于 el-input 外壳，真正的边框在内部 __inner 上，需要同步圆角 */
-.ask-other-input >>> .el-input__inner {
-  border-radius: 28px;
+.ask-other-input {
+  ::v-deep .el-input__inner {
+    border-radius: 28px;
+  }
 }
 </style>

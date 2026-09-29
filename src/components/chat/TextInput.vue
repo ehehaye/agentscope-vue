@@ -255,26 +255,28 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 /* 还原原 textarea 的外观：容器已提供边框，这里只保留内边距与透明背景；
    高度交给 autosize 按行数计算（1~8 行），单行最小高度固定为 50px */
-.chat-textarea >>> .el-textarea__inner {
-  padding: 12px;
-  min-height: 50px !important; /* autosize 会写入 45px 的行内 minHeight，需覆盖 */
-  overflow-y: auto;
-  background-color: transparent;
-  border: 0;
-  border-radius: 0;
-  box-shadow: none;
-  color: var(--as-foreground);
-  font-size: 14px;
-  line-height: 21px;
-}
+.chat-textarea {
+  ::v-deep .el-textarea__inner {
+    padding: 12px;
+    min-height: 50px !important; /* autosize 会写入 45px 的行内 minHeight，需覆盖 */
+    overflow-y: auto;
+    background-color: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    color: var(--as-foreground);
+    font-size: 14px;
+    line-height: 21px;
+  }
 
-.chat-textarea.is-disabled >>> .el-textarea__inner {
-  background-color: transparent;
-  color: var(--as-foreground);
-  cursor: not-allowed;
-  opacity: 0.5;
+  &.is-disabled ::v-deep .el-textarea__inner {
+    background-color: transparent;
+    color: var(--as-foreground);
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
 }
 </style>

@@ -86,19 +86,21 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .splitpanes__pane {
   transition: none;
 }
 
-.dock-slide-enter-active,
-.dock-slide-leave-active {
-  transition: transform 0.25s ease, opacity 0.25s ease;
-}
+.dock-slide {
+  &-enter-active,
+  &-leave-active {
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
 
-.dock-slide-enter,
-.dock-slide-leave-to {
-  transform: translateX(20px);
-  opacity: 0;
+  &-enter,
+  &-leave-to {
+    transform: translateX(20px);
+    opacity: 0;
+  }
 }
 </style>
