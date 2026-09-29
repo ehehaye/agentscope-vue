@@ -6,7 +6,7 @@
     :disabled="disabled"
     popper-class="model-params-popover"
   >
-    <div class="tw-flex tw-max-h-70vh tw-flex-col tw-gap-3 tw-overflow-y-auto">
+    <div class="tw-flex tw-max-h-70vh tw-flex-col tw-gap-3 tw-overflow-y-auto tw-overflow-x-hidden">
       <!-- Fallback 模型 -->
       <div>
         <p class="tw-text-sm tw-font-medium tw-text-foreground">Fallback 模型</p>
