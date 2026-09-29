@@ -7,7 +7,10 @@
     <template v-else-if="block.type === 'thinking'">
       <Collapsible trigger-class="tw-text-sm tw-text-muted-foreground">
         <template #trigger>
-          <div class="tw-flex tw-items-center tw-gap-2" :class="{ shimmer: isThinkingRunning }">
+          <div
+            class="tw-flex tw-items-center tw-gap-2"
+            :class="{ shimmer: isThinkingRunning }"
+          >
             <span>{{ thinkingTitle }}</span>
           </div>
         </template>
@@ -25,7 +28,11 @@
           </div>
         </template>
         <div class="tw-mt-2 tw-rounded-md tw-bg-muted tw-p-2 tw-text-sm">
-          <ASBlock v-for="(item, idx) in hintItems" :key="idx" :block="item" />
+          <ASBlock
+            v-for="(item, idx) in hintItems"
+            :key="idx"
+            :block="item"
+          />
         </div>
       </Collapsible>
     </template>

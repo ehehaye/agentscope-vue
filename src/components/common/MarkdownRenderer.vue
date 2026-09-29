@@ -1,6 +1,10 @@
 <template>
   <div class="markdown-renderer">
-    <NodeRenderer v-for="(node, index) in astTree" :key="index" :node="node" />
+    <NodeRenderer
+      v-for="(node, index) in astTree"
+      :key="index"
+      :node="node"
+    />
   </div>
 </template>
 

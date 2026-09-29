@@ -2,12 +2,18 @@
   <div
     class="tw-flex tw-size-full tw-flex-col tw-items-center tw-justify-center tw-gap-4 tw-rounded-xl tw-border tw-border-dashed tw-p-6 tw-text-center"
   >
-    <Icon icon="lucide:calendar" class="tw-h-8 tw-w-8 tw-text-muted-foreground" />
+    <Icon
+      icon="lucide:calendar"
+      class="tw-h-8 tw-w-8 tw-text-muted-foreground"
+    />
     <div class="tw-flex tw-max-w-sm tw-flex-col tw-items-center tw-gap-2">
       <div class="tw-text-sm tw-font-medium">{{ title || '暂无日程' }}</div>
       <p class="tw-text-sm tw-text-muted-foreground">{{ description || '创建日程以自动化智能体任务。' }}</p>
     </div>
-    <div v-if="$slots.default" class="tw-flex tw-w-full tw-max-w-sm tw-flex-col tw-items-center tw-gap-2">
+    <div
+      v-if="$slots.default"
+      class="tw-flex tw-w-full tw-max-w-sm tw-flex-col tw-items-center tw-gap-2"
+    >
       <slot />
     </div>
   </div>

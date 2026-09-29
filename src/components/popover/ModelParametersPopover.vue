@@ -20,8 +20,16 @@
         class="tw-w-full"
         @change="handleFallbackChange"
       >
-        <el-option label="无" :value="null" />
-        <el-option v-for="opt in fallbackOptions" :key="opt.key" :label="opt.label" :value="opt.key" />
+        <el-option
+          label="无"
+          :value="null"
+        />
+        <el-option
+          v-for="opt in fallbackOptions"
+          :key="opt.key"
+          :label="opt.label"
+          :value="opt.key"
+        />
       </el-select>
 
       <el-divider class="tw-my-1" />
@@ -39,8 +47,16 @@
         class="tw-w-full"
         @change="handleTTSChange"
       >
-        <el-option label="无" :value="null" />
-        <el-option v-for="opt in ttsOptions" :key="opt.key" :label="opt.label" :value="opt.key" />
+        <el-option
+          label="无"
+          :value="null"
+        />
+        <el-option
+          v-for="opt in ttsOptions"
+          :key="opt.key"
+          :label="opt.label"
+          :value="opt.key"
+        />
       </el-select>
 
       <el-divider class="tw-my-1" />
@@ -50,9 +66,24 @@
         <p class="tw-text-sm tw-font-medium tw-text-foreground">模型参数</p>
         <p class="tw-text-xs tw-text-muted-foreground">配置当前模型的推理参数</p>
       </div>
-      <div v-if="entries.length === 0" class="tw-text-xs tw-text-muted-foreground">当前模型无可配置参数</div>
-      <el-form v-else label-position="top" size="small" class="tw-space-y-2">
-        <el-form-item v-for="[key, prop] in entries" :key="key" :label="prop.title || key" class="tw-mb-2">
+      <div
+        v-if="entries.length === 0"
+        class="tw-text-xs tw-text-muted-foreground"
+      >
+        当前模型无可配置参数
+      </div>
+      <el-form
+        v-else
+        label-position="top"
+        size="small"
+        class="tw-space-y-2"
+      >
+        <el-form-item
+          v-for="[key, prop] in entries"
+          :key="key"
+          :label="prop.title || key"
+          class="tw-mb-2"
+        >
           <template v-if="resolveType(prop).type === 'boolean'">
             <el-switch
               :value="values[key] !== undefined ? values[key] : prop.default"
@@ -92,13 +123,23 @@
               @input="(v) => handleChange(key, v)"
             />
           </template>
-          <p v-if="prop.description" class="tw-mt-0.5 tw-text-xs tw-text-muted-foreground">
+          <p
+            v-if="prop.description"
+            class="tw-mt-0.5 tw-text-xs tw-text-muted-foreground"
+          >
             {{ prop.description }}
           </p>
         </el-form-item>
       </el-form>
     </div>
-    <el-button slot="reference" size="mini" icon="el-icon-setting" circle :disabled="disabled" title="模型参数" />
+    <el-button
+      slot="reference"
+      size="mini"
+      icon="el-icon-setting"
+      circle
+      :disabled="disabled"
+      title="模型参数"
+    />
   </el-popover>
 </template>
 

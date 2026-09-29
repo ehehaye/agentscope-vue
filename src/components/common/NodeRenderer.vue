@@ -1,8 +1,15 @@
 <template>
-  <component :is="getComponent(node.tagName)" v-bind="node.attribs">
+  <component
+    :is="getComponent(node.tagName)"
+    v-bind="node.attribs"
+  >
     <template v-for="(child, index) in node.children">
       <template v-if="child.type === 'text'">{{ child.data }}</template>
-      <NodeRenderer v-else :key="index" :node="child" />
+      <NodeRenderer
+        v-else
+        :key="index"
+        :node="child"
+      />
     </template>
   </component>
 </template>

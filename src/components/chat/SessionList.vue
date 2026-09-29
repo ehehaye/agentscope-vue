@@ -6,8 +6,16 @@
     <div class="tw-flex tw-flex-col tw-gap-1.5">
       <div class="tw-flex tw-items-center tw-justify-between tw-px-1">
         <span class="tw-text-sm tw-text-muted-foreground">助手</span>
-        <el-button size="mini" type="text" class="tw-h-auto tw-px-1 tw-py-0" @click="$emit('create-agent')">
-          <Icon icon="lucide:plus" class="tw-h-3.5 tw-w-3.5" />
+        <el-button
+          size="mini"
+          type="text"
+          class="tw-h-auto tw-px-1 tw-py-0"
+          @click="$emit('create-agent')"
+        >
+          <Icon
+            icon="lucide:plus"
+            class="tw-h-3.5 tw-w-3.5"
+          />
         </el-button>
       </div>
       <div class="tw-flex tw-items-center tw-gap-1">
@@ -17,25 +25,40 @@
           :value="agentId"
           @change="$emit('agent-change', $event)"
         />
-        <el-dropdown trigger="click" @command="handleAgentCommand">
+        <el-dropdown
+          trigger="click"
+          @command="handleAgentCommand"
+        >
           <el-button
             size="mini"
             type="text"
             class="tw-h-auto tw-px-1 tw-py-0"
             :disabled="!selectedAgent || !selectedAgent.editable"
           >
-            <Icon icon="lucide:ellipsis" class="tw-h-3.5 tw-w-3.5" />
+            <Icon
+              icon="lucide:ellipsis"
+              class="tw-h-3.5 tw-w-3.5"
+            />
           </el-button>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="edit">
               <span class="tw-inline-flex tw-items-center tw-gap-1.5">
-                <Icon icon="lucide:settings-2" class="tw-h-3.5 tw-w-3.5" />
+                <Icon
+                  icon="lucide:settings-2"
+                  class="tw-h-3.5 tw-w-3.5"
+                />
                 设置
               </span>
             </el-dropdown-item>
-            <el-dropdown-item command="delete" class="tw-text-danger">
+            <el-dropdown-item
+              command="delete"
+              class="tw-text-danger"
+            >
               <span class="tw-inline-flex tw-items-center tw-gap-1.5">
-                <Icon icon="lucide:trash-2" class="tw-h-3.5 tw-w-3.5" />
+                <Icon
+                  icon="lucide:trash-2"
+                  class="tw-h-3.5 tw-w-3.5"
+                />
                 删除
               </span>
             </el-dropdown-item>
@@ -50,7 +73,12 @@
         <span class="tw-text-sm tw-text-muted-foreground">会话</span>
         <!-- <span class="tw-font-mono tw-text-xs tw-text-muted-foreground">{{ sessions.length }}</span> -->
       </div>
-      <el-button size="small" class="tw-w-full" :disabled="!agentId" @click="$emit('create-session')">
+      <el-button
+        size="small"
+        class="tw-w-full"
+        :disabled="!agentId"
+        @click="$emit('create-session')"
+      >
         新会话
       </el-button>
 
@@ -79,7 +107,10 @@
               <span class="tw-font-mono tw-text-xs tw-opacity-60">{{ group.items.length }}</span>
             </template>
             <ul class="tw-flex tw-flex-col tw-gap-0.5">
-              <li v-for="v in group.items" :key="v.session.id">
+              <li
+                v-for="v in group.items"
+                :key="v.session.id"
+              >
                 <SessionListItem
                   :view="v"
                   :active="v.session.id === sessionId"
@@ -93,7 +124,10 @@
           </Collapsible>
         </div>
 
-        <div v-if="sessionsLoading" class="tw-absolute tw-inset-0 tw-z-10 tw-flex tw-items-center tw-justify-center">
+        <div
+          v-if="sessionsLoading"
+          class="tw-absolute tw-inset-0 tw-z-10 tw-flex tw-items-center tw-justify-center"
+        >
           <div class="tw-absolute tw-inset-0 tw-bg-card tw-opacity-60"></div>
           <Spinner className="tw-relative tw-z-10 h-5 tw-w-5" />
         </div>

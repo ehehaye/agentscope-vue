@@ -1,6 +1,13 @@
 <template>
-  <div ref="viewport" class="tw-relative tw-h-full tw-w-full tw-overflow-y-auto" @scroll="onScroll">
-    <div ref="content" class="tw-flex tw-min-h-full tw-flex-col tw-gap-6 tw-p-4">
+  <div
+    ref="viewport"
+    class="tw-relative tw-h-full tw-w-full tw-overflow-y-auto"
+    @scroll="onScroll"
+  >
+    <div
+      ref="content"
+      class="tw-flex tw-min-h-full tw-flex-col tw-gap-6 tw-p-4"
+    >
       <slot />
     </div>
     <el-button
@@ -11,7 +18,10 @@
       class="tw-absolute tw-bottom-4 tw-left-1/2 tw--translate-x-1/2"
       @click="scrollToBottom"
     >
-      <Icon icon="lucide:arrow-down" class="tw-h-4 tw-w-4" />
+      <Icon
+        icon="lucide:arrow-down"
+        class="tw-h-4 tw-w-4"
+      />
     </el-button>
   </div>
 </template>

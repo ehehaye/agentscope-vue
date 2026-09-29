@@ -7,13 +7,38 @@
     :close-on-click-modal="false"
     @closed="handleClose"
   >
-    <ChannelForm v-if="visible && channel" v-model="form" mode="edit" :agents="agents" :channel-types="channelTypes" />
+    <ChannelForm
+      v-if="visible && channel"
+      v-model="form"
+      mode="edit"
+      :agents="agents"
+      :channel-types="channelTypes"
+    />
 
-    <el-alert v-if="error" :title="error" type="error" class="tw-mt-3" :closable="false" show-icon />
+    <el-alert
+      v-if="error"
+      :title="error"
+      type="error"
+      class="tw-mt-3"
+      :closable="false"
+      show-icon
+    />
 
-    <span slot="footer" class="tw-dialog-footer">
-      <el-button size="small" @click="visible = false">取消</el-button>
-      <el-button size="small" type="primary" :loading="loading" :disabled="!valid" @click="handleSubmit"
+    <span
+      slot="footer"
+      class="tw-dialog-footer"
+    >
+      <el-button
+        size="small"
+        @click="visible = false"
+        >取消</el-button
+      >
+      <el-button
+        size="small"
+        type="primary"
+        :loading="loading"
+        :disabled="!valid"
+        @click="handleSubmit"
         >保存</el-button
       >
     </span>

@@ -6,13 +6,25 @@
     >
       <h1 class="tw-text-sm tw-font-semibold tw-text-foreground">Markdown 渲染验证</h1>
       <div class="tw-flex-1"></div>
-      <el-button size="small" @click="onToggleDark">
+      <el-button
+        size="small"
+        @click="onToggleDark"
+      >
         {{ dark ? '切换浅色' : '切换深色' }}
       </el-button>
-      <el-button size="small" type="primary" :loading="streaming" @click="startStream">
+      <el-button
+        size="small"
+        type="primary"
+        :loading="streaming"
+        @click="startStream"
+      >
         {{ streaming ? '流式输出中…' : '模拟流式输出' }}
       </el-button>
-      <el-button size="small" @click="reset">重置</el-button>
+      <el-button
+        size="small"
+        @click="reset"
+        >重置</el-button
+      >
     </header>
 
     <!-- 内容区：静态样例 + 流式样例 -->

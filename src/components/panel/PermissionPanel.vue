@@ -4,35 +4,54 @@
 
     <div class="tw-flex tw-flex-col tw-gap-1.5">
       <span class="tw-flex tw-items-center tw-gap-1.5 tw-text-xs tw-font-medium tw-text-muted-foreground">
-        <Icon icon="lucide:folder-open" class="tw-h-3.5 tw-w-3.5" />
+        <Icon
+          icon="lucide:folder-open"
+          class="tw-h-3.5 tw-w-3.5"
+        />
         工作目录
       </span>
       <template v-if="workingDirs.length === 0">
         <p class="tw-px-1 tw-py-2 tw-text-xs tw-text-muted-foreground">没有配置工作目录。</p>
       </template>
-      <ul v-else class="tw-flex tw-flex-col tw-rounded-md tw-border">
+      <ul
+        v-else
+        class="tw-flex tw-flex-col tw-rounded-md tw-border"
+      >
         <li
           v-for="dir in workingDirs"
           :key="dir.path"
           class="tw-flex tw-items-center tw-justify-between tw-gap-2 tw-px-2 tw-py-1.5 tw-text-xs"
           :class="dir !== workingDirs[workingDirs.length - 1] ? 'tw-border-b' : ''"
         >
-          <span class="tw-min-w-0 tw-flex-1 tw-truncate tw-font-mono tw-text-left" :title="dir.path">{{
-            dir.path
-          }}</span>
+          <span
+            class="tw-min-w-0 tw-flex-1 tw-truncate tw-font-mono tw-text-left"
+            :title="dir.path"
+            >{{ dir.path }}</span
+          >
           <span class="tw-shrink-0 tw-rounded tw-border tw-px-1.5 tw-py-0.5 tw-text-10px">{{ dir.source }}</span>
         </li>
       </ul>
     </div>
 
     <template v-if="hasRules">
-      <div v-for="behavior in behaviors" :key="behavior.key" class="tw-flex tw-flex-col tw-gap-1.5">
+      <div
+        v-for="behavior in behaviors"
+        :key="behavior.key"
+        class="tw-flex tw-flex-col tw-gap-1.5"
+      >
         <span class="tw-flex tw-items-center tw-gap-1.5 tw-text-xs tw-font-medium tw-text-muted-foreground">
-          <Icon :icon="behavior.icon" class="tw-h-3.5 tw-w-3.5" />
+          <Icon
+            :icon="behavior.icon"
+            class="tw-h-3.5 tw-w-3.5"
+          />
           {{ behavior.label }}
         </span>
         <template v-for="(rules, toolName) in behavior.ruleMap">
-          <div v-if="rules.length > 0" :key="toolName" class="tw-rounded-md tw-border">
+          <div
+            v-if="rules.length > 0"
+            :key="toolName"
+            class="tw-rounded-md tw-border"
+          >
             <div class="tw-flex tw-items-center tw-gap-2 tw-border-b tw-px-2 tw-py-1.5 tw-text-sm tw-font-medium">
               {{ toolName }}
               <span class="tw-ml-auto tw-rounded tw-bg-secondary tw-px-1.5 tw-py-0 tw-text-xs">{{ rules.length }}</span>
@@ -50,7 +69,11 @@
                   :title="rule.rule_content"
                   >{{ rule.rule_content }}</span
                 >
-                <span v-else class="tw-min-w-0 tw-flex-1 tw-text-muted-foreground">任意调用</span>
+                <span
+                  v-else
+                  class="tw-min-w-0 tw-flex-1 tw-text-muted-foreground"
+                  >任意调用</span
+                >
                 <span class="tw-shrink-0 tw-rounded tw-border tw-px-1.5 tw-py-0.5 tw-text-10px">{{ rule.source }}</span>
               </li>
             </ul>
@@ -59,7 +82,11 @@
       </div>
     </template>
     <template v-else>
-      <PanelEmpty icon="lucide:shield-x" title="暂无权限规则" description="当前会话未配置任何权限规则。" />
+      <PanelEmpty
+        icon="lucide:shield-x"
+        title="暂无权限规则"
+        description="当前会话未配置任何权限规则。"
+      />
     </template>
   </div>
 </template>

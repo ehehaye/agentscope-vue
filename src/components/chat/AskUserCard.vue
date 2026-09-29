@@ -10,8 +10,15 @@
       <pre class="tw-whitespace-pre-wrap tw-break-all">{{ toolCall.input }}</pre>
     </div>
 
-    <div v-else class="tw-flex tw-flex-col tw-gap-y-4">
-      <div v-for="(q, qi) in questions" :key="qi" class="tw-flex tw-flex-col tw-gap-y-2">
+    <div
+      v-else
+      class="tw-flex tw-flex-col tw-gap-y-4"
+    >
+      <div
+        v-for="(q, qi) in questions"
+        :key="qi"
+        class="tw-flex tw-flex-col tw-gap-y-2"
+      >
         <div class="tw-flex tw-items-center tw-gap-x-2">
           <span
             class="tw-rounded-full tw-bg-background tw-px-2 tw-py-0.5 tw-text-xs tw-font-medium tw-text-secondary-foreground"
@@ -39,7 +46,12 @@
             :disabled="submitting"
             @input="(v) => setSingle(qi, v)"
           >
-            <el-radio v-for="opt in q.options" :key="opt.label" :label="opt.label" class="ask-option">
+            <el-radio
+              v-for="opt in q.options"
+              :key="opt.label"
+              :label="opt.label"
+              class="ask-option"
+            >
               <span class="tw-flex tw-min-w-0 tw-flex-col tw-items-start">
                 <span class="tw-break-words tw-whitespace-normal">{{ opt.label }}</span>
                 <span
@@ -52,8 +64,17 @@
             </el-radio>
           </el-radio-group>
 
-          <el-checkbox-group v-else v-model="answers[qi].selected" :disabled="submitting">
-            <el-checkbox v-for="opt in q.options" :key="opt.label" :label="opt.label" class="ask-option">
+          <el-checkbox-group
+            v-else
+            v-model="answers[qi].selected"
+            :disabled="submitting"
+          >
+            <el-checkbox
+              v-for="opt in q.options"
+              :key="opt.label"
+              :label="opt.label"
+              class="ask-option"
+            >
               <span class="tw-flex tw-min-w-0 tw-flex-col tw-items-start">
                 <span class="tw-break-words tw-whitespace-normal">{{ opt.label }}</span>
                 <span
@@ -89,7 +110,10 @@
             :disabled="!ready || submitting"
             @click="handleSubmit"
           >
-            <Icon icon="lucide:arrow-up" class="tw-h-4 tw-w-4" />
+            <Icon
+              icon="lucide:arrow-up"
+              class="tw-h-4 tw-w-4"
+            />
           </el-button>
         </div>
       </div>

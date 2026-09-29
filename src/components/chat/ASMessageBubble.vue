@@ -1,9 +1,17 @@
 <template>
-  <div class="tw-flex tw-w-full" :class="isUser ? 'tw-justify-end' : 'tw-justify-start'" :data-role="message.role">
+  <div
+    class="tw-flex tw-w-full"
+    :class="isUser ? 'tw-justify-end' : 'tw-justify-start'"
+    :data-role="message.role"
+  >
     <div class="tw-flex tw-max-w-85pct tw-flex-col tw-gap-1">
       <div class="tw-flex tw-flex-col tw-gap-2">
         <template v-for="(block, index) in blocks">
-          <Bubble v-if="block.type !== 'data'" :key="index" :variant="isUser ? 'muted' : 'ghost'">
+          <Bubble
+            v-if="block.type !== 'data'"
+            :key="index"
+            :variant="isUser ? 'muted' : 'ghost'"
+          >
             <ASBlock :block="block" />
           </Bubble>
         </template>
@@ -13,39 +21,92 @@
           class="tw-rounded-md tw-border tw-border-red-200 tw-bg-red-50 tw-p-3 tw-text-sm tw-text-red-900 dark:tw-border-red-900 dark:tw-bg-red-950 dark:tw-text-red-50"
         >
           <div class="tw-flex tw-items-center tw-gap-2 tw-font-medium">
-            <Icon icon="lucide:triangle-alert" class="tw-h-4 tw-w-4" />
+            <Icon
+              icon="lucide:triangle-alert"
+              class="tw-h-4 tw-w-4"
+            />
             回复出错
           </div>
           <p class="tw-mt-1 tw-text-xs">{{ message.error?.message || '未知错误' }}</p>
         </div>
       </div>
 
-      <div v-if="dataBlocks.length > 0" class="tw-flex tw-flex-wrap tw-gap-4">
-        <ASBlock v-for="(block, index) in dataBlocks" :key="`data-${index}`" :block="block" />
+      <div
+        v-if="dataBlocks.length > 0"
+        class="tw-flex tw-flex-wrap tw-gap-4"
+      >
+        <ASBlock
+          v-for="(block, index) in dataBlocks"
+          :key="`data-${index}`"
+          :block="block"
+        />
       </div>
 
-      <div v-if="!isUser" class="tw-flex tw-items-center tw-gap-1 tw-pl-2">
+      <div
+        v-if="!isUser"
+        class="tw-flex tw-items-center tw-gap-1 tw-pl-2"
+      >
         <span class="tw-font-mono tw-text-xs tw-text-muted-foreground">{{ timeText }}</span>
-        <Badge v-if="elapsedText" class="tw-font-mono">
-          <Icon v-if="isRunning" icon="lucide:loader-2" class="tw-h-3 tw-w-3 tw-animate-spin" />
-          <Icon v-else icon="lucide:check-circle" class="tw-h-3 tw-w-3" />
+        <Badge
+          v-if="elapsedText"
+          class="tw-font-mono"
+        >
+          <Icon
+            v-if="isRunning"
+            icon="lucide:loader-2"
+            class="tw-h-3 tw-w-3 tw-animate-spin"
+          />
+          <Icon
+            v-else
+            icon="lucide:check-circle"
+            class="tw-h-3 tw-w-3"
+          />
           <span class="tw-tabular-nums">{{ elapsedText }}</span>
           <template v-if="hasUsage">
-            <Icon icon="lucide:arrow-up" class="tw-ml-1 tw-h-3 tw-w-3" />
+            <Icon
+              icon="lucide:arrow-up"
+              class="tw-ml-1 tw-h-3 tw-w-3"
+            />
             <span class="tw-tabular-nums">{{ formatNumber(message.usage?.input_tokens || 0) }}</span>
-            <Icon icon="lucide:arrow-down" class="tw-ml-1 tw-h-3 tw-w-3" />
+            <Icon
+              icon="lucide:arrow-down"
+              class="tw-ml-1 tw-h-3 tw-w-3"
+            />
             <span class="tw-tabular-nums">{{ formatNumber(message.usage?.output_tokens || 0) }}</span>
           </template>
-          <AudioInlineControl v-for="ab in audioBlocks" :key="ab.id" :block="ab" />
+          <AudioInlineControl
+            v-for="ab in audioBlocks"
+            :key="ab.id"
+            :block="ab"
+          />
         </Badge>
-        <el-button v-if="plainText" type="text" size="mini" @click="copyText">
-          <Icon :icon="copied ? 'lucide:check' : 'lucide:copy'" class="tw-h-3 tw-w-3" />
+        <el-button
+          v-if="plainText"
+          type="text"
+          size="mini"
+          @click="copyText"
+        >
+          <Icon
+            :icon="copied ? 'lucide:check' : 'lucide:copy'"
+            class="tw-h-3 tw-w-3"
+          />
         </el-button>
       </div>
-      <div v-else class="tw-flex tw-items-center tw-justify-end tw-gap-1">
+      <div
+        v-else
+        class="tw-flex tw-items-center tw-justify-end tw-gap-1"
+      >
         <span class="tw-font-mono tw-text-xs tw-text-muted-foreground">{{ timeText }}</span>
-        <el-button v-if="plainText" type="text" size="mini" @click="copyText">
-          <Icon :icon="copied ? 'lucide:check' : 'lucide:copy'" class="tw-h-3 tw-w-3" />
+        <el-button
+          v-if="plainText"
+          type="text"
+          size="mini"
+          @click="copyText"
+        >
+          <Icon
+            :icon="copied ? 'lucide:check' : 'lucide:copy'"
+            class="tw-h-3 tw-w-3"
+          />
         </el-button>
       </div>
     </div>

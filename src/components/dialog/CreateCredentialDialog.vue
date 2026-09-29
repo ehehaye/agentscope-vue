@@ -1,20 +1,57 @@
 <template>
-  <el-dialog append-to-body title="新建凭证" :visible.sync="dialogVisible" width="520px" :close-on-click-modal="false">
-    <div v-loading="loadingSchemas" class="tw-space-y-4">
+  <el-dialog
+    append-to-body
+    title="新建凭证"
+    :visible.sync="dialogVisible"
+    width="520px"
+    :close-on-click-modal="false"
+  >
+    <div
+      v-loading="loadingSchemas"
+      class="tw-space-y-4"
+    >
       <el-form label-position="top">
         <el-form-item label="凭证类型">
-          <el-select v-model="selectedType" placeholder="选择凭证类型" class="tw-w-full">
-            <el-option v-for="s in schemas" :key="typeConst(s)" :label="s.title" :value="typeConst(s)" />
+          <el-select
+            v-model="selectedType"
+            placeholder="选择凭证类型"
+            class="tw-w-full"
+          >
+            <el-option
+              v-for="s in schemas"
+              :key="typeConst(s)"
+              :label="s.title"
+              :value="typeConst(s)"
+            />
           </el-select>
         </el-form-item>
       </el-form>
 
-      <SchemaForm v-if="selectedSchema" :schema="selectedSchema" :values="values" @change="onFieldChange" />
+      <SchemaForm
+        v-if="selectedSchema"
+        :schema="selectedSchema"
+        :values="values"
+        @change="onFieldChange"
+      />
     </div>
 
-    <span slot="footer" class="tw-dialog-footer">
-      <el-button size="small" @click="dialogVisible = false" :disabled="submitting">取消</el-button>
-      <el-button size="small" type="primary" :loading="submitting" :disabled="!selectedSchema" @click="handleSubmit">
+    <span
+      slot="footer"
+      class="tw-dialog-footer"
+    >
+      <el-button
+        size="small"
+        @click="dialogVisible = false"
+        :disabled="submitting"
+        >取消</el-button
+      >
+      <el-button
+        size="small"
+        type="primary"
+        :loading="submitting"
+        :disabled="!selectedSchema"
+        @click="handleSubmit"
+      >
         创建
       </el-button>
     </span>

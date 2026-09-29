@@ -5,11 +5,19 @@
     <div
       class="tw-flex tw-size-8 tw-shrink-0 tw-items-center tw-justify-center tw-rounded-lg tw-bg-muted tw-text-foreground"
     >
-      <Icon :icon="icon" class="tw-h-4 tw-w-4" />
+      <Icon
+        :icon="icon"
+        class="tw-h-4 tw-w-4"
+      />
     </div>
     <div class="tw-flex tw-max-w-sm tw-flex-col tw-items-center tw-gap-2">
       <div class="tw-text-sm tw-font-medium">{{ title }}</div>
-      <p v-if="description" class="tw-text-sm tw-text-muted-foreground">{{ description }}</p>
+      <p
+        v-if="description"
+        class="tw-text-sm tw-text-muted-foreground"
+      >
+        {{ description }}
+      </p>
     </div>
     <slot />
   </div>

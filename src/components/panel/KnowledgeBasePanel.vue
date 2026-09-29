@@ -2,12 +2,24 @@
   <div class="tw-flex tw-h-full tw-flex-col tw-gap-2">
     <div class="tw-flex tw-items-center tw-justify-between tw-gap-2">
       <span class="tw-text-sm tw-text-muted-foreground">选择要附加到当前会话的知识库。</span>
-      <KnowledgeBaseParametersPopover :value="value" :schema="schema" :disabled="disabled" @change="onChange" />
+      <KnowledgeBaseParametersPopover
+        :value="value"
+        :schema="schema"
+        :disabled="disabled"
+        @change="onChange"
+      />
     </div>
     <InputGroup>
-      <InputGroupInput v-model="search" placeholder="搜索知识库" :disabled="disabled" />
+      <InputGroupInput
+        v-model="search"
+        placeholder="搜索知识库"
+        :disabled="disabled"
+      />
       <InputGroupAddon align="inline-end">
-        <Icon icon="lucide:search" class="tw-h-4 tw-w-4" />
+        <Icon
+          icon="lucide:search"
+          class="tw-h-4 tw-w-4"
+        />
       </InputGroupAddon>
     </InputGroup>
 
@@ -18,11 +30,25 @@
         </div>
       </template>
       <template v-else-if="filtered.length === 0">
-        <PanelEmpty :icon="emptyIcon" :title="emptyTitle" :description="emptyDescription" />
+        <PanelEmpty
+          :icon="emptyIcon"
+          :title="emptyTitle"
+          :description="emptyDescription"
+        />
       </template>
       <template v-else>
-        <Item v-for="kb in filtered" :key="kb.id" variant="outline" class="tw-cursor-pointer" @click="toggle(kb.id)">
-          <el-checkbox :value="selectedIds.has(kb.id)" :disabled="disabled" @click.native.stop />
+        <Item
+          v-for="kb in filtered"
+          :key="kb.id"
+          variant="outline"
+          class="tw-cursor-pointer"
+          @click="toggle(kb.id)"
+        >
+          <el-checkbox
+            :value="selectedIds.has(kb.id)"
+            :disabled="disabled"
+            @click.native.stop
+          />
           <ItemContent>
             <ItemTitle>
               <span class="tw-cursor-pointer">{{ kb.name }}</span>

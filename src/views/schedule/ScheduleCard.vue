@@ -10,10 +10,19 @@
       data-variant="icon"
       class="tw-flex tw-shrink-0 tw-items-center tw-justify-center tw-gap-2 [&_svg]:tw-pointer-events-none [&_svg]:tw-h-4 [&_svg]:tw-w-4"
     >
-      <Icon v-if="schedule.data.enabled" icon="lucide:bot" />
-      <Icon v-else icon="lucide:bot-off" />
+      <Icon
+        v-if="schedule.data.enabled"
+        icon="lucide:bot"
+      />
+      <Icon
+        v-else
+        icon="lucide:bot-off"
+      />
     </div>
-    <div data-slot="item-content" class="tw-flex tw-flex-1 tw-flex-col tw-gap-1">
+    <div
+      data-slot="item-content"
+      class="tw-flex tw-flex-1 tw-flex-col tw-gap-1"
+    >
       <div
         data-slot="item-title"
         class="tw-line-clamp-1 tw-flex tw-w-fit tw-items-center tw-gap-2 tw-text-sm tw-font-medium"
@@ -29,20 +38,37 @@
           v-if="!schedule.data.enabled"
           class="tw-inline-flex tw-items-center tw-gap-1 tw-rounded-md tw-border tw-border-transparent tw-bg-secondary tw-px-2 tw-py-0.5 tw-text-xs tw-font-medium tw-text-secondary-foreground"
         >
-          <Icon icon="lucide:pause" class="tw-h-3 tw-w-3" />
+          <Icon
+            icon="lucide:pause"
+            class="tw-h-3 tw-w-3"
+          />
           <span>已禁用</span>
         </span>
         <span class="tw-inline-flex tw-items-center tw-gap-1 tw-pl-0 tw-text-xs tw-font-medium tw-text-primary">
-          <Icon icon="lucide:calendar" class="tw-h-3 tw-w-3" data-icon="inline-start" />
+          <Icon
+            icon="lucide:calendar"
+            class="tw-h-3 tw-w-3"
+            data-icon="inline-start"
+          />
           <span>{{ new Date(schedule.data.started_at).toLocaleDateString() }}</span>
-          <span v-if="schedule.data.ended_at" class="tw-inline-flex tw-items-center tw-gap-1">
-            <Icon icon="lucide:arrow-right" class="tw-h-3 tw-w-3 tw-text-muted-foreground" />
+          <span
+            v-if="schedule.data.ended_at"
+            class="tw-inline-flex tw-items-center tw-gap-1"
+          >
+            <Icon
+              icon="lucide:arrow-right"
+              class="tw-h-3 tw-w-3 tw-text-muted-foreground"
+            />
             <span>{{ new Date(schedule.data.ended_at).toLocaleDateString() }}</span>
           </span>
           <span>{{ parsed.time }}</span>
         </span>
         <span class="tw-inline-flex tw-items-center tw-gap-1 tw-text-xs tw-font-medium tw-text-primary">
-          <Icon icon="lucide:clipboard-clock" class="tw-h-3 tw-w-3" data-icon="inline-start" />
+          <Icon
+            icon="lucide:clipboard-clock"
+            class="tw-h-3 tw-w-3"
+            data-icon="inline-start"
+          />
           <span>{{ frequencyLabel }}</span>
         </span>
       </div>

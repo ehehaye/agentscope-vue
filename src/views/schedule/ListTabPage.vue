@@ -12,11 +12,17 @@
       />
     </div>
     <div class="tw-size-full tw-overflow-y-auto tw-p-4">
-      <div v-if="loading" class="tw-flex tw-h-full tw-items-center tw-justify-center tw-text-muted-foreground">
+      <div
+        v-if="loading"
+        class="tw-flex tw-h-full tw-items-center tw-justify-center tw-text-muted-foreground"
+      >
         加载中...
       </div>
       <EmptyState v-else-if="filteredSchedules.length === 0" />
-      <div v-else class="tw-space-y-3">
+      <div
+        v-else
+        class="tw-space-y-3"
+      >
         <ScheduleCard
           v-for="schedule in filteredSchedules"
           :key="schedule.id"

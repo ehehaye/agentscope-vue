@@ -1,10 +1,27 @@
 <template>
-  <el-drawer :title="`检索测试 - ${knowledgeBaseName}`" :visible.sync="drawerVisible" direction="rtl" size="30rem">
+  <el-drawer
+    :title="`检索测试 - ${knowledgeBaseName}`"
+    :visible.sync="drawerVisible"
+    direction="rtl"
+    size="30rem"
+  >
     <div class="tw-flex tw-h-full tw-flex-col tw-gap-4 tw-p-4">
-      <el-input v-model="query" placeholder="输入查询..." @keyup.enter.native="handleSearch" />
-      <el-button type="primary" :loading="loading" @click="handleSearch">搜索</el-button>
+      <el-input
+        v-model="query"
+        placeholder="输入查询..."
+        @keyup.enter.native="handleSearch"
+      />
+      <el-button
+        type="primary"
+        :loading="loading"
+        @click="handleSearch"
+        >搜索</el-button
+      >
       <div class="tw-flex-1 tw-overflow-y-auto tw-space-y-2">
-        <div v-if="results.length === 0 && !loading" class="tw-text-sm tw-text-muted-foreground">
+        <div
+          v-if="results.length === 0 && !loading"
+          class="tw-text-sm tw-text-muted-foreground"
+        >
           输入查询并点击搜索
         </div>
         <div

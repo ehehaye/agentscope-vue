@@ -6,16 +6,34 @@
     :close-on-click-modal="false"
     append-to-body
   >
-    <AgentFormFields v-if="schema && values" :schema="schema" :values="values" @change="handleChange" />
-    <p v-else class="tw-text-sm tw-text-muted-foreground">加载中…</p>
+    <AgentFormFields
+      v-if="schema && values"
+      :schema="schema"
+      :values="values"
+      @change="handleChange"
+    />
+    <p
+      v-else
+      class="tw-text-sm tw-text-muted-foreground"
+    >
+      加载中…
+    </p>
     <p
       v-if="errorMsg"
       class="tw-mt-3 tw-mb-0 tw-rounded-md tw-bg-red-50 tw-p-2 tw-text-xs tw-text-red-600 dark:tw-bg-red-950 dark:tw-text-red-400"
     >
       {{ errorMsg }}
     </p>
-    <span slot="footer" class="tw-dialog-footer">
-      <el-button size="small" @click="dialogVisible = false" :disabled="submitting">取消</el-button>
+    <span
+      slot="footer"
+      class="tw-dialog-footer"
+    >
+      <el-button
+        size="small"
+        @click="dialogVisible = false"
+        :disabled="submitting"
+        >取消</el-button
+      >
       <el-button
         size="small"
         type="primary"

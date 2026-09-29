@@ -9,7 +9,10 @@
       custom-class="schedule-detail-drawer"
       @close="$emit('update:visible', false)"
     >
-      <div v-if="schedule" class="tw-flex tw-h-full tw-flex-col tw-gap-4 tw-p-4">
+      <div
+        v-if="schedule"
+        class="tw-flex tw-h-full tw-flex-col tw-gap-4 tw-p-4"
+      >
         <p class="tw-text-sm tw-text-muted-foreground">{{ schedule.data.description }}</p>
 
         <div class="tw-flex tw-flex-col tw-gap-2">
@@ -31,10 +34,16 @@
         <div class="tw-flex tw-flex-1 tw-flex-col tw-gap-2 tw-overflow-hidden">
           <h3 class="tw-text-sm tw-font-semibold">执行历史</h3>
           <div class="tw-flex-1 tw-overflow-y-auto tw-space-y-1">
-            <div v-if="sessionsLoading" class="tw-py-4 tw-text-center tw-text-sm tw-text-muted-foreground">
+            <div
+              v-if="sessionsLoading"
+              class="tw-py-4 tw-text-center tw-text-sm tw-text-muted-foreground"
+            >
               加载中...
             </div>
-            <div v-else-if="sessions.length === 0" class="tw-py-4 tw-text-center tw-text-sm tw-text-muted-foreground">
+            <div
+              v-else-if="sessions.length === 0"
+              class="tw-py-4 tw-text-center tw-text-sm tw-text-muted-foreground"
+            >
               暂无数据
             </div>
             <div
@@ -51,8 +60,15 @@
         </div>
 
         <div class="tw-mt-auto tw-pt-2">
-          <el-button type="danger" size="small" @click="handleDelete">
-            <Icon icon="lucide:trash-2" class="tw-mr-1 tw-h-3 tw-w-3" />
+          <el-button
+            type="danger"
+            size="small"
+            @click="handleDelete"
+          >
+            <Icon
+              icon="lucide:trash-2"
+              class="tw-mr-1 tw-h-3 tw-w-3"
+            />
             删除
           </el-button>
         </div>

@@ -10,11 +10,21 @@
           class="tw-mb-2 tw-flex tw-items-center tw-justify-between tw-px-2 tw-text-xs tw-font-medium tw-text-muted-foreground"
         >
           <span>知识库列表</span>
-          <el-button type="text" size="mini" @click="createOpen = true">
-            <Icon icon="lucide:plus" class="tw-h-3.5 tw-w-3.5" />
+          <el-button
+            type="text"
+            size="mini"
+            @click="createOpen = true"
+          >
+            <Icon
+              icon="lucide:plus"
+              class="tw-h-3.5 tw-w-3.5"
+            />
           </el-button>
         </div>
-        <div v-if="loading" class="tw-flex tw-flex-1 tw-flex-col tw-items-center tw-justify-center tw-py-8">
+        <div
+          v-if="loading"
+          class="tw-flex tw-flex-1 tw-flex-col tw-items-center tw-justify-center tw-py-8"
+        >
           <Spinner className="h-6 tw-w-6" />
           <p class="tw-mt-2 tw-text-xs tw-text-muted-foreground">加载中…</p>
         </div>
@@ -24,9 +34,17 @@
           :title="'暂无知识库'"
           :description="'创建知识库并上传文档，供智能体检索。'"
         >
-          <el-button size="small" @click="createOpen = true"> 新建知识库 </el-button>
+          <el-button
+            size="small"
+            @click="createOpen = true"
+          >
+            新建知识库
+          </el-button>
         </PanelEmpty>
-        <div v-else class="tw-space-y-1">
+        <div
+          v-else
+          class="tw-space-y-1"
+        >
           <div
             v-for="kb in knowledgeBases"
             :key="kb.id"
@@ -40,20 +58,36 @@
               class="tw-ml-1 tw-shrink-0 tw-rounded tw-border tw-border-border tw-px-1 tw-text-10px"
               >只读</span
             >
-            <el-dropdown v-if="kb.editable" trigger="click" @command="handleCommand($event, kb)">
+            <el-dropdown
+              v-if="kb.editable"
+              trigger="click"
+              @command="handleCommand($event, kb)"
+            >
               <span
                 class="tw-ml-1 tw-opacity-0 tw-transition-opacity tw-duration-150 group-hover:tw-opacity-100"
                 @click.stop
               >
-                <Icon icon="lucide:ellipsis" class="tw-h-3.5 tw-w-3.5" />
+                <Icon
+                  icon="lucide:ellipsis"
+                  class="tw-h-3.5 tw-w-3.5"
+                />
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item command="edit">
-                  <Icon icon="lucide:pencil" class="tw-mr-1 tw-h-3.5 tw-w-3.5" />
+                  <Icon
+                    icon="lucide:pencil"
+                    class="tw-mr-1 tw-h-3.5 tw-w-3.5"
+                  />
                   编辑
                 </el-dropdown-item>
-                <el-dropdown-item command="delete" divided>
-                  <Icon icon="lucide:trash-2" class="tw-mr-1 tw-h-3.5 tw-w-3.5" />
+                <el-dropdown-item
+                  command="delete"
+                  divided
+                >
+                  <Icon
+                    icon="lucide:trash-2"
+                    class="tw-mr-1 tw-h-3.5 tw-w-3.5"
+                  />
                   删除
                 </el-dropdown-item>
               </el-dropdown-menu>
@@ -66,8 +100,15 @@
     <main
       class="tw-shadow-panel tw-flex tw-min-h-0 tw-min-w-0 tw-flex-1 tw-flex-col tw-overflow-hidden tw-rounded-22px tw-bg-card"
     >
-      <DetailPanel v-if="selectedKb" :knowledge-base="selectedKb" @test="testOpen = true" />
-      <div v-else class="tw-flex tw-h-full tw-items-center tw-justify-center">
+      <DetailPanel
+        v-if="selectedKb"
+        :knowledge-base="selectedKb"
+        @test="testOpen = true"
+      />
+      <div
+        v-else
+        class="tw-flex tw-h-full tw-items-center tw-justify-center"
+      >
         <div class="tw-flex tw-max-w-sm tw-flex-col tw-items-center tw-gap-2 tw-text-center">
           <div class="tw-text-sm tw-font-medium">选择知识库</div>
           <p class="tw-text-xs tw-text-muted-foreground">从左侧列表选择一个知识库查看详情。</p>
@@ -86,7 +127,11 @@
       :create-fn="credentialApi.create"
       @created="credentialTrigger++"
     />
-    <EditKnowledgeBaseDialog :visible.sync="editOpen" :knowledge-base="editTarget" @updated="refetch" />
+    <EditKnowledgeBaseDialog
+      :visible.sync="editOpen"
+      :knowledge-base="editTarget"
+      @updated="refetch"
+    />
     <KnowledgeSearchDrawer
       v-if="selectedKb"
       :visible.sync="testOpen"

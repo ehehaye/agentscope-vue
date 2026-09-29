@@ -6,9 +6,16 @@
     width="520px"
     :close-on-click-modal="false"
   >
-    <div v-if="card" class="tw-space-y-4">
+    <div
+      v-if="card"
+      class="tw-space-y-4"
+    >
       <div class="tw-flex tw-items-center tw-gap-3">
-        <img v-if="card.icon_url" :src="card.icon_url" class="tw-h-10 tw-w-10 tw-rounded-md tw-object-cover" />
+        <img
+          v-if="card.icon_url"
+          :src="card.icon_url"
+          class="tw-h-10 tw-w-10 tw-rounded-md tw-object-cover"
+        />
         <div
           v-else
           class="tw-flex tw-h-10 tw-w-10 tw-items-center tw-justify-center tw-rounded-md tw-bg-muted tw-text-sm tw-font-bold"
@@ -21,9 +28,15 @@
         </div>
       </div>
 
-      <el-form label-position="top" class="tw-space-y-2">
+      <el-form
+        label-position="top"
+        class="tw-space-y-2"
+      >
         <el-form-item label="名称">
-          <el-input v-model="name" :placeholder="card.name" />
+          <el-input
+            v-model="name"
+            :placeholder="card.name"
+          />
         </el-form-item>
       </el-form>
 
@@ -44,9 +57,23 @@
       {{ error }}
     </p>
 
-    <span slot="footer" class="tw-dialog-footer">
-      <el-button size="small" @click="dialogVisible = false" :disabled="submitting">取消</el-button>
-      <el-button size="small" type="primary" :loading="submitting" :disabled="!card || !name" @click="handleSubmit">
+    <span
+      slot="footer"
+      class="tw-dialog-footer"
+    >
+      <el-button
+        size="small"
+        @click="dialogVisible = false"
+        :disabled="submitting"
+        >取消</el-button
+      >
+      <el-button
+        size="small"
+        type="primary"
+        :loading="submitting"
+        :disabled="!card || !name"
+        @click="handleSubmit"
+      >
         {{ editing ? '保存' : '安装' }}
       </el-button>
     </span>

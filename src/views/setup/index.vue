@@ -2,15 +2,33 @@
   <div class="tw-setup-page tw-flex tw-min-h-full tw-items-center tw-justify-center tw-bg-canvas tw-p-6">
     <div class="tw-w-full tw-max-w-md tw-rounded-xl tw-border tw-border-border tw-bg-card tw-p-8 tw-shadow-panel">
       <div class="tw-mb-6 tw-flex tw-flex-col tw-items-center tw-text-center">
-        <img :src="agentscopeLogo" alt="AgentScope" class="tw-mb-3 tw-h-12 tw-w-12" />
+        <img
+          :src="agentscopeLogo"
+          alt="AgentScope"
+          class="tw-mb-3 tw-h-12 tw-w-12"
+        />
         <h1 class="tw-text-xl tw-font-semibold tw-text-foreground">AgentScope</h1>
         <p class="tw-mt-2 tw-text-sm tw-text-muted-foreground">输入服务器地址和你的用户名即可开始。</p>
       </div>
 
-      <el-alert v-if="errorMessage" :title="errorMessage" type="error" show-icon :closable="false" class="tw-mb-4" />
+      <el-alert
+        v-if="errorMessage"
+        :title="errorMessage"
+        type="error"
+        show-icon
+        :closable="false"
+        class="tw-mb-4"
+      />
 
-      <el-form label-position="top" @submit.native.prevent>
-        <el-form-item label="服务器地址" required :rules="[{ required: true, message: '请填写' }]">
+      <el-form
+        label-position="top"
+        @submit.native.prevent
+      >
+        <el-form-item
+          label="服务器地址"
+          required
+          :rules="[{ required: true, message: '请填写' }]"
+        >
           <el-input
             v-model.trim="form.serverUrl"
             placeholder="http://localhost:8000"
@@ -18,10 +36,23 @@
             @keyup.enter.native="onSubmit"
           />
         </el-form-item>
-        <el-form-item label="用户名" required :rules="[{ required: true, message: '请填写' }]">
-          <el-input v-model.trim="form.username" placeholder="user" clearable @keyup.enter.native="onSubmit" />
+        <el-form-item
+          label="用户名"
+          required
+          :rules="[{ required: true, message: '请填写' }]"
+        >
+          <el-input
+            v-model.trim="form.username"
+            placeholder="user"
+            clearable
+            @keyup.enter.native="onSubmit"
+          />
         </el-form-item>
-        <el-form-item label="模式" required :rules="[{ required: true, message: '请选择' }]">
+        <el-form-item
+          label="模式"
+          required
+          :rules="[{ required: true, message: '请选择' }]"
+        >
           <el-radio-group v-model="form.apiMode">
             <el-radio :label="API_MODES.DIRECT">直连</el-radio>
             <el-radio :label="API_MODES.PROXY">代理</el-radio>
@@ -29,7 +60,14 @@
         </el-form-item>
       </el-form>
 
-      <el-button type="primary" class="tw-w-full" :loading="loading" @click="onSubmit"> 开始使用 </el-button>
+      <el-button
+        type="primary"
+        class="tw-w-full"
+        :loading="loading"
+        @click="onSubmit"
+      >
+        开始使用
+      </el-button>
     </div>
   </div>
 </template>

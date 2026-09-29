@@ -1,7 +1,10 @@
 <template>
   <div class="tw-flex tw-h-full tw-flex-col tw-gap-2">
     <span class="tw-text-sm tw-text-muted-foreground">当前会话已装备的 MCP 服务。</span>
-    <el-input v-model="search" placeholder="搜索 MCP"></el-input>
+    <el-input
+      v-model="search"
+      placeholder="搜索 MCP"
+    ></el-input>
 
     <div class="tw-flex tw-flex-1 tw-flex-col tw-gap-2 tw-overflow-y-auto">
       <template v-if="loading">
@@ -10,10 +13,19 @@
         </div>
       </template>
       <template v-else-if="filtered.length === 0">
-        <PanelEmpty :icon="emptyIcon" :title="emptyTitle" :description="emptyDescription" />
+        <PanelEmpty
+          :icon="emptyIcon"
+          :title="emptyTitle"
+          :description="emptyDescription"
+        />
       </template>
       <template v-else>
-        <Item v-for="mcp in filtered" :key="mcp.name" variant="outline" class="tw-group/mcp">
+        <Item
+          v-for="mcp in filtered"
+          :key="mcp.name"
+          variant="outline"
+          class="tw-group/mcp"
+        >
           <ItemMedia variant="image">
             <img
               v-if="installedByName[mcp.name]?.icon_url"
@@ -21,21 +33,30 @@
               :alt="mcp.name"
               class="tw-size-full tw-object-cover"
             />
-            <span v-else class="tw-flex tw-size-full tw-items-center tw-justify-center tw-text-sm tw-font-medium">
+            <span
+              v-else
+              class="tw-flex tw-size-full tw-items-center tw-justify-center tw-text-sm tw-font-medium"
+            >
               {{ mcp.name.slice(0, 1).toUpperCase() }}
             </span>
           </ItemMedia>
           <ItemContent>
             <ItemTitle>
               <span class="tw-truncate">{{ mcp.name }}</span>
-              <span v-if="installedByName[mcp.name]?.author" class="tw-text-xs tw-text-muted-foreground">
+              <span
+                v-if="installedByName[mcp.name]?.author"
+                class="tw-text-xs tw-text-muted-foreground"
+              >
                 @{{ installedByName[mcp.name].author }}
               </span>
               <span class="tw-text-xs tw-text-muted-foreground/50">
                 {{ mcp.mcp_config?.type === 'stdio_mcp' ? '#stdio' : '#http' }}
               </span>
             </ItemTitle>
-            <ItemDescription v-if="installedByName[mcp.name]?.description" class="tw-line-clamp-1">
+            <ItemDescription
+              v-if="installedByName[mcp.name]?.description"
+              class="tw-line-clamp-1"
+            >
               {{ installedByName[mcp.name].description }}
             </ItemDescription>
           </ItemContent>
@@ -51,14 +72,21 @@
               class="tw-opacity-0 group-hover/mcp:tw-opacity-100"
               @click="askRemove(mcp.name)"
             >
-              <Icon icon="lucide:trash" class="tw-h-3 tw-w-3" />
+              <Icon
+                icon="lucide:trash"
+                class="tw-h-3 tw-w-3"
+              />
             </el-button>
           </ItemActions>
         </Item>
       </template>
     </div>
 
-    <AddMCPDialog :present="presentNames" :on-add="onAdd" :on-add-from-library="onAddFromLibrary" />
+    <AddMCPDialog
+      :present="presentNames"
+      :on-add="onAdd"
+      :on-add-from-library="onAddFromLibrary"
+    />
   </div>
 </template>
 

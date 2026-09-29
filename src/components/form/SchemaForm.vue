@@ -1,5 +1,9 @@
 <template>
-  <el-form label-position="top" class="tw-schema-form" :class="columns > 1 ? 'tw-schema-form--cols' : null">
+  <el-form
+    label-position="top"
+    class="tw-schema-form"
+    :class="columns > 1 ? 'tw-schema-form--cols' : null"
+  >
     <el-form-item
       v-for="[key, prop] in entries"
       :key="key"
@@ -7,7 +11,10 @@
       :class="columns > 1 && prop.format === 'textarea' ? 'tw-schema-form__item--wide' : null"
     >
       <template v-if="effectiveType(prop) === 'boolean'">
-        <el-switch :value="values[key]" @change="(val) => onChange(key, val)" />
+        <el-switch
+          :value="values[key]"
+          @change="(val) => onChange(key, val)"
+        />
       </template>
 
       <template v-else-if="enumValues(prop)">
@@ -17,7 +24,12 @@
           :placeholder="placeholderFor(key, prop)"
           class="tw-w-full"
         >
-          <el-option v-for="opt in enumValues(prop)" :key="String(opt)" :label="String(opt)" :value="String(opt)" />
+          <el-option
+            v-for="opt in enumValues(prop)"
+            :key="String(opt)"
+            :label="String(opt)"
+            :value="String(opt)"
+          />
         </el-select>
       </template>
 
@@ -53,7 +65,10 @@
         />
       </template>
 
-      <div v-if="descriptionFor(key, prop)" class="tw-text-xs tw-text-muted-foreground tw-mt-1">
+      <div
+        v-if="descriptionFor(key, prop)"
+        class="tw-text-xs tw-text-muted-foreground tw-mt-1"
+      >
         {{ descriptionFor(key, prop) }}
       </div>
     </el-form-item>

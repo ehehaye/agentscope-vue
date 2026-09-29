@@ -7,17 +7,41 @@
     :before-close="onClose"
     destroy-on-close
   >
-    <div v-if="document" class="tw-flex tw-h-full tw-flex-col tw-gap-3">
+    <div
+      v-if="document"
+      class="tw-flex tw-h-full tw-flex-col tw-gap-3"
+    >
       <p class="tw-text-sm tw-text-muted-foreground">共 {{ document.chunk_count || 0 }} 个分块</p>
-      <el-tabs v-model="activeTab" class="tw-flex-1 tw-min-h-0 tw-flex tw-flex-col">
-        <el-tab-pane label="分块" name="chunks">
-          <div class="tw-flex tw-flex-col tw-gap-2" v-loading="chunksLoading">
-            <p v-if="chunksError" class="tw-text-sm tw-text-danger">{{ chunksError }}</p>
-            <div v-if="chunksUnsupported" class="tw-text-center tw-py-6 tw-text-sm tw-text-muted-foreground">
+      <el-tabs
+        v-model="activeTab"
+        class="tw-flex-1 tw-min-h-0 tw-flex tw-flex-col"
+      >
+        <el-tab-pane
+          label="分块"
+          name="chunks"
+        >
+          <div
+            class="tw-flex tw-flex-col tw-gap-2"
+            v-loading="chunksLoading"
+          >
+            <p
+              v-if="chunksError"
+              class="tw-text-sm tw-text-danger"
+            >
+              {{ chunksError }}
+            </p>
+            <div
+              v-if="chunksUnsupported"
+              class="tw-text-center tw-py-6 tw-text-sm tw-text-muted-foreground"
+            >
               当前向量存储不支持列出分块
             </div>
             <template v-else-if="chunks.length > 0">
-              <div v-for="chunk in chunks" :key="chunk.chunk_index" class="tw-rounded-md tw-border tw-p-3">
+              <div
+                v-for="chunk in chunks"
+                :key="chunk.chunk_index"
+                class="tw-rounded-md tw-border tw-p-3"
+              >
                 <span class="tw-text-xs tw-text-muted-foreground tw-font-mono">
                   #{{ chunk.chunk_index + 1 }} / {{ chunk.total_chunks }}
                 </span>
@@ -26,7 +50,10 @@
                 </p>
               </div>
             </template>
-            <div v-else-if="!chunksLoading" class="tw-text-center tw-py-6 tw-text-sm tw-text-muted-foreground">
+            <div
+              v-else-if="!chunksLoading"
+              class="tw-text-center tw-py-6 tw-text-sm tw-text-muted-foreground"
+            >
               暂无分块
             </div>
             <el-pagination
@@ -40,12 +67,29 @@
             />
           </div>
         </el-tab-pane>
-        <el-tab-pane label="预览" name="preview">
-          <div class="tw-flex tw-flex-col tw-gap-2" v-loading="previewLoading">
-            <p v-if="previewError" class="tw-text-sm tw-text-danger">{{ previewError }}</p>
+        <el-tab-pane
+          label="预览"
+          name="preview"
+        >
+          <div
+            class="tw-flex tw-flex-col tw-gap-2"
+            v-loading="previewLoading"
+          >
+            <p
+              v-if="previewError"
+              class="tw-text-sm tw-text-danger"
+            >
+              {{ previewError }}
+            </p>
             <template v-if="isText && text !== null">
-              <MarkdownRenderer v-if="media === 'text/markdown'" :content="text" />
-              <pre v-else class="tw-text-sm tw-whitespace-pre-wrap tw-break-words">{{ text }}</pre>
+              <MarkdownRenderer
+                v-if="media === 'text/markdown'"
+                :content="text"
+              />
+              <pre
+                v-else
+                class="tw-text-sm tw-whitespace-pre-wrap tw-break-words"
+                >{{ text }}</pre>
             </template>
             <iframe
               v-else-if="isPdf && tokenUrl"
@@ -53,12 +97,25 @@
               :title="document.filename"
               class="tw-h-60vh tw-w-full tw-border"
             />
-            <img v-else-if="isImage && tokenUrl" :src="tokenUrl" :alt="document.filename" class="tw-max-w-full" />
-            <div v-else-if="!previewLoading" class="tw-text-center tw-py-6">
+            <img
+              v-else-if="isImage && tokenUrl"
+              :src="tokenUrl"
+              :alt="document.filename"
+              class="tw-max-w-full"
+            />
+            <div
+              v-else-if="!previewLoading"
+              class="tw-text-center tw-py-6"
+            >
               <p class="tw-text-sm tw-text-muted-foreground">
                 {{ tooLargeToInline ? '文件过大，无法内联预览' : '无法预览此文件类型' }}
               </p>
-              <el-button size="small" class="tw-mt-2" icon="el-icon-download" @click="handleDownload">
+              <el-button
+                size="small"
+                class="tw-mt-2"
+                icon="el-icon-download"
+                @click="handleDownload"
+              >
                 下载文件
               </el-button>
             </div>

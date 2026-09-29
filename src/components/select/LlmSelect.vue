@@ -1,28 +1,52 @@
 <template>
-  <el-dropdown trigger="click" @command="handleCommand">
+  <el-dropdown
+    trigger="click"
+    @command="handleCommand"
+  >
     <span
       class="el-dropdown-link tw-inline-flex tw-w-full tw-cursor-pointer tw-items-center tw-justify-between tw-gap-2 tw-rounded-md tw-border tw-border-border tw-px-3 tw-py-1.5 tw-text-sm hover:tw-bg-row-hover"
       :class="{ 'tw-opacity-50': loading }"
     >
       <span class="tw-truncate">{{ displayLabel }}</span>
-      <Icon icon="lucide:chevron-down" class="tw-h-4 tw-w-4 tw-shrink-0 tw-text-muted-foreground" />
+      <Icon
+        icon="lucide:chevron-down"
+        class="tw-h-4 tw-w-4 tw-shrink-0 tw-text-muted-foreground"
+      />
     </span>
-    <el-dropdown-menu slot="dropdown" class="tw-max-h-72 tw-overflow-y-auto">
+    <el-dropdown-menu
+      slot="dropdown"
+      class="tw-max-h-72 tw-overflow-y-auto"
+    >
       <template v-if="!loading && groupEntries.length === 0">
         <el-dropdown-item disabled>暂无可用模型</el-dropdown-item>
-        <el-dropdown-item command="NEW_CREDENTIAL" class="tw-text-xs">
+        <el-dropdown-item
+          command="NEW_CREDENTIAL"
+          class="tw-text-xs"
+        >
           <span class="tw-inline-flex tw-items-center tw-gap-1">
-            <Icon icon="lucide:plus" class="tw-h-3.5 tw-w-3.5" />
+            <Icon
+              icon="lucide:plus"
+              class="tw-h-3.5 tw-w-3.5"
+            />
             新建凭证
           </span>
         </el-dropdown-item>
       </template>
       <template v-else>
         <template v-for="(entry, idx) in groupEntries">
-          <el-dropdown-item v-if="idx > 0" :key="'sep-' + entry[0]" divided disabled>
+          <el-dropdown-item
+            v-if="idx > 0"
+            :key="'sep-' + entry[0]"
+            divided
+            disabled
+          >
             {{ entry[0].replace(/_credential$/, '') }}
           </el-dropdown-item>
-          <el-dropdown-item v-else :key="'label-' + entry[0]" disabled>
+          <el-dropdown-item
+            v-else
+            :key="'label-' + entry[0]"
+            disabled
+          >
             {{ entry[0].replace(/_credential$/, '') }}
           </el-dropdown-item>
 
@@ -37,11 +61,22 @@
             </el-dropdown-item>
           </template>
           <template v-else>
-            <el-dropdown-item v-for="item in entry[1]" :key="item.credential.id" :command="null" class="tw-has-submenu">
-              <el-dropdown placement="right-start" @command="handleCommand">
+            <el-dropdown-item
+              v-for="item in entry[1]"
+              :key="item.credential.id"
+              :command="null"
+              class="tw-has-submenu"
+            >
+              <el-dropdown
+                placement="right-start"
+                @command="handleCommand"
+              >
                 <span class="tw-inline-flex tw-w-full tw-items-center tw-justify-between">
                   {{ credentialLabel(item.credential) }}
-                  <Icon icon="lucide:chevron-right" class="tw-ml-2 tw-h-3.5 tw-w-3.5" />
+                  <Icon
+                    icon="lucide:chevron-right"
+                    class="tw-ml-2 tw-h-3.5 tw-w-3.5"
+                  />
                 </span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item
@@ -57,9 +92,15 @@
             </el-dropdown-item>
           </template>
         </template>
-        <el-dropdown-item divided command="NEW_CREDENTIAL">
+        <el-dropdown-item
+          divided
+          command="NEW_CREDENTIAL"
+        >
           <span class="tw-inline-flex tw-items-center tw-gap-1">
-            <Icon icon="lucide:plus" class="tw-h-3.5 tw-w-3.5" />
+            <Icon
+              icon="lucide:plus"
+              class="tw-h-3.5 tw-w-3.5"
+            />
             新建凭证
           </span>
         </el-dropdown-item>

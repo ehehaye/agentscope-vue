@@ -5,29 +5,54 @@
         <div class="tw-text-lg tw-font-medium">已安装的技能</div>
         <div class="tw-text-xs tw-text-muted-foreground">你已安装的技能</div>
       </div>
-      <el-input v-if="skills.length > 0" v-model="query" placeholder="搜索你的技能" size="small" class="tw-w-48" />
+      <el-input
+        v-if="skills.length > 0"
+        v-model="query"
+        placeholder="搜索你的技能"
+        size="small"
+        class="tw-w-48"
+      />
     </div>
 
     <div class="tw-flex-1 tw-overflow-y-auto">
-      <div v-if="loading" class="tw-flex tw-justify-center tw-py-10">
+      <div
+        v-if="loading"
+        class="tw-flex tw-justify-center tw-py-10"
+      >
         <Spinner class="tw-h-6 tw-w-6" />
       </div>
-      <div v-else-if="skills.length === 0" class="tw-flex tw-flex-col tw-items-center tw-gap-2 tw-py-10 tw-text-center">
-        <Icon icon="lucide:plug" class="tw-h-8 tw-w-8 tw-text-muted-foreground" />
+      <div
+        v-else-if="skills.length === 0"
+        class="tw-flex tw-flex-col tw-items-center tw-gap-2 tw-py-10 tw-text-center"
+      >
+        <Icon
+          icon="lucide:plug"
+          class="tw-h-8 tw-w-8 tw-text-muted-foreground"
+        />
         <div class="tw-text-sm tw-font-medium">还没有技能</div>
         <p class="tw-text-xs tw-text-muted-foreground">从左侧的来源中安装一个。</p>
       </div>
-      <div v-else-if="shown.length === 0" class="tw-py-10 tw-text-center tw-text-sm tw-text-muted-foreground">
+      <div
+        v-else-if="shown.length === 0"
+        class="tw-py-10 tw-text-center tw-text-sm tw-text-muted-foreground"
+      >
         没有找到内容
       </div>
-      <div v-else class="tw-space-y-2">
+      <div
+        v-else
+        class="tw-space-y-2"
+      >
         <div
           v-for="skill in shown"
           :key="skill.id"
           class="tw-flex tw-cursor-pointer tw-items-center tw-gap-3 tw-rounded-lg tw-border tw-border-border tw-p-3 tw-transition-colors hover:tw-bg-muted"
           @click="openDetail(skill)"
         >
-          <img v-if="skill.icon_url" :src="skill.icon_url" class="tw-h-10 tw-w-10 tw-rounded-md tw-object-cover" />
+          <img
+            v-if="skill.icon_url"
+            :src="skill.icon_url"
+            class="tw-h-10 tw-w-10 tw-rounded-md tw-object-cover"
+          />
           <div
             v-else
             class="tw-flex tw-h-10 tw-w-10 tw-items-center tw-justify-center tw-rounded-md tw-bg-muted tw-text-sm tw-font-bold"
@@ -37,7 +62,11 @@
           <div class="tw-min-w-0 tw-flex-1">
             <div class="tw-flex tw-items-center tw-gap-2">
               <span class="tw-font-medium">{{ skill.display_name || skill.name }}</span>
-              <span v-if="skill.hub_id" class="tw-text-xs tw-text-muted-foreground">@{{ skill.hub_id }}</span>
+              <span
+                v-if="skill.hub_id"
+                class="tw-text-xs tw-text-muted-foreground"
+                >@{{ skill.hub_id }}</span
+              >
               <span
                 v-for="tag in (skill.tags || []).slice(0, 4)"
                 :key="tag"
@@ -48,9 +77,20 @@
             <p class="tw-line-clamp-1 tw-text-xs tw-text-muted-foreground">{{ skill.description }}</p>
           </div>
           <div class="tw-flex tw-items-center tw-gap-2">
-            <span v-if="skill.version" class="tw-text-xs tw-text-muted-foreground">{{ skill.version }}</span>
-            <el-button type="text" size="mini" @click.stop="askRemove(skill)">
-              <Icon icon="lucide:trash-2" class="tw-h-3.5 tw-w-3.5" />
+            <span
+              v-if="skill.version"
+              class="tw-text-xs tw-text-muted-foreground"
+              >{{ skill.version }}</span
+            >
+            <el-button
+              type="text"
+              size="mini"
+              @click.stop="askRemove(skill)"
+            >
+              <Icon
+                icon="lucide:trash-2"
+                class="tw-h-3.5 tw-w-3.5"
+              />
             </el-button>
           </div>
         </div>
@@ -63,19 +103,41 @@
       direction="rtl"
       size="30rem"
     >
-      <div v-if="detailLoading" class="tw-flex tw-justify-center tw-py-10">
+      <div
+        v-if="detailLoading"
+        class="tw-flex tw-justify-center tw-py-10"
+      >
         <Spinner class="tw-h-6 tw-w-6" />
       </div>
-      <div v-else-if="detailSkill" class="tw-flex tw-h-full tw-flex-col tw-gap-4 tw-p-4">
+      <div
+        v-else-if="detailSkill"
+        class="tw-flex tw-h-full tw-flex-col tw-gap-4 tw-p-4"
+      >
         <p class="tw-text-sm tw-text-muted-foreground">{{ detailSkill.description }}</p>
-        <div v-if="detailSkill.version" class="tw-text-xs tw-text-muted-foreground">
+        <div
+          v-if="detailSkill.version"
+          class="tw-text-xs tw-text-muted-foreground"
+        >
           版本: {{ detailSkill.version }}
         </div>
-        <div v-if="detailSkill.hub_id" class="tw-text-xs tw-text-muted-foreground">来源: {{ detailSkill.hub_id }}</div>
-        <div v-if="detailMarkdown" class="tw-flex-1 tw-overflow-y-auto">
+        <div
+          v-if="detailSkill.hub_id"
+          class="tw-text-xs tw-text-muted-foreground"
+        >
+          来源: {{ detailSkill.hub_id }}
+        </div>
+        <div
+          v-if="detailMarkdown"
+          class="tw-flex-1 tw-overflow-y-auto"
+        >
           <MarkdownRenderer :content="detailMarkdown" />
         </div>
-        <div v-else class="tw-text-xs tw-text-muted-foreground">该技能没有提供 SKILL.md 正文。</div>
+        <div
+          v-else
+          class="tw-text-xs tw-text-muted-foreground"
+        >
+          该技能没有提供 SKILL.md 正文。
+        </div>
       </div>
     </el-drawer>
   </div>

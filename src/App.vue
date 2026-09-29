@@ -1,6 +1,12 @@
 <template>
-  <div id="app" class="tw-h-full tw-w-full">
-    <div id="as-app" class="tw-h-full tw-w-full">
+  <div
+    id="app"
+    class="tw-h-full tw-w-full"
+  >
+    <div
+      id="as-app"
+      class="tw-h-full tw-w-full"
+    >
       <router-view />
     </div>
   </div>

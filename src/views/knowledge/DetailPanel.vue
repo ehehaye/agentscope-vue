@@ -14,13 +14,22 @@
             只读
           </span>
         </div>
-        <p v-if="knowledgeBase.description" class="tw-text-sm tw-text-muted-foreground">
+        <p
+          v-if="knowledgeBase.description"
+          class="tw-text-sm tw-text-muted-foreground"
+        >
           {{ knowledgeBase.description }}
         </p>
       </div>
       <div class="tw-flex tw-shrink-0 tw-items-center tw-gap-x-2">
-        <el-button size="small" @click="$emit('test')">
-          <Icon icon="lucide:flask-conical" class="tw-mr-1 tw-h-3.5 tw-w-3.5" />
+        <el-button
+          size="small"
+          @click="$emit('test')"
+        >
+          <Icon
+            icon="lucide:flask-conical"
+            class="tw-mr-1 tw-h-3.5 tw-w-3.5"
+          />
           检索测试
         </el-button>
       </div>
