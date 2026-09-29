@@ -2,7 +2,9 @@
   <div class="tw-flex tw-flex-col tw-rounded-sm tw-border tw-bg-background">
     <div v-if="filePath" class="tw-px-2 tw-py-1 tw-text-xs tw-text-muted-foreground">{{ filePath }}</div>
     <DiffPreview v-if="diffText" :unified-diff="diffText" />
-    <pre v-else class="tw-max-h-200px tw-overflow-auto tw-p-2 tw-text-xs tw-whitespace-pre-wrap tw-break-all">{{ resultText }}</pre>
+    <pre v-else class="tw-max-h-200px tw-overflow-auto tw-p-2 tw-text-xs tw-whitespace-pre-wrap tw-break-all">{{
+      resultText
+    }}</pre>
   </div>
 </template>
 
@@ -25,9 +27,7 @@ export default defineComponent({
   },
   setup(props) {
     const filePath = computed(() => tryGetFilePath(props.pair.call.input));
-    const resultText = computed(() =>
-      props.pair.result ? getResultText(props.pair.result) : '',
-    );
+    const resultText = computed(() => (props.pair.result ? getResultText(props.pair.result) : ''));
     const diffText = computed(() => {
       if (!props.pair.result || props.pair.result.state !== 'success') return '';
       const text = resultText.value;

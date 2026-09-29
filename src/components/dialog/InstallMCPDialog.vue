@@ -9,7 +9,10 @@
     <div v-if="card" class="tw-space-y-4">
       <div class="tw-flex tw-items-center tw-gap-3">
         <img v-if="card.icon_url" :src="card.icon_url" class="tw-h-10 tw-w-10 tw-rounded-md tw-object-cover" />
-        <div v-else class="tw-flex tw-h-10 tw-w-10 tw-items-center tw-justify-center tw-rounded-md tw-bg-muted tw-text-sm tw-font-bold">
+        <div
+          v-else
+          class="tw-flex tw-h-10 tw-w-10 tw-items-center tw-justify-center tw-rounded-md tw-bg-muted tw-text-sm tw-font-bold"
+        >
           {{ (card.display_name || card.name).slice(0, 1).toUpperCase() }}
         </div>
         <div>
@@ -57,11 +60,15 @@ export default defineComponent({
     const form = ref({ name: '', values: '{}' });
     const submitting = ref(false);
 
-    watch(() => [props.card, props.editing], () => {
-      const target = props.editing || props.card;
-      form.value.name = target?.name || target?.display_name || '';
-      form.value.values = JSON.stringify(target?.config_template || {}, null, 2);
-    }, { immediate: true });
+    watch(
+      () => [props.card, props.editing],
+      () => {
+        const target = props.editing || props.card;
+        form.value.name = target?.name || target?.display_name || '';
+        form.value.values = JSON.stringify(target?.config_template || {}, null, 2);
+      },
+      { immediate: true },
+    );
 
     async function handleSubmit() {
       if (!props.card && !props.editing) return;

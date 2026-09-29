@@ -16,7 +16,9 @@
 
         <template v-else>
           <div v-for="group in configuredGroups" :key="group.type" class="tw-mb-4">
-            <div class="tw-px-2 tw-py-1 tw-text-xs tw-font-medium tw-uppercase tw-tracking-wider tw-text-muted-foreground">
+            <div
+              class="tw-px-2 tw-py-1 tw-text-xs tw-font-medium tw-uppercase tw-tracking-wider tw-text-muted-foreground"
+            >
               {{ group.title }}
             </div>
             <div
@@ -32,7 +34,9 @@
           </div>
 
           <div class="tw-mt-4 tw-border-t tw-border-border tw-pt-3">
-            <div class="tw-px-2 tw-py-1 tw-text-xs tw-font-medium tw-uppercase tw-tracking-wider tw-text-muted-foreground">
+            <div
+              class="tw-px-2 tw-py-1 tw-text-xs tw-font-medium tw-uppercase tw-tracking-wider tw-text-muted-foreground"
+            >
               添加凭据
             </div>
             <div
@@ -50,7 +54,9 @@
     </aside>
 
     <!-- 右侧详情 -->
-    <main class="tw-flex tw-min-h-0 tw-flex-1 tw-flex-col tw-overflow-hidden tw-rounded-2xl tw-border tw-border-border tw-bg-card">
+    <main
+      class="tw-flex tw-min-h-0 tw-flex-1 tw-flex-col tw-overflow-hidden tw-rounded-2xl tw-border tw-border-border tw-bg-card"
+    >
       <template v-if="selectedCredential">
         <!-- 头部 -->
         <div class="tw-flex tw-items-start tw-justify-between tw-border-b tw-border-border tw-p-4">
@@ -67,25 +73,23 @@
               icon="el-icon-edit"
               :disabled="!selectedCredential.editable"
               @click="editOpen = true"
-            >编辑</el-button>
+              >编辑</el-button
+            >
             <el-button
               size="small"
               type="danger"
               icon="el-icon-delete"
               :disabled="!selectedCredential.editable"
               @click="handleDelete"
-            >删除</el-button>
+              >删除</el-button
+            >
           </div>
         </div>
 
         <!-- 字段 -->
         <div class="tw-flex-1 tw-overflow-y-auto tw-p-4">
           <el-descriptions :column="1" border>
-            <el-descriptions-item
-              v-for="[key, prop] in displayFields"
-              :key="key"
-              :label="prop.title || key"
-            >
+            <el-descriptions-item v-for="[key, prop] in displayFields" :key="key" :label="prop.title || key">
               <MaskedValue v-if="isSecret(prop)" :value="String(selectedCredential.data[key] ?? '')" />
               <span v-else class="tw-break-all">{{ selectedCredential.data[key] }}</span>
             </el-descriptions-item>
@@ -108,9 +112,17 @@
                 <el-table-column prop="label" label="模型" show-overflow-tooltip>
                   <template slot-scope="scope">
                     <span>{{ scope.row.label || scope.row.name }}</span>
-                    <el-tag v-if="scope.row.input_types?.includes(THINKING_TYPE)" size="mini" class="tw-ml-2">推理</el-tag>
+                    <el-tag v-if="scope.row.input_types?.includes(THINKING_TYPE)" size="mini" class="tw-ml-2"
+                      >推理</el-tag
+                    >
                     <el-tag v-if="scope.row.realtime" size="mini" class="tw-ml-2">实时</el-tag>
-                    <el-tag v-if="scope.row.status && scope.row.status !== 'active'" size="mini" type="warning" class="tw-ml-2">{{ scope.row.status }}</el-tag>
+                    <el-tag
+                      v-if="scope.row.status && scope.row.status !== 'active'"
+                      size="mini"
+                      type="warning"
+                      class="tw-ml-2"
+                      >{{ scope.row.status }}</el-tag
+                    >
                   </template>
                 </el-table-column>
                 <el-table-column v-if="modelTab === 'llm' || modelTab === 'embedding'" label="上下文" width="120">
@@ -292,9 +304,18 @@ export default defineComponent({
       this.modelsLoading = true;
       try {
         const [chat, tts, embedding] = await Promise.all([
-          modelApi.list(type).then((r) => r?.models || []).catch(() => []),
-          ttsModelApi.list(type).then((r) => r?.models || []).catch(() => []),
-          embeddingModelApi.list(type).then((r) => r?.models || []).catch(() => []),
+          modelApi
+            .list(type)
+            .then((r) => r?.models || [])
+            .catch(() => []),
+          ttsModelApi
+            .list(type)
+            .then((r) => r?.models || [])
+            .catch(() => []),
+          embeddingModelApi
+            .list(type)
+            .then((r) => r?.models || [])
+            .catch(() => []),
         ]);
         this.models = chat;
         this.ttsModels = tts;

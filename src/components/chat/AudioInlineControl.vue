@@ -6,12 +6,7 @@
       </span>
     </template>
     <template v-else-if="src">
-      <button
-        type="button"
-        class="audio-play-btn tw-ml-1"
-        :aria-label="isPlaying ? '暂停' : '播放'"
-        @click="toggle"
-      >
+      <button type="button" class="audio-play-btn tw-ml-1" :aria-label="isPlaying ? '暂停' : '播放'" @click="toggle">
         <span v-if="isPlaying" class="audio-wave">
           <i v-for="n in 6" :key="n" class="audio-wave-bar" :style="{ animationDelay: (n - 1) * 0.12 + 's' }" />
         </span>
@@ -120,7 +115,12 @@ export default defineComponent({
 }
 
 @keyframes audioWave {
-  0%, 100% { transform: scaleY(1); }
-  50% { transform: scaleY(0.3); }
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0.3);
+  }
 }
 </style>

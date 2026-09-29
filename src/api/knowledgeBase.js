@@ -96,8 +96,7 @@ function uploadDocumentXhr(knowledgeBaseId, file, options = {}) {
 }
 
 export const knowledgeBaseApi = {
-  list: (params = {}) =>
-    client.request('kb.list', { params: toQuery({ ...params }) }),
+  list: (params = {}) => client.request('kb.list', { params: toQuery({ ...params }) }),
 
   listAll: (params = {}) =>
     fetchAllPages(async (page, pageSize) => {
@@ -109,18 +108,15 @@ export const knowledgeBaseApi = {
 
   listChunkers: () => client.request('kb.listChunkers'),
 
-  middlewareParametersSchema: () =>
-    client.request('kb.middlewareParametersSchema'),
+  middlewareParametersSchema: () => client.request('kb.middlewareParametersSchema'),
 
   supportedContentTypes: () => client.request('kb.supportedContentTypes'),
 
   create: (body) => client.request('kb.create', { body }),
 
-  update: (knowledgeBaseId, body) =>
-    client.request('kb.update', { pathParams: { knowledgeBaseId }, body }),
+  update: (knowledgeBaseId, body) => client.request('kb.update', { pathParams: { knowledgeBaseId }, body }),
 
-  delete: (knowledgeBaseId) =>
-    client.request('kb.delete', { pathParams: { knowledgeBaseId } }),
+  delete: (knowledgeBaseId) => client.request('kb.delete', { pathParams: { knowledgeBaseId } }),
 
   listDocuments: (knowledgeBaseId, params = {}) =>
     client.request('kb.listDocuments', {
@@ -180,14 +176,12 @@ export const knowledgeBaseApi = {
     });
   },
 
-  uploadDocument: (knowledgeBaseId, file, options) =>
-    uploadDocumentXhr(knowledgeBaseId, file, options),
+  uploadDocument: (knowledgeBaseId, file, options) => uploadDocumentXhr(knowledgeBaseId, file, options),
 
   deleteDocument: (knowledgeBaseId, documentId) =>
     client.request('kb.deleteDocument', {
       pathParams: { knowledgeBaseId, documentId },
     }),
 
-  search: (knowledgeBaseId, body) =>
-    client.request('kb.search', { pathParams: { knowledgeBaseId }, body }),
+  search: (knowledgeBaseId, body) => client.request('kb.search', { pathParams: { knowledgeBaseId }, body }),
 };

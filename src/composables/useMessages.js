@@ -13,17 +13,13 @@ export function useMessages(agentId, sessionId, options = {}) {
     return aid && sid ? `${aid}:${sid}` : null;
   });
 
-  const ownsConversation = computed(
-    () => key.value !== null && store.state.chat.currentKey === key.value,
-  );
+  const ownsConversation = computed(() => key.value !== null && store.state.chat.currentKey === key.value);
 
   const msgs = computed(() => (ownsConversation.value ? store.state.chat.messages : []));
   const loading = computed(() => (ownsConversation.value ? store.state.chat.loading : false));
   const phase = computed(() => (ownsConversation.value ? store.state.chat.phase : 'idle'));
   const error = computed(() => (ownsConversation.value ? store.state.chat.error : null));
-  const subagentHitl = computed(() =>
-    ownsConversation.value ? store.state.chat.subagentHitl : [],
-  );
+  const subagentHitl = computed(() => (ownsConversation.value ? store.state.chat.subagentHitl : []));
 
   watch(
     key,

@@ -17,7 +17,12 @@
         @click="handleConfirm(true)"
       >
         <Spinner v-if="hasConfirmed && selected === 'yes'" class="tw-h-4 tw-w-4" />
-        <Icon v-else icon="lucide:chevron-right" class="tw-h-4 tw-w-4" :class="selected === 'yes' ? 'tw-visible' : 'tw-invisible'" />
+        <Icon
+          v-else
+          icon="lucide:chevron-right"
+          class="tw-h-4 tw-w-4"
+          :class="selected === 'yes' ? 'tw-visible' : 'tw-invisible'"
+        />
         <span>1. 是</span>
         <span v-if="selected === 'yes'" class="tw-ml-auto tw-text-xs tw-text-muted-foreground">
           (<Kbd className="text-xs">Enter</Kbd> 确认)
@@ -34,7 +39,12 @@
         @click="handleConfirm(true, [toolCall.suggested_rules[0]])"
       >
         <Spinner v-if="hasConfirmed && selected === 'yes_with_rule'" class="tw-mt-0.5 tw-h-4 tw-w-4 tw-shrink-0" />
-        <Icon v-else icon="lucide:chevron-right" class="tw-mt-0.5 tw-h-4 tw-w-4 tw-shrink-0" :class="selected === 'yes_with_rule' ? 'tw-visible' : 'tw-invisible'" />
+        <Icon
+          v-else
+          icon="lucide:chevron-right"
+          class="tw-mt-0.5 tw-h-4 tw-w-4 tw-shrink-0"
+          :class="selected === 'yes_with_rule' ? 'tw-visible' : 'tw-invisible'"
+        />
         <span class="tw-min-w-0 tw-break-words">2. {{ yesWithRuleText }}</span>
         <span v-if="selected === 'yes_with_rule'" class="tw-ml-auto tw-shrink-0 tw-text-xs tw-text-muted-foreground">
           (<Kbd className="text-xs">Enter</Kbd> 确认)
@@ -50,7 +60,12 @@
         @click="handleConfirm(false)"
       >
         <Spinner v-if="hasConfirmed && selected === 'no'" class="tw-h-4 tw-w-4" />
-        <Icon v-else icon="lucide:chevron-right" class="tw-h-4 tw-w-4" :class="selected === 'no' ? 'tw-visible' : 'tw-invisible'" />
+        <Icon
+          v-else
+          icon="lucide:chevron-right"
+          class="tw-h-4 tw-w-4"
+          :class="selected === 'no' ? 'tw-visible' : 'tw-invisible'"
+        />
         <span>{{ hasSuggestedRules ? '3' : '2' }}. 否</span>
         <span v-if="selected === 'no'" class="tw-ml-auto tw-text-xs tw-text-muted-foreground">
           (<Kbd className="text-xs">Enter</Kbd> 确认)
@@ -119,9 +134,7 @@ export default defineComponent({
     }
 
     function onKeyDown(e) {
-      const options = hasSuggestedRules.value
-        ? ['yes', 'yes_with_rule', 'no']
-        : ['yes', 'no'];
+      const options = hasSuggestedRules.value ? ['yes', 'yes_with_rule', 'no'] : ['yes', 'no'];
       const idx = options.indexOf(selected.value);
       if (e.key === 'ArrowUp') {
         e.preventDefault();

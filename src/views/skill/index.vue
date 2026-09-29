@@ -34,7 +34,10 @@
             @click="$router.push({ name: 'skill-hub', params: { hubId: hub.hub_id } })"
           >
             <img v-if="hub.icon_url" :src="hub.icon_url" class="tw-h-4 tw-w-4 tw-rounded-sm tw-object-cover" />
-            <div v-else class="tw-flex tw-h-4 tw-w-4 tw-items-center tw-justify-center tw-rounded-sm tw-bg-muted tw-text-10px tw-font-bold">
+            <div
+              v-else
+              class="tw-flex tw-h-4 tw-w-4 tw-items-center tw-justify-center tw-rounded-sm tw-bg-muted tw-text-10px tw-font-bold"
+            >
               {{ hub.display_name.slice(0, 1).toUpperCase() }}
             </div>
             <span class="tw-flex-1 tw-truncate">{{ hub.display_name }}</span>
@@ -43,13 +46,10 @@
       </div>
     </aside>
 
-    <main class="tw-shadow-panel tw-flex tw-min-h-0 tw-min-w-0 tw-flex-1 tw-flex-col tw-overflow-hidden tw-rounded-22px tw-bg-card">
-      <MinePanel
-        v-if="!hubId"
-        :skills="skills"
-        :loading="skillsLoading"
-        @remove="remove"
-      />
+    <main
+      class="tw-shadow-panel tw-flex tw-min-h-0 tw-min-w-0 tw-flex-1 tw-flex-col tw-overflow-hidden tw-rounded-22px tw-bg-card"
+    >
+      <MinePanel v-if="!hubId" :skills="skills" :loading="skillsLoading" @remove="remove" />
       <HubPanel
         v-else
         :key="hubId"

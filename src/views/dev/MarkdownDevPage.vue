@@ -1,46 +1,44 @@
 <template>
-	<div class="tw-flex tw-h-full tw-flex-col">
-		<!-- 工具栏 -->
-		<header
-			class="tw-flex tw-flex-wrap tw-items-center tw-gap-3 tw-border-b tw-border-border tw-bg-card tw-px-6 tw-py-3"
-		>
-			<h1 class="tw-text-sm tw-font-semibold tw-text-foreground">Markdown 渲染验证</h1>
-			<div class="tw-flex-1"></div>
-			<el-button size="small" @click="onToggleDark">
-				{{ dark ? '切换浅色' : '切换深色' }}
-			</el-button>
-			<el-button size="small" type="primary" :loading="streaming" @click="startStream">
-				{{ streaming ? '流式输出中…' : '模拟流式输出' }}
-			</el-button>
-			<el-button size="small" @click="reset">重置</el-button>
-		</header>
+  <div class="tw-flex tw-h-full tw-flex-col">
+    <!-- 工具栏 -->
+    <header
+      class="tw-flex tw-flex-wrap tw-items-center tw-gap-3 tw-border-b tw-border-border tw-bg-card tw-px-6 tw-py-3"
+    >
+      <h1 class="tw-text-sm tw-font-semibold tw-text-foreground">Markdown 渲染验证</h1>
+      <div class="tw-flex-1"></div>
+      <el-button size="small" @click="onToggleDark">
+        {{ dark ? '切换浅色' : '切换深色' }}
+      </el-button>
+      <el-button size="small" type="primary" :loading="streaming" @click="startStream">
+        {{ streaming ? '流式输出中…' : '模拟流式输出' }}
+      </el-button>
+      <el-button size="small" @click="reset">重置</el-button>
+    </header>
 
-		<!-- 内容区：静态样例 + 流式样例 -->
-		<div class="tw-flex-1 tw-overflow-auto tw-bg-canvas tw-px-6 tw-py-6">
-			<div class="tw-mx-auto tw-max-w-3xl tw-space-y-8">
-				<section class="tw-rounded-lg tw-border tw-border-border tw-bg-card tw-p-6">
-					<h2 class="tw-mb-4 tw-text-sm tw-font-medium tw-text-muted-foreground">
-						静态样例（标题/表格/代码块/引用/列表）
-					</h2>
-					<MarkdownRenderer :content="staticSample" />
-				</section>
+    <!-- 内容区：静态样例 + 流式样例 -->
+    <div class="tw-flex-1 tw-overflow-auto tw-bg-canvas tw-px-6 tw-py-6">
+      <div class="tw-mx-auto tw-max-w-3xl tw-space-y-8">
+        <section class="tw-rounded-lg tw-border tw-border-border tw-bg-card tw-p-6">
+          <h2 class="tw-mb-4 tw-text-sm tw-font-medium tw-text-muted-foreground">
+            静态样例（标题/表格/代码块/引用/列表）
+          </h2>
+          <MarkdownRenderer :content="staticSample" />
+        </section>
 
-				<section class="tw-rounded-lg tw-border tw-border-border tw-bg-card tw-p-6">
-					<h2 class="tw-mb-4 tw-text-sm tw-font-medium tw-text-muted-foreground">
-						流式样例（remend 自愈，分块追加）
-					</h2>
-					<MarkdownRenderer :content="streamContent" />
-				</section>
+        <section class="tw-rounded-lg tw-border tw-border-border tw-bg-card tw-p-6">
+          <h2 class="tw-mb-4 tw-text-sm tw-font-medium tw-text-muted-foreground">流式样例（remend 自愈，分块追加）</h2>
+          <MarkdownRenderer :content="streamContent" />
+        </section>
 
-				<section class="tw-rounded-lg tw-border tw-border-border tw-bg-card tw-p-6">
-					<h2 class="tw-mb-4 tw-text-sm tw-font-medium tw-text-muted-foreground">
-						XSS 过滤验证（应只显示文本，不弹窗）
-					</h2>
-					<MarkdownRenderer :content="xssSample" />
-				</section>
-			</div>
-		</div>
-	</div>
+        <section class="tw-rounded-lg tw-border tw-border-border tw-bg-card tw-p-6">
+          <h2 class="tw-mb-4 tw-text-sm tw-font-medium tw-text-muted-foreground">
+            XSS 过滤验证（应只显示文本，不弹窗）
+          </h2>
+          <MarkdownRenderer :content="xssSample" />
+        </section>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -118,57 +116,57 @@ ${SCRIPT_OPEN}alert('xss1')${SCRIPT_CLOSE}
 以上均应被 DOMPurify 过滤，页面不应弹出任何对话框。`;
 
 export default defineComponent({
-	name: 'MarkdownDevPage',
-	components: { MarkdownRenderer },
-	data() {
-		return {
-			staticSample: STATIC_SAMPLE,
-			xssSample: XSS_SAMPLE,
-			streamContent: '',
-			streaming: false,
-			timer: null,
-		};
-	},
-	computed: {
-		dark() {
-			return this.$store.state.app.dark;
-		},
-	},
-	beforeDestroy() {
-		this.clearTimer();
-	},
-	methods: {
-		onToggleDark() {
-			this.$store.dispatch('app/toggleDark');
-		},
-		clearTimer() {
-			if (this.timer) {
-				clearInterval(this.timer);
-				this.timer = null;
-			}
-		},
-		startStream() {
-			if (this.streaming) return;
-			this.streamContent = '';
-			this.streaming = true;
-			// 按 2-4 个字符分块追加，模拟 SSE TEXT_BLOCK_DELTA 的真实节奏
-			const chars = Array.from(STREAM_SAMPLE);
-			let i = 0;
-			this.timer = setInterval(() => {
-				const step = 2 + Math.floor(Math.random() * 3);
-				i = Math.min(i + step, chars.length);
-				this.streamContent = chars.slice(0, i).join('');
-				if (i >= chars.length) {
-					this.clearTimer();
-					this.streaming = false;
-				}
-			}, 60);
-		},
-		reset() {
-			this.clearTimer();
-			this.streaming = false;
-			this.streamContent = '';
-		},
-	},
+  name: 'MarkdownDevPage',
+  components: { MarkdownRenderer },
+  data() {
+    return {
+      staticSample: STATIC_SAMPLE,
+      xssSample: XSS_SAMPLE,
+      streamContent: '',
+      streaming: false,
+      timer: null,
+    };
+  },
+  computed: {
+    dark() {
+      return this.$store.state.app.dark;
+    },
+  },
+  beforeDestroy() {
+    this.clearTimer();
+  },
+  methods: {
+    onToggleDark() {
+      this.$store.dispatch('app/toggleDark');
+    },
+    clearTimer() {
+      if (this.timer) {
+        clearInterval(this.timer);
+        this.timer = null;
+      }
+    },
+    startStream() {
+      if (this.streaming) return;
+      this.streamContent = '';
+      this.streaming = true;
+      // 按 2-4 个字符分块追加，模拟 SSE TEXT_BLOCK_DELTA 的真实节奏
+      const chars = Array.from(STREAM_SAMPLE);
+      let i = 0;
+      this.timer = setInterval(() => {
+        const step = 2 + Math.floor(Math.random() * 3);
+        i = Math.min(i + step, chars.length);
+        this.streamContent = chars.slice(0, i).join('');
+        if (i >= chars.length) {
+          this.clearTimer();
+          this.streaming = false;
+        }
+      }, 60);
+    },
+    reset() {
+      this.clearTimer();
+      this.streaming = false;
+      this.streamContent = '';
+    },
+  },
 });
 </script>

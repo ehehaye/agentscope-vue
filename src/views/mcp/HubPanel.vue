@@ -2,7 +2,10 @@
   <div class="tw-flex tw-h-full tw-flex-col tw-p-5">
     <div class="tw-mb-4 tw-flex tw-items-center tw-gap-3">
       <img v-if="hub?.icon_url" :src="hub.icon_url" class="tw-h-8 tw-w-8 tw-rounded-md tw-object-cover" />
-      <div v-else class="tw-flex tw-h-8 tw-w-8 tw-items-center tw-justify-center tw-rounded-md tw-bg-muted tw-text-sm tw-font-bold">
+      <div
+        v-else
+        class="tw-flex tw-h-8 tw-w-8 tw-items-center tw-justify-center tw-rounded-md tw-bg-muted tw-text-sm tw-font-bold"
+      >
         {{ (hub?.display_name || hubId).slice(0, 1).toUpperCase() }}
       </div>
       <div>
@@ -35,30 +38,46 @@
           @click="openDetail(card)"
         >
           <img v-if="card.icon_url" :src="card.icon_url" class="tw-h-10 tw-w-10 tw-rounded-md tw-object-cover" />
-          <div v-else class="tw-flex tw-h-10 tw-w-10 tw-items-center tw-justify-center tw-rounded-md tw-bg-muted tw-text-sm tw-font-bold">
+          <div
+            v-else
+            class="tw-flex tw-h-10 tw-w-10 tw-items-center tw-justify-center tw-rounded-md tw-bg-muted tw-text-sm tw-font-bold"
+          >
             {{ (card.display_name || card.name).slice(0, 1).toUpperCase() }}
           </div>
           <div class="tw-min-w-0 tw-flex-1">
             <div class="tw-flex tw-items-center tw-gap-2">
               <span class="tw-font-medium">{{ card.display_name || card.name }}</span>
               <span v-if="card.author" class="tw-text-xs tw-text-muted-foreground">@{{ card.author }}</span>
-              <span v-if="card.auth === 'inputs'" class="tw-rounded-full tw-bg-amber-100 tw-px-2 tw-py-0.5 tw-text-10px tw-text-amber-700 dark:tw-bg-amber-900 dark:tw-text-amber-300">需配置</span>
-              <span v-for="tag in (card.tags || []).slice(0, 4)" :key="tag" class="tw-rounded-full tw-bg-secondary tw-px-1.5 tw-py-0.5 tw-text-10px">#{{ tag }}</span>
+              <span
+                v-if="card.auth === 'inputs'"
+                class="tw-rounded-full tw-bg-amber-100 tw-px-2 tw-py-0.5 tw-text-10px tw-text-amber-700 dark:tw-bg-amber-900 dark:tw-text-amber-300"
+                >需配置</span
+              >
+              <span
+                v-for="tag in (card.tags || []).slice(0, 4)"
+                :key="tag"
+                class="tw-rounded-full tw-bg-secondary tw-px-1.5 tw-py-0.5 tw-text-10px"
+                >#{{ tag }}</span
+              >
             </div>
             <p class="tw-line-clamp-1 tw-text-xs tw-text-muted-foreground">{{ card.description }}</p>
           </div>
           <div class="tw-flex tw-items-center tw-gap-2">
-            <span v-if="card.installs != null" class="tw-inline-flex tw-items-center tw-gap-1 tw-text-10px tw-text-muted-foreground">
+            <span
+              v-if="card.installs != null"
+              class="tw-inline-flex tw-items-center tw-gap-1 tw-text-10px tw-text-muted-foreground"
+            >
               <Icon icon="lucide:download" class="tw-h-3 tw-w-3" />
               {{ card.installs.toLocaleString() }}
             </span>
-            <span v-if="installedNames.has(card.name)" class="tw-inline-flex tw-items-center tw-gap-1 tw-rounded-full tw-bg-muted tw-px-3 tw-py-1 tw-text-11px tw-text-muted-foreground">
+            <span
+              v-if="installedNames.has(card.name)"
+              class="tw-inline-flex tw-items-center tw-gap-1 tw-rounded-full tw-bg-muted tw-px-3 tw-py-1 tw-text-11px tw-text-muted-foreground"
+            >
               <Icon icon="lucide:check" class="tw-h-3 tw-w-3" />
               已安装
             </span>
-            <el-button v-else size="mini" @click.stop="$emit('install', card)">
-              安装
-            </el-button>
+            <el-button v-else size="mini" @click.stop="$emit('install', card)"> 安装 </el-button>
           </div>
         </div>
       </div>
@@ -77,7 +96,9 @@
         <p class="tw-text-sm tw-text-muted-foreground">{{ detailCard.description }}</p>
         <div>
           <span class="tw-text-xs tw-text-muted-foreground">配置模板</span>
-          <pre class="tw-mt-1 tw-overflow-x-auto tw-rounded-md tw-bg-muted tw-p-3 tw-text-xs">{{ JSON.stringify(detailCard.config_template, null, 2) }}</pre>
+          <pre class="tw-mt-1 tw-overflow-x-auto tw-rounded-md tw-bg-muted tw-p-3 tw-text-xs">{{
+            JSON.stringify(detailCard.config_template, null, 2)
+          }}</pre>
         </div>
         <div v-if="detailCard.readme" class="tw-prose tw-prose-sm tw-max-w-none" v-html="detailCard.readme" />
       </div>

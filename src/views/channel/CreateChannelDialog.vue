@@ -13,7 +13,9 @@
 
     <span slot="footer" class="tw-dialog-footer">
       <el-button size="small" @click="internalVisible = false">取消</el-button>
-      <el-button size="small" type="primary" :loading="loading" :disabled="!valid" @click="handleSubmit">创建</el-button>
+      <el-button size="small" type="primary" :loading="loading" :disabled="!valid" @click="handleSubmit"
+        >创建</el-button
+      >
     </span>
   </el-dialog>
 </template>

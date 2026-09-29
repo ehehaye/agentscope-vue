@@ -13,7 +13,9 @@
 
     <span slot="footer" class="tw-dialog-footer">
       <el-button size="small" @click="visible = false">取消</el-button>
-      <el-button size="small" type="primary" :loading="loading" :disabled="!valid" @click="handleSubmit">保存</el-button>
+      <el-button size="small" type="primary" :loading="loading" :disabled="!valid" @click="handleSubmit"
+        >保存</el-button
+      >
     </span>
   </el-dialog>
 </template>
@@ -68,7 +70,16 @@ export default defineComponent({
       }
     }
 
-    return { visible: computed({ get: () => props.visible, set: (v) => emit('update:visible', v) }), form, channelTypes, loading, error, valid, handleClose, handleSubmit };
+    return {
+      visible: computed({ get: () => props.visible, set: (v) => emit('update:visible', v) }),
+      form,
+      channelTypes,
+      loading,
+      error,
+      valid,
+      handleClose,
+      handleSubmit,
+    };
   },
 });
 </script>

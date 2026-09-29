@@ -17,7 +17,7 @@ export function useSkillHubs() {
     error.value = null;
     try {
       const res = await hubApi.skill.listHubs();
-      const list = Array.isArray(res) ? res : res?.hubs ?? [];
+      const list = Array.isArray(res) ? res : (res?.hubs ?? []);
       if (id === reqId) hubs.value = list;
       return list;
     } catch (e) {

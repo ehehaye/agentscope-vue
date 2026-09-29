@@ -17,7 +17,7 @@ export function useMCPHubs() {
     error.value = null;
     try {
       const res = await hubApi.mcp.listHubs();
-      const list = Array.isArray(res) ? res : res?.hubs ?? [];
+      const list = Array.isArray(res) ? res : (res?.hubs ?? []);
       if (id === reqId) hubs.value = list;
       return list;
     } catch (e) {

@@ -27,7 +27,10 @@
           class="tw-flex tw-items-center tw-gap-3 tw-rounded-lg tw-border tw-border-border tw-p-3"
         >
           <img v-if="mcp.icon_url" :src="mcp.icon_url" class="tw-h-10 tw-w-10 tw-rounded-md tw-object-cover" />
-          <div v-else class="tw-flex tw-h-10 tw-w-10 tw-items-center tw-justify-center tw-rounded-md tw-bg-muted tw-text-sm tw-font-bold">
+          <div
+            v-else
+            class="tw-flex tw-h-10 tw-w-10 tw-items-center tw-justify-center tw-rounded-md tw-bg-muted tw-text-sm tw-font-bold"
+          >
             {{ (mcp.display_name || mcp.name).slice(0, 1).toUpperCase() }}
           </div>
           <div class="tw-min-w-0 tw-flex-1">

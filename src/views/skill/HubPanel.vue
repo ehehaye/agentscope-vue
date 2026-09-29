@@ -2,7 +2,10 @@
   <div class="tw-flex tw-h-full tw-flex-col tw-p-5">
     <div class="tw-mb-4 tw-flex tw-items-center tw-gap-3">
       <img v-if="hub?.icon_url" :src="hub.icon_url" class="tw-h-8 tw-w-8 tw-rounded-md tw-object-cover" />
-      <div v-else class="tw-flex tw-h-8 tw-w-8 tw-items-center tw-justify-center tw-rounded-md tw-bg-muted tw-text-sm tw-font-bold">
+      <div
+        v-else
+        class="tw-flex tw-h-8 tw-w-8 tw-items-center tw-justify-center tw-rounded-md tw-bg-muted tw-text-sm tw-font-bold"
+      >
         {{ (hub?.display_name || hubId).slice(0, 1).toUpperCase() }}
       </div>
       <div>
@@ -35,26 +38,44 @@
           @click="openDetail(card)"
         >
           <img v-if="card.icon_url" :src="card.icon_url" class="tw-h-10 tw-w-10 tw-rounded-md tw-object-cover" />
-          <div v-else class="tw-flex tw-h-10 tw-w-10 tw-items-center tw-justify-center tw-rounded-md tw-bg-muted tw-text-sm tw-font-bold">
+          <div
+            v-else
+            class="tw-flex tw-h-10 tw-w-10 tw-items-center tw-justify-center tw-rounded-md tw-bg-muted tw-text-sm tw-font-bold"
+          >
             {{ (card.display_name || card.name).slice(0, 1).toUpperCase() }}
           </div>
           <div class="tw-min-w-0 tw-flex-1">
             <div class="tw-flex tw-items-center tw-gap-2">
               <span class="tw-font-medium">{{ card.display_name || card.name }}</span>
               <span v-if="card.author" class="tw-text-xs tw-text-muted-foreground">@{{ card.author }}</span>
-              <span v-for="tag in (card.tags || []).slice(0, 4)" :key="tag" class="tw-rounded-full tw-bg-secondary tw-px-1.5 tw-py-0.5 tw-text-10px">#{{ tag }}</span>
+              <span
+                v-for="tag in (card.tags || []).slice(0, 4)"
+                :key="tag"
+                class="tw-rounded-full tw-bg-secondary tw-px-1.5 tw-py-0.5 tw-text-10px"
+                >#{{ tag }}</span
+              >
             </div>
             <p class="tw-line-clamp-1 tw-text-xs tw-text-muted-foreground">{{ card.description }}</p>
           </div>
           <div class="tw-flex tw-items-center tw-gap-2">
-            <span v-if="card.downloads != null" class="tw-inline-flex tw-items-center tw-gap-1 tw-text-10px tw-text-muted-foreground">
+            <span
+              v-if="card.downloads != null"
+              class="tw-inline-flex tw-items-center tw-gap-1 tw-text-10px tw-text-muted-foreground"
+            >
               <Icon icon="lucide:download" class="tw-h-3 tw-w-3" />
               {{ card.downloads.toLocaleString() }}
             </span>
             <span v-if="card.updated_at" class="tw-text-10px tw-text-muted-foreground">
-              {{ now - card.updated_at < 3600 ? '刚刚更新' : `${formatTime(now - card.updated_at, { leadingUnitOnly: true })}前更新` }}
+              {{
+                now - card.updated_at < 3600
+                  ? '刚刚更新'
+                  : `${formatTime(now - card.updated_at, { leadingUnitOnly: true })}前更新`
+              }}
             </span>
-            <span v-if="installedNames.has(card.name)" class="tw-inline-flex tw-items-center tw-gap-1 tw-rounded-full tw-bg-muted tw-px-3 tw-py-1 tw-text-11px tw-text-muted-foreground">
+            <span
+              v-if="installedNames.has(card.name)"
+              class="tw-inline-flex tw-items-center tw-gap-1 tw-rounded-full tw-bg-muted tw-px-3 tw-py-1 tw-text-11px tw-text-muted-foreground"
+            >
               <Icon icon="lucide:check" class="tw-h-3 tw-w-3" />
               已安装
             </span>

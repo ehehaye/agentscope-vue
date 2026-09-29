@@ -1,5 +1,7 @@
 <template>
-  <div class="tw-flex tw-h-full tw-w-60 tw-shrink-0 tw-flex-col tw-gap-3 tw-overflow-hidden tw-rounded-22px tw-bg-card tw-p-3 tw-shadow-panel">
+  <div
+    class="tw-flex tw-h-full tw-w-60 tw-shrink-0 tw-flex-col tw-gap-3 tw-overflow-hidden tw-rounded-22px tw-bg-card tw-p-3 tw-shadow-panel"
+  >
     <!-- Agent -->
     <div class="tw-flex tw-flex-col tw-gap-1.5">
       <div class="tw-flex tw-items-center tw-justify-between tw-px-1">
@@ -62,7 +64,10 @@
           title="暂无会话"
           :description="agentId ? '当前助手下还没有会话' : '请先选择一个助手'"
         />
-        <div v-else-if="sessions.length > 0" class="tw-min-h-0 tw-flex-1 tw-overflow-x-hidden tw-overflow-y-auto tw-py-2">
+        <div
+          v-else-if="sessions.length > 0"
+          class="tw-min-h-0 tw-flex-1 tw-overflow-x-hidden tw-overflow-y-auto tw-py-2"
+        >
           <Collapsible
             v-for="(group, index) in dayGroups"
             :key="group.key"
@@ -91,10 +96,7 @@
           </Collapsible>
         </div>
 
-        <div
-          v-if="sessionsLoading"
-          class="tw-absolute tw-inset-0 tw-z-10 tw-flex tw-items-center tw-justify-center"
-        >
+        <div v-if="sessionsLoading" class="tw-absolute tw-inset-0 tw-z-10 tw-flex tw-items-center tw-justify-center">
           <div class="tw-absolute tw-inset-0 tw-bg-card tw-opacity-60"></div>
           <Spinner className="tw-relative tw-z-10 h-5 tw-w-5" />
         </div>
@@ -154,9 +156,7 @@ export default defineComponent({
         return a.key < b.key ? 1 : -1;
       });
     });
-    const showSourceIcons = computed(
-      () => new Set(props.sessions.map((v) => v.session?.source)).size > 1,
-    );
+    const showSourceIcons = computed(() => new Set(props.sessions.map((v) => v.session?.source)).size > 1);
 
     function dayLabel(date, valid) {
       if (!valid) return '未知日期';

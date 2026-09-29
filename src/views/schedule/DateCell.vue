@@ -1,11 +1,16 @@
 <template>
-  <div ref="cellRef" class="tw-cursor-pointer tw-overflow-hidden tw-border-r tw-border-b tw-border-border tw-p-2 hover:tw-bg-accent">
+  <div
+    ref="cellRef"
+    class="tw-cursor-pointer tw-overflow-hidden tw-border-r tw-border-b tw-border-border tw-p-2 hover:tw-bg-accent"
+  >
     <div class="tw-mb-1 tw-flex tw-items-start tw-justify-between">
       <div class="tw-flex tw-h-6 tw-w-6 tw-items-center tw-justify-center">
         <div
           :class="[
             'tw-text-sm',
-            isToday ? 'tw-flex tw-h-6 tw-w-6 tw-items-center tw-justify-center tw-rounded-full tw-bg-primary tw-text-primary-foreground' : '',
+            isToday
+              ? 'tw-flex tw-h-6 tw-w-6 tw-items-center tw-justify-center tw-rounded-full tw-bg-primary tw-text-primary-foreground'
+              : '',
           ]"
         >
           {{ day }}
@@ -27,16 +32,13 @@
         <span>{{ event.time }}</span>
       </div>
       <el-dropdown v-if="events.length > maxVisibleEvents" trigger="click" @command="$emit('event-click', $event)">
-        <div class="tw-cursor-pointer tw-px-1 tw-text-xs tw-text-muted-foreground hover:tw-text-foreground hover:tw-underline">
+        <div
+          class="tw-cursor-pointer tw-px-1 tw-text-xs tw-text-muted-foreground hover:tw-text-foreground hover:tw-underline"
+        >
           +{{ events.length - maxVisibleEvents }} {{ moreText }}
         </div>
         <el-dropdown-menu slot="dropdown" class="tw-max-w-64">
-          <el-dropdown-item
-            v-for="event in hiddenEvents"
-            :key="event.id"
-            :command="event"
-            class="tw-text-xs"
-          >
+          <el-dropdown-item v-for="event in hiddenEvents" :key="event.id" :command="event" class="tw-text-xs">
             <span class="tw-font-medium">{{ event.time }}</span>
             <span class="tw-ml-2 tw-truncate">{{ event.title }}</span>
           </el-dropdown-item>

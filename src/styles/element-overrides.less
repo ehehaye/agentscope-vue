@@ -12,7 +12,7 @@
 // 若要彻底隔离，还需在用法处补 popper-class / custom-class 等标记类。
 // 不需要作用域控制时，去掉前缀（或把 @as-scope 换回 :where(#as-app)）即可。
 
-@as-scope: ~":where(#as-app, .el-dialog__wrapper, .el-drawer__wrapper, .el-message-box__wrapper, body > .el-popper)";
+@as-scope: ~':where(#as-app, .el-dialog__wrapper, .el-drawer__wrapper, .el-message-box__wrapper, body > .el-popper)';
 
 // ── 表面与文字 ──
 // 注：body > .el-popper 覆盖 el-popover / el-select-dropdown / el-dropdown-menu 等 popper 根
@@ -20,26 +20,26 @@
 @{as-scope} .el-drawer,
 @{as-scope} .el-card,
 body > .el-popper {
-	background-color: var(--as-card);
-	color: var(--as-card-foreground);
+  background-color: var(--as-card);
+  color: var(--as-card-foreground);
 }
 
 @{as-scope} .el-dialog__title,
 @{as-scope} .el-drawer__title,
 @{as-scope} .el-card__header {
-	color: var(--as-foreground);
+  color: var(--as-foreground);
 }
 
 // ── 输入控件 ──
 @{as-scope} .el-input__inner,
 @{as-scope} .el-textarea__inner {
-	background-color: var(--as-background);
-	border-color: var(--as-input);
-	color: var(--as-foreground);
+  background-color: var(--as-background);
+  border-color: var(--as-input);
+  color: var(--as-foreground);
 
-	&::placeholder {
-		color: var(--as-muted-foreground);
-	}
+  &::placeholder {
+    color: var(--as-muted-foreground);
+  }
 }
 
 // ── 表格 ──
@@ -47,40 +47,40 @@ body > .el-popper {
 @{as-scope} .el-table tr,
 @{as-scope} .el-table th.el-table__cell,
 @{as-scope} .el-table td.el-table__cell {
-	background-color: var(--as-card);
-	color: var(--as-foreground);
+  background-color: var(--as-card);
+  color: var(--as-foreground);
 }
 
 @{as-scope} .el-table th.el-table__cell {
-	background-color: var(--as-muted);
+  background-color: var(--as-muted);
 }
 
 // ── Tabs ──
 @{as-scope} .el-tabs__item {
-	color: var(--as-muted-foreground);
+  color: var(--as-muted-foreground);
 
-	&.is-active {
-		color: var(--as-foreground);
-	}
+  &.is-active {
+    color: var(--as-foreground);
+  }
 }
 
 // ── 菜单 / 下拉项（在 popper 内，由 @as-scope 的 body > .el-popper 命中） ──
 @{as-scope} .el-dropdown-menu__item,
 @{as-scope} .el-select-dropdown__item {
-	color: var(--as-foreground);
+  color: var(--as-foreground);
 
-	&.hover,
-	&:hover,
-	&.selected {
-		background-color: var(--as-muted);
-		color: var(--as-foreground);
-	}
+  &.hover,
+  &:hover,
+  &.selected {
+    background-color: var(--as-muted);
+    color: var(--as-foreground);
+  }
 }
 
 body > .el-select-dropdown,
 body > .el-dropdown-menu {
-	background-color: var(--as-card);
-	border-color: var(--as-border);
+  background-color: var(--as-card);
+  border-color: var(--as-border);
 }
 
 // ── popper 挂 body：深色前缀兜底 ──
@@ -88,23 +88,23 @@ body > .el-dropdown-menu {
 .dark body > .el-dropdown-menu,
 .dark body > .el-popper,
 .dark body > .el-message-box__wrapper .el-message-box {
-	background-color: var(--as-card);
-	border-color: var(--as-border);
+  background-color: var(--as-card);
+  border-color: var(--as-border);
 }
 
 .dark body > .el-popper .el-popper__arrow::before {
-	background-color: var(--as-card);
-	border-color: var(--as-border);
+  background-color: var(--as-card);
+  border-color: var(--as-border);
 }
 
 // ── 按钮（default 对齐 secondary 表面） ──
 @{as-scope} .el-button--default {
-	background-color: var(--as-secondary);
-	border-color: var(--as-border);
-	color: var(--as-secondary-foreground);
+  background-color: var(--as-secondary);
+  border-color: var(--as-border);
+  color: var(--as-secondary-foreground);
 }
 
 // ── 分割线 ──
 @{as-scope} .el-divider {
-	background-color: var(--as-border);
+  background-color: var(--as-border);
 }

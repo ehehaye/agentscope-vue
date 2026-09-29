@@ -18,12 +18,14 @@
       </el-form-item>
 
       <el-form-item label="嵌入模型">
-        <el-select v-model="selectedEmbedding" value-key="key" class="tw-w-full" :loading="loadingModels" placeholder="选择嵌入模型">
-          <el-option-group
-            v-for="provider in providers"
-            :key="provider.type"
-            :label="provider.type"
-          >
+        <el-select
+          v-model="selectedEmbedding"
+          value-key="key"
+          class="tw-w-full"
+          :loading="loadingModels"
+          placeholder="选择嵌入模型"
+        >
+          <el-option-group v-for="provider in providers" :key="provider.type" :label="provider.type">
             <el-option
               v-for="model in provider.models"
               :key="embeddingKey(provider, model)"
@@ -36,23 +38,13 @@
 
       <el-form-item label="维度">
         <el-select v-model="dimension" class="tw-w-full" placeholder="选择维度">
-          <el-option
-            v-for="d in dimensionOptions"
-            :key="d"
-            :label="String(d)"
-            :value="d"
-          />
+          <el-option v-for="d in dimensionOptions" :key="d" :label="String(d)" :value="d" />
         </el-select>
       </el-form-item>
 
       <el-form-item label="分块器">
         <el-select v-model="selectedChunkerType" class="tw-w-full" placeholder="选择分块器">
-          <el-option
-            v-for="chunker in chunkers"
-            :key="chunker.type"
-            :label="chunker.type"
-            :value="chunker.type"
-          />
+          <el-option v-for="chunker in chunkers" :key="chunker.type" :label="chunker.type" :value="chunker.type" />
         </el-select>
       </el-form-item>
 
@@ -70,7 +62,7 @@
       <el-button size="small" @click="dialogVisible = false" :disabled="submitting">取消</el-button>
       <el-button size="small" type="primary" :loading="submitting" :disabled="!canSubmit" @click="handleSubmit">
         {{ submitting ? '创建中…' : '创建' }}
-      </el-button> 
+      </el-button>
     </span>
   </el-dialog>
 </template>
@@ -104,9 +96,7 @@ export default defineComponent({
     const submitting = ref(false);
     const error = ref('');
 
-    const selectedChunker = computed(() =>
-      chunkers.value.find((c) => c.type === selectedChunkerType.value) || null,
-    );
+    const selectedChunker = computed(() => chunkers.value.find((c) => c.type === selectedChunkerType.value) || null);
     const chunkerParamSchema = computed(() => selectedChunker.value?.parameter_schema || null);
 
     function defaultValuesFromSchema(schema) {
@@ -130,30 +120,33 @@ export default defineComponent({
       return [selectedEmbedding.value.card?.dimensions].filter(Boolean);
     });
 
-    watch(() => props.visible, async (open) => {
-      if (!open) return;
-      reset();
-      loadingModels.value = true;
-      try {
-        const [modelsRes, chunkersRes] = await Promise.all([
-          knowledgeBaseApi.listEmbeddingModels(),
-          knowledgeBaseApi.listChunkers().catch(() => ({ chunkers: [] })),
-        ]);
-        providers.value = modelsRes.providers || [];
-        chunkers.value = chunkersRes.chunkers || [];
-        if (chunkers.value.length > 0) {
-          selectedChunkerType.value = chunkers.value[0].type;
-        }
-        if (providers.value.length > 0) {
-          const p = providers.value[0];
-          if (p.models && p.models.length > 0) {
-            selectedEmbedding.value = embeddingValue(p, p.models[0]);
+    watch(
+      () => props.visible,
+      async (open) => {
+        if (!open) return;
+        reset();
+        loadingModels.value = true;
+        try {
+          const [modelsRes, chunkersRes] = await Promise.all([
+            knowledgeBaseApi.listEmbeddingModels(),
+            knowledgeBaseApi.listChunkers().catch(() => ({ chunkers: [] })),
+          ]);
+          providers.value = modelsRes.providers || [];
+          chunkers.value = chunkersRes.chunkers || [];
+          if (chunkers.value.length > 0) {
+            selectedChunkerType.value = chunkers.value[0].type;
           }
+          if (providers.value.length > 0) {
+            const p = providers.value[0];
+            if (p.models && p.models.length > 0) {
+              selectedEmbedding.value = embeddingValue(p, p.models[0]);
+            }
+          }
+        } finally {
+          loadingModels.value = false;
         }
-      } finally {
-        loadingModels.value = false;
-      }
-    });
+      },
+    );
 
     watch(selectedEmbedding, (sel) => {
       if (!sel) {
@@ -161,9 +154,8 @@ export default defineComponent({
         return;
       }
       const sd = sel.card?.supported_dimensions;
-      const defaultDim = sd && sd.length > 0
-        ? (sd.includes(sel.card?.dimensions) ? sel.card?.dimensions : sd[0])
-        : sel.card?.dimensions;
+      const defaultDim =
+        sd && sd.length > 0 ? (sd.includes(sel.card?.dimensions) ? sel.card?.dimensions : sd[0]) : sel.card?.dimensions;
       dimension.value = defaultDim;
     });
 
@@ -218,9 +210,7 @@ export default defineComponent({
           chunker_config: {
             type: selectedChunkerType.value,
             parameters: Object.fromEntries(
-              Object.entries(chunkerParams.value).filter(
-                ([, v]) => v !== undefined && v !== null && v !== '',
-              ),
+              Object.entries(chunkerParams.value).filter(([, v]) => v !== undefined && v !== null && v !== ''),
             ),
           },
         };

@@ -14,8 +14,7 @@ export function markFreshlyCreated(sessionId) {
 }
 
 export const sessionApi = {
-  list: (agentId) =>
-    client.request('session.list', { params: { agent_id: agentId } }),
+  list: (agentId) => client.request('session.list', { params: { agent_id: agentId } }),
 
   create: async (body) => {
     const res = await client.request('session.create', { body });

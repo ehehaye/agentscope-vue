@@ -30,9 +30,7 @@ export default defineComponent({
   setup(props) {
     const title = computed(() => summarizeToolGroup(props.calls));
     // 变量名 allFinished 语义实为「仍在进行中」（任一 call 无 result 或 running）。
-    const allFinished = computed(() =>
-      props.calls.some((c) => !c.result || c.result.state === 'running'),
-    );
+    const allFinished = computed(() => props.calls.some((c) => !c.result || c.result.state === 'running'));
 
     const insertions = computed(() => diffStats.value.insertions);
     const deletions = computed(() => diffStats.value.deletions);

@@ -31,8 +31,12 @@
         <div class="tw-flex tw-flex-1 tw-flex-col tw-gap-2 tw-overflow-hidden">
           <h3 class="tw-text-sm tw-font-semibold">执行历史</h3>
           <div class="tw-flex-1 tw-overflow-y-auto tw-space-y-1">
-            <div v-if="sessionsLoading" class="tw-py-4 tw-text-center tw-text-sm tw-text-muted-foreground">加载中...</div>
-            <div v-else-if="sessions.length === 0" class="tw-py-4 tw-text-center tw-text-sm tw-text-muted-foreground">暂无数据</div>
+            <div v-if="sessionsLoading" class="tw-py-4 tw-text-center tw-text-sm tw-text-muted-foreground">
+              加载中...
+            </div>
+            <div v-else-if="sessions.length === 0" class="tw-py-4 tw-text-center tw-text-sm tw-text-muted-foreground">
+              暂无数据
+            </div>
             <div
               v-for="session in sessions"
               v-else
@@ -82,15 +86,7 @@ export default defineComponent({
       return props.schedule?.agent_id || '';
     });
 
-    const weekdayNames = [
-      '周日',
-      '周一',
-      '周二',
-      '周三',
-      '周四',
-      '周五',
-      '周六',
-    ];
+    const weekdayNames = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
 
     const scheduleInfoItems = computed(() => {
       if (!props.schedule) return [];
@@ -106,9 +102,7 @@ export default defineComponent({
           triggerTimeDisplay = `${parsed.dayOfMonth ?? 1}日 ${parsed.time}`;
           break;
         case 'once':
-          triggerTimeDisplay = parsed.date
-            ? `${parsed.date.toLocaleDateString()} ${parsed.time}`
-            : parsed.time;
+          triggerTimeDisplay = parsed.date ? `${parsed.date.toLocaleDateString()} ${parsed.time}` : parsed.time;
           break;
       }
       triggerTimeDisplay += ` (${data.timezone})`;
@@ -150,15 +144,11 @@ export default defineComponent({
     async function handleDelete() {
       const schedule = props.schedule;
       if (!schedule) return;
-      await MessageBox.confirm(
-        '此操作无法撤销。',
-        `删除日程 "${schedule.data?.name || ''}"？`,
-        {
-          type: 'warning',
-          confirmButtonText: '删除',
-          cancelButtonText: '取消',
-        },
-      );
+      await MessageBox.confirm('此操作无法撤销。', `删除日程 "${schedule.data?.name || ''}"？`, {
+        type: 'warning',
+        confirmButtonText: '删除',
+        cancelButtonText: '取消',
+      });
       await emit('delete', schedule.id);
       emit('update:visible', false);
     }

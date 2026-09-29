@@ -17,7 +17,9 @@
           class="tw-flex tw-items-center tw-justify-between tw-gap-2 tw-px-2 tw-py-1.5 tw-text-xs"
           :class="dir !== workingDirs[workingDirs.length - 1] ? 'tw-border-b' : ''"
         >
-          <span class="tw-min-w-0 tw-flex-1 tw-truncate tw-font-mono tw-text-left" :title="dir.path">{{ dir.path }}</span>
+          <span class="tw-min-w-0 tw-flex-1 tw-truncate tw-font-mono tw-text-left" :title="dir.path">{{
+            dir.path
+          }}</span>
           <span class="tw-shrink-0 tw-rounded tw-border tw-px-1.5 tw-py-0.5 tw-text-10px">{{ dir.source }}</span>
         </li>
       </ul>
@@ -30,32 +32,29 @@
           {{ behavior.label }}
         </span>
         <template v-for="(rules, toolName) in behavior.ruleMap">
-        <div
-          v-if="rules.length > 0"
-          :key="toolName"
-          class="tw-rounded-md tw-border"
-        >
-          <div class="tw-flex tw-items-center tw-gap-2 tw-border-b tw-px-2 tw-py-1.5 tw-text-sm tw-font-medium">
-            {{ toolName }}
-            <span class="tw-ml-auto tw-rounded tw-bg-secondary tw-px-1.5 tw-py-0 tw-text-xs">{{ rules.length }}</span>
+          <div v-if="rules.length > 0" :key="toolName" class="tw-rounded-md tw-border">
+            <div class="tw-flex tw-items-center tw-gap-2 tw-border-b tw-px-2 tw-py-1.5 tw-text-sm tw-font-medium">
+              {{ toolName }}
+              <span class="tw-ml-auto tw-rounded tw-bg-secondary tw-px-1.5 tw-py-0 tw-text-xs">{{ rules.length }}</span>
+            </div>
+            <ul class="tw-flex tw-flex-col">
+              <li
+                v-for="(rule, index) in rules"
+                :key="`${rule.rule_content || '*'}_${index}`"
+                class="tw-flex tw-items-center tw-justify-between tw-gap-2 tw-px-2 tw-py-1.5 tw-text-xs"
+                :class="index !== rules.length - 1 ? 'tw-border-b' : ''"
+              >
+                <span
+                  v-if="rule.rule_content"
+                  class="tw-min-w-0 tw-flex-1 tw-truncate tw-font-mono tw-text-left"
+                  :title="rule.rule_content"
+                  >{{ rule.rule_content }}</span
+                >
+                <span v-else class="tw-min-w-0 tw-flex-1 tw-text-muted-foreground">任意调用</span>
+                <span class="tw-shrink-0 tw-rounded tw-border tw-px-1.5 tw-py-0.5 tw-text-10px">{{ rule.source }}</span>
+              </li>
+            </ul>
           </div>
-          <ul class="tw-flex tw-flex-col">
-            <li
-              v-for="(rule, index) in rules"
-              :key="`${rule.rule_content || '*'}_${index}`"
-              class="tw-flex tw-items-center tw-justify-between tw-gap-2 tw-px-2 tw-py-1.5 tw-text-xs"
-              :class="index !== rules.length - 1 ? 'tw-border-b' : ''"
-            >
-              <span
-                v-if="rule.rule_content"
-                class="tw-min-w-0 tw-flex-1 tw-truncate tw-font-mono tw-text-left"
-                :title="rule.rule_content"
-              >{{ rule.rule_content }}</span>
-              <span v-else class="tw-min-w-0 tw-flex-1 tw-text-muted-foreground">任意调用</span>
-              <span class="tw-shrink-0 tw-rounded tw-border tw-px-1.5 tw-py-0.5 tw-text-10px">{{ rule.source }}</span>
-            </li>
-          </ul>
-        </div>
         </template>
       </div>
     </template>
@@ -83,13 +82,12 @@ export default defineComponent({
     permissionContext: { type: Object, default: null },
   },
   setup(props) {
-    const workingDirs = computed(() =>
-      Object.values(props.permissionContext?.working_directories ?? {}),
-    );
-    const hasRules = computed(() =>
-      Object.keys(props.permissionContext?.allow_rules ?? {}).length > 0 ||
-      Object.keys(props.permissionContext?.deny_rules ?? {}).length > 0 ||
-      Object.keys(props.permissionContext?.ask_rules ?? {}).length > 0,
+    const workingDirs = computed(() => Object.values(props.permissionContext?.working_directories ?? {}));
+    const hasRules = computed(
+      () =>
+        Object.keys(props.permissionContext?.allow_rules ?? {}).length > 0 ||
+        Object.keys(props.permissionContext?.deny_rules ?? {}).length > 0 ||
+        Object.keys(props.permissionContext?.ask_rules ?? {}).length > 0,
     );
 
     const behaviors = computed(() =>

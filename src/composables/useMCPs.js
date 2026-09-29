@@ -17,7 +17,7 @@ export function useMCPs() {
     error.value = null;
     try {
       const res = await mcpApi.list();
-      const list = Array.isArray(res) ? res : res?.mcps ?? [];
+      const list = Array.isArray(res) ? res : (res?.mcps ?? []);
       if (id === reqId) mcps.value = list;
       return list;
     } catch (e) {

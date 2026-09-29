@@ -1,5 +1,7 @@
 <template>
-  <div class="tw-flex tw-size-full tw-flex-col tw-items-center tw-justify-center tw-gap-4 tw-rounded-xl tw-border tw-border-dashed tw-p-6 tw-text-center">
+  <div
+    class="tw-flex tw-size-full tw-flex-col tw-items-center tw-justify-center tw-gap-4 tw-rounded-xl tw-border tw-border-dashed tw-p-6 tw-text-center"
+  >
     <Icon icon="lucide:calendar" class="tw-h-8 tw-w-8 tw-text-muted-foreground" />
     <div class="tw-flex tw-max-w-sm tw-flex-col tw-items-center tw-gap-2">
       <div class="tw-text-sm tw-font-medium">{{ title || '暂无日程' }}</div>

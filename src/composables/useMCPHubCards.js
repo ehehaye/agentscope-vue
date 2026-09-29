@@ -54,10 +54,14 @@ export function useMCPHubCards(hubIdRef, queryRef) {
     await fetchPage(true);
   }
 
-  watch([hubIdRef, queryRef], () => {
-    cursor.value = null;
-    fetchPage(false);
-  }, { immediate: true });
+  watch(
+    [hubIdRef, queryRef],
+    () => {
+      cursor.value = null;
+      fetchPage(false);
+    },
+    { immediate: true },
+  );
 
   return { cards, loading, loadingMore, error, hasMore, loadMore, refetch };
 }

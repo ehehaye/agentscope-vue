@@ -1,18 +1,7 @@
 <template>
-  <el-dialog
-    append-to-body
-    title="编辑凭证"
-    :visible.sync="dialogVisible"
-    width="520px"
-    :close-on-click-modal="false"
-  >
+  <el-dialog append-to-body title="编辑凭证" :visible.sync="dialogVisible" width="520px" :close-on-click-modal="false">
     <div v-loading="loadingSchema" class="tw-space-y-4">
-      <SchemaForm
-        v-if="schema"
-        :schema="schema"
-        :values="values"
-        @change="onFieldChange"
-      />
+      <SchemaForm v-if="schema" :schema="schema" :values="values" @change="onFieldChange" />
       <p v-else class="tw-text-sm tw-text-muted-foreground">加载中...</p>
     </div>
 
@@ -48,8 +37,12 @@ export default defineComponent({
   },
   computed: {
     dialogVisible: {
-      get() { return this.visible; },
-      set(val) { this.$emit('update:visible', val); },
+      get() {
+        return this.visible;
+      },
+      set(val) {
+        this.$emit('update:visible', val);
+      },
     },
   },
   watch: {

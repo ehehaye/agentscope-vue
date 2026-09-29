@@ -17,7 +17,7 @@ export function useSkills() {
     error.value = null;
     try {
       const res = await skillApi.list();
-      const list = Array.isArray(res) ? res : res?.skills ?? [];
+      const list = Array.isArray(res) ? res : (res?.skills ?? []);
       if (id === reqId) skills.value = list;
       return list;
     } catch (e) {

@@ -54,7 +54,9 @@ export default defineComponent({
 
     const detailVisible = computed({
       get: () => !!selectedSchedule.value,
-      set: (v) => { if (!v) selectedSchedule.value = null; },
+      set: (v) => {
+        if (!v) selectedSchedule.value = null;
+      },
     });
 
     function scheduleHasOccurrencesInRange(schedule, rangeStart, rangeEnd) {

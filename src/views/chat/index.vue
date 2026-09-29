@@ -46,12 +46,11 @@
               @fallback-change="handleFallbackModelChange"
               @tts-change="handleTTSChange"
             />
-            <PermissionModeSelect
-              :value="selectedPermissionMode"
-              @change="handlePermissionModeChange"
-            />
+            <PermissionModeSelect :value="selectedPermissionMode" @change="handlePermissionModeChange" />
             <el-dropdown trigger="click" @command="togglePanel">
-              <span class="tw-inline-flex tw-cursor-pointer tw-items-center tw-gap-1 tw-rounded-md tw-border tw-border-border tw-px-2 tw-py-1.5 tw-text-sm hover:tw-bg-row-hover">
+              <span
+                class="tw-inline-flex tw-cursor-pointer tw-items-center tw-gap-1 tw-rounded-md tw-border tw-border-border tw-px-2 tw-py-1.5 tw-text-sm hover:tw-bg-row-hover"
+              >
                 <Icon icon="lucide:panel-right" class="tw-h-4 tw-w-4" />
                 <Icon icon="lucide:chevron-down" class="tw-h-3 tw-w-3 tw-text-muted-foreground" />
               </span>
@@ -106,15 +105,8 @@
     />
 
     <!-- 对话框 -->
-    <AgentDialog
-      :visible.sync="agentDialogVisible"
-      @created="refetchAgents"
-    />
-    <EditAgentDialog
-      :visible.sync="editAgentDialogVisible"
-      :agent="editingAgent"
-      @updated="refetchAgents"
-    />
+    <AgentDialog :visible.sync="agentDialogVisible" @created="refetchAgents" />
+    <EditAgentDialog :visible.sync="editAgentDialogVisible" :agent="editingAgent" @updated="refetchAgents" />
     <RenameSessionDialog
       :visible.sync="renameDialogVisible"
       :current-name="renamingSession?.session?.config?.name || ''"
@@ -202,9 +194,7 @@ function openPanel(layout, key) {
 }
 
 function closePanelInLayout(layout, key) {
-  return layout
-    .map((column) => column.filter((k) => k !== key))
-    .filter((column) => column.length > 0);
+  return layout.map((column) => column.filter((k) => k !== key)).filter((column) => column.length > 0);
 }
 
 export default defineComponent({
@@ -289,11 +279,15 @@ export default defineComponent({
     const cwd = computed(() => view.value?.session?.config?.cwd ?? pendingCwd.value ?? null);
 
     function navigateTo(aid, sid) {
-      router.push({ name: 'chat', query: { ...route.query, agentId: aid, sessionId: sid, memberId: undefined } }).catch(() => {});
+      router
+        .push({ name: 'chat', query: { ...route.query, agentId: aid, sessionId: sid, memberId: undefined } })
+        .catch(() => {});
     }
 
     function handleAgentChange(aid) {
-      router.push({ name: 'chat', query: { ...route.query, agentId: aid, sessionId: undefined, memberId: undefined } }).catch(() => {});
+      router
+        .push({ name: 'chat', query: { ...route.query, agentId: aid, sessionId: undefined, memberId: undefined } })
+        .catch(() => {});
     }
 
     function handleSessionCommand(command) {
@@ -393,7 +387,7 @@ export default defineComponent({
         type: 'warning',
         confirmButtonText: '删除',
         cancelButtonText: '取消',
-      })
+      });
       await removeSession(sid, agentId.value);
       if (sid === sessionId.value) {
         const remaining = sessions.value.filter((v) => v.session?.id !== sid);
@@ -417,7 +411,7 @@ export default defineComponent({
         type: 'warning',
         confirmButtonText: '删除',
         cancelButtonText: '取消',
-      })
+      });
       await removeAgent(agent.id);
       // 删除当前助手后清空路由回到 /chat
       if (route.query.agentId) {
@@ -425,10 +419,11 @@ export default defineComponent({
       }
     }
 
-    const {
-      status: workspaceStatus,
-      refetch: refetchWorkspaceStatus,
-    } = useWorkspaceStatus(effectiveAgentId, effectiveSessionId, cwd);
+    const { status: workspaceStatus, refetch: refetchWorkspaceStatus } = useWorkspaceStatus(
+      effectiveAgentId,
+      effectiveSessionId,
+      cwd,
+    );
 
     const {
       mcps,
@@ -459,10 +454,7 @@ export default defineComponent({
     function handleStateUpdated(value) {
       if (value?.tasks_context) {
         tasksContext.value = value.tasks_context;
-        if (
-          value.tasks_context.tasks?.length > 0 &&
-          taskPanelOpenedFor.value !== sessionId.value
-        ) {
+        if (value.tasks_context.tasks?.length > 0 && taskPanelOpenedFor.value !== sessionId.value) {
           taskPanelOpenedFor.value = sessionId.value;
           panelLayout.value = openPanel(panelLayout.value, 'plan');
         }

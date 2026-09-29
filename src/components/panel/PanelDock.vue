@@ -2,11 +2,7 @@
   <transition name="dock-slide">
     <div v-show="normalizedLayout.length > 0" class="tw-h-full">
       <splitpanes class="tw-h-full" @resized="onResized">
-        <pane
-          v-for="(column, colIdx) in normalizedLayout"
-          :key="colKey(column)"
-          :size="columnSize"
-        >
+        <pane v-for="(column, colIdx) in normalizedLayout" :key="colKey(column)" :size="columnSize">
           <splitpanes horizontal @resized="onResized">
             <pane
               v-for="key in column"
@@ -14,11 +10,7 @@
               :size="rowSize(column.length)"
               class="tw-rounded-22px tw-bg-card tw-shadow-panel"
             >
-              <Panel
-                :title="panels[key]?.title || key"
-                :icon="panels[key]?.icon"
-                @close="close(key)"
-              >
+              <Panel :title="panels[key]?.title || key" :icon="panels[key]?.icon" @close="close(key)">
                 <component
                   :is="panels[key]?.component"
                   v-if="panels[key]?.component"
@@ -54,9 +46,7 @@ export default defineComponent({
         .filter((column) => column.length > 0),
     );
 
-    const columnSize = computed(() =>
-      normalizedLayout.value.length > 0 ? 100 / normalizedLayout.value.length : 100,
-    );
+    const columnSize = computed(() => (normalizedLayout.value.length > 0 ? 100 / normalizedLayout.value.length : 100));
 
     function rowSize(count) {
       return count > 0 ? 100 / count : 100;
@@ -94,7 +84,9 @@ export default defineComponent({
 .dock-slide {
   &-enter-active,
   &-leave-active {
-    transition: transform 0.25s ease, opacity 0.25s ease;
+    transition:
+      transform 0.25s ease,
+      opacity 0.25s ease;
   }
 
   &-enter,

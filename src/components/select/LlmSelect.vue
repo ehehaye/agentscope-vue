@@ -37,12 +37,7 @@
             </el-dropdown-item>
           </template>
           <template v-else>
-            <el-dropdown-item
-              v-for="item in entry[1]"
-              :key="item.credential.id"
-              :command="null"
-              class="tw-has-submenu"
-            >
+            <el-dropdown-item v-for="item in entry[1]" :key="item.credential.id" :command="null" class="tw-has-submenu">
               <el-dropdown placement="right-start" @command="handleCommand">
                 <span class="tw-inline-flex tw-w-full tw-items-center tw-justify-between">
                   {{ credentialLabel(item.credential) }}

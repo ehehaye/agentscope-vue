@@ -3,14 +3,7 @@
     <div class="tw-flex tw-items-center tw-justify-between">
       <h3 class="tw-text-13_5px tw-font-medium">文档</h3>
       <div class="tw-flex tw-items-center tw-gap-2">
-        <el-button
-          v-if="hasTerminalTasks"
-          size="small"
-          text
-          @click="handleClearFinished"
-        >
-          清除已完成
-        </el-button>
+        <el-button v-if="hasTerminalTasks" size="small" text @click="handleClearFinished"> 清除已完成 </el-button>
         <el-button size="small" type="primary" @click="openFilePicker">
           <Icon icon="lucide:upload" class="tw-mr-1 tw-h-3.5 tw-w-3.5" />
           上传文档
@@ -28,9 +21,7 @@
 
     <div v-if="loading" class="tw-py-4 tw-text-center tw-text-sm tw-text-muted-foreground">加载中...</div>
     <template v-else>
-      <div v-if="rows.length === 0" class="tw-py-4 tw-text-center tw-text-sm tw-text-muted-foreground">
-        暂无文档
-      </div>
+      <div v-if="rows.length === 0" class="tw-py-4 tw-text-center tw-text-sm tw-text-muted-foreground">暂无文档</div>
       <div v-else class="tw-space-y-2">
         <div
           v-for="row in rows"
@@ -43,16 +34,23 @@
               <div class="tw-flex tw-items-center tw-gap-x-2">
                 <span
                   class="tw-truncate tw-text-sm tw-font-medium"
-                  :class="row.doc && row.phase === 'ready' ? 'tw-cursor-pointer tw-text-primary hover:tw-underline' : ''"
+                  :class="
+                    row.doc && row.phase === 'ready' ? 'tw-cursor-pointer tw-text-primary hover:tw-underline' : ''
+                  "
                   @click="row.doc && row.phase === 'ready' && handleOpenDetail(row.doc)"
-                >{{ row.filename }}</span>
+                  >{{ row.filename }}</span
+                >
                 <span
                   class="tw-inline-flex tw-shrink-0 tw-items-center tw-gap-x-1 tw-rounded-md tw-px-1.5 tw-py-0.5 tw-text-10px tw-font-medium tw-whitespace-nowrap"
                   :class="statusTone(row.phase)"
                 >
                   <Icon v-if="row.phase === 'ready'" icon="lucide:check-circle-2" class="tw-h-3 tw-w-3" />
                   <Icon v-else-if="row.phase === 'error'" icon="lucide:alert-circle" class="tw-h-3 tw-w-3" />
-                  <Icon v-else-if="row.phase !== 'cancelled'" icon="lucide:loader-2" class="tw-h-3 tw-w-3 tw-animate-spin" />
+                  <Icon
+                    v-else-if="row.phase !== 'cancelled'"
+                    icon="lucide:loader-2"
+                    class="tw-h-3 tw-w-3 tw-animate-spin"
+                  />
                   {{ statusLabel(row.phase) }}
                 </span>
               </div>
@@ -65,20 +63,10 @@
               </div>
             </div>
             <div class="tw-flex tw-shrink-0 tw-items-center tw-gap-x-1">
-              <el-button
-                v-if="row.canCancel"
-                type="text"
-                size="mini"
-                @click="handleCancel(row.task.taskId)"
-              >
+              <el-button v-if="row.canCancel" type="text" size="mini" @click="handleCancel(row.task.taskId)">
                 <Icon icon="lucide:x" class="tw-h-3.5 tw-w-3.5" />
               </el-button>
-              <el-button
-                v-else-if="row.canDismiss"
-                type="text"
-                size="mini"
-                @click="handleDismiss(row.task.taskId)"
-              >
+              <el-button v-else-if="row.canDismiss" type="text" size="mini" @click="handleDismiss(row.task.taskId)">
                 <Icon icon="lucide:x" class="tw-h-3.5 tw-w-3.5" />
               </el-button>
               <el-button v-else-if="row.doc" type="text" size="mini" @click="handleDelete(row.doc)">
@@ -103,11 +91,7 @@
       </div>
     </template>
 
-    <DocumentDetailDrawer
-      :open.sync="detailVisible"
-      :knowledge-base-id="knowledgeBaseId"
-      :document="detailDoc"
-    />
+    <DocumentDetailDrawer :open.sync="detailVisible" :knowledge-base-id="knowledgeBaseId" :document="detailDoc" />
   </div>
 </template>
 
@@ -200,12 +184,8 @@ export default defineComponent({
 
     const tasks = computed(() => tasksForKb(props.knowledgeBaseId));
 
-    const extensionSet = computed(
-      () => new Set(extensions.value.map((ext) => ext.toLowerCase())),
-    );
-    const acceptAttr = computed(() =>
-      [...extensions.value, ...mediaTypes.value].join(','),
-    );
+    const extensionSet = computed(() => new Set(extensions.value.map((ext) => ext.toLowerCase())));
+    const acceptAttr = computed(() => [...extensions.value, ...mediaTypes.value].join(','));
 
     // 合并服务端文档 + 本地上传任务为统一行列表，任务在前
     const rows = computed(() => {
@@ -216,9 +196,7 @@ export default defineComponent({
         unclaimed.delete(doc.id);
         return buildRow({ kind: 'server', doc, localTask: task });
       });
-      const documentRows = [...unclaimed.values()].map((doc) =>
-        buildRow({ kind: 'server', doc, localTask: null }),
-      );
+      const documentRows = [...unclaimed.values()].map((doc) => buildRow({ kind: 'server', doc, localTask: null }));
       return [...taskRows, ...documentRows];
     });
 
@@ -251,13 +229,30 @@ export default defineComponent({
         }
       } else {
         switch (phase) {
-          case 'queued': progressValue = 5; break;
-          case 'pending': progressValue = 35; indeterminate = true; break;
-          case 'parsing': progressValue = 55; indeterminate = true; break;
-          case 'chunking': progressValue = 75; indeterminate = true; break;
-          case 'indexing': progressValue = 90; indeterminate = true; break;
-          case 'ready': progressValue = 100; break;
-          default: progressValue = 0;
+          case 'queued':
+            progressValue = 5;
+            break;
+          case 'pending':
+            progressValue = 35;
+            indeterminate = true;
+            break;
+          case 'parsing':
+            progressValue = 55;
+            indeterminate = true;
+            break;
+          case 'chunking':
+            progressValue = 75;
+            indeterminate = true;
+            break;
+          case 'indexing':
+            progressValue = 90;
+            indeterminate = true;
+            break;
+          case 'ready':
+            progressValue = 100;
+            break;
+          default:
+            progressValue = 0;
         }
       }
 
@@ -268,8 +263,7 @@ export default defineComponent({
       const taskIdForCancel = task?.taskId ?? null;
 
       const canCancel = phase === 'queued' || phase === 'uploading';
-      const canDismiss =
-        (phase === 'cancelled' || phase === 'error') && row.kind === 'local';
+      const canDismiss = (phase === 'cancelled' || phase === 'error') && row.kind === 'local';
 
       return {
         key: doc ? doc.id : (task?.documentId ?? task?.taskId),
@@ -289,9 +283,7 @@ export default defineComponent({
       };
     }
 
-    const hasTerminalTasks = computed(() =>
-      tasks.value.some((t) => isTerminal(t.phase)),
-    );
+    const hasTerminalTasks = computed(() => tasks.value.some((t) => isTerminal(t.phase)));
 
     // 轮询到终态时拉取一次文档列表（拿最终 chunk_count / error）
     const terminalIdsKey = computed(() => {
@@ -354,7 +346,7 @@ export default defineComponent({
 
     async function handleDelete(doc) {
       if (!doc) return;
-        await MessageBox.confirm(`确定删除「${doc.filename}」吗？`, '删除文档', {
+      await MessageBox.confirm(`确定删除「${doc.filename}」吗？`, '删除文档', {
         type: 'warning',
         confirmButtonText: '删除',
         cancelButtonText: '取消',

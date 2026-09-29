@@ -36,7 +36,9 @@
           <div class="tw-flex tw-min-w-0 tw-flex-1 tw-flex-col tw-gap-0.5">
             <span class="tw-flex tw-items-center tw-gap-1.5">
               <span class="tw-font-mono tw-text-xs tw-text-muted-foreground">#{{ task.id }}</span>
-              <span class="tw-truncate" :class="task.state === 'completed' ? 'tw-line-through' : ''">{{ task.subject }}</span>
+              <span class="tw-truncate" :class="task.state === 'completed' ? 'tw-line-through' : ''">{{
+                task.subject
+              }}</span>
             </span>
             <span v-if="task.blocked_by && task.blocked_by.length > 0" class="tw-text-xs tw-text-muted-foreground">
               ← 依赖 {{ task.blocked_by.map((id) => `#${id}`).join(', ') }}

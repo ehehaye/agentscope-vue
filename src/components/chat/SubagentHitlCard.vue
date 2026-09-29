@@ -49,9 +49,7 @@ export default defineComponent({
     const askUserCalls = computed(() => toolCalls.value.filter((tc) => tc.name === 'AskUser'));
 
     const headerText = computed(() =>
-      isExternal.value
-        ? `${props.entry.worker_agent_name} 需要你的输入`
-        : `${props.entry.worker_agent_name} 请求确认`,
+      isExternal.value ? `${props.entry.worker_agent_name} 需要你的输入` : `${props.entry.worker_agent_name} 请求确认`,
     );
 
     function onConfirm(toolCall, confirm, rules) {

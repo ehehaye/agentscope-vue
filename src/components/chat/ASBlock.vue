@@ -25,11 +25,7 @@
           </div>
         </template>
         <div class="tw-mt-2 tw-rounded-md tw-bg-muted tw-p-2 tw-text-sm">
-          <ASBlock
-            v-for="(item, idx) in hintItems"
-            :key="idx"
-            :block="item"
-          />
+          <ASBlock v-for="(item, idx) in hintItems" :key="idx" :block="item" />
         </div>
       </Collapsible>
     </template>
@@ -58,9 +54,7 @@ export default defineComponent({
     block: { type: Object, required: true },
   },
   setup(props) {
-    const isThinkingRunning = computed(
-      () => props.block.type === 'thinking' && !props.block.finished_at,
-    );
+    const isThinkingRunning = computed(() => props.block.type === 'thinking' && !props.block.finished_at);
 
     const now = ref(Date.now());
     let timer = null;
@@ -86,9 +80,7 @@ export default defineComponent({
     const thinkingTitle = computed(() => {
       if (props.block.type !== 'thinking') return '';
       const startMs = new Date(props.block.created_at).getTime();
-      const endMs = props.block.finished_at
-        ? new Date(props.block.finished_at).getTime()
-        : now.value;
+      const endMs = props.block.finished_at ? new Date(props.block.finished_at).getTime() : now.value;
       const seconds = Math.max(0, (endMs - startMs) / 1000);
       const duration = formatTime(seconds);
       return seconds < 1 ? '思考中' : `思考中 ${duration}`;

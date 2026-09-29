@@ -157,9 +157,7 @@ export default defineComponent({
       set: (val) => emit('input', val),
     });
 
-    const typeSchema = computed(() =>
-      props.channelTypes.find((ct) => ct.channel_type === local.value.channelType),
-    );
+    const typeSchema = computed(() => props.channelTypes.find((ct) => ct.channel_type === local.value.channelType));
 
     const credentialFields = computed(() => {
       const schema = typeSchema.value?.credentials_schema;

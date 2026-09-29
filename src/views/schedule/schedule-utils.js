@@ -14,7 +14,9 @@
  * @returns {ParsedSchedule}
  */
 export function parseCronExpression(cronExpression, startedAt) {
-  const parts = String(cronExpression || '').trim().split(/\s+/);
+  const parts = String(cronExpression || '')
+    .trim()
+    .split(/\s+/);
   if (parts.length !== 5) {
     return { frequency: 'custom', time: '00:00' };
   }

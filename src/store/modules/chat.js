@@ -117,10 +117,7 @@ export default {
      * @param {object} ctx
      * @param {{ agentId: string|null, sessionId: string|null, callbacks?: object }} payload
      */
-    async openConversation(
-      { commit, state, dispatch },
-      { agentId, sessionId, callbacks = {} },
-    ) {
+    async openConversation({ commit, state, dispatch }, { agentId, sessionId, callbacks = {} }) {
       const key = agentId && sessionId ? `${agentId}:${sessionId}` : null;
       // 清理旧连接与状态
       commit('RESET');
@@ -138,10 +135,7 @@ export default {
           commit('SET_LOADING', false);
         } else {
           try {
-            const { messages, is_running: isRunning } = await sessionApi.messages(
-              sessionId,
-              agentId,
-            );
+            const { messages, is_running: isRunning } = await sessionApi.messages(sessionId, agentId);
             if (state.currentKey !== key) return;
             commit('SET_MESSAGES', messages || []);
             const tail = messages && messages.length > 0 ? messages[messages.length - 1] : null;
@@ -161,14 +155,9 @@ export default {
 
         if (state.currentKey !== key) return;
 
-        for await (const event of sessionApi.streamEvents(
-          sessionId,
-          agentId,
-          controller.signal,
-          () => {
-            if (state.currentKey === key) commit('SET_STREAM_CONNECTED', true);
-          },
-        )) {
+        for await (const event of sessionApi.streamEvents(sessionId, agentId, controller.signal, () => {
+          if (state.currentKey === key) commit('SET_STREAM_CONNECTED', true);
+        })) {
           if (state.currentKey !== key) break;
           dispatch('processEvent', { event, callbacks });
         }
@@ -207,10 +196,7 @@ export default {
           callbacks.onSessionUpdated?.();
         } else if (custom.name === 'subagent_require_user_confirm') {
           const e = custom.value;
-          commit(
-            'SET_SUBAGENT_HITL',
-            [...state.subagentHitl.filter((x) => hitlKey(x) !== hitlKey(e)), e],
-          );
+          commit('SET_SUBAGENT_HITL', [...state.subagentHitl.filter((x) => hitlKey(x) !== hitlKey(e)), e]);
         } else if (custom.name === 'subagent_user_confirm_result') {
           const v = custom.value;
           commit(
@@ -335,8 +321,7 @@ export default {
       const [agentId, sessionId] = (state.currentKey || '').split(':');
       if (!agentId || !sessionId) return;
 
-      const targetReplyId =
-        replyId || state.currentReplyId || state.messages[state.messages.length - 1]?.id;
+      const targetReplyId = replyId || state.currentReplyId || state.messages[state.messages.length - 1]?.id;
       if (!targetReplyId) return;
 
       // 恢复 currentReplyId，让续写事件（无 REPLY_START）有目标可落到
@@ -417,9 +402,7 @@ export default {
         state.subagentHitl.flatMap((x) => {
           if (hitlKey(x) !== hitlKey(entry)) return [x];
           const remaining = (x.event.tool_calls || []).filter((tc) => tc.id !== toolCall.id);
-          return remaining.length > 0
-            ? [{ ...x, event: { ...x.event, tool_calls: remaining } }]
-            : [];
+          return remaining.length > 0 ? [{ ...x, event: { ...x.event, tool_calls: remaining } }] : [];
         }),
       );
     },
@@ -481,9 +464,7 @@ export default {
         state.subagentHitl.flatMap((x) => {
           if (hitlKey(x) !== hitlKey(entry)) return [x];
           const remaining = (x.event.tool_calls || []).filter((tc) => tc.id !== toolCall.id);
-          return remaining.length > 0
-            ? [{ ...x, event: { ...x.event, tool_calls: remaining } }]
-            : [];
+          return remaining.length > 0 ? [{ ...x, event: { ...x.event, tool_calls: remaining } }] : [];
         }),
       );
     },

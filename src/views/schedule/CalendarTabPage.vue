@@ -21,12 +21,19 @@
 
     <div class="tw-flex tw-flex-1 tw-flex-col">
       <div class="tw-grid tw-grid-cols-7 tw-border-b tw-border-border">
-        <div v-for="day in weekDays" :key="day" class="tw-py-2 tw-text-center tw-text-sm tw-font-medium tw-text-muted-foreground">
+        <div
+          v-for="day in weekDays"
+          :key="day"
+          class="tw-py-2 tw-text-center tw-text-sm tw-font-medium tw-text-muted-foreground"
+        >
           {{ day }}
         </div>
       </div>
 
-      <div class="tw-grid tw-flex-1 tw-grid-cols-7" :style="{ gridTemplateRows: `repeat(${weeksNeeded}, minmax(0, 1fr))` }">
+      <div
+        class="tw-grid tw-flex-1 tw-grid-cols-7"
+        :style="{ gridTemplateRows: `repeat(${weeksNeeded}, minmax(0, 1fr))` }"
+      >
         <div
           v-for="(day, index) in prevMonthDays"
           :key="`prev-${index}`"
@@ -82,7 +89,10 @@ export default defineComponent({
     const prevMonthLastDay = computed(() => new Date(year.value, month.value, 0).getDate());
 
     const prevMonthDays = computed(() => {
-      return Array.from({ length: firstDayOfWeek.value }, (_, i) => prevMonthLastDay.value - firstDayOfWeek.value + i + 1);
+      return Array.from(
+        { length: firstDayOfWeek.value },
+        (_, i) => prevMonthLastDay.value - firstDayOfWeek.value + i + 1,
+      );
     });
 
     const currentMonthDays = computed(() => {
@@ -95,26 +105,24 @@ export default defineComponent({
     });
 
     const totalCells = computed(() => weeksNeeded.value * 7);
-    const remainingCells = computed(() => totalCells.value - prevMonthDays.value.length - currentMonthDays.value.length);
+    const remainingCells = computed(
+      () => totalCells.value - prevMonthDays.value.length - currentMonthDays.value.length,
+    );
 
     const nextMonthDays = computed(() => {
       return Array.from({ length: remainingCells.value }, (_, i) => i + 1);
     });
 
-    const weekDays = computed(() => [
-      '周日',
-      '周一',
-      '周二',
-      '周三',
-      '周四',
-      '周五',
-      '周六',
-    ]);
+    const weekDays = computed(() => ['周日', '周一', '周二', '周三', '周四', '周五', '周六']);
 
     function isToday(day) {
       const date = new Date(year.value, month.value, day);
       const today = new Date();
-      return date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear();
+      return (
+        date.getDate() === today.getDate() &&
+        date.getMonth() === today.getMonth() &&
+        date.getFullYear() === today.getFullYear()
+      );
     }
 
     function getEventsForDate(day) {

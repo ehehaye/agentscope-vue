@@ -10,7 +10,7 @@ import setupPlugins from './plugins/index';
 setupPlugins(Vue);
 
 new Vue({
-	store,
-	router,
-	render: (h) => h(App),
+  store,
+  router,
+  render: (h) => h(App),
 }).$mount('#root');

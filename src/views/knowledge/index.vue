@@ -6,7 +6,9 @@
         <div class="tw-text-xs tw-text-muted-foreground">管理智能体可检索的知识库与文档。</div>
       </div>
       <div class="tw-flex-1 tw-overflow-y-auto tw-px-2">
-        <div class="tw-mb-2 tw-flex tw-items-center tw-justify-between tw-px-2 tw-text-xs tw-font-medium tw-text-muted-foreground">
+        <div
+          class="tw-mb-2 tw-flex tw-items-center tw-justify-between tw-px-2 tw-text-xs tw-font-medium tw-text-muted-foreground"
+        >
           <span>知识库列表</span>
           <el-button type="text" size="mini" @click="createOpen = true">
             <Icon icon="lucide:plus" class="tw-h-3.5 tw-w-3.5" />
@@ -38,9 +40,16 @@
             @click="selectKb(kb)"
           >
             <span class="tw-min-w-0 tw-flex-1 tw-truncate">{{ kb.name }}</span>
-            <span v-if="!kb.editable" class="tw-ml-1 tw-shrink-0 tw-rounded tw-border tw-border-border tw-px-1 tw-text-10px">只读</span>
+            <span
+              v-if="!kb.editable"
+              class="tw-ml-1 tw-shrink-0 tw-rounded tw-border tw-border-border tw-px-1 tw-text-10px"
+              >只读</span
+            >
             <el-dropdown v-if="kb.editable" trigger="click" @command="handleCommand($event, kb)">
-              <span class="tw-ml-1 tw-opacity-0 tw-transition-opacity tw-duration-150 group-hover:tw-opacity-100" @click.stop>
+              <span
+                class="tw-ml-1 tw-opacity-0 tw-transition-opacity tw-duration-150 group-hover:tw-opacity-100"
+                @click.stop
+              >
                 <Icon icon="lucide:ellipsis" class="tw-h-3.5 tw-w-3.5" />
               </span>
               <el-dropdown-menu slot="dropdown">
@@ -59,7 +68,9 @@
       </div>
     </aside>
 
-    <main class="tw-shadow-panel tw-flex tw-min-h-0 tw-min-w-0 tw-flex-1 tw-flex-col tw-overflow-hidden tw-rounded-22px tw-bg-card">
+    <main
+      class="tw-shadow-panel tw-flex tw-min-h-0 tw-min-w-0 tw-flex-1 tw-flex-col tw-overflow-hidden tw-rounded-22px tw-bg-card"
+    >
       <DetailPanel v-if="selectedKb" :knowledge-base="selectedKb" @test="testOpen = true" />
       <div v-else class="tw-flex tw-h-full tw-items-center tw-justify-center">
         <div class="tw-flex tw-max-w-sm tw-flex-col tw-items-center tw-gap-2 tw-text-center">
@@ -70,7 +81,11 @@
     </main>
 
     <CreateKnowledgeBaseDialog :visible.sync="createOpen" @created="handleCreated" />
-    <CreateCredentialDialog :visible.sync="credentialOpen" :create-fn="credentialApi.create" @created="credentialTrigger++" />
+    <CreateCredentialDialog
+      :visible.sync="credentialOpen"
+      :create-fn="credentialApi.create"
+      @created="credentialTrigger++"
+    />
     <EditKnowledgeBaseDialog :visible.sync="editOpen" :knowledge-base="editTarget" @updated="refetch" />
     <KnowledgeSearchDrawer
       v-if="selectedKb"
@@ -123,17 +138,24 @@ export default defineComponent({
 
     const selectedKb = computed(() => knowledgeBases.value.find((kb) => kb.id === selectedKbId.value));
 
-    watch(() => route.params.kbId, (id) => {
-      selectedKbId.value = id;
-    });
+    watch(
+      () => route.params.kbId,
+      (id) => {
+        selectedKbId.value = id;
+      },
+    );
 
-    watch(knowledgeBases, (list) => {
-      if (list.length === 0) return;
-      if (list.some((kb) => kb.id === selectedKbId.value)) return;
-      const first = list[0].id;
-      selectedKbId.value = first;
-      router.replace(`/knowledge/${first}`);
-    }, { immediate: true });
+    watch(
+      knowledgeBases,
+      (list) => {
+        if (list.length === 0) return;
+        if (list.some((kb) => kb.id === selectedKbId.value)) return;
+        const first = list[0].id;
+        selectedKbId.value = first;
+        router.replace(`/knowledge/${first}`);
+      },
+      { immediate: true },
+    );
 
     function selectKb(kb) {
       selectedKbId.value = kb.id;

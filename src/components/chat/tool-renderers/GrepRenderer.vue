@@ -1,5 +1,7 @@
 <template>
-  <pre class="tw-max-h-200px tw-overflow-auto tw-rounded-sm tw-border tw-bg-background tw-p-2 tw-text-xs tw-whitespace-pre-wrap tw-break-all">{{ resultText || 'Searching...' }}</pre>
+  <pre
+    class="tw-max-h-200px tw-overflow-auto tw-rounded-sm tw-border tw-bg-background tw-p-2 tw-text-xs tw-whitespace-pre-wrap tw-break-all"
+    >{{ resultText || 'Searching...' }}</pre>
 </template>
 
 <script>
@@ -12,9 +14,7 @@ export default defineComponent({
     pair: { type: Object, required: true },
   },
   setup(props) {
-    const resultText = computed(() =>
-      props.pair.result ? getResultText(props.pair.result) : '',
-    );
+    const resultText = computed(() => (props.pair.result ? getResultText(props.pair.result) : ''));
     return { resultText };
   },
 });

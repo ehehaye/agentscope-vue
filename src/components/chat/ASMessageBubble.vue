@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="tw-flex tw-w-full"
-    :class="isUser ? 'tw-justify-end' : 'tw-justify-start'"
-    :data-role="message.role"
-  >
+  <div class="tw-flex tw-w-full" :class="isUser ? 'tw-justify-end' : 'tw-justify-start'" :data-role="message.role">
     <div class="tw-flex tw-max-w-85pct tw-flex-col tw-gap-1">
       <div class="tw-flex tw-flex-col tw-gap-2">
         <template v-for="(block, index) in blocks">
@@ -12,7 +8,10 @@
           </Bubble>
         </template>
 
-        <div v-if="message.finished_reason === 'error'" class="tw-rounded-md tw-border tw-border-red-200 tw-bg-red-50 tw-p-3 tw-text-sm tw-text-red-900 dark:tw-border-red-900 dark:tw-bg-red-950 dark:tw-text-red-50">
+        <div
+          v-if="message.finished_reason === 'error'"
+          class="tw-rounded-md tw-border tw-border-red-200 tw-bg-red-50 tw-p-3 tw-text-sm tw-text-red-900 dark:tw-border-red-900 dark:tw-bg-red-950 dark:tw-text-red-50"
+        >
           <div class="tw-flex tw-items-center tw-gap-2 tw-font-medium">
             <Icon icon="lucide:triangle-alert" class="tw-h-4 tw-w-4" />
             回复出错
@@ -106,8 +105,7 @@ export default defineComponent({
     const hasUsage = computed(
       () =>
         props.message.usage &&
-        ((props.message.usage.input_tokens || 0) > 0 ||
-          (props.message.usage.output_tokens || 0) > 0),
+        ((props.message.usage.input_tokens || 0) > 0 || (props.message.usage.output_tokens || 0) > 0),
     );
 
     const plainText = computed(() =>
@@ -188,9 +186,7 @@ export default defineComponent({
 
     const blocks = computed(() => groupToolCalls(props.message.content).filter((b) => b.type !== 'data'));
     const dataBlocks = computed(() => props.message.content.filter((b) => b.type === 'data'));
-    const audioBlocks = computed(
-      () => dataBlocks.value.filter((b) => b.source?.media_type?.startsWith('audio/')),
-    );
+    const audioBlocks = computed(() => dataBlocks.value.filter((b) => b.source?.media_type?.startsWith('audio/')));
 
     return {
       isUser,

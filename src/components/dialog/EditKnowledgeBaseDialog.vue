@@ -40,11 +40,15 @@ export default defineComponent({
     const form = ref({ name: '', description: '' });
     const submitting = ref(false);
 
-    watch(() => props.knowledgeBase, (kb) => {
-      if (kb) {
-        form.value = { name: kb.name || '', description: kb.description || '' };
-      }
-    }, { immediate: true });
+    watch(
+      () => props.knowledgeBase,
+      (kb) => {
+        if (kb) {
+          form.value = { name: kb.name || '', description: kb.description || '' };
+        }
+      },
+      { immediate: true },
+    );
 
     async function handleSubmit() {
       if (!props.knowledgeBase) return;

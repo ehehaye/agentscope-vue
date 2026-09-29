@@ -1,6 +1,8 @@
 <template>
   <div class="tw-flex tw-size-full tw-p-2">
-    <main class="tw-shadow-panel tw-flex tw-h-full tw-min-h-0 tw-min-w-0 tw-flex-1 tw-flex-col tw-overflow-hidden tw-rounded-22px tw-bg-card">
+    <main
+      class="tw-shadow-panel tw-flex tw-h-full tw-min-h-0 tw-min-w-0 tw-flex-1 tw-flex-col tw-overflow-hidden tw-rounded-22px tw-bg-card"
+    >
       <div class="tw-flex tw-items-start tw-justify-between tw-gap-3 tw-px-6 tw-pt-5 tw-pb-4">
         <div>
           <div class="tw-text-2xl tw-font-semibold">日程</div>
@@ -36,26 +38,13 @@
           @month-change="currentDate = $event"
           @event-click="handleEventClick"
         />
-        <ListTabPage
-          v-else
-          :schedules="schedules"
-          :loading="loading"
-          @delete="remove"
-        />
+        <ListTabPage v-else :schedules="schedules" :loading="loading" @delete="remove" />
       </div>
     </main>
 
-    <ScheduleDetailDrawer
-      :visible.sync="detailVisible"
-      :schedule="selectedSchedule"
-      @delete="remove"
-    />
+    <ScheduleDetailDrawer :visible.sync="detailVisible" :schedule="selectedSchedule" @delete="remove" />
 
-    <CreateScheduleDialog
-      :visible.sync="createVisible"
-      :agents="agents"
-      @submit="handleCreate"
-    />
+    <CreateScheduleDialog :visible.sync="createVisible" :agents="agents" @submit="handleCreate" />
   </div>
 </template>
 
@@ -106,14 +95,16 @@ export default defineComponent({
   components: { Icon, CalendarTabPage, ListTabPage, ScheduleDetailDrawer, CreateScheduleDialog },
   setup() {
     const { schedules, loading, remove, create, refetch } = useSchedules();
-		const { agents } = useAgents();
-		const viewMode = ref('calendar');
+    const { agents } = useAgents();
+    const viewMode = ref('calendar');
     const currentDate = ref(new Date());
     const selectedSchedule = ref(null);
     const createVisible = ref(false);
 
     const rangeStart = computed(() => new Date(currentDate.value.getFullYear(), currentDate.value.getMonth(), 1));
-    const rangeEnd = computed(() => new Date(currentDate.value.getFullYear(), currentDate.value.getMonth() + 1, 0, 23, 59, 59));
+    const rangeEnd = computed(
+      () => new Date(currentDate.value.getFullYear(), currentDate.value.getMonth() + 1, 0, 23, 59, 59),
+    );
 
     const events = computed(() => {
       return schedules.value
@@ -123,7 +114,9 @@ export default defineComponent({
 
     const detailVisible = computed({
       get: () => !!selectedSchedule.value,
-      set: (v) => { if (!v) selectedSchedule.value = null; },
+      set: (v) => {
+        if (!v) selectedSchedule.value = null;
+      },
     });
 
     function handleEventClick(event) {

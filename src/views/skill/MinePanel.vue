@@ -28,14 +28,22 @@
           @click="openDetail(skill)"
         >
           <img v-if="skill.icon_url" :src="skill.icon_url" class="tw-h-10 tw-w-10 tw-rounded-md tw-object-cover" />
-          <div v-else class="tw-flex tw-h-10 tw-w-10 tw-items-center tw-justify-center tw-rounded-md tw-bg-muted tw-text-sm tw-font-bold">
+          <div
+            v-else
+            class="tw-flex tw-h-10 tw-w-10 tw-items-center tw-justify-center tw-rounded-md tw-bg-muted tw-text-sm tw-font-bold"
+          >
             {{ (skill.display_name || skill.name).slice(0, 1).toUpperCase() }}
           </div>
           <div class="tw-min-w-0 tw-flex-1">
             <div class="tw-flex tw-items-center tw-gap-2">
               <span class="tw-font-medium">{{ skill.display_name || skill.name }}</span>
               <span v-if="skill.hub_id" class="tw-text-xs tw-text-muted-foreground">@{{ skill.hub_id }}</span>
-              <span v-for="tag in (skill.tags || []).slice(0, 4)" :key="tag" class="tw-rounded-full tw-bg-secondary tw-px-1.5 tw-py-0.5 tw-text-10px">#{{ tag }}</span>
+              <span
+                v-for="tag in (skill.tags || []).slice(0, 4)"
+                :key="tag"
+                class="tw-rounded-full tw-bg-secondary tw-px-1.5 tw-py-0.5 tw-text-10px"
+                >#{{ tag }}</span
+              >
             </div>
             <p class="tw-line-clamp-1 tw-text-xs tw-text-muted-foreground">{{ skill.description }}</p>
           </div>
@@ -63,9 +71,7 @@
         <div v-if="detailSkill.version" class="tw-text-xs tw-text-muted-foreground">
           版本: {{ detailSkill.version }}
         </div>
-        <div v-if="detailSkill.hub_id" class="tw-text-xs tw-text-muted-foreground">
-          来源: {{ detailSkill.hub_id }}
-        </div>
+        <div v-if="detailSkill.hub_id" class="tw-text-xs tw-text-muted-foreground">来源: {{ detailSkill.hub_id }}</div>
         <div v-if="detailMarkdown" class="tw-flex-1 tw-overflow-y-auto">
           <MarkdownRenderer :content="detailMarkdown" />
         </div>

@@ -23,8 +23,7 @@ export function waitForConversationReady(aid, sid, { timeoutMs = DEFAULT_TIMEOUT
   const store = useStore();
   const targetKey = `${aid}:${sid}`;
   return new Promise((resolve, reject) => {
-    const isReady = () =>
-      store.state.chat.currentKey === targetKey && store.state.chat.streamConnected;
+    const isReady = () => store.state.chat.currentKey === targetKey && store.state.chat.streamConnected;
     if (isReady()) {
       resolve();
       return;
@@ -99,4 +98,3 @@ export function useSessions(agentId) {
 
   return { sessions, loading, error, refetch, create, update, remove };
 }
-

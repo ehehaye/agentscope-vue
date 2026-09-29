@@ -7,38 +7,38 @@ import { ref, watch } from '@/composables/vue';
 import { knowledgeBaseApi } from '@/api';
 
 export function useKnowledgeDocuments(knowledgeBaseId) {
-	const documents = ref([]);
-	const loading = ref(!!knowledgeBaseId);
-	const error = ref(null);
-	let requestSeq = 0;
+  const documents = ref([]);
+  const loading = ref(!!knowledgeBaseId);
+  const error = ref(null);
+  let requestSeq = 0;
 
-	async function refetch() {
-		const kbId = typeof knowledgeBaseId === 'string' ? knowledgeBaseId : knowledgeBaseId?.value;
-		if (!kbId) {
-			documents.value = [];
-			loading.value = false;
-			return;
-		}
-		const seq = ++requestSeq;
-		loading.value = true;
-		error.value = null;
-		try {
-			const list = await knowledgeBaseApi.listAllDocuments(kbId);
-			if (seq !== requestSeq) return;
-			documents.value = list;
-		} catch (e) {
-			if (seq !== requestSeq) return;
-			error.value = e;
-		} finally {
-			if (seq === requestSeq) loading.value = false;
-		}
-	}
+  async function refetch() {
+    const kbId = typeof knowledgeBaseId === 'string' ? knowledgeBaseId : knowledgeBaseId?.value;
+    if (!kbId) {
+      documents.value = [];
+      loading.value = false;
+      return;
+    }
+    const seq = ++requestSeq;
+    loading.value = true;
+    error.value = null;
+    try {
+      const list = await knowledgeBaseApi.listAllDocuments(kbId);
+      if (seq !== requestSeq) return;
+      documents.value = list;
+    } catch (e) {
+      if (seq !== requestSeq) return;
+      error.value = e;
+    } finally {
+      if (seq === requestSeq) loading.value = false;
+    }
+  }
 
-	watch(
-		() => (typeof knowledgeBaseId === 'string' ? knowledgeBaseId : knowledgeBaseId?.value),
-		() => refetch(),
-		{ immediate: true },
-	);
+  watch(
+    () => (typeof knowledgeBaseId === 'string' ? knowledgeBaseId : knowledgeBaseId?.value),
+    () => refetch(),
+    { immediate: true },
+  );
 
-	return { documents, loading, error, refetch };
+  return { documents, loading, error, refetch };
 }

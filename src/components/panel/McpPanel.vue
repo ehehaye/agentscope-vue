@@ -10,14 +10,12 @@
 
     <div class="tw-flex tw-flex-1 tw-flex-col tw-gap-2 tw-overflow-y-auto">
       <template v-if="loading">
-        <div class="tw-flex tw-flex-1 tw-items-center tw-justify-center tw-text-sm tw-text-muted-foreground">加载中…</div>
+        <div class="tw-flex tw-flex-1 tw-items-center tw-justify-center tw-text-sm tw-text-muted-foreground">
+          加载中…
+        </div>
       </template>
       <template v-else-if="filtered.length === 0">
-        <PanelEmpty
-          :icon="emptyIcon"
-          :title="emptyTitle"
-          :description="emptyDescription"
-        />
+        <PanelEmpty :icon="emptyIcon" :title="emptyTitle" :description="emptyDescription" />
       </template>
       <template v-else>
         <Item v-for="mcp in filtered" :key="mcp.name" variant="outline" class="tw-group/mcp">
@@ -78,19 +76,8 @@
 import { defineComponent, ref, computed } from '@/composables/vue';
 import { MessageBox } from 'element-ui';
 import { Icon } from '@/components/iconify/index.js';
-import {
-  InputGroup,
-  InputGroupInput,
-  InputGroupAddon,
-} from '@/components/ui/InputGroup.js';
-import {
-  Item,
-  ItemMedia,
-  ItemContent,
-  ItemTitle,
-  ItemDescription,
-  ItemActions,
-} from '@/components/ui/Item.js';
+import { InputGroup, InputGroupInput, InputGroupAddon } from '@/components/ui/InputGroup.js';
+import { Item, ItemMedia, ItemContent, ItemTitle, ItemDescription, ItemActions } from '@/components/ui/Item.js';
 import PanelEmpty from './PanelEmpty.vue';
 import { useMCPs } from '@/composables/useMCPs';
 

@@ -20,12 +20,7 @@
       </el-form-item>
 
       <el-form-item label="描述">
-        <el-input
-          v-model="form.description"
-          type="textarea"
-          :rows="4"
-          placeholder="描述这个计划任务的用途..."
-        />
+        <el-input v-model="form.description" type="textarea" :rows="4" placeholder="描述这个计划任务的用途..." />
       </el-form-item>
 
       <el-form-item label="日期">
@@ -36,7 +31,7 @@
       </el-form-item>
 
       <el-form-item label="时区">
-        <TimezoneSelect :value="form.timezone" @change="(v) => form.timezone = v" />
+        <TimezoneSelect :value="form.timezone" @change="(v) => (form.timezone = v)" />
       </el-form-item>
 
       <el-form-item label="频率">
@@ -65,23 +60,25 @@
           :value="form.agentId"
           placeholder="选择智能体"
           class="tw-w-full"
-          @change="(id) => form.agentId = id"
+          @change="(id) => (form.agentId = id)"
         />
       </el-form-item>
 
       <el-form-item label="模型">
-        <LlmSelect :value="form.chatModelConfig" @change="(v) => form.chatModelConfig = v" />
+        <LlmSelect :value="form.chatModelConfig" @change="(v) => (form.chatModelConfig = v)" />
       </el-form-item>
 
       <el-form-item label="权限模式">
-        <PermissionModeSelect :value="form.permissionMode" @change="(v) => form.permissionMode = v" />
+        <PermissionModeSelect :value="form.permissionMode" @change="(v) => (form.permissionMode = v)" />
       </el-form-item>
 
       <el-form-item>
         <div class="tw-flex tw-w-full tw-items-center tw-justify-between">
           <div class="tw-flex tw-flex-col tw-gap-0.5">
             <span class="tw-text-sm tw-font-medium">有状态</span>
-            <span class="tw-text-xs tw-text-muted-foreground">开启后，每次触发复用同一个会话以累积上下文；关闭则每次触发都创建新会话。</span>
+            <span class="tw-text-xs tw-text-muted-foreground"
+              >开启后，每次触发复用同一个会话以累积上下文；关闭则每次触发都创建新会话。</span
+            >
           </div>
           <el-switch v-model="form.stateful" />
         </div>
@@ -138,7 +135,9 @@ export default defineComponent({
     });
 
     const isValid = computed(() => {
-      return form.value.name.trim() && form.value.date && form.value.time && form.value.agentId && form.value.chatModelConfig;
+      return (
+        form.value.name.trim() && form.value.date && form.value.time && form.value.agentId && form.value.chatModelConfig
+      );
     });
 
     function resetForm() {
@@ -163,9 +162,12 @@ export default defineComponent({
       error.value = '';
     }
 
-    watch(() => props.visible, (open) => {
-      if (open) resetForm();
-    });
+    watch(
+      () => props.visible,
+      (open) => {
+        if (open) resetForm();
+      },
+    );
 
     function buildCronExpr(freq, time, dateStr) {
       const [h, m] = time.split(':').map(Number);

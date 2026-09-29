@@ -1,5 +1,7 @@
 <template>
-  <div class="tw-flex tw-max-w-full tw-items-center tw-gap-3 tw-rounded-lg tw-border tw-border-border tw-bg-card tw-p-2">
+  <div
+    class="tw-flex tw-max-w-full tw-items-center tw-gap-3 tw-rounded-lg tw-border tw-border-border tw-bg-card tw-p-2"
+  >
     <div class="tw-flex tw-h-10 tw-w-10 tw-shrink-0 tw-items-center tw-justify-center tw-rounded-md tw-bg-muted">
       <img v-if="isImage && dataUrl" :src="dataUrl" class="tw-h-full tw-w-full tw-rounded-md tw-object-cover" />
       <Icon v-else-if="isVideo" icon="lucide:file-video-2" class="tw-h-5 tw-w-5" />
@@ -37,9 +39,7 @@ export default defineComponent({
       return '';
     });
 
-    const extension = computed(() =>
-      (mime.extension(props.block.source.media_type) || 'bin').toUpperCase(),
-    );
+    const extension = computed(() => (mime.extension(props.block.source.media_type) || 'bin').toUpperCase());
 
     return { isImage, isVideo, dataUrl, extension };
   },

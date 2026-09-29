@@ -11,63 +11,63 @@ import { ref, computed, onMounted } from '@/composables/vue';
  * @param {(item: any) => string|number} [opts.idKey=(i)=>i.id] 用于 byId
  */
 export function useResourceList(listFn, opts = {}) {
-	const { immediate = true, byId = false, idKey = (item) => item?.id } = opts;
+  const { immediate = true, byId = false, idKey = (item) => item?.id } = opts;
 
-	const items = ref([]);
-	const loading = ref(false);
-	const error = ref(null);
-	let reqId = 0;
+  const items = ref([]);
+  const loading = ref(false);
+  const error = ref(null);
+  let reqId = 0;
 
-	async function refetch(params) {
-		const id = ++reqId;
-		loading.value = true;
-		error.value = null;
-		try {
-			const res = await listFn(params);
-			const list = Array.isArray(res) ? res : res?.list ?? [];
-			if (id === reqId) {
-				items.value = list;
-			}
-			return list;
-		} catch (e) {
-			if (id === reqId) {
-				error.value = e;
-			}
-			return [];
-		} finally {
-			if (id === reqId) {
-				loading.value = false;
-			}
-		}
-	}
+  async function refetch(params) {
+    const id = ++reqId;
+    loading.value = true;
+    error.value = null;
+    try {
+      const res = await listFn(params);
+      const list = Array.isArray(res) ? res : (res?.list ?? []);
+      if (id === reqId) {
+        items.value = list;
+      }
+      return list;
+    } catch (e) {
+      if (id === reqId) {
+        error.value = e;
+      }
+      return [];
+    } finally {
+      if (id === reqId) {
+        loading.value = false;
+      }
+    }
+  }
 
-	function clear() {
-		items.value = [];
-		error.value = null;
-	}
+  function clear() {
+    items.value = [];
+    error.value = null;
+  }
 
-	function setItems(list) {
-		items.value = list;
-	}
+  function setItems(list) {
+    items.value = list;
+  }
 
-	const itemsById = computed(() => {
-		const map = {};
-		for (const item of items.value) {
-			const key = idKey(item);
-			if (key != null) map[key] = item;
-		}
-		return map;
-	});
+  const itemsById = computed(() => {
+    const map = {};
+    for (const item of items.value) {
+      const key = idKey(item);
+      if (key != null) map[key] = item;
+    }
+    return map;
+  });
 
-	if (immediate) {
-		onMounted(() => {
-			refetch();
-		});
-	}
+  if (immediate) {
+    onMounted(() => {
+      refetch();
+    });
+  }
 
-	const result = { items, loading, error, refetch, clear, setItems };
-	if (byId) result.itemsById = itemsById;
-	return result;
+  const result = { items, loading, error, refetch, clear, setItems };
+  if (byId) result.itemsById = itemsById;
+  return result;
 }
 
 /**
@@ -78,35 +78,35 @@ export function useResourceList(listFn, opts = {}) {
  * @param {object} [opts] 透传给 useResourceList
  */
 export function useResourceCrud(api, opts = {}) {
-	const { items, loading, error, refetch, clear, setItems } = useResourceList(api.list, opts);
+  const { items, loading, error, refetch, clear, setItems } = useResourceList(api.list, opts);
 
-	async function create(payload, params) {
-		const res = await api.create(payload, params);
-		await refetch();
-		return res;
-	}
+  async function create(payload, params) {
+    const res = await api.create(payload, params);
+    await refetch();
+    return res;
+  }
 
-	async function update(id, payload, params) {
-		const res = await api.update(id, payload, params);
-		await refetch();
-		return res;
-	}
+  async function update(id, payload, params) {
+    const res = await api.update(id, payload, params);
+    await refetch();
+    return res;
+  }
 
-	async function remove(id, params) {
-		const res = await api.remove(id, params);
-		await refetch();
-		return res;
-	}
+  async function remove(id, params) {
+    const res = await api.remove(id, params);
+    await refetch();
+    return res;
+  }
 
-	return {
-		items,
-		loading,
-		error,
-		refetch,
-		clear,
-		setItems,
-		create,
-		update,
-		remove,
-	};
+  return {
+    items,
+    loading,
+    error,
+    refetch,
+    clear,
+    setItems,
+    create,
+    update,
+    remove,
+  };
 }

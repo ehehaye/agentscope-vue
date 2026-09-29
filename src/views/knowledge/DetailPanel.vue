@@ -6,11 +6,17 @@
           <span class="tw-truncate tw-text-lg tw-font-medium tw-tracking-neg-0_015em tw-text-foreground">
             {{ knowledgeBase.name }}
           </span>
-          <span v-if="!knowledgeBase.editable" class="tw-rounded-md tw-border tw-border-border tw-bg-secondary tw-px-1.5 tw-py-0.5 tw-text-10px tw-font-medium" title="该资源以只读方式共享给你，编辑和删除均被禁用。">
+          <span
+            v-if="!knowledgeBase.editable"
+            class="tw-rounded-md tw-border tw-border-border tw-bg-secondary tw-px-1.5 tw-py-0.5 tw-text-10px tw-font-medium"
+            title="该资源以只读方式共享给你，编辑和删除均被禁用。"
+          >
             只读
           </span>
         </div>
-        <p v-if="knowledgeBase.description" class="tw-text-sm tw-text-muted-foreground">{{ knowledgeBase.description }}</p>
+        <p v-if="knowledgeBase.description" class="tw-text-sm tw-text-muted-foreground">
+          {{ knowledgeBase.description }}
+        </p>
       </div>
       <div class="tw-flex tw-shrink-0 tw-items-center tw-gap-x-2">
         <el-button size="small" @click="$emit('test')">

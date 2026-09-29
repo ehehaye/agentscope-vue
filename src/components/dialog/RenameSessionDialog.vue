@@ -20,9 +20,7 @@
     </el-form>
     <span slot="footer" class="tw-dialog-footer">
       <el-button @click="dialogVisible = false" :disabled="submitting">取消</el-button>
-      <el-button type="primary" :loading="submitting" :disabled="!name.trim()" @click="handleConfirm">
-        确认
-      </el-button>
+      <el-button type="primary" :loading="submitting" :disabled="!name.trim()" @click="handleConfirm"> 确认 </el-button>
     </span>
   </el-dialog>
 </template>
@@ -45,9 +43,12 @@ export default defineComponent({
     const name = ref('');
     const submitting = ref(false);
 
-    watch(() => props.visible, (v) => {
-      if (v) name.value = props.currentName;
-    });
+    watch(
+      () => props.visible,
+      (v) => {
+        if (v) name.value = props.currentName;
+      },
+    );
 
     async function handleConfirm() {
       if (!name.value.trim()) return;

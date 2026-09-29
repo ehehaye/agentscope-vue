@@ -1,7 +1,9 @@
 <template>
   <div class="tw-flex tw-flex-col tw-gap-y-3">
     <h3 class="tw-text-13_5px tw-font-medium tw-text-foreground">配置信息</h3>
-    <div class="tw-grid tw-grid-cols-2 tw-gap-x-4 tw-gap-y-3 tw-rounded-lg tw-border tw-border-border tw-bg-card tw-p-3 sm:tw-grid-cols-3">
+    <div
+      class="tw-grid tw-grid-cols-2 tw-gap-x-4 tw-gap-y-3 tw-rounded-lg tw-border tw-border-border tw-bg-card tw-p-3 sm:tw-grid-cols-3"
+    >
       <ConfigItem label="嵌入模型" :value="embedding.model" />
       <ConfigItem label="维度" :value="String(embedding.dimensions || '—')" />
       <ConfigItem label="凭证" :value="knowledgeBase.credential_name || embedding.credential_id" />
@@ -26,7 +28,10 @@ export default defineComponent({
   setup(props) {
     const embedding = computed(() => props.knowledgeBase.embedding_model_config || {});
     const chunker = computed(() => props.knowledgeBase.chunker_config || null);
-    const counts = computed(() => props.knowledgeBase.status_counts || { ready: 0, pending: 0, parsing: 0, chunking: 0, indexing: 0, error: 0 });
+    const counts = computed(
+      () =>
+        props.knowledgeBase.status_counts || { ready: 0, pending: 0, parsing: 0, chunking: 0, indexing: 0, error: 0 },
+    );
 
     const chunkerValue = computed(() => {
       if (!chunker.value) return '—';

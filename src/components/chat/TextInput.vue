@@ -10,11 +10,7 @@
         >
           <Icon icon="lucide:file-text" class="tw-h-3 tw-w-3 tw-shrink-0" />
           <span class="tw-truncate">{{ file.name }}</span>
-          <Icon
-            icon="lucide:x"
-            class="tw-h-3 tw-w-3 tw-shrink-0 tw-cursor-pointer"
-            @click.native="removeFile(index)"
-          />
+          <Icon icon="lucide:x" class="tw-h-3 tw-w-3 tw-shrink-0 tw-cursor-pointer" @click.native="removeFile(index)" />
         </div>
       </div>
       <div class="tw-relative tw-flex tw-flex-wrap tw-items-end tw-justify-end">
@@ -33,35 +29,16 @@
           @keydown.native="handleKeyDown"
         />
         <div class="tw-flex tw-shrink-0 tw-items-center tw-gap-2 tw-py-2">
-          <el-button
-            type="text"
-            size="small"
-            circle
-            :disabled="attachDisabled"
-            @click="openFilePicker"
-          >
+          <el-button type="text" size="small" circle :disabled="attachDisabled" @click="openFilePicker">
             <Icon icon="lucide:paperclip" class="tw-h-4 tw-w-4" />
           </el-button>
-          <el-button
-            type="primary"
-            size="small"
-            circle
-            :disabled="sendButton.disabled"
-            @click="sendButton.onClick"
-          >
+          <el-button type="primary" size="small" circle :disabled="sendButton.disabled" @click="sendButton.onClick">
             <Icon :icon="sendButton.icon" class="tw-h-4 tw-w-4" />
           </el-button>
         </div>
       </div>
     </div>
-    <input
-      ref="fileInputRef"
-      type="file"
-      multiple
-      class="tw-hidden"
-      :accept="acceptAttr"
-      @change="handleFileSelect"
-    />
+    <input ref="fileInputRef" type="file" multiple class="tw-hidden" :accept="acceptAttr" @change="handleFileSelect" />
   </div>
 </template>
 
@@ -85,9 +62,7 @@ export default defineComponent({
     const fileInputRef = ref(null);
 
     const acceptAttr = computed(() =>
-      props.allowedInputTypes && props.allowedInputTypes.length > 0
-        ? props.allowedInputTypes.join(',')
-        : undefined,
+      props.allowedInputTypes && props.allowedInputTypes.length > 0 ? props.allowedInputTypes.join(',') : undefined,
     );
 
     const attachDisabled = computed(

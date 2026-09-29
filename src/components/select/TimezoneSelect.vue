@@ -1,6 +1,8 @@
 <template>
   <el-dropdown trigger="click" @command="(v) => $emit('change', v)">
-    <span class="el-dropdown-link tw-inline-flex tw-w-full tw-cursor-pointer tw-items-center tw-justify-between tw-gap-2 tw-rounded-md tw-border tw-border-border tw-px-3 tw-py-1.5 tw-text-sm hover:tw-bg-row-hover">
+    <span
+      class="el-dropdown-link tw-inline-flex tw-w-full tw-cursor-pointer tw-items-center tw-justify-between tw-gap-2 tw-rounded-md tw-border tw-border-border tw-px-3 tw-py-1.5 tw-text-sm hover:tw-bg-row-hover"
+    >
       <span class="tw-truncate tw-inline-flex tw-items-center tw-gap-2">
         <Icon icon="lucide:globe" class="tw-h-3.5 tw-w-3.5 tw-shrink-0 tw-text-muted-foreground" />
         <span class="tw-truncate">{{ displayLabel }}</span>
@@ -23,12 +25,7 @@
           <el-dropdown-item disabled>未找到时区</el-dropdown-item>
         </template>
         <template v-else>
-          <el-dropdown-item
-            v-for="tz in filtered"
-            :key="tz"
-            :command="tz"
-            :class="{ 'tw-bg-accent': value === tz }"
-          >
+          <el-dropdown-item v-for="tz in filtered" :key="tz" :command="tz" :class="{ 'tw-bg-accent': value === tz }">
             {{ tz }}
           </el-dropdown-item>
         </template>

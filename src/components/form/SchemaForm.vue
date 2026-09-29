@@ -1,15 +1,8 @@
 <template>
   <el-form label-position="top" class="tw-schema-form">
-    <el-form-item
-      v-for="[key, prop] in entries"
-      :key="key"
-      :label="labelFor(key, prop)"
-    >
+    <el-form-item v-for="[key, prop] in entries" :key="key" :label="labelFor(key, prop)">
       <template v-if="effectiveType(prop) === 'boolean'">
-        <el-switch
-          :value="values[key]"
-          @change="(val) => onChange(key, val)"
-        />
+        <el-switch :value="values[key]" @change="(val) => onChange(key, val)" />
       </template>
 
       <template v-else-if="enumValues(prop)">
@@ -19,12 +12,7 @@
           :placeholder="placeholderFor(key, prop)"
           class="tw-w-full"
         >
-          <el-option
-            v-for="opt in enumValues(prop)"
-            :key="String(opt)"
-            :label="String(opt)"
-            :value="String(opt)"
-          />
+          <el-option v-for="opt in enumValues(prop)" :key="String(opt)" :label="String(opt)" :value="String(opt)" />
         </el-select>
       </template>
 

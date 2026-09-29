@@ -41,7 +41,12 @@
         </div>
         <div class="tw-flex tw-flex-col tw-gap-1">
           <span class="tw-text-xs tw-text-muted-foreground">会话范围</span>
-          <el-select :value="binding.session_scope" size="small" class="tw-w-full" @change="(v) => update(i, { session_scope: v })">
+          <el-select
+            :value="binding.session_scope"
+            size="small"
+            class="tw-w-full"
+            @change="(v) => update(i, { session_scope: v })"
+          >
             <el-option label="按聊天" value="per_chat" />
             <el-option label="按聊天用户" value="per_chat_user" />
           </el-select>
@@ -75,7 +80,10 @@ export default defineComponent({
     }
 
     function removeRule(i) {
-      emit('input', props.value.filter((_, idx) => idx !== i));
+      emit(
+        'input',
+        props.value.filter((_, idx) => idx !== i),
+      );
     }
 
     function addRule() {

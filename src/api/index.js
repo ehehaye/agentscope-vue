@@ -2,12 +2,7 @@
  * API 层统一出口：各业务 API 模块由此汇出。
  */
 export { client, ApiError, TIMEOUT_STATUS, getBaseUrl, getUserId } from './client';
-export {
-	ENDPOINTS,
-	API_MODES,
-	getApiMode,
-	resolveEndpoint,
-} from './mapping';
+export { ENDPOINTS, API_MODES, getApiMode, resolveEndpoint } from './mapping';
 export { healthApi } from './health';
 export { workspaceApi } from './workspace';
 export { credentialApi } from './credential';

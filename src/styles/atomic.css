@@ -5,50 +5,94 @@
  */
 
 /* ── rounded-[Npx] ─────────────────────────────────────── */
-.tw-rounded-22px { border-radius: 22px; }
-.tw-rounded-28px { border-radius: 28px; }
-.tw-rounded-32px { border-radius: 32px; }
+.tw-rounded-22px {
+  border-radius: 22px;
+}
+.tw-rounded-28px {
+  border-radius: 28px;
+}
+.tw-rounded-32px {
+  border-radius: 32px;
+}
 
 /* ── rounded-[calc/min]（含 CSS 变量） ─────────────────── */
-.tw-rounded-calc-r-3px { border-radius: calc(var(--as-radius) - 3px); }
-.tw-rounded-min-r-md-12px { border-radius: min(var(--as-radius-md), 12px); }
+.tw-rounded-calc-r-3px {
+  border-radius: calc(var(--as-radius) - 3px);
+}
+.tw-rounded-min-r-md-12px {
+  border-radius: min(var(--as-radius-md), 12px);
+}
 
 /* ── w-[xxx] / max-w-[xxx] ────────────────────────────── */
-.tw-w-22rem { width: 22rem; }
-.tw-max-w-48rem { max-width: 48rem; }
-.tw-max-w-85pct { max-width: 85%; }
+.tw-w-22rem {
+  width: 22rem;
+}
+.tw-max-w-48rem {
+  max-width: 48rem;
+}
+.tw-max-w-85pct {
+  max-width: 85%;
+}
 
 /* ── h-[xxx] / max-h-[xxx] ─────────────────────────────── */
-.tw-h-45vh { height: 45vh; }
-.tw-h-60vh { height: 60vh; }
-.tw-max-h-70vh { max-height: 70vh; }
-.tw-max-h-75vh { max-height: 75vh; }
-.tw-max-h-200px { max-height: 200px; }
+.tw-h-45vh {
+  height: 45vh;
+}
+.tw-h-60vh {
+  height: 60vh;
+}
+.tw-max-h-70vh {
+  max-height: 70vh;
+}
+.tw-max-h-75vh {
+  max-height: 75vh;
+}
+.tw-max-h-200px {
+  max-height: 200px;
+}
 
 /* ── text-[xxx]（font-size） ───────────────────────────── */
-.tw-text-0_8rem { font-size: 0.8rem; }
-.tw-text-10px { font-size: 10px; }
-.tw-text-11px { font-size: 11px; }
-.tw-text-13_5px { font-size: 13.5px; }
+.tw-text-0_8rem {
+  font-size: 0.8rem;
+}
+.tw-text-10px {
+  font-size: 10px;
+}
+.tw-text-11px {
+  font-size: 11px;
+}
+.tw-text-13_5px {
+  font-size: 13.5px;
+}
 
 /* ── tracking-[xxx]（letter-spacing） ────────────────── */
-.tw-tracking-neg-0_02em { letter-spacing: -0.02em; }
-.tw-tracking-neg-0_015em { letter-spacing: -0.015em; }
+.tw-tracking-neg-0_02em {
+  letter-spacing: -0.02em;
+}
+.tw-tracking-neg-0_015em {
+  letter-spacing: -0.015em;
+}
 
 /* ── p-[a_b_c]（padding 多值，_ = 空格） ───────────────── */
-.tw-p-18_18_16px { padding: 18px 18px 16px; }
-.tw-p-20_18_24px { padding: 20px 18px 24px; }
+.tw-p-18_18_16px {
+  padding: 18px 18px 16px;
+}
+.tw-p-20_18_24px {
+  padding: 20px 18px 24px;
+}
 
 /* ── overflow-x-hidden ─────────────────────────────────
  * Tailwind 的 JIT 在 webpack 下不会因模板新增工具类而重新产出 CSS，
  * 这里手写兜底。用于 overflow-y-auto 的滚动容器：否则 overflow-x 会
  * 被计算为 auto，折叠动画中 chevron 旋转导致的 1~2px 瞬时溢出会渲染出横向滚动条。 */
-.tw-overflow-x-hidden { overflow-x: hidden; }
+.tw-overflow-x-hidden {
+  overflow-x: hidden;
+}
 
 /* ── focus-visible:ring-[3px] ──────────────────────────
  * 原代码片段为 `focus-visible:ring-[3px] focus-visible:ring-ring/50`，
  * ring-[3px] 是任意值，ring-ring/50 是配色（50% 透明 var(--as-ring)）。
  * 为 1:1 复刻原视觉，本类直接接管 ring 行为，原 ring-ring/50 同步删除。 */
 .tw-focus-ring-3px:focus-visible {
-	box-shadow: 0 0 0 3px color-mix(in srgb, var(--as-ring) 50%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--as-ring) 50%, transparent);
 }

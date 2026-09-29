@@ -18,8 +18,7 @@ export const hubApi = {
         params: browseQuery(params),
       }),
 
-    getCard: (hubId, cardId) =>
-      client.request('hub.mcp.getCard', { pathParams: { hubId, cardId } }),
+    getCard: (hubId, cardId) => client.request('hub.mcp.getCard', { pathParams: { hubId, cardId } }),
 
     install: (hubId, cardId, body, options) =>
       client.request('hub.mcp.install', {
@@ -38,8 +37,7 @@ export const hubApi = {
         params: browseQuery(params),
       }),
 
-    getCard: (hubId, cardId) =>
-      client.request('hub.skill.getCard', { pathParams: { hubId, cardId } }),
+    getCard: (hubId, cardId) => client.request('hub.skill.getCard', { pathParams: { hubId, cardId } }),
 
     install: (hubId, cardId, name, options) =>
       client.request('hub.skill.install', {

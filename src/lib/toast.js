@@ -8,36 +8,36 @@
 import { Message, Notification } from 'element-ui';
 
 function normalize(message, options = {}) {
-	if (typeof message === 'string') return { message, ...options };
-	return { message: String(message), ...options };
+  if (typeof message === 'string') return { message, ...options };
+  return { message: String(message), ...options };
 }
 
 export const toast = {
-	success(message, options) {
-		return Message({ type: 'success', showClose: true, ...normalize(message, options) });
-	},
-	error(message, options) {
-		return Message({ type: 'error', showClose: true, duration: 5000, ...normalize(message, options) });
-	},
-	warning(message, options) {
-		return Message({ type: 'warning', showClose: true, ...normalize(message, options) });
-	},
-	info(message, options) {
-		return Message({ type: 'info', showClose: true, ...normalize(message, options) });
-	},
-	/**
-	 * 带标题/描述的通知（固定 top-right 位姿）。
-	 * @param {{title?: string, message: string, type?: 'success'|'error'|'warning'|'info', duration?: number}} opts
-	 */
-	notify({ title, message, type = 'info', duration = 4500 }) {
-		return Notification({
-			title,
-			message,
-			type,
-			duration,
-			position: 'top-right',
-		});
-	},
+  success(message, options) {
+    return Message({ type: 'success', showClose: true, ...normalize(message, options) });
+  },
+  error(message, options) {
+    return Message({ type: 'error', showClose: true, duration: 5000, ...normalize(message, options) });
+  },
+  warning(message, options) {
+    return Message({ type: 'warning', showClose: true, ...normalize(message, options) });
+  },
+  info(message, options) {
+    return Message({ type: 'info', showClose: true, ...normalize(message, options) });
+  },
+  /**
+   * 带标题/描述的通知（固定 top-right 位姿）。
+   * @param {{title?: string, message: string, type?: 'success'|'error'|'warning'|'info', duration?: number}} opts
+   */
+  notify({ title, message, type = 'info', duration = 4500 }) {
+    return Notification({
+      title,
+      message,
+      type,
+      duration,
+      position: 'top-right',
+    });
+  },
 };
 
 export default toast;

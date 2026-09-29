@@ -23,27 +23,27 @@ const __ICONIFY_OFFLINE__ = true;
 
 let api;
 if (__ICONIFY_OFFLINE__) {
-	api = require('@iconify/vue2/offline');
-	// 注册本地 lucide 图标集（在线模式走 API，图标数据不进包）
-	api.addCollection(require('@iconify-json/lucide/icons.json'));
+  api = require('@iconify/vue2/offline');
+  // 注册本地 lucide 图标集（在线模式走 API，图标数据不进包）
+  api.addCollection(require('@iconify-json/lucide/icons.json'));
 } else {
-	api = require('@iconify/vue2');
+  api = require('@iconify/vue2');
 }
 
 // 包装原始 Icon 组件：默认追加 tw-cursor-pointer，
 // 其余 props / 事件 / 插槽 / class 通过 data 原样透传
 export const Icon = {
-	functional: true,
-	render(h, ctx) {
-		return h(
-			api.Icon,
-			{
-				...ctx.data,
-				class: ['tw-cursor-pointer', ctx.data.class],
-			},
-			ctx.children,
-		);
-	},
+  functional: true,
+  render(h, ctx) {
+    return h(
+      api.Icon,
+      {
+        ...ctx.data,
+        class: ['tw-cursor-pointer', ctx.data.class],
+      },
+      ctx.children,
+    );
+  },
 };
 export const addCollection = api.addCollection;
 export const addIcon = api.addIcon;

@@ -16,12 +16,7 @@
         />
       </slot>
     </div>
-    <transition
-      name="collapse"
-      @enter="enter"
-      @after-enter="afterEnter"
-      @leave="leave"
-    >
+    <transition name="collapse" @enter="enter" @after-enter="afterEnter" @leave="leave">
       <div v-show="isOpen" class="tw-collapsible-content tw-overflow-hidden" :class="contentClass">
         <slot />
       </div>
@@ -45,7 +40,7 @@ export default defineComponent({
     cls: {
       type: Function,
       default: (isOpen) => '',
-    }
+    },
   },
   setup(props, { emit }) {
     const internalOpen = ref(props.defaultOpen);

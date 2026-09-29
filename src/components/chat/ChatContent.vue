@@ -18,28 +18,28 @@
           />
           <ASMessageBubble :message="message" />
         </div>
-        <div v-if="showMaxItersAlert" class="tw-rounded-md tw-border tw-border-amber-200 tw-bg-amber-50 tw-p-3 tw-text-sm tw-text-amber-900 dark:tw-border-amber-900 dark:tw-bg-amber-950 dark:tw-text-amber-50">
+        <div
+          v-if="showMaxItersAlert"
+          class="tw-rounded-md tw-border tw-border-amber-200 tw-bg-amber-50 tw-p-3 tw-text-sm tw-text-amber-900 dark:tw-border-amber-900 dark:tw-bg-amber-950 dark:tw-text-amber-50"
+        >
           <div class="tw-flex tw-items-center tw-gap-2 tw-font-medium">
             <Icon icon="lucide:triangle-alert" class="tw-h-4 tw-w-4" />
             达到最大迭代次数
           </div>
           <p class="tw-mt-1 tw-text-xs">本轮回复已达到最大迭代次数限制。</p>
-          <el-button size="mini" class="tw-mt-2" @click="continueAfterMaxIters">
-            继续
-          </el-button>
+          <el-button size="mini" class="tw-mt-2" @click="continueAfterMaxIters"> 继续 </el-button>
         </div>
       </div>
     </MessageScroller>
 
     <div class="tw-relative tw-w-full tw-p-4">
-      <FlipCard
-        :visible="showFlipCard"
-        class="tw-w-full"
-      >
+      <FlipCard :visible="showFlipCard" class="tw-w-full">
         <ConfirmCard
           v-if="pendingToolCall"
           :tool-call="pendingToolCall.toolCall"
-          @confirm="(confirm, rules) => onUserConfirm(pendingToolCall.toolCall, confirm, pendingToolCall.replyId, rules)"
+          @confirm="
+            (confirm, rules) => onUserConfirm(pendingToolCall.toolCall, confirm, pendingToolCall.replyId, rules)
+          "
         />
         <AskUserCard
           v-if="pendingAskUser"
@@ -100,7 +100,19 @@ const SPINNER_DELAY_MS = 150;
 
 export default defineComponent({
   name: 'ChatContent',
-  components: { Icon, Spinner, MessageScroller, ASMessageBubble, TextInput, FlipCard, ConfirmCard, AskUserCard, SubagentHitlCard, TimeMarker, WorkingDirectoryDialog },
+  components: {
+    Icon,
+    Spinner,
+    MessageScroller,
+    ASMessageBubble,
+    TextInput,
+    FlipCard,
+    ConfirmCard,
+    AskUserCard,
+    SubagentHitlCard,
+    TimeMarker,
+    WorkingDirectoryDialog,
+  },
   props: {
     msgs: { type: Array, default: () => [] },
     loading: { type: Boolean, default: false },

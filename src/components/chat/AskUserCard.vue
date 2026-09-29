@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="tw-mb-2 tw-w-full tw-space-y-3 tw-rounded-28px tw-bg-muted tw-px-5 tw-py-4 tw-ring-1 tw-ring-border"
-  >
+  <div class="tw-mb-2 tw-w-full tw-space-y-3 tw-rounded-28px tw-bg-muted tw-px-5 tw-py-4 tw-ring-1 tw-ring-border">
     <!-- <div class="tw-text-sm tw-font-medium tw-text-secondary-foreground">Agent 需要你的输入</div> -->
 
     <!-- input 解析失败时退回原始 JSON -->
@@ -41,12 +39,7 @@
             :disabled="submitting"
             @input="(v) => setSingle(qi, v)"
           >
-            <el-radio
-              v-for="opt in q.options"
-              :key="opt.label"
-              :label="opt.label"
-              class="ask-option"
-            >
+            <el-radio v-for="opt in q.options" :key="opt.label" :label="opt.label" class="ask-option">
               <span class="tw-flex tw-min-w-0 tw-flex-col tw-items-start">
                 <span class="tw-break-words tw-whitespace-normal">{{ opt.label }}</span>
                 <span
@@ -60,12 +53,7 @@
           </el-radio-group>
 
           <el-checkbox-group v-else v-model="answers[qi].selected" :disabled="submitting">
-            <el-checkbox
-              v-for="opt in q.options"
-              :key="opt.label"
-              :label="opt.label"
-              class="ask-option"
-            >
+            <el-checkbox v-for="opt in q.options" :key="opt.label" :label="opt.label" class="ask-option">
               <span class="tw-flex tw-min-w-0 tw-flex-col tw-items-start">
                 <span class="tw-break-words tw-whitespace-normal">{{ opt.label }}</span>
                 <span
@@ -144,9 +132,7 @@ export default defineComponent({
     const submitting = ref(false);
 
     function setSingle(qi, label) {
-      answers.value = answers.value.map((a, i) =>
-        i === qi ? { ...a, selected: label ? [label] : [] } : a,
-      );
+      answers.value = answers.value.map((a, i) => (i === qi ? { ...a, selected: label ? [label] : [] } : a));
     }
 
     function setOther(qi, other) {
@@ -157,8 +143,7 @@ export default defineComponent({
       () =>
         questions.value.length > 0 &&
         questions.value.every(
-          (_, i) =>
-            answers.value[i].selected.length > 0 || answers.value[i].other.trim().length > 0,
+          (_, i) => answers.value[i].selected.length > 0 || answers.value[i].other.trim().length > 0,
         ),
     );
 

@@ -24,7 +24,9 @@
       <el-alert v-if="status?.last_error" :title="status.last_error" type="error" :closable="false" show-icon />
 
       <section>
-        <div class="tw-mb-2 tw-text-xs tw-font-semibold tw-uppercase tw-tracking-wide tw-text-muted-foreground">基础配置</div>
+        <div class="tw-mb-2 tw-text-xs tw-font-semibold tw-uppercase tw-tracking-wide tw-text-muted-foreground">
+          基础配置
+        </div>
         <el-descriptions :column="1" border size="small">
           <el-descriptions-item label="平台类型">{{ typeName }}</el-descriptions-item>
           <el-descriptions-item v-if="model" label="模型">{{ model }}</el-descriptions-item>
@@ -40,14 +42,20 @@
       </section>
 
       <section>
-        <div class="tw-mb-2 tw-flex tw-items-center tw-gap-2 tw-text-xs tw-font-semibold tw-uppercase tw-tracking-wide tw-text-muted-foreground">
+        <div
+          class="tw-mb-2 tw-flex tw-items-center tw-gap-2 tw-text-xs tw-font-semibold tw-uppercase tw-tracking-wide tw-text-muted-foreground"
+        >
           <span>路由规则</span>
           <el-tag size="mini" type="info">{{ channel.routing?.bindings?.length || 0 }}</el-tag>
         </div>
         <el-table :data="channel.routing?.bindings || []" size="small" border>
           <el-table-column label="条件" show-overflow-tooltip>
             <template slot-scope="scope">
-              {{ scope.$index === (channel.routing?.bindings?.length || 0) - 1 ? '默认' : `${scope.row.match_key} = ${scope.row.match_value}` }}
+              {{
+                scope.$index === (channel.routing?.bindings?.length || 0) - 1
+                  ? '默认'
+                  : `${scope.row.match_key} = ${scope.row.match_value}`
+              }}
             </template>
           </el-table-column>
           <el-table-column label="助手" show-overflow-tooltip>
@@ -60,7 +68,9 @@
       </section>
 
       <section class="tw-flex-1">
-        <div class="tw-mb-2 tw-flex tw-items-center tw-gap-2 tw-text-xs tw-font-semibold tw-uppercase tw-tracking-wide tw-text-muted-foreground">
+        <div
+          class="tw-mb-2 tw-flex tw-items-center tw-gap-2 tw-text-xs tw-font-semibold tw-uppercase tw-tracking-wide tw-text-muted-foreground"
+        >
           <span>会话</span>
           <el-tag size="mini" type="info">{{ sessions.length }}</el-tag>
         </div>
@@ -74,7 +84,10 @@
           </el-table-column>
           <el-table-column width="50">
             <template slot-scope="scope">
-              <router-link :to="{ name: 'chat', params: { agent_id: scope.row.agent_id, id: scope.row.id } }" title="打开聊天">
+              <router-link
+                :to="{ name: 'chat', params: { agent_id: scope.row.agent_id, id: scope.row.id } }"
+                title="打开聊天"
+              >
                 <Icon icon="lucide:chevron-right" class="tw-h-4 tw-w-4 tw-text-muted-foreground" />
               </router-link>
             </template>

@@ -8,9 +8,7 @@
     destroy-on-close
   >
     <div v-if="document" class="tw-flex tw-h-full tw-flex-col tw-gap-3">
-      <p class="tw-text-sm tw-text-muted-foreground">
-        共 {{ document.chunk_count || 0 }} 个分块
-      </p>
+      <p class="tw-text-sm tw-text-muted-foreground">共 {{ document.chunk_count || 0 }} 个分块</p>
       <el-tabs v-model="activeTab" class="tw-flex-1 tw-min-h-0 tw-flex tw-flex-col">
         <el-tab-pane label="分块" name="chunks">
           <div class="tw-flex tw-flex-col tw-gap-2" v-loading="chunksLoading">
@@ -19,11 +17,7 @@
               当前向量存储不支持列出分块
             </div>
             <template v-else-if="chunks.length > 0">
-              <div
-                v-for="chunk in chunks"
-                :key="chunk.chunk_index"
-                class="tw-rounded-md tw-border tw-p-3"
-              >
+              <div v-for="chunk in chunks" :key="chunk.chunk_index" class="tw-rounded-md tw-border tw-p-3">
                 <span class="tw-text-xs tw-text-muted-foreground tw-font-mono">
                   #{{ chunk.chunk_index + 1 }} / {{ chunk.total_chunks }}
                 </span>
@@ -59,12 +53,7 @@
               :title="document.filename"
               class="tw-h-60vh tw-w-full tw-border"
             />
-            <img
-              v-else-if="isImage && tokenUrl"
-              :src="tokenUrl"
-              :alt="document.filename"
-              class="tw-max-w-full"
-            />
+            <img v-else-if="isImage && tokenUrl" :src="tokenUrl" :alt="document.filename" class="tw-max-w-full" />
             <div v-else-if="!previewLoading" class="tw-text-center tw-py-6">
               <p class="tw-text-sm tw-text-muted-foreground">
                 {{ tooLargeToInline ? '文件过大，无法内联预览' : '无法预览此文件类型' }}
@@ -122,9 +111,7 @@ export default defineComponent({
 
     const media = computed(() => (props.document ? mediaType(props.document) : ''));
     const isTextType = computed(() => media.value === 'text/markdown' || media.value === 'text/plain');
-    const tooLargeToInline = computed(
-      () => isTextType.value && (props.document?.size || 0) > MAX_INLINE_TEXT_BYTES,
-    );
+    const tooLargeToInline = computed(() => isTextType.value && (props.document?.size || 0) > MAX_INLINE_TEXT_BYTES);
     const isText = computed(() => isTextType.value && !tooLargeToInline.value);
     const isPdf = computed(() => media.value === 'application/pdf');
     const isImage = computed(() => INLINE_IMAGE_TYPES.includes(media.value));
@@ -209,10 +196,7 @@ export default defineComponent({
 
     async function handleDownload() {
       try {
-        const { token } = await knowledgeBaseApi.createDocumentDownloadToken(
-          props.knowledgeBaseId,
-          props.document.id,
-        );
+        const { token } = await knowledgeBaseApi.createDocumentDownloadToken(props.knowledgeBaseId, props.document.id);
         window.open(
           knowledgeBaseApi.documentContentUrl(props.knowledgeBaseId, props.document.id, token, true),
           '_blank',

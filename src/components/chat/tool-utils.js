@@ -77,4 +77,3 @@ export function summarizeToolGroup(calls) {
 
   return parts.length > 0 ? parts.join('，') : `调用 ${calls.length} 个工具`;
 }
-

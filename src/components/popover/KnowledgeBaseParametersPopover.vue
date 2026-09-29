@@ -11,12 +11,10 @@
         <p class="tw-text-sm tw-font-medium tw-text-foreground">知识库参数</p>
         <p class="tw-text-xs tw-text-muted-foreground">配置知识库检索中间件参数</p>
       </div>
-      <div v-if="!schema || entries.length === 0" class="tw-text-xs tw-text-muted-foreground">
-        无可配置参数
-      </div>
+      <div v-if="!schema || entries.length === 0" class="tw-text-xs tw-text-muted-foreground">无可配置参数</div>
       <el-form v-else label-position="top" size="small" class="tw-space-y-2">
         <el-form-item
-          v-for="([key, prop]) in entries"
+          v-for="[key, prop] in entries"
           :key="key"
           :label="prop.title || key.replace(/_/g, ' ')"
           class="tw-mb-2"
@@ -34,12 +32,7 @@
               class="tw-w-full"
               @change="(v) => handleChange(key, v)"
             >
-              <el-option
-                v-for="opt in resolve(prop).enumValues"
-                :key="String(opt)"
-                :label="String(opt)"
-                :value="opt"
-              />
+              <el-option v-for="opt in resolve(prop).enumValues" :key="String(opt)" :label="String(opt)" :value="opt" />
             </el-select>
           </template>
           <template v-else-if="resolve(prop).type === 'number' || resolve(prop).type === 'integer'">

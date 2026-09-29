@@ -1,6 +1,10 @@
 <template>
-  <div class="tw-flex tw-flex-1 tw-flex-col tw-items-center tw-justify-center tw-gap-4 tw-rounded-xl tw-border tw-border-dashed tw-p-6 tw-text-center">
-    <div class="tw-flex tw-size-8 tw-shrink-0 tw-items-center tw-justify-center tw-rounded-lg tw-bg-muted tw-text-foreground">
+  <div
+    class="tw-flex tw-flex-1 tw-flex-col tw-items-center tw-justify-center tw-gap-4 tw-rounded-xl tw-border tw-border-dashed tw-p-6 tw-text-center"
+  >
+    <div
+      class="tw-flex tw-size-8 tw-shrink-0 tw-items-center tw-justify-center tw-rounded-lg tw-bg-muted tw-text-foreground"
+    >
       <Icon :icon="icon" class="tw-h-4 tw-w-4" />
     </div>
     <div class="tw-flex tw-max-w-sm tw-flex-col tw-items-center tw-gap-2">
