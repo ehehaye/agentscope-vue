@@ -98,6 +98,7 @@
             :msgs="msgs"
             :loading="loading"
             :phase="chatPhase"
+            :error="error"
             :disabled="sendDisabled"
             :allowed-input-types="allowedInputTypes"
             :subagent-hitl="subagentHitl"
@@ -499,6 +500,7 @@ export default defineComponent({
       msgs,
       loading,
       phase,
+      error,
       subagentHitl,
       send,
       onUserConfirm,
@@ -819,6 +821,7 @@ export default defineComponent({
       msgs,
       loading,
       chatPhase,
+      error,
       subagentHitl,
       sessionName,
       cwd,

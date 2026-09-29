@@ -88,19 +88,18 @@
         class="tw-mt-2 tw-w-full tw-rounded-32px tw-bg-muted tw-p-1"
         :disabled="disabled"
         :phase="inputPhase"
+        :error="error"
         :allowed-input-types="allowedInputTypes"
         @send="onSend"
         @interrupt="onInterrupt"
       >
-        <template #header>
-          <div class="tw-flex tw-w-full tw-items-center tw-px-2 tw-py-1">
-            <WorkingDirectoryDialog
-              :agent-id="agentId"
-              :session-id="sessionId"
-              :value="cwd"
-              :on-change="onCwdChange"
-            />
-          </div>
+        <template #actions>
+          <WorkingDirectoryDialog
+            :agent-id="agentId"
+            :session-id="sessionId"
+            :value="cwd"
+            :on-change="onCwdChange"
+          />
         </template>
       </TextInput>
     </div>
@@ -146,6 +145,7 @@ export default defineComponent({
     msgs: { type: Array, default: () => [] },
     loading: { type: Boolean, default: false },
     phase: { type: String, default: 'idle' },
+    error: { type: [Object, String], default: null },
     disabled: { type: Boolean, default: false },
     allowedInputTypes: { type: Array, default: () => [] },
     subagentHitl: { type: Array, default: () => [] },

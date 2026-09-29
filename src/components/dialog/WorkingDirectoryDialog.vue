@@ -125,33 +125,25 @@
       </span>
     </el-dialog>
     <el-button
+      type="text"
       size="small"
-      icon="el-icon-folder"
+      circle
       :disabled="disabled || !agentId || !sessionId"
       @click="dialogOpen = true"
     >
-      <span
-        class="tw-truncate"
-        style="max-width: 10rem"
-        >{{ label }}</span
-      >
-      <i class="el-icon-arrow-down el-icon--right tw-ml-1" />
+      <Icon
+        icon="lucide:folder"
+        class="tw-h-4 tw-w-4"
+      />
     </el-button>
   </span>
 </template>
 
 <script>
-import { defineComponent, ref, computed, watch } from '@/composables/vue';
+import { defineComponent, ref, watch } from '@/composables/vue';
 import { Icon } from '@/components/iconify/index';
 import Spinner from '@/components/ui/Spinner.vue';
 import { workspaceApi } from '@/api';
-
-function basename(p) {
-  if (!p) return '';
-  const trimmed = p.replace(/\/+$/, '');
-  const cut = trimmed.lastIndexOf('/');
-  return cut === -1 ? trimmed : trimmed.slice(cut + 1);
-}
 
 export default defineComponent({
   name: 'WorkingDirectoryDialog',
@@ -177,8 +169,6 @@ export default defineComponent({
     const error = ref(null);
     const saving = ref(false);
     let reqId = 0;
-
-    const label = computed(() => (props.value ? basename(props.value) : '根目录'));
 
     async function load(target) {
       const id = ++reqId;
@@ -241,7 +231,6 @@ export default defineComponent({
       loading,
       error,
       saving,
-      label,
       load,
       onOpen,
       onConfirm,

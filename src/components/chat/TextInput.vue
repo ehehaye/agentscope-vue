@@ -3,7 +3,6 @@
     class="tw-flex tw-flex-col"
     :class="$attrs.class"
   >
-    <slot name="header" />
     <div class="tw-flex tw-w-full tw-flex-col tw-rounded-28px tw-border tw-bg-background tw-px-2">
       <div
         v-if="files.length > 0"
@@ -26,22 +25,41 @@
           />
         </div>
       </div>
-      <div class="tw-relative tw-flex tw-flex-wrap tw-items-end tw-justify-end">
-        <el-input
-          ref="textareaRef"
-          v-model="value"
-          class="chat-textarea tw-min-w-0 tw-flex-1"
-          type="textarea"
-          :autosize="{ minRows: 1, maxRows: 8 }"
-          resize="none"
-          clearable
-          :maxlength="200"
-          show-world-limit
-          :disabled="disabled"
-          :placeholder="placeholder"
-          @keydown.native="handleKeyDown"
-        />
-        <div class="tw-flex tw-shrink-0 tw-items-center tw-gap-2 tw-py-2">
+      <el-input
+        ref="textareaRef"
+        v-model="value"
+        class="chat-textarea"
+        type="textarea"
+        :autosize="{ minRows: 1, maxRows: 8 }"
+        resize="none"
+        clearable
+        :maxlength="200"
+        show-world-limit
+        :disabled="disabled"
+        :placeholder="placeholder"
+        @keydown.native="handleKeyDown"
+      />
+      <!-- 底部工具栏：左侧错误/会话状态，右侧根目录、附件与操作按钮 -->
+      <div class="tw-flex tw-items-center tw-justify-between tw-gap-2 tw-px-2 tw-pb-2">
+        <div class="tw-flex tw-min-w-0 tw-flex-1 tw-items-center tw-gap-1 tw-pl-3 tw-text-xs">
+          <template v-if="errorText">
+            <Icon
+              icon="lucide:triangle-alert"
+              class="tw-h-3 tw-w-3 tw-shrink-0 tw-text-red-500 dark:tw-text-red-400"
+            />
+            <span
+              class="tw-min-w-0 tw-truncate tw-text-red-500 dark:tw-text-red-400"
+              :title="errorText"
+              >{{ errorText }}</span
+            >
+          </template>
+          <DotSpinner
+            class="tw-pl-2"
+            v-else-if="showWorking"
+          />
+        </div>
+        <div class="tw-flex tw-shrink-0 tw-items-center">
+          <slot name="actions" />
           <el-button
             type="text"
             size="small"
@@ -55,6 +73,7 @@
             />
           </el-button>
           <el-button
+            class="send-btn"
             type="primary"
             size="small"
             circle
@@ -83,14 +102,17 @@
 <script>
 import { defineComponent, ref, computed } from '@/composables/vue';
 import { Icon } from '@/components/iconify/index';
+import DotSpinner from '@/components/ui/DotSpinner.vue';
 
 export default defineComponent({
   name: 'TextInput',
-  components: { Icon },
+  components: { Icon, DotSpinner },
   props: {
     disabled: { type: Boolean, default: false },
     phase: { type: String, default: 'idle' },
     allowedInputTypes: { type: Array, default: () => [] },
+    /** 最近一次交互的错误（chat store 的 error），存在时优先于阶段状态展示 */
+    error: { type: [Object, String], default: null },
   },
   emits: ['send', 'interrupt'],
   setup(props, { emit }) {
@@ -145,6 +167,10 @@ export default defineComponent({
         onClick: handleSend,
       };
     });
+
+    // 底部左侧：优先展示最近一次错误，否则在非 idle 阶段用三点跳动表示"工作中"
+    const errorText = computed(() => (!props.error ? '' : props.error?.message || String(props.error)));
+    const showWorking = computed(() => props.phase !== 'idle');
 
     function handleKeyDown(e) {
       if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) {
@@ -258,6 +284,8 @@ export default defineComponent({
       attachDisabled,
       placeholder,
       sendButton,
+      errorText,
+      showWorking,
       handleKeyDown,
       handleSend,
       openFilePicker,
@@ -291,5 +319,13 @@ export default defineComponent({
     cursor: not-allowed;
     opacity: 0.5;
   }
+}
+
+/* 发送按钮的实心圆盘收小一号，与仅图标的圆形按钮（附件/工作目录）观感一致。
+   Element 的 .el-button--small.is-circle{padding:9px} 是双类选择器，
+   这里需三个类才能稳定覆盖。 */
+.send-btn.el-button.is-circle {
+  padding: 3px;
+  margin: 0 5px 0 5px;
 }
 </style>
