@@ -31,13 +31,17 @@
         </button>
       </div>
 
-      <div class="tw-h-45vh tw-overflow-y-auto tw-rounded-2xl tw-border tw-p-2">
-        <div v-if="loading" class="tw-flex tw-h-full tw-items-center tw-justify-center tw-text-muted-foreground">
+      <!-- max-h 化：目录条目少时收缩，长目录在 45vh 封顶内部滚动，矮屏下降低与 body 滚动叠加成双滚动条的概率。 -->
+      <div class="tw-max-h-45vh tw-overflow-y-auto tw-rounded-2xl tw-border tw-p-2">
+        <div
+          v-if="loading"
+          class="tw-flex tw-items-center tw-justify-center tw-py-10 tw-text-muted-foreground"
+        >
           <Spinner class="tw-h-5 tw-w-5" />
         </div>
         <div
           v-else-if="error"
-          class="tw-flex tw-h-full tw-flex-col tw-items-center tw-justify-center tw-px-4 tw-text-center"
+          class="tw-flex tw-flex-col tw-items-center tw-justify-center tw-px-4 tw-py-10 tw-text-center"
         >
           <Icon icon="lucide:folder-open" class="tw-mb-2 tw-h-6 tw-w-6 tw-text-muted-foreground" />
           <p class="tw-text-sm tw-font-medium tw-text-foreground">无法列出目录</p>

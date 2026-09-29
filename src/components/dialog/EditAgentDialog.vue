@@ -2,7 +2,7 @@
   <el-dialog
     title="编辑助手"
     :visible.sync="dialogVisible"
-    width="500px"
+    width="640px"
     :close-on-click-modal="false"
     append-to-body
   >

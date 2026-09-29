@@ -50,6 +50,13 @@
 .tw-max-h-200px {
   max-height: 200px;
 }
+/* 弹窗内部滚动区：内容不足时收缩，不再强制占位；长内容在 320px / 45vh 处封顶。 */
+.tw-max-h-80 {
+  max-height: 20rem;
+}
+.tw-max-h-45vh {
+  max-height: 45vh;
+}
 
 /* ── text-[xxx]（font-size） ───────────────────────────── */
 .tw-text-0_8rem {

@@ -19,7 +19,7 @@
 
       <el-tabs v-model="tab">
         <el-tab-pane label="从已安装中选择" name="installed">
-          <div class="tw-h-80 tw-overflow-y-auto">
+          <div class="tw-max-h-80 tw-overflow-y-auto">
             <div v-if="loading" class="tw-flex tw-justify-center tw-py-10">
               <Spinner class="tw-h-6 tw-w-6" />
             </div>
@@ -58,7 +58,7 @@
         </el-tab-pane>
 
         <el-tab-pane label="上传文件夹" name="upload">
-          <div class="tw-h-80 tw-overflow-y-auto">
+          <div class="tw-max-h-80 tw-overflow-y-auto">
             <input
               ref="fileInput"
               type="file"

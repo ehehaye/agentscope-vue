@@ -118,10 +118,13 @@ body > .el-dropdown-menu {
 // 这里统一改成 flex 纵向布局：弹窗自身限高、内容区内部滚动、头尾固定。
 // 注意 margin-top 是内联样式，普通类选择器覆盖不了，所以不去碰它，只约束自身高度：
 //   15vh(top) + 80vh(max-height) + 0(去掉底部 50px) = 95vh，始终不出视口。
+// max-width：width prop 是内联固定 px，窄视口下会横向溢出，这里统一钳制
+// （CSS 优先级上 max-width 恒压过 width，宽屏不受影响）。
 @{as-scope} .el-dialog:not(.is-fullscreen) {
   display: flex;
   flex-direction: column;
   max-height: 80vh;
+  max-width: calc(100vw - 32px);
   margin-bottom: 0;
 
   .el-dialog__header,

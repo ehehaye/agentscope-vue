@@ -7,6 +7,7 @@
         class="tw-mt-2"
         :schema="row.schema"
         :values="values[row.key] || {}"
+        :columns="2"
         :label-for="(key, prop) => agentFieldLabel(row.key, key, prop)"
         :placeholder-for="(key, prop) => agentFieldPlaceholder(row.key, key, prop)"
         :description-for="(key) => agentFieldDescription(row.key, key)"

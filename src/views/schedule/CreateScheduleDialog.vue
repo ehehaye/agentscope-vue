@@ -3,27 +3,23 @@
     append-to-body
     :visible.sync="dialogVisible"
     :title="'创建日程'"
-    width="500px"
+    width="640px"
     :close-on-click-modal="false"
     @open="resetForm"
   >
     <p class="tw-text-sm tw-text-muted-foreground">为智能体设置定时或一次性的计划任务。</p>
-    <el-form
-      ref="formRef"
-      :model="form"
-      label-position="left"
-      label-width="100px"
-      class="tw-mt-4 tw-max-h-75vh tw-overflow-y-auto tw-pr-2"
-    >
-      <el-form-item label="名称">
+    <!-- 双列压缩高度；滚动交给全局 .el-dialog__body（头尾固定），表单自身不再套滚动容器，
+         否则 max-h-75vh 的内滚与 body 外滚叠加成嵌套双滚动条。 -->
+    <el-form ref="formRef" :model="form" label-position="left" label-width="100px" class="tw-mt-4 schedule-form--cols">
+      <el-form-item label="名称" class="schedule-form__item--wide">
         <el-input v-model="form.name" placeholder="例如：每日报告" />
       </el-form-item>
 
-      <el-form-item label="描述">
+      <el-form-item label="描述" class="schedule-form__item--wide">
         <el-input v-model="form.description" type="textarea" :rows="4" placeholder="描述这个计划任务的用途..." />
       </el-form-item>
 
-      <el-form-item label="日期">
+      <el-form-item label="日期" class="schedule-form__item--wide">
         <div class="tw-flex tw-gap-3">
           <el-date-picker v-model="form.date" type="date" placeholder="选择日期" value-format="yyyy-MM-dd" />
           <el-time-picker v-model="form.time" placeholder="选择时间" value-format="HH:mm:ss" class="tw-w-40" />
@@ -72,7 +68,7 @@
         <PermissionModeSelect :value="form.permissionMode" @change="(v) => (form.permissionMode = v)" />
       </el-form-item>
 
-      <el-form-item>
+      <el-form-item class="schedule-form__item--wide">
         <div class="tw-flex tw-w-full tw-items-center tw-justify-between">
           <div class="tw-flex tw-flex-col tw-gap-0.5">
             <span class="tw-text-sm tw-font-medium">有状态</span>
@@ -84,7 +80,7 @@
         </div>
       </el-form-item>
 
-      <p v-if="error" class="tw-text-sm tw-text-destructive">{{ error }}</p>
+      <p v-if="error" class="tw-text-sm tw-text-destructive schedule-form__item--wide">{{ error }}</p>
     </el-form>
 
     <span slot="footer" class="tw-dialog-footer">
@@ -243,3 +239,20 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="less">
+/* 双列压缩弹窗高度；名称/描述/日期对/开关项跨整行。窄视口下随全局 max-width 收缩回落单列。 */
+.schedule-form--cols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 16px;
+
+  .schedule-form__item--wide {
+    grid-column: 1 / -1;
+  }
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}
+</style>

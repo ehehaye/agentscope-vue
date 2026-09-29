@@ -1,6 +1,11 @@
 <template>
-  <el-form label-position="top" class="tw-schema-form">
-    <el-form-item v-for="[key, prop] in entries" :key="key" :label="labelFor(key, prop)">
+  <el-form label-position="top" class="tw-schema-form" :class="columns > 1 ? 'tw-schema-form--cols' : null">
+    <el-form-item
+      v-for="[key, prop] in entries"
+      :key="key"
+      :label="labelFor(key, prop)"
+      :class="columns > 1 && prop.format === 'textarea' ? 'tw-schema-form__item--wide' : null"
+    >
       <template v-if="effectiveType(prop) === 'boolean'">
         <el-switch :value="values[key]" @change="(val) => onChange(key, val)" />
       </template>
@@ -77,6 +82,8 @@ export default defineComponent({
     schema: { type: Object, required: true },
     values: { type: Object, default: () => ({}) },
     skipFields: { type: Array, default: () => ['id', 'type'] },
+    /** 列数：>1 时启用双列网格（textarea 跨整行），用于压缩长表单的纵向高度。 */
+    columns: { type: Number, default: 1 },
     labelFor: {
       type: Function,
       default: (key, prop) => prop.title ?? key.replace(/_/g, ' '),
@@ -110,3 +117,20 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="less">
+/* columns>1 时的双列网格；textarea 跨整行。窄视口下随弹窗全局 max-width 收缩回落单列。 */
+.tw-schema-form--cols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 16px;
+
+  .tw-schema-form__item--wide {
+    grid-column: 1 / -1;
+  }
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}
+</style>

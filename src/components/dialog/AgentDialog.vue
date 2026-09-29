@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="新建助手" :visible.sync="dialogVisible" width="500px" :close-on-click-modal="false" append-to-body>
+  <el-dialog title="新建助手" :visible.sync="dialogVisible" width="640px" :close-on-click-modal="false" append-to-body>
     <AgentFormFields v-if="schema && values" :schema="schema" :values="values" @change="handleChange" />
     <p v-else class="tw-text-sm tw-text-muted-foreground">加载中…</p>
     <p
