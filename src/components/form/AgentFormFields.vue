@@ -1,7 +1,14 @@
 <template>
   <div class="tw-flex tw-flex-col">
-    <div v-for="(row, idx) in rows" :key="row.key" class="tw-flex tw-flex-col">
-      <div v-if="idx > 0" class="tw-my-4 tw-border-t tw-border-border" />
+    <div
+      v-for="(row, idx) in rows"
+      :key="row.key"
+      class="tw-flex tw-flex-col"
+    >
+      <div
+        v-if="idx > 0"
+        class="tw-my-4 tw-border-t tw-border-border"
+      />
       <div class="tw-text-sm tw-font-medium">{{ row.label }}</div>
       <SchemaForm
         class="tw-mt-2"

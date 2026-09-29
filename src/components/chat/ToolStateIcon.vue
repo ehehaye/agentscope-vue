@@ -9,8 +9,16 @@
     icon="lucide:x"
     class="tw-h-3 tw-w-3 tw-shrink-0 tw-text-red-600 dark:tw-text-red-400"
   />
-  <Icon v-else-if="state === 'interrupted' || state === 'denied'" icon="lucide:ban" class="tw-h-3 tw-w-3 tw-shrink-0" />
-  <Icon v-else icon="lucide:loader-circle" class="tw-h-3 tw-w-3 tw-shrink-0 tw-animate-spin" />
+  <Icon
+    v-else-if="state === 'interrupted' || state === 'denied'"
+    icon="lucide:ban"
+    class="tw-h-3 tw-w-3 tw-shrink-0"
+  />
+  <Icon
+    v-else
+    icon="lucide:loader-circle"
+    class="tw-h-3 tw-w-3 tw-shrink-0 tw-animate-spin"
+  />
 </template>
 
 <script>

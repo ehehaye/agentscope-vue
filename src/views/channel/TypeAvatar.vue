@@ -3,7 +3,12 @@
     class="tw-flex tw-shrink-0 tw-items-center tw-justify-center tw-overflow-hidden tw-rounded-lg tw-bg-muted tw-text-sm tw-font-semibold"
     :style="style"
   >
-    <img v-if="type?.icon_url" :src="type.icon_url" :alt="label" class="tw-h-full tw-w-full tw-object-cover" />
+    <img
+      v-if="type?.icon_url"
+      :src="type.icon_url"
+      :alt="label"
+      class="tw-h-full tw-w-full tw-object-cover"
+    />
     <span v-else>{{ initial }}</span>
   </div>
 </template>

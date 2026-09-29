@@ -1,13 +1,46 @@
 <template>
-  <el-dialog append-to-body title="编辑凭证" :visible.sync="dialogVisible" width="520px" :close-on-click-modal="false">
-    <div v-loading="loadingSchema" class="tw-space-y-4">
-      <SchemaForm v-if="schema" :schema="schema" :values="values" @change="onFieldChange" />
-      <p v-else class="tw-text-sm tw-text-muted-foreground">加载中...</p>
+  <el-dialog
+    append-to-body
+    title="编辑凭证"
+    :visible.sync="dialogVisible"
+    width="520px"
+    :close-on-click-modal="false"
+  >
+    <div
+      v-loading="loadingSchema"
+      class="tw-space-y-4"
+    >
+      <SchemaForm
+        v-if="schema"
+        :schema="schema"
+        :values="values"
+        @change="onFieldChange"
+      />
+      <p
+        v-else
+        class="tw-text-sm tw-text-muted-foreground"
+      >
+        加载中...
+      </p>
     </div>
 
-    <span slot="footer" class="tw-dialog-footer">
-      <el-button size="small" @click="dialogVisible = false" :disabled="submitting">取消</el-button>
-      <el-button size="small" type="primary" :loading="submitting" :disabled="!schema" @click="handleSubmit">
+    <span
+      slot="footer"
+      class="tw-dialog-footer"
+    >
+      <el-button
+        size="small"
+        @click="dialogVisible = false"
+        :disabled="submitting"
+        >取消</el-button
+      >
+      <el-button
+        size="small"
+        type="primary"
+        :loading="submitting"
+        :disabled="!schema"
+        @click="handleSubmit"
+      >
         {{ submitting ? '保存中…' : '保存' }}
       </el-button>
     </span>

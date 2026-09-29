@@ -19,7 +19,13 @@
       当前服务已锁定统一的嵌入维度，只能选择维度为 {{ policy.dimension }} 的模型。
     </el-alert>
 
-    <el-alert v-if="noCompatibleModels" type="error" :closable="false" class="tw-mt-4" title="没有可用的嵌入模型">
+    <el-alert
+      v-if="noCompatibleModels"
+      type="error"
+      :closable="false"
+      class="tw-mt-4"
+      title="没有可用的嵌入模型"
+    >
       {{
         isLockedPolicy && policy && policy.dimension != null
           ? `没有维度为 ${policy.dimension} 的可用嵌入模型，请先添加对应凭证。`
@@ -27,13 +33,24 @@
       }}
     </el-alert>
 
-    <el-form label-position="top" class="tw-mt-4 tw-space-y-4">
+    <el-form
+      label-position="top"
+      class="tw-mt-4 tw-space-y-4"
+    >
       <el-form-item label="名称">
-        <el-input v-model="name" placeholder="例如：产品文档库" />
+        <el-input
+          v-model="name"
+          placeholder="例如：产品文档库"
+        />
       </el-form-item>
 
       <el-form-item label="描述">
-        <el-input v-model="description" type="textarea" :rows="3" placeholder="描述这个知识库的用途..." />
+        <el-input
+          v-model="description"
+          type="textarea"
+          :rows="3"
+          placeholder="描述这个知识库的用途..."
+        />
       </el-form-item>
 
       <el-form-item label="嵌入模型">
@@ -45,7 +62,11 @@
             :loading="loadingModels"
             placeholder="选择嵌入模型"
           >
-            <el-option-group v-for="provider in providers" :key="provider.type" :label="provider.type">
+            <el-option-group
+              v-for="provider in providers"
+              :key="provider.type"
+              :label="provider.type"
+            >
               <el-option
                 v-for="model in provider.models"
                 :key="embeddingKey(provider, model)"
@@ -54,19 +75,42 @@
               />
             </el-option-group>
           </el-select>
-          <el-button v-if="onAddCredential" size="small" @click="onAddCredential">添加凭证</el-button>
+          <el-button
+            v-if="onAddCredential"
+            size="small"
+            @click="onAddCredential"
+            >添加凭证</el-button
+          >
         </div>
       </el-form-item>
 
       <el-form-item label="维度">
-        <el-select v-model="dimension" class="tw-w-full" placeholder="选择维度">
-          <el-option v-for="d in dimensionOptions" :key="d" :label="String(d)" :value="d" />
+        <el-select
+          v-model="dimension"
+          class="tw-w-full"
+          placeholder="选择维度"
+        >
+          <el-option
+            v-for="d in dimensionOptions"
+            :key="d"
+            :label="String(d)"
+            :value="d"
+          />
         </el-select>
       </el-form-item>
 
       <el-form-item label="分块器">
-        <el-select v-model="selectedChunkerType" class="tw-w-full" placeholder="选择分块器">
-          <el-option v-for="chunker in chunkers" :key="chunker.type" :label="chunker.type" :value="chunker.type" />
+        <el-select
+          v-model="selectedChunkerType"
+          class="tw-w-full"
+          placeholder="选择分块器"
+        >
+          <el-option
+            v-for="chunker in chunkers"
+            :key="chunker.type"
+            :label="chunker.type"
+            :value="chunker.type"
+          />
         </el-select>
       </el-form-item>
 
@@ -77,11 +121,24 @@
         @change="handleChunkerParamChange"
       />
 
-      <p v-if="error" class="tw-text-sm tw-text-destructive">{{ error }}</p>
+      <p
+        v-if="error"
+        class="tw-text-sm tw-text-destructive"
+      >
+        {{ error }}
+      </p>
     </el-form>
 
-    <span slot="footer" class="tw-dialog-footer">
-      <el-button size="small" @click="dialogVisible = false" :disabled="submitting">取消</el-button>
+    <span
+      slot="footer"
+      class="tw-dialog-footer"
+    >
+      <el-button
+        size="small"
+        @click="dialogVisible = false"
+        :disabled="submitting"
+        >取消</el-button
+      >
       <el-button
         size="small"
         type="primary"

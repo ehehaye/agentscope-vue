@@ -3,12 +3,19 @@
     <template #trigger>
       <div class="tw-group tw-flex tw-items-center tw-gap-2">
         <span class="tw-shrink-0">{{ displayName }}</span>
-        <span v-if="arg" class="tw-min-w-0 tw-truncate tw-font-medium">{{ arg }}</span>
+        <span
+          v-if="arg"
+          class="tw-min-w-0 tw-truncate tw-font-medium"
+          >{{ arg }}</span
+        >
         <ToolStateIcon :state="pair.result?.state" />
       </div>
     </template>
     <div class="tw-mt-2">
-      <component :is="renderer" :pair="pair" />
+      <component
+        :is="renderer"
+        :pair="pair"
+      />
     </div>
   </Collapsible>
 </template>

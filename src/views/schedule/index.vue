@@ -9,19 +9,34 @@
           <div class="tw-mt-1 tw-text-sm tw-text-muted-foreground">为智能体设置定时或一次性的计划任务</div>
         </div>
         <div class="tw-flex tw-items-center tw-gap-2">
-          <el-button size="small" @click="createVisible = true">
-            <Icon icon="lucide:plus" class="tw-h-4 tw-w-4" />
+          <el-button
+            size="small"
+            @click="createVisible = true"
+          >
+            <Icon
+              icon="lucide:plus"
+              class="tw-h-4 tw-w-4"
+            />
           </el-button>
-          <el-radio-group v-model="viewMode" size="small">
+          <el-radio-group
+            v-model="viewMode"
+            size="small"
+          >
             <el-radio-button label="calendar">
               <span class="tw-inline-flex tw-items-center tw-gap-1">
-                <Icon icon="lucide:calendar" class="tw-h-4 tw-w-4" />
+                <Icon
+                  icon="lucide:calendar"
+                  class="tw-h-4 tw-w-4"
+                />
                 <span>日历</span>
               </span>
             </el-radio-button>
             <el-radio-button label="list">
               <span class="tw-inline-flex tw-items-center tw-gap-1">
-                <Icon icon="lucide:list" class="tw-h-4 tw-w-4" />
+                <Icon
+                  icon="lucide:list"
+                  class="tw-h-4 tw-w-4"
+                />
                 <span>列表</span>
               </span>
             </el-radio-button>
@@ -38,13 +53,26 @@
           @month-change="currentDate = $event"
           @event-click="handleEventClick"
         />
-        <ListTabPage v-else :schedules="schedules" :loading="loading" @delete="remove" />
+        <ListTabPage
+          v-else
+          :schedules="schedules"
+          :loading="loading"
+          @delete="remove"
+        />
       </div>
     </main>
 
-    <ScheduleDetailDrawer :visible.sync="detailVisible" :schedule="selectedSchedule" @delete="remove" />
+    <ScheduleDetailDrawer
+      :visible.sync="detailVisible"
+      :schedule="selectedSchedule"
+      @delete="remove"
+    />
 
-    <CreateScheduleDialog :visible.sync="createVisible" :agents="agents" @submit="handleCreate" />
+    <CreateScheduleDialog
+      :visible.sync="createVisible"
+      :agents="agents"
+      @submit="handleCreate"
+    />
   </div>
 </template>
 

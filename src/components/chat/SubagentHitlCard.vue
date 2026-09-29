@@ -1,7 +1,10 @@
 <template>
   <div class="tw-mb-2 tw-w-full tw-space-y-3 tw-rounded-28px tw-bg-card tw-p-3 tw-ring-1 tw-ring-border">
     <div class="tw-flex tw-items-center tw-gap-2 tw-px-2 tw-text-sm tw-font-medium tw-text-secondary-foreground">
-      <Icon icon="lucide:users" class="tw-h-4 tw-w-4 tw-shrink-0" />
+      <Icon
+        icon="lucide:users"
+        class="tw-h-4 tw-w-4 tw-shrink-0"
+      />
       <!-- <span>{{ headerText }}</span> -->
     </div>
     <div class="tw-space-y-2">

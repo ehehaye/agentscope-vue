@@ -2,9 +2,15 @@
   <div class="tw-flex tw-h-full tw-flex-col tw-gap-2">
     <span class="tw-text-sm tw-text-muted-foreground">当前会话已装备的技能。</span>
     <InputGroup>
-      <InputGroupInput v-model="search" placeholder="搜索技能" />
+      <InputGroupInput
+        v-model="search"
+        placeholder="搜索技能"
+      />
       <InputGroupAddon align="inline-end">
-        <Icon icon="lucide:search" class="tw-h-4 tw-w-4" />
+        <Icon
+          icon="lucide:search"
+          class="tw-h-4 tw-w-4"
+        />
       </InputGroupAddon>
     </InputGroup>
 
@@ -15,10 +21,19 @@
         </div>
       </template>
       <template v-else-if="filtered.length === 0">
-        <PanelEmpty :icon="emptyIcon" :title="emptyTitle" :description="emptyDescription" />
+        <PanelEmpty
+          :icon="emptyIcon"
+          :title="emptyTitle"
+          :description="emptyDescription"
+        />
       </template>
       <template v-else>
-        <Item v-for="skill in filtered" :key="skill.name" variant="outline" class="tw-group/skill">
+        <Item
+          v-for="skill in filtered"
+          :key="skill.name"
+          variant="outline"
+          class="tw-group/skill"
+        >
           <ItemMedia variant="image">
             <img
               v-if="installedByName[skill.name]?.icon_url"
@@ -26,18 +41,27 @@
               :alt="skill.name"
               class="tw-size-full tw-object-cover"
             />
-            <span v-else class="tw-flex tw-size-full tw-items-center tw-justify-center tw-text-sm tw-font-medium">
+            <span
+              v-else
+              class="tw-flex tw-size-full tw-items-center tw-justify-center tw-text-sm tw-font-medium"
+            >
               {{ skill.name.slice(0, 1).toUpperCase() }}
             </span>
           </ItemMedia>
           <ItemContent>
             <ItemTitle>
               <span class="tw-truncate">{{ skill.name }}</span>
-              <span v-if="installedByName[skill.name]?.author" class="tw-text-xs tw-text-muted-foreground">
+              <span
+                v-if="installedByName[skill.name]?.author"
+                class="tw-text-xs tw-text-muted-foreground"
+              >
                 @{{ installedByName[skill.name].author }}
               </span>
             </ItemTitle>
-            <ItemDescription v-if="skill.description" class="tw-line-clamp-2">
+            <ItemDescription
+              v-if="skill.description"
+              class="tw-line-clamp-2"
+            >
               {{ skill.description }}
             </ItemDescription>
           </ItemContent>
@@ -48,14 +72,21 @@
               class="tw-opacity-0 group-hover/skill:tw-opacity-100"
               @click="askRemove(skill.name)"
             >
-              <Icon icon="lucide:trash" class="tw-h-3 tw-w-3" />
+              <Icon
+                icon="lucide:trash"
+                class="tw-h-3 tw-w-3"
+              />
             </el-button>
           </ItemActions>
         </Item>
       </template>
     </div>
 
-    <AddSkillDialog :present="presentNames" :on-upload="onUpload" :on-add-from-library="onAddFromLibrary" />
+    <AddSkillDialog
+      :present="presentNames"
+      :on-upload="onUpload"
+      :on-add-from-library="onAddFromLibrary"
+    />
   </div>
 </template>
 

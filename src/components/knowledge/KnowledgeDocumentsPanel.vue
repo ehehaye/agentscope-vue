@@ -3,9 +3,23 @@
     <div class="tw-flex tw-items-center tw-justify-between">
       <h3 class="tw-text-13_5px tw-font-medium">文档</h3>
       <div class="tw-flex tw-items-center tw-gap-2">
-        <el-button v-if="hasTerminalTasks" size="small" text @click="handleClearFinished"> 清除已完成 </el-button>
-        <el-button size="small" type="primary" @click="openFilePicker">
-          <Icon icon="lucide:upload" class="tw-mr-1 tw-h-3.5 tw-w-3.5" />
+        <el-button
+          v-if="hasTerminalTasks"
+          size="small"
+          text
+          @click="handleClearFinished"
+        >
+          清除已完成
+        </el-button>
+        <el-button
+          size="small"
+          type="primary"
+          @click="openFilePicker"
+        >
+          <Icon
+            icon="lucide:upload"
+            class="tw-mr-1 tw-h-3.5 tw-w-3.5"
+          />
           上传文档
         </el-button>
         <input
@@ -19,17 +33,33 @@
       </div>
     </div>
 
-    <div v-if="loading" class="tw-py-4 tw-text-center tw-text-sm tw-text-muted-foreground">加载中...</div>
+    <div
+      v-if="loading"
+      class="tw-py-4 tw-text-center tw-text-sm tw-text-muted-foreground"
+    >
+      加载中...
+    </div>
     <template v-else>
-      <div v-if="rows.length === 0" class="tw-py-4 tw-text-center tw-text-sm tw-text-muted-foreground">暂无文档</div>
-      <div v-else class="tw-space-y-2">
+      <div
+        v-if="rows.length === 0"
+        class="tw-py-4 tw-text-center tw-text-sm tw-text-muted-foreground"
+      >
+        暂无文档
+      </div>
+      <div
+        v-else
+        class="tw-space-y-2"
+      >
         <div
           v-for="row in rows"
           :key="row.key"
           class="tw-flex tw-flex-col tw-gap-y-2 tw-rounded-lg tw-border tw-border-border tw-bg-card tw-p-3"
         >
           <div class="tw-flex tw-items-start tw-gap-x-3">
-            <Icon icon="lucide:file-text" class="tw-mt-0.5 tw-h-4 tw-w-4 tw-shrink-0 tw-text-muted-foreground" />
+            <Icon
+              icon="lucide:file-text"
+              class="tw-mt-0.5 tw-h-4 tw-w-4 tw-shrink-0 tw-text-muted-foreground"
+            />
             <div class="tw-flex tw-min-w-0 tw-flex-1 tw-flex-col tw-gap-y-0.5">
               <div class="tw-flex tw-items-center tw-gap-x-2">
                 <span
@@ -44,8 +74,16 @@
                   class="tw-inline-flex tw-shrink-0 tw-items-center tw-gap-x-1 tw-rounded-md tw-px-1.5 tw-py-0.5 tw-text-10px tw-font-medium tw-whitespace-nowrap"
                   :class="statusTone(row.phase)"
                 >
-                  <Icon v-if="row.phase === 'ready'" icon="lucide:check-circle-2" class="tw-h-3 tw-w-3" />
-                  <Icon v-else-if="row.phase === 'error'" icon="lucide:alert-circle" class="tw-h-3 tw-w-3" />
+                  <Icon
+                    v-if="row.phase === 'ready'"
+                    icon="lucide:check-circle-2"
+                    class="tw-h-3 tw-w-3"
+                  />
+                  <Icon
+                    v-else-if="row.phase === 'error'"
+                    icon="lucide:alert-circle"
+                    class="tw-h-3 tw-w-3"
+                  />
                   <Icon
                     v-else-if="row.phase !== 'cancelled'"
                     icon="lucide:loader-2"
@@ -63,14 +101,38 @@
               </div>
             </div>
             <div class="tw-flex tw-shrink-0 tw-items-center tw-gap-x-1">
-              <el-button v-if="row.canCancel" type="text" size="mini" @click="handleCancel(row.task.taskId)">
-                <Icon icon="lucide:x" class="tw-h-3.5 tw-w-3.5" />
+              <el-button
+                v-if="row.canCancel"
+                type="text"
+                size="mini"
+                @click="handleCancel(row.task.taskId)"
+              >
+                <Icon
+                  icon="lucide:x"
+                  class="tw-h-3.5 tw-w-3.5"
+                />
               </el-button>
-              <el-button v-else-if="row.canDismiss" type="text" size="mini" @click="handleDismiss(row.task.taskId)">
-                <Icon icon="lucide:x" class="tw-h-3.5 tw-w-3.5" />
+              <el-button
+                v-else-if="row.canDismiss"
+                type="text"
+                size="mini"
+                @click="handleDismiss(row.task.taskId)"
+              >
+                <Icon
+                  icon="lucide:x"
+                  class="tw-h-3.5 tw-w-3.5"
+                />
               </el-button>
-              <el-button v-else-if="row.doc" type="text" size="mini" @click="handleDelete(row.doc)">
-                <Icon icon="lucide:trash-2" class="tw-h-3.5 tw-w-3.5" />
+              <el-button
+                v-else-if="row.doc"
+                type="text"
+                size="mini"
+                @click="handleDelete(row.doc)"
+              >
+                <Icon
+                  icon="lucide:trash-2"
+                  class="tw-h-3.5 tw-w-3.5"
+                />
               </el-button>
             </div>
           </div>
@@ -84,14 +146,21 @@
               :style="{ width: row.progressValue + '%' }"
             />
           </div>
-          <p v-if="row.phase === 'error' && row.error" class="tw-text-xs tw-text-red-500">
+          <p
+            v-if="row.phase === 'error' && row.error"
+            class="tw-text-xs tw-text-red-500"
+          >
             {{ row.error }}
           </p>
         </div>
       </div>
     </template>
 
-    <DocumentDetailDrawer :open.sync="detailVisible" :knowledge-base-id="knowledgeBaseId" :document="detailDoc" />
+    <DocumentDetailDrawer
+      :open.sync="detailVisible"
+      :knowledge-base-id="knowledgeBaseId"
+      :document="detailDoc"
+    />
   </div>
 </template>
 

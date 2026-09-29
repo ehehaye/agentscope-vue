@@ -3,18 +3,50 @@
     <div class="tw-flex tw-items-center tw-justify-between tw-p-4">
       <h2 class="tw-text-xl tw-font-semibold">{{ monthLabel }}</h2>
       <div class="tw-flex tw-items-center tw-gap-2">
-        <el-button size="small" @click="goToToday">今天</el-button>
-        <el-tooltip content="上一年" placement="top">
-          <el-button size="small" icon="el-icon-d-arrow-left" @click="goToPrevYear" />
+        <el-button
+          size="small"
+          @click="goToToday"
+          >今天</el-button
+        >
+        <el-tooltip
+          content="上一年"
+          placement="top"
+        >
+          <el-button
+            size="small"
+            icon="el-icon-d-arrow-left"
+            @click="goToPrevYear"
+          />
         </el-tooltip>
-        <el-tooltip content="上个月" placement="top">
-          <el-button size="small" icon="el-icon-arrow-left" @click="goToPrevMonth" />
+        <el-tooltip
+          content="上个月"
+          placement="top"
+        >
+          <el-button
+            size="small"
+            icon="el-icon-arrow-left"
+            @click="goToPrevMonth"
+          />
         </el-tooltip>
-        <el-tooltip content="下个月" placement="top">
-          <el-button size="small" icon="el-icon-arrow-right" @click="goToNextMonth" />
+        <el-tooltip
+          content="下个月"
+          placement="top"
+        >
+          <el-button
+            size="small"
+            icon="el-icon-arrow-right"
+            @click="goToNextMonth"
+          />
         </el-tooltip>
-        <el-tooltip content="下一年" placement="top">
-          <el-button size="small" icon="el-icon-d-arrow-right" @click="goToNextYear" />
+        <el-tooltip
+          content="下一年"
+          placement="top"
+        >
+          <el-button
+            size="small"
+            icon="el-icon-d-arrow-right"
+            @click="goToNextYear"
+          />
         </el-tooltip>
       </div>
     </div>

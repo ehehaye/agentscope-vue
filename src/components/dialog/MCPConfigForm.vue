@@ -12,7 +12,10 @@
     </div>
 
     <div class="tw-flex tw-items-start tw-gap-2">
-      <el-checkbox :value="stateful" @change="(v) => $emit('update:stateful', v)" />
+      <el-checkbox
+        :value="stateful"
+        @change="(v) => $emit('update:stateful', v)"
+      />
       <div class="tw-leading-tight">
         <div class="tw-text-sm tw-font-medium">保持连接</div>
         <div class="tw-text-xs tw-text-muted-foreground">让 MCP 服务在会话期间常驻（有状态）。</div>

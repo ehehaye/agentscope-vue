@@ -24,7 +24,12 @@
             <!-- Agent 选择 -->
             <div class="tw-flex tw-min-w-0 tw-items-center tw-gap-2 tw-text-sm">
               <span class="tw-truncate tw-font-medium">{{ sessionName || '新对话' }}</span>
-              <el-tag v-if="focusedMember" size="mini" type="info" class="tw-ml-1 tw-shrink-0">
+              <el-tag
+                v-if="focusedMember"
+                size="mini"
+                type="info"
+                class="tw-ml-1 tw-shrink-0"
+              >
                 成员：{{ focusedMember.agent?.data?.name }}
               </el-tag>
             </div>
@@ -46,13 +51,25 @@
               @fallback-change="handleFallbackModelChange"
               @tts-change="handleTTSChange"
             />
-            <PermissionModeSelect :value="selectedPermissionMode" @change="handlePermissionModeChange" />
-            <el-dropdown trigger="click" @command="togglePanel">
+            <PermissionModeSelect
+              :value="selectedPermissionMode"
+              @change="handlePermissionModeChange"
+            />
+            <el-dropdown
+              trigger="click"
+              @command="togglePanel"
+            >
               <span
                 class="tw-inline-flex tw-cursor-pointer tw-items-center tw-gap-1 tw-rounded-md tw-border tw-border-border tw-px-2 tw-py-1.5 tw-text-sm hover:tw-bg-row-hover"
               >
-                <Icon icon="lucide:panel-right" class="tw-h-4 tw-w-4" />
-                <Icon icon="lucide:chevron-down" class="tw-h-3 tw-w-3 tw-text-muted-foreground" />
+                <Icon
+                  icon="lucide:panel-right"
+                  class="tw-h-4 tw-w-4"
+                />
+                <Icon
+                  icon="lucide:chevron-down"
+                  class="tw-h-3 tw-w-3 tw-text-muted-foreground"
+                />
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item
@@ -62,7 +79,10 @@
                   :class="{ 'tw-bg-accent': isPanelOpen(item.key) }"
                 >
                   <span class="tw-flex tw-items-center tw-gap-2">
-                    <Icon :icon="item.icon" class="tw-h-4 tw-w-4" />
+                    <Icon
+                      :icon="item.icon"
+                      class="tw-h-4 tw-w-4"
+                    />
                     {{ item.label }}
                   </span>
                 </el-dropdown-item>
@@ -105,8 +125,15 @@
     />
 
     <!-- 对话框 -->
-    <AgentDialog :visible.sync="agentDialogVisible" @created="refetchAgents" />
-    <EditAgentDialog :visible.sync="editAgentDialogVisible" :agent="editingAgent" @updated="refetchAgents" />
+    <AgentDialog
+      :visible.sync="agentDialogVisible"
+      @created="refetchAgents"
+    />
+    <EditAgentDialog
+      :visible.sync="editAgentDialogVisible"
+      :agent="editingAgent"
+      @updated="refetchAgents"
+    />
     <RenameSessionDialog
       :visible.sync="renameDialogVisible"
       :current-name="renamingSession?.session?.config?.name || ''"

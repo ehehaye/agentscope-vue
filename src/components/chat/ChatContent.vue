@@ -1,16 +1,33 @@
 <template>
-  <div class="tw-flex tw-h-full tw-w-full tw-flex-col" :class="isEmpty ? 'tw-justify-center' : ''">
-    <div v-if="showSpinner || isPreparing" class="tw-flex tw-flex-1 tw-items-center tw-justify-center">
+  <div
+    class="tw-flex tw-h-full tw-w-full tw-flex-col"
+    :class="isEmpty ? 'tw-justify-center' : ''"
+  >
+    <div
+      v-if="showSpinner || isPreparing"
+      class="tw-flex tw-flex-1 tw-items-center tw-justify-center"
+    >
       <Spinner class="tw-h-5 tw-w-5 tw-text-muted-foreground" />
     </div>
-    <div v-else-if="isEmpty" class="tw-flex tw-flex-1 tw-items-center tw-justify-center">
+    <div
+      v-else-if="isEmpty"
+      class="tw-flex tw-flex-1 tw-items-center tw-justify-center"
+    >
       <div class="tw-text-center tw-text-4xl tw-font-light tw-tracking-tight tw-text-foreground">
         有什么可以帮你的？
       </div>
     </div>
-    <MessageScroller v-else :items-length="msgs.length" class="tw-flex-1">
+    <MessageScroller
+      v-else
+      :items-length="msgs.length"
+      class="tw-flex-1"
+    >
       <div class="tw-flex tw-flex-col tw-gap-6">
-        <div v-for="(message, index) in msgs" :key="message.id" class="tw-flex tw-flex-col tw-gap-2">
+        <div
+          v-for="(message, index) in msgs"
+          :key="message.id"
+          class="tw-flex tw-flex-col tw-gap-2"
+        >
           <TimeMarker
             v-if="shouldShowMarker(message, msgs[index - 1])"
             :at="new Date(message.created_at)"
@@ -23,17 +40,29 @@
           class="tw-rounded-md tw-border tw-border-amber-200 tw-bg-amber-50 tw-p-3 tw-text-sm tw-text-amber-900 dark:tw-border-amber-900 dark:tw-bg-amber-950 dark:tw-text-amber-50"
         >
           <div class="tw-flex tw-items-center tw-gap-2 tw-font-medium">
-            <Icon icon="lucide:triangle-alert" class="tw-h-4 tw-w-4" />
+            <Icon
+              icon="lucide:triangle-alert"
+              class="tw-h-4 tw-w-4"
+            />
             达到最大迭代次数
           </div>
           <p class="tw-mt-1 tw-text-xs">本轮回复已达到最大迭代次数限制。</p>
-          <el-button size="mini" class="tw-mt-2" @click="continueAfterMaxIters"> 继续 </el-button>
+          <el-button
+            size="mini"
+            class="tw-mt-2"
+            @click="continueAfterMaxIters"
+          >
+            继续
+          </el-button>
         </div>
       </div>
     </MessageScroller>
 
     <div class="tw-relative tw-w-full tw-p-4">
-      <FlipCard :visible="showFlipCard" class="tw-w-full">
+      <FlipCard
+        :visible="showFlipCard"
+        class="tw-w-full"
+      >
         <ConfirmCard
           v-if="pendingToolCall"
           :tool-call="pendingToolCall.toolCall"
@@ -65,7 +94,12 @@
       >
         <template #header>
           <div class="tw-flex tw-w-full tw-items-center tw-px-2 tw-py-1">
-            <WorkingDirectoryDialog :agent-id="agentId" :session-id="sessionId" :value="cwd" :on-change="onCwdChange" />
+            <WorkingDirectoryDialog
+              :agent-id="agentId"
+              :session-id="sessionId"
+              :value="cwd"
+              :on-change="onCwdChange"
+            />
           </div>
         </template>
       </TextInput>

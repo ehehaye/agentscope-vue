@@ -1,10 +1,19 @@
 <template>
   <div class="tw-flex tw-flex-col tw-rounded-sm tw-border tw-bg-background">
-    <div v-if="filePath" class="tw-px-2 tw-py-1 tw-text-xs tw-text-muted-foreground">{{ filePath }}</div>
-    <DiffPreview v-if="diffText" :unified-diff="diffText" />
-    <pre v-else class="tw-max-h-200px tw-overflow-auto tw-p-2 tw-text-xs tw-whitespace-pre-wrap tw-break-all">{{
-      resultText
-    }}</pre>
+    <div
+      v-if="filePath"
+      class="tw-px-2 tw-py-1 tw-text-xs tw-text-muted-foreground"
+    >
+      {{ filePath }}
+    </div>
+    <DiffPreview
+      v-if="diffText"
+      :unified-diff="diffText"
+    />
+    <pre
+      v-else
+      class="tw-max-h-200px tw-overflow-auto tw-p-2 tw-text-xs tw-whitespace-pre-wrap tw-break-all"
+      >{{ resultText }}</pre>
   </div>
 </template>
 

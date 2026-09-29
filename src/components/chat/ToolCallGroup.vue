@@ -1,14 +1,27 @@
 <template>
   <div class="tw-rounded-md tw-border tw-border-border tw-bg-muted tw-p-2 tw-text-sm">
-    <Collapsible :default-open="false" trigger-class="tw-text-muted-foreground">
+    <Collapsible
+      :default-open="false"
+      trigger-class="tw-text-muted-foreground"
+    >
       <template #trigger>
-        <div class="tw-flex tw-items-center tw-gap-2" :class="{ shimmer: !allFinished }">
+        <div
+          class="tw-flex tw-items-center tw-gap-2"
+          :class="{ shimmer: !allFinished }"
+        >
           <span>{{ title }}</span>
-          <DiffStats :insertions="insertions" :deletions="deletions" />
+          <DiffStats
+            :insertions="insertions"
+            :deletions="deletions"
+          />
         </div>
       </template>
       <div class="tw-mt-2 tw-flex tw-flex-col tw-gap-2">
-        <ToolCallRow v-for="pair in calls" :key="pair.call.id" :pair="pair" />
+        <ToolCallRow
+          v-for="pair in calls"
+          :key="pair.call.id"
+          :pair="pair"
+        />
       </div>
     </Collapsible>
   </div>

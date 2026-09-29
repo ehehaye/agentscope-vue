@@ -12,19 +12,31 @@
           :class="{ 'tw-bg-muted': !hubId }"
           @click="$router.push({ name: 'skill' })"
         >
-          <Icon icon="lucide:plug" class="tw-h-4 tw-w-4" />
+          <Icon
+            icon="lucide:plug"
+            class="tw-h-4 tw-w-4"
+          />
           <span class="tw-flex-1 tw-truncate">已安装的技能</span>
           <span class="tw-font-mono tw-text-10px tw-text-muted-foreground">{{ skills.length }}</span>
         </div>
 
         <div class="tw-mb-1 tw-mt-4 tw-px-2 tw-text-xs tw-font-medium tw-text-muted-foreground">来源</div>
-        <div v-if="hubsLoading" class="tw-flex tw-justify-center tw-py-4">
+        <div
+          v-if="hubsLoading"
+          class="tw-flex tw-justify-center tw-py-4"
+        >
           <Spinner class="tw-h-5 tw-w-5" />
         </div>
-        <div v-else-if="hubs.length === 0" class="tw-px-2 tw-py-4 tw-text-center tw-text-xs tw-text-muted-foreground">
+        <div
+          v-else-if="hubs.length === 0"
+          class="tw-px-2 tw-py-4 tw-text-center tw-text-xs tw-text-muted-foreground"
+        >
           暂无可用来源
         </div>
-        <div v-else class="tw-space-y-1">
+        <div
+          v-else
+          class="tw-space-y-1"
+        >
           <div
             v-for="hub in hubs"
             :key="hub.hub_id"
@@ -33,7 +45,11 @@
             :title="hub.description"
             @click="$router.push({ name: 'skill-hub', params: { hubId: hub.hub_id } })"
           >
-            <img v-if="hub.icon_url" :src="hub.icon_url" class="tw-h-4 tw-w-4 tw-rounded-sm tw-object-cover" />
+            <img
+              v-if="hub.icon_url"
+              :src="hub.icon_url"
+              class="tw-h-4 tw-w-4 tw-rounded-sm tw-object-cover"
+            />
             <div
               v-else
               class="tw-flex tw-h-4 tw-w-4 tw-items-center tw-justify-center tw-rounded-sm tw-bg-muted tw-text-10px tw-font-bold"
@@ -49,7 +65,12 @@
     <main
       class="tw-shadow-panel tw-flex tw-min-h-0 tw-min-w-0 tw-flex-1 tw-flex-col tw-overflow-hidden tw-rounded-22px tw-bg-card"
     >
-      <MinePanel v-if="!hubId" :skills="skills" :loading="skillsLoading" @remove="remove" />
+      <MinePanel
+        v-if="!hubId"
+        :skills="skills"
+        :loading="skillsLoading"
+        @remove="remove"
+      />
       <HubPanel
         v-else
         :key="hubId"

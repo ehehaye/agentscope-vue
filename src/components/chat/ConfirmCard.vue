@@ -2,8 +2,15 @@
   <div class="tw-mb-2 tw-w-full tw-space-y-3 tw-rounded-28px tw-bg-muted tw-px-5 tw-py-4 tw-ring-1 tw-ring-border">
     <div class="tw-text-sm tw-font-medium tw-text-secondary-foreground">{{ displayName }}</div>
     <div class="tw-max-h-200px tw-overflow-y-auto tw-rounded-sm tw-bg-background tw-px-3 tw-py-2 tw-text-xs">
-      <component :is="renderer" v-if="renderer" :pair="{ call: toolCall }" />
-      <pre v-else class="tw-whitespace-pre-wrap tw-break-all">{{ confirmBody }}</pre>
+      <component
+        :is="renderer"
+        v-if="renderer"
+        :pair="{ call: toolCall }"
+      />
+      <pre
+        v-else
+        class="tw-whitespace-pre-wrap tw-break-all"
+        >{{ confirmBody }}</pre>
     </div>
     <div class="tw-space-y-1 tw-text-sm">
       <div class="tw-mb-1 tw-font-medium tw-text-secondary-foreground">确认执行该工具调用？</div>
@@ -16,7 +23,10 @@
         @mouseenter="selected = 'yes'"
         @click="handleConfirm(true)"
       >
-        <Spinner v-if="hasConfirmed && selected === 'yes'" class="tw-h-4 tw-w-4" />
+        <Spinner
+          v-if="hasConfirmed && selected === 'yes'"
+          class="tw-h-4 tw-w-4"
+        />
         <Icon
           v-else
           icon="lucide:chevron-right"
@@ -24,7 +34,10 @@
           :class="selected === 'yes' ? 'tw-visible' : 'tw-invisible'"
         />
         <span>1. 是</span>
-        <span v-if="selected === 'yes'" class="tw-ml-auto tw-text-xs tw-text-muted-foreground">
+        <span
+          v-if="selected === 'yes'"
+          class="tw-ml-auto tw-text-xs tw-text-muted-foreground"
+        >
           (<Kbd className="text-xs">Enter</Kbd> 确认)
         </span>
       </button>
@@ -38,7 +51,10 @@
         @mouseenter="selected = 'yes_with_rule'"
         @click="handleConfirm(true, [toolCall.suggested_rules[0]])"
       >
-        <Spinner v-if="hasConfirmed && selected === 'yes_with_rule'" class="tw-mt-0.5 tw-h-4 tw-w-4 tw-shrink-0" />
+        <Spinner
+          v-if="hasConfirmed && selected === 'yes_with_rule'"
+          class="tw-mt-0.5 tw-h-4 tw-w-4 tw-shrink-0"
+        />
         <Icon
           v-else
           icon="lucide:chevron-right"
@@ -46,7 +62,10 @@
           :class="selected === 'yes_with_rule' ? 'tw-visible' : 'tw-invisible'"
         />
         <span class="tw-min-w-0 tw-break-words">2. {{ yesWithRuleText }}</span>
-        <span v-if="selected === 'yes_with_rule'" class="tw-ml-auto tw-shrink-0 tw-text-xs tw-text-muted-foreground">
+        <span
+          v-if="selected === 'yes_with_rule'"
+          class="tw-ml-auto tw-shrink-0 tw-text-xs tw-text-muted-foreground"
+        >
           (<Kbd className="text-xs">Enter</Kbd> 确认)
         </span>
       </button>
@@ -59,7 +78,10 @@
         @mouseenter="selected = 'no'"
         @click="handleConfirm(false)"
       >
-        <Spinner v-if="hasConfirmed && selected === 'no'" class="tw-h-4 tw-w-4" />
+        <Spinner
+          v-if="hasConfirmed && selected === 'no'"
+          class="tw-h-4 tw-w-4"
+        />
         <Icon
           v-else
           icon="lucide:chevron-right"
@@ -67,7 +89,10 @@
           :class="selected === 'no' ? 'tw-visible' : 'tw-invisible'"
         />
         <span>{{ hasSuggestedRules ? '3' : '2' }}. 否</span>
-        <span v-if="selected === 'no'" class="tw-ml-auto tw-text-xs tw-text-muted-foreground">
+        <span
+          v-if="selected === 'no'"
+          class="tw-ml-auto tw-text-xs tw-text-muted-foreground"
+        >
           (<Kbd className="text-xs">Enter</Kbd> 确认)
         </span>
       </button>

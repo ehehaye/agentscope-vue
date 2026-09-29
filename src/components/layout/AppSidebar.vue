@@ -7,7 +7,11 @@
   >
     <!-- Logo -->
     <div class="tw-mb-2 tw-flex tw-items-center tw-gap-2 tw-px-1 tw-py-1.5">
-      <img :src="agentscopeLogo" alt="AgentScope" class="tw-h-7 tw-w-7 tw-shrink-0" />
+      <img
+        :src="agentscopeLogo"
+        alt="AgentScope"
+        class="tw-h-7 tw-w-7 tw-shrink-0"
+      />
       <span
         :class="['tw-text-sm tw-font-semibold tw-text-foreground', collapsed ? 'tw-hidden' : 'tw-hidden md:tw-inline']"
         >AgentScope</span
@@ -23,8 +27,16 @@
         class="tw-flex tw-items-center tw-gap-3 tw-rounded-md tw-px-2 tw-py-2 tw-text-sm tw-text-muted-foreground tw-transition-colors hover:tw-bg-row-hover hover:tw-text-foreground"
         active-class="!bg-accent !text-foreground font-medium"
       >
-        <el-tooltip :content="item.label" placement="right" :disabled="!collapsed" :show-after="100">
-          <Icon :icon="item.icon" class="tw-h-5 tw-w-5 tw-shrink-0" />
+        <el-tooltip
+          :content="item.label"
+          placement="right"
+          :disabled="!collapsed"
+          :show-after="100"
+        >
+          <Icon
+            :icon="item.icon"
+            class="tw-h-5 tw-w-5 tw-shrink-0"
+          />
         </el-tooltip>
         <span :class="collapsed ? 'tw-hidden' : 'tw-hidden md:tw-inline'">{{ item.label }}</span>
       </router-link>
@@ -34,38 +46,69 @@
 
     <!-- 服务器信息 -->
     <div class="tw-hidden tw-border-t tw-border-border tw-pt-2 md:tw-block">
-      <div v-if="!collapsed" class="tw-truncate tw-px-2 tw-text-xs tw-text-text-tertiary" :title="serverUrl">
+      <div
+        v-if="!collapsed"
+        class="tw-truncate tw-px-2 tw-text-xs tw-text-text-tertiary"
+        :title="serverUrl"
+      >
         {{ serverUrl }}
       </div>
       <div class="tw-flex tw-items-center tw-gap-2 tw-px-2 tw-py-1 tw-text-xs tw-text-muted-foreground">
         <template v-if="!collapsed">
-          <Icon icon="lucide:user" class="tw-h-3.5 tw-w-3.5" />
+          <Icon
+            icon="lucide:user"
+            class="tw-h-3.5 tw-w-3.5"
+          />
           <span class="tw-truncate tw-flex-1">{{ username }}</span>
-          <el-tooltip content="重新设置" placement="top" :show-after="100">
-            <router-link :to="{ name: 'setup' }" class="tw-text-primary hover:tw-underline">
-              <Icon icon="lucide:settings" class="tw-h-4 tw-w-4" />
+          <el-tooltip
+            content="重新设置"
+            placement="top"
+            :show-after="100"
+          >
+            <router-link
+              :to="{ name: 'setup' }"
+              class="tw-text-primary hover:tw-underline"
+            >
+              <Icon
+                icon="lucide:settings"
+                class="tw-h-4 tw-w-4"
+              />
             </router-link>
           </el-tooltip>
           <!-- 深色模式 -->
-          <el-tooltip :content="dark ? '切换到浅色模式' : '切换到深色模式'" placement="top" :show-after="100">
+          <el-tooltip
+            :content="dark ? '切换到浅色模式' : '切换到深色模式'"
+            placement="top"
+            :show-after="100"
+          >
             <button
               type="button"
               :class="['tw-text-primary hover:tw-underline', collapsed ? 'tw-mx-auto' : 'tw-ml-auto']"
               @click="onToggleDark"
             >
-              <Icon :icon="dark ? 'lucide:moon' : 'lucide:sun'" class="tw-h-4 tw-w-4" />
+              <Icon
+                :icon="dark ? 'lucide:moon' : 'lucide:sun'"
+                class="tw-h-4 tw-w-4"
+              />
             </button>
           </el-tooltip>
         </template>
 
         <!-- 侧边栏展开/收起 -->
-        <el-tooltip :content="collapsed ? '展开侧边栏' : '收起侧边栏'" placement="top" :show-after="100">
+        <el-tooltip
+          :content="collapsed ? '展开侧边栏' : '收起侧边栏'"
+          placement="top"
+          :show-after="100"
+        >
           <button
             type="button"
             :class="['tw-text-primary hover:tw-underline', collapsed ? 'tw-mx-auto' : 'tw-ml-auto']"
             @click="toggleCollapsed"
           >
-            <Icon :icon="collapsed ? 'lucide:chevrons-right' : 'lucide:chevrons-left'" class="tw-h-4 tw-w-4" />
+            <Icon
+              :icon="collapsed ? 'lucide:chevrons-right' : 'lucide:chevrons-left'"
+              class="tw-h-4 tw-w-4"
+            />
           </button>
         </el-tooltip>
       </div>

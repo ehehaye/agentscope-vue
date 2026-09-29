@@ -16,8 +16,16 @@
       <div
         class="tw-mb-3 tw-flex tw-items-center tw-gap-2 tw-rounded-full tw-border tw-border-input tw-bg-background tw-px-3 tw-py-1.5 focus-within:tw-border-foreground"
       >
-        <button type="button" class="workdir-icon-btn" title="根目录" @click="load('')">
-          <Icon icon="lucide:home" class="tw-h-4 tw-w-4" />
+        <button
+          type="button"
+          class="workdir-icon-btn"
+          title="根目录"
+          @click="load('')"
+        >
+          <Icon
+            icon="lucide:home"
+            class="tw-h-4 tw-w-4"
+          />
         </button>
         <input
           v-model="path"
@@ -26,8 +34,16 @@
           class="tw-min-w-0 tw-flex-1 tw-bg-transparent tw-py-1 tw-font-mono tw-text-sm tw-text-foreground placeholder:tw-text-muted-foreground focus:tw-outline-none"
           @keyup.enter="load(path)"
         />
-        <button type="button" class="workdir-icon-btn" title="进入" @click="load(path)">
-          <Icon icon="lucide:corner-down-left" class="tw-h-4 tw-w-4" />
+        <button
+          type="button"
+          class="workdir-icon-btn"
+          title="进入"
+          @click="load(path)"
+        >
+          <Icon
+            icon="lucide:corner-down-left"
+            class="tw-h-4 tw-w-4"
+          />
         </button>
       </div>
 
@@ -43,16 +59,29 @@
           v-else-if="error"
           class="tw-flex tw-flex-col tw-items-center tw-justify-center tw-px-4 tw-py-10 tw-text-center"
         >
-          <Icon icon="lucide:folder-open" class="tw-mb-2 tw-h-6 tw-w-6 tw-text-muted-foreground" />
+          <Icon
+            icon="lucide:folder-open"
+            class="tw-mb-2 tw-h-6 tw-w-6 tw-text-muted-foreground"
+          />
           <p class="tw-text-sm tw-font-medium tw-text-foreground">无法列出目录</p>
           <p class="tw-mt-1 tw-break-all tw-text-xs tw-text-muted-foreground">{{ error }}</p>
         </div>
         <template v-else>
-          <button type="button" class="workdir-row" @click="load(`${listedPath || ''}/..`)">
-            <Icon icon="lucide:arrow-up" class="tw-h-4 tw-w-4 tw-shrink-0" />
+          <button
+            type="button"
+            class="workdir-row"
+            @click="load(`${listedPath || ''}/..`)"
+          >
+            <Icon
+              icon="lucide:arrow-up"
+              class="tw-h-4 tw-w-4 tw-shrink-0"
+            />
             <span class="tw-truncate">上一级</span>
           </button>
-          <div v-if="entries.length === 0" class="tw-px-3 tw-py-6 tw-text-center tw-text-xs tw-text-muted-foreground">
+          <div
+            v-if="entries.length === 0"
+            class="tw-px-3 tw-py-6 tw-text-center tw-text-xs tw-text-muted-foreground"
+          >
             该目录为空
           </div>
           <button
@@ -63,7 +92,10 @@
             :disabled="!entry.is_dir"
             @click="load(`${listedPath || ''}/${entry.name}`)"
           >
-            <Icon :icon="entry.is_dir ? 'lucide:folder' : 'lucide:file'" class="tw-h-4 tw-w-4 tw-shrink-0" />
+            <Icon
+              :icon="entry.is_dir ? 'lucide:folder' : 'lucide:file'"
+              class="tw-h-4 tw-w-4 tw-shrink-0"
+            />
             <span
               class="tw-truncate"
               :class="entry.is_dir && !entry.name.startsWith('.') ? 'tw-text-foreground' : 'tw-text-muted-foreground'"
@@ -75,8 +107,19 @@
       </div>
 
       <span slot="footer">
-        <el-button size="small" :disabled="saving" @click="dialogOpen = false">取消</el-button>
-        <el-button size="small" type="primary" :loading="saving" :disabled="listedPath !== path" @click="onConfirm">
+        <el-button
+          size="small"
+          :disabled="saving"
+          @click="dialogOpen = false"
+          >取消</el-button
+        >
+        <el-button
+          size="small"
+          type="primary"
+          :loading="saving"
+          :disabled="listedPath !== path"
+          @click="onConfirm"
+        >
           确认
         </el-button>
       </span>
@@ -87,7 +130,11 @@
       :disabled="disabled || !agentId || !sessionId"
       @click="dialogOpen = true"
     >
-      <span class="tw-truncate" style="max-width: 10rem">{{ label }}</span>
+      <span
+        class="tw-truncate"
+        style="max-width: 10rem"
+        >{{ label }}</span
+      >
       <i class="el-icon-arrow-down el-icon--right tw-ml-1" />
     </el-button>
   </span>

@@ -4,13 +4,35 @@
     <div
       class="tw-grid tw-grid-cols-2 tw-gap-x-4 tw-gap-y-3 tw-rounded-lg tw-border tw-border-border tw-bg-card tw-p-3 sm:tw-grid-cols-3"
     >
-      <ConfigItem label="嵌入模型" :value="embedding.model" />
-      <ConfigItem label="维度" :value="String(embedding.dimensions || '—')" />
-      <ConfigItem label="凭证" :value="knowledgeBase.credential_name || embedding.credential_id" />
-      <ConfigItem label="分块器" :value="chunkerValue" />
-      <ConfigItem label="统计" :value="countsValue" />
-      <ConfigItem v-if="statusValue" label="状态" :value="statusValue" />
-      <ConfigItem label="创建时间" :value="createdAt" />
+      <ConfigItem
+        label="嵌入模型"
+        :value="embedding.model"
+      />
+      <ConfigItem
+        label="维度"
+        :value="String(embedding.dimensions || '—')"
+      />
+      <ConfigItem
+        label="凭证"
+        :value="knowledgeBase.credential_name || embedding.credential_id"
+      />
+      <ConfigItem
+        label="分块器"
+        :value="chunkerValue"
+      />
+      <ConfigItem
+        label="统计"
+        :value="countsValue"
+      />
+      <ConfigItem
+        v-if="statusValue"
+        label="状态"
+        :value="statusValue"
+      />
+      <ConfigItem
+        label="创建时间"
+        :value="createdAt"
+      />
     </div>
   </div>
 </template>

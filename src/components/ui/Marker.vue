@@ -1,5 +1,9 @@
 <template>
-  <div data-slot="marker" :data-variant="variant" :class="cn(markerClass, markerVariants[variant] || '', className)">
+  <div
+    data-slot="marker"
+    :data-variant="variant"
+    :class="cn(markerClass, markerVariants[variant] || '', className)"
+  >
     <slot />
   </div>
 </template>

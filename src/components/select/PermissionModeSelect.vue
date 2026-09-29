@@ -1,10 +1,16 @@
 <template>
-  <el-dropdown trigger="click" @command="(v) => $emit('change', v)">
+  <el-dropdown
+    trigger="click"
+    @command="(v) => $emit('change', v)"
+  >
     <span
       class="el-dropdown-link tw-inline-flex tw-w-full tw-cursor-pointer tw-items-center tw-justify-between tw-gap-2 tw-rounded-md tw-border tw-border-border tw-px-3 tw-py-1.5 tw-text-sm hover:tw-bg-row-hover"
     >
       <span class="tw-truncate">{{ displayLabel }}</span>
-      <Icon icon="lucide:chevron-down" class="tw-h-4 tw-w-4 tw-shrink-0 tw-text-muted-foreground" />
+      <Icon
+        icon="lucide:chevron-down"
+        class="tw-h-4 tw-w-4 tw-shrink-0 tw-text-muted-foreground"
+      />
     </span>
     <el-dropdown-menu slot="dropdown">
       <el-dropdown-item disabled>权限模式</el-dropdown-item>

@@ -1,13 +1,22 @@
 <template>
-  <div class="tw-collapsible" :class="cls(isOpen)">
+  <div
+    class="tw-collapsible"
+    :class="cls(isOpen)"
+  >
     <div
       class="tw-collapsible-trigger tw-flex tw-cursor-pointer tw-items-center tw-gap-2"
       :class="[triggerClass, { 'tw-cursor-default': !expandable }]"
       @click="toggle"
     >
-      <slot name="trigger" :open="isOpen" />
+      <slot
+        name="trigger"
+        :open="isOpen"
+      />
       <!-- 默认折叠指示图标，可用 #icon="{ open }" 插槽覆盖 -->
-      <slot name="icon" :open="isOpen">
+      <slot
+        name="icon"
+        :open="isOpen"
+      >
         <Icon
           v-if="expandable"
           icon="lucide:chevron-right"
@@ -16,8 +25,17 @@
         />
       </slot>
     </div>
-    <transition name="collapse" @enter="enter" @after-enter="afterEnter" @leave="leave">
-      <div v-show="isOpen" class="tw-collapsible-content tw-overflow-hidden" :class="contentClass">
+    <transition
+      name="collapse"
+      @enter="enter"
+      @after-enter="afterEnter"
+      @leave="leave"
+    >
+      <div
+        v-show="isOpen"
+        class="tw-collapsible-content tw-overflow-hidden"
+        :class="contentClass"
+      >
         <slot />
       </div>
     </transition>

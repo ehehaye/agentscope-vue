@@ -1,7 +1,13 @@
 <template>
   <div class="tw-overflow-x-auto">
     <pre class="tw-font-mono tw-text-xs tw-leading-5 tw-whitespace-pre">{{ visibleDiff }}</pre>
-    <el-button v-if="shouldTruncate" type="text" size="mini" class="tw-mt-1 tw-w-full" @click="expanded = !expanded">
+    <el-button
+      v-if="shouldTruncate"
+      type="text"
+      size="mini"
+      class="tw-mt-1 tw-w-full"
+      @click="expanded = !expanded"
+    >
       {{ expanded ? '收起' : `展开 ${hiddenLines} 行` }}
     </el-button>
   </div>

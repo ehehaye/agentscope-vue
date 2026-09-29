@@ -6,12 +6,25 @@
     width="500px"
     :close-on-click-modal="false"
   >
-    <el-form label-position="top" class="tw-space-y-4">
+    <el-form
+      label-position="top"
+      class="tw-space-y-4"
+    >
       <el-form-item label="名称">
-        <el-input v-model="form.name" placeholder="知识库名称" :disabled="submitting" />
+        <el-input
+          v-model="form.name"
+          placeholder="知识库名称"
+          :disabled="submitting"
+        />
       </el-form-item>
       <el-form-item label="描述">
-        <el-input v-model="form.description" type="textarea" :rows="3" placeholder="描述" :disabled="submitting" />
+        <el-input
+          v-model="form.description"
+          type="textarea"
+          :rows="3"
+          placeholder="描述"
+          :disabled="submitting"
+        />
       </el-form-item>
 
       <!-- 嵌入模型在创建时固定（底层集合按其维度建立），此处只读展示。 -->
@@ -20,17 +33,39 @@
           {{ embeddingModelLabel }}
         </span>
       </el-form-item>
-      <el-form-item v-if="chunkerLabel" label="分块器">
+      <el-form-item
+        v-if="chunkerLabel"
+        label="分块器"
+      >
         <span class="tw-rounded tw-bg-secondary tw-px-2 tw-py-0.5 tw-font-mono tw-text-xs">
           {{ chunkerLabel }}
         </span>
       </el-form-item>
 
-      <p v-if="errorMsg" class="tw-mb-0 tw-text-sm tw-text-destructive">{{ errorMsg }}</p>
+      <p
+        v-if="errorMsg"
+        class="tw-mb-0 tw-text-sm tw-text-destructive"
+      >
+        {{ errorMsg }}
+      </p>
     </el-form>
-    <span slot="footer" class="tw-dialog-footer">
-      <el-button size="small" @click="dialogVisible = false" :disabled="submitting">取消</el-button>
-      <el-button size="small" type="primary" :loading="submitting" @click="handleSubmit">保存</el-button>
+    <span
+      slot="footer"
+      class="tw-dialog-footer"
+    >
+      <el-button
+        size="small"
+        @click="dialogVisible = false"
+        :disabled="submitting"
+        >取消</el-button
+      >
+      <el-button
+        size="small"
+        type="primary"
+        :loading="submitting"
+        @click="handleSubmit"
+        >保存</el-button
+      >
     </span>
   </el-dialog>
 </template>

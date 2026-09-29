@@ -5,29 +5,52 @@
     @click="$emit('click')"
   >
     <div class="tw-flex tw-min-w-0 tw-items-center tw-gap-2">
-      <Icon v-if="showSourceIcon" :icon="sourceIcon" class="tw-h-3.5 tw-w-3.5 tw-shrink-0" />
-      <span class="tw-truncate tw-text-xs" :title="view.session?.config?.name || view.session?.id">{{
-        view.session?.config?.name || view.session?.id
-      }}</span>
+      <Icon
+        v-if="showSourceIcon"
+        :icon="sourceIcon"
+        class="tw-h-3.5 tw-w-3.5 tw-shrink-0"
+      />
+      <span
+        class="tw-truncate tw-text-xs"
+        :title="view.session?.config?.name || view.session?.id"
+        >{{ view.session?.config?.name || view.session?.id }}</span
+      >
     </div>
     <div class="tw-flex tw-shrink-0 tw-items-center tw-gap-1">
       <span class="tw-font-mono tw-text-xs tw-opacity-60">{{ timeLabel }}</span>
-      <el-dropdown trigger="click" size="mini" @command="handleCommand" @click.native.stop>
+      <el-dropdown
+        trigger="click"
+        size="mini"
+        @command="handleCommand"
+        @click.native.stop
+      >
         <span
           class="tw-inline-flex tw-h-5 tw-w-5 tw-items-center tw-justify-center tw-rounded tw-opacity-0 tw-transition-opacity tw-duration-150 group-hover:tw-opacity-100 hover:tw-bg-muted"
         >
-          <Icon icon="lucide:ellipsis" class="tw-h-3 tw-w-3" />
+          <Icon
+            icon="lucide:ellipsis"
+            class="tw-h-3 tw-w-3"
+          />
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="rename">
             <span class="tw-inline-flex tw-items-center tw-gap-1.5">
-              <Icon icon="lucide:pencil" class="tw-h-3.5 tw-w-3.5" />
+              <Icon
+                icon="lucide:pencil"
+                class="tw-h-3.5 tw-w-3.5"
+              />
               重命名
             </span>
           </el-dropdown-item>
-          <el-dropdown-item command="delete" class="tw-text-danger">
+          <el-dropdown-item
+            command="delete"
+            class="tw-text-danger"
+          >
             <span class="tw-inline-flex tw-items-center tw-gap-1.5">
-              <Icon icon="lucide:trash-2" class="tw-h-3.5 tw-w-3.5" />
+              <Icon
+                icon="lucide:trash-2"
+                class="tw-h-3.5 tw-w-3.5"
+              />
               删除
             </span>
           </el-dropdown-item>

@@ -1,21 +1,35 @@
 <template>
   <div class="tw-flex tw-flex-col tw-gap-5">
-    <div v-if="mode === 'edit'" class="tw-flex tw-flex-col tw-gap-1">
+    <div
+      v-if="mode === 'edit'"
+      class="tw-flex tw-flex-col tw-gap-1"
+    >
       <span class="tw-text-sm tw-font-medium">平台类型</span>
       <span class="tw-text-sm tw-text-muted-foreground">{{ typeSchema?.display_name || local.channelType }}</span>
     </div>
 
     <div class="tw-flex tw-flex-col tw-gap-1">
       <span class="tw-text-sm tw-font-medium">名称</span>
-      <el-input v-model="local.name" placeholder="输入频道名称" />
+      <el-input
+        v-model="local.name"
+        placeholder="输入频道名称"
+      />
       <p class="tw-text-xs tw-text-muted-foreground">显示用名称，留空则使用平台类型名</p>
     </div>
 
     <template v-if="mode === 'create' && credentialFields.length > 0">
-      <div v-for="field in credentialFields" :key="field.key" class="tw-flex tw-flex-col tw-gap-1">
+      <div
+        v-for="field in credentialFields"
+        :key="field.key"
+        class="tw-flex tw-flex-col tw-gap-1"
+      >
         <span class="tw-text-sm tw-font-medium">
           {{ field.title }}
-          <span v-if="field.required" class="tw-text-destructive">*</span>
+          <span
+            v-if="field.required"
+            class="tw-text-destructive"
+            >*</span
+          >
         </span>
         <el-input
           v-model="local.credentials[field.key]"
@@ -29,13 +43,19 @@
 
     <div class="tw-flex tw-flex-col tw-gap-1">
       <span class="tw-text-sm tw-font-medium">模型</span>
-      <LlmSelect :value="local.chatModelConfig" @change="(v) => set('chatModelConfig', v)" />
+      <LlmSelect
+        :value="local.chatModelConfig"
+        @change="(v) => set('chatModelConfig', v)"
+      />
       <p class="tw-text-xs tw-text-muted-foreground">频道默认使用的聊天模型</p>
     </div>
 
     <div class="tw-flex tw-flex-col tw-gap-1">
       <span class="tw-text-sm tw-font-medium">权限模式</span>
-      <PermissionModeSelect :value="local.permissionMode" @change="(v) => set('permissionMode', v)" />
+      <PermissionModeSelect
+        :value="local.permissionMode"
+        @change="(v) => set('permissionMode', v)"
+      />
     </div>
 
     <el-divider />
@@ -43,14 +63,25 @@
     <div class="tw-flex tw-flex-col tw-gap-2">
       <span class="tw-text-sm tw-font-medium">路由规则</span>
       <span class="tw-text-xs tw-text-muted-foreground">按顺序匹配，默认规则永远在最后</span>
-      <BindingsEditor v-model="local.bindings" :agents="agents" />
+      <BindingsEditor
+        v-model="local.bindings"
+        :agents="agents"
+      />
     </div>
 
     <el-divider />
 
-    <div v-for="field in configFields" :key="field.key" class="tw-flex tw-flex-col tw-gap-1">
+    <div
+      v-for="field in configFields"
+      :key="field.key"
+      class="tw-flex tw-flex-col tw-gap-1"
+    >
       <span class="tw-text-sm tw-font-medium">{{ field.title }}</span>
-      <span v-if="field.description" class="tw-text-xs tw-text-muted-foreground">{{ field.description }}</span>
+      <span
+        v-if="field.description"
+        class="tw-text-xs tw-text-muted-foreground"
+        >{{ field.description }}</span
+      >
       <el-switch
         v-if="field.type === 'boolean'"
         :value="local.platformConfig[field.key] ?? field.default ?? false"

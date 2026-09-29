@@ -10,32 +10,83 @@
     <p class="tw-text-sm tw-text-muted-foreground">为智能体设置定时或一次性的计划任务。</p>
     <!-- 双列压缩高度；滚动交给全局 .el-dialog__body（头尾固定），表单自身不再套滚动容器，
          否则 max-h-75vh 的内滚与 body 外滚叠加成嵌套双滚动条。 -->
-    <el-form ref="formRef" :model="form" label-position="left" label-width="100px" class="tw-mt-4 schedule-form--cols">
-      <el-form-item label="名称" class="schedule-form__item--wide">
-        <el-input v-model="form.name" placeholder="例如：每日报告" />
+    <el-form
+      ref="formRef"
+      :model="form"
+      label-position="left"
+      label-width="100px"
+      class="tw-mt-4 schedule-form--cols"
+    >
+      <el-form-item
+        label="名称"
+        class="schedule-form__item--wide"
+      >
+        <el-input
+          v-model="form.name"
+          placeholder="例如：每日报告"
+        />
       </el-form-item>
 
-      <el-form-item label="描述" class="schedule-form__item--wide">
-        <el-input v-model="form.description" type="textarea" :rows="4" placeholder="描述这个计划任务的用途..." />
+      <el-form-item
+        label="描述"
+        class="schedule-form__item--wide"
+      >
+        <el-input
+          v-model="form.description"
+          type="textarea"
+          :rows="4"
+          placeholder="描述这个计划任务的用途..."
+        />
       </el-form-item>
 
-      <el-form-item label="日期" class="schedule-form__item--wide">
+      <el-form-item
+        label="日期"
+        class="schedule-form__item--wide"
+      >
         <div class="tw-flex tw-gap-3">
-          <el-date-picker v-model="form.date" type="date" placeholder="选择日期" value-format="yyyy-MM-dd" />
-          <el-time-picker v-model="form.time" placeholder="选择时间" value-format="HH:mm:ss" class="tw-w-40" />
+          <el-date-picker
+            v-model="form.date"
+            type="date"
+            placeholder="选择日期"
+            value-format="yyyy-MM-dd"
+          />
+          <el-time-picker
+            v-model="form.time"
+            placeholder="选择时间"
+            value-format="HH:mm:ss"
+            class="tw-w-40"
+          />
         </div>
       </el-form-item>
 
       <el-form-item label="时区">
-        <TimezoneSelect :value="form.timezone" @change="(v) => (form.timezone = v)" />
+        <TimezoneSelect
+          :value="form.timezone"
+          @change="(v) => (form.timezone = v)"
+        />
       </el-form-item>
 
       <el-form-item label="频率">
-        <el-select v-model="form.freq" class="tw-w-full">
-          <el-option value="once" label="一次" />
-          <el-option value="daily" label="每天" />
-          <el-option value="weekly" label="每周" />
-          <el-option value="monthly" label="每月" />
+        <el-select
+          v-model="form.freq"
+          class="tw-w-full"
+        >
+          <el-option
+            value="once"
+            label="一次"
+          />
+          <el-option
+            value="daily"
+            label="每天"
+          />
+          <el-option
+            value="weekly"
+            label="每周"
+          />
+          <el-option
+            value="monthly"
+            label="每月"
+          />
         </el-select>
       </el-form-item>
 
@@ -61,11 +112,17 @@
       </el-form-item>
 
       <el-form-item label="模型">
-        <LlmSelect :value="form.chatModelConfig" @change="(v) => (form.chatModelConfig = v)" />
+        <LlmSelect
+          :value="form.chatModelConfig"
+          @change="(v) => (form.chatModelConfig = v)"
+        />
       </el-form-item>
 
       <el-form-item label="权限模式">
-        <PermissionModeSelect :value="form.permissionMode" @change="(v) => (form.permissionMode = v)" />
+        <PermissionModeSelect
+          :value="form.permissionMode"
+          @change="(v) => (form.permissionMode = v)"
+        />
       </el-form-item>
 
       <el-form-item class="schedule-form__item--wide">
@@ -80,12 +137,31 @@
         </div>
       </el-form-item>
 
-      <p v-if="error" class="tw-text-sm tw-text-destructive schedule-form__item--wide">{{ error }}</p>
+      <p
+        v-if="error"
+        class="tw-text-sm tw-text-destructive schedule-form__item--wide"
+      >
+        {{ error }}
+      </p>
     </el-form>
 
-    <span slot="footer" class="tw-dialog-footer">
-      <el-button size="small" @click="visible = false" :disabled="loading">取消</el-button>
-      <el-button size="small" type="primary" :loading="loading" :disabled="!isValid" @click="handleSubmit">
+    <span
+      slot="footer"
+      class="tw-dialog-footer"
+    >
+      <el-button
+        size="small"
+        @click="visible = false"
+        :disabled="loading"
+        >取消</el-button
+      >
+      <el-button
+        size="small"
+        type="primary"
+        :loading="loading"
+        :disabled="!isValid"
+        @click="handleSubmit"
+      >
         {{ loading ? '创建中…' : '创建' }}
       </el-button>
     </span>

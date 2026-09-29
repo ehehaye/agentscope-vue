@@ -1,5 +1,8 @@
 <template>
-  <label data-slot="label" :class="cn(labelClass, className)">
+  <label
+    data-slot="label"
+    :class="cn(labelClass, className)"
+  >
     <slot />
   </label>
 </template>

@@ -1,7 +1,13 @@
 <template>
-  <div class="flip-card" :class="[$attrs.class, { 'flip-card-open': visible }]">
+  <div
+    class="flip-card"
+    :class="[$attrs.class, { 'flip-card-open': visible }]"
+  >
     <transition name="flip">
-      <div v-if="visible" class="flip-card-inner">
+      <div
+        v-if="visible"
+        class="flip-card-inner"
+      >
         <!-- 折叠态：醒目提示条 -->
         <button
           v-if="collapsible && collapsed"
@@ -10,9 +16,15 @@
           :aria-expanded="false"
           @click="toggle"
         >
-          <span class="flip-card-collapsed-dot" aria-hidden="true"></span>
+          <span
+            class="flip-card-collapsed-dot"
+            aria-hidden="true"
+          ></span>
           <span class="flip-card-collapsed-label">{{ title }}</span>
-          <Icon icon="lucide:chevron-up" class="flip-card-chevron" />
+          <Icon
+            icon="lucide:chevron-up"
+            class="flip-card-chevron"
+          />
         </button>
         <!-- 展开态：浮动小按钮，叠在 ConfirmCard 右上角内 -->
         <button
@@ -23,9 +35,15 @@
           title="收起"
           @click="toggle"
         >
-          <Icon icon="lucide:chevron-up" class="flip-card-chevron is-collapsed" />
+          <Icon
+            icon="lucide:chevron-up"
+            class="flip-card-chevron is-collapsed"
+          />
         </button>
-        <div class="flip-card-body" :class="{ 'is-collapsed': collapsed }">
+        <div
+          class="flip-card-body"
+          :class="{ 'is-collapsed': collapsed }"
+        >
           <div class="flip-card-body-inner">
             <slot />
           </div>

@@ -1,16 +1,29 @@
 <template>
-  <div class="tw-flex tw-flex-col" :class="$attrs.class">
+  <div
+    class="tw-flex tw-flex-col"
+    :class="$attrs.class"
+  >
     <slot name="header" />
     <div class="tw-flex tw-w-full tw-flex-col tw-rounded-28px tw-border tw-bg-background tw-px-2">
-      <div v-if="files.length > 0" class="tw-flex tw-flex-wrap tw-gap-2 tw-px-1 tw-pt-1">
+      <div
+        v-if="files.length > 0"
+        class="tw-flex tw-flex-wrap tw-gap-2 tw-px-1 tw-pt-1"
+      >
         <div
           v-for="(file, index) in files"
           :key="index"
           class="tw-flex tw-max-w-full tw-items-center tw-gap-2 tw-rounded-md tw-bg-muted tw-px-2 tw-py-1 tw-text-xs"
         >
-          <Icon icon="lucide:file-text" class="tw-h-3 tw-w-3 tw-shrink-0" />
+          <Icon
+            icon="lucide:file-text"
+            class="tw-h-3 tw-w-3 tw-shrink-0"
+          />
           <span class="tw-truncate">{{ file.name }}</span>
-          <Icon icon="lucide:x" class="tw-h-3 tw-w-3 tw-shrink-0 tw-cursor-pointer" @click.native="removeFile(index)" />
+          <Icon
+            icon="lucide:x"
+            class="tw-h-3 tw-w-3 tw-shrink-0 tw-cursor-pointer"
+            @click.native="removeFile(index)"
+          />
         </div>
       </div>
       <div class="tw-relative tw-flex tw-flex-wrap tw-items-end tw-justify-end">
@@ -29,16 +42,41 @@
           @keydown.native="handleKeyDown"
         />
         <div class="tw-flex tw-shrink-0 tw-items-center tw-gap-2 tw-py-2">
-          <el-button type="text" size="small" circle :disabled="attachDisabled" @click="openFilePicker">
-            <Icon icon="lucide:paperclip" class="tw-h-4 tw-w-4" />
+          <el-button
+            type="text"
+            size="small"
+            circle
+            :disabled="attachDisabled"
+            @click="openFilePicker"
+          >
+            <Icon
+              icon="lucide:paperclip"
+              class="tw-h-4 tw-w-4"
+            />
           </el-button>
-          <el-button type="primary" size="small" circle :disabled="sendButton.disabled" @click="sendButton.onClick">
-            <Icon :icon="sendButton.icon" class="tw-h-4 tw-w-4" />
+          <el-button
+            type="primary"
+            size="small"
+            circle
+            :disabled="sendButton.disabled"
+            @click="sendButton.onClick"
+          >
+            <Icon
+              :icon="sendButton.icon"
+              class="tw-h-4 tw-w-4"
+            />
           </el-button>
         </div>
       </div>
     </div>
-    <input ref="fileInputRef" type="file" multiple class="tw-hidden" :accept="acceptAttr" @change="handleFileSelect" />
+    <input
+      ref="fileInputRef"
+      type="file"
+      multiple
+      class="tw-hidden"
+      :accept="acceptAttr"
+      @change="handleFileSelect"
+    />
   </div>
 </template>
 

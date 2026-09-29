@@ -1,5 +1,8 @@
 <template>
-  <span v-if="insertions > 0 || deletions > 0" class="tw-inline-flex tw-items-center tw-gap-0.5">
+  <span
+    v-if="insertions > 0 || deletions > 0"
+    class="tw-inline-flex tw-items-center tw-gap-0.5"
+  >
     <span class="tw-text-emerald-600 dark:tw-text-emerald-400">+{{ fmt(insertions) }}</span>
     <span class="tw-text-red-600 dark:tw-text-red-400">-{{ fmt(deletions) }}</span>
   </span>

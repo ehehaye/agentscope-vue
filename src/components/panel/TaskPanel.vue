@@ -1,6 +1,9 @@
 <template>
   <div class="tw-flex tw-h-full tw-flex-col tw-gap-3 tw-text-sm">
-    <div v-if="tasksContext && tasks.length > 0" class="tw-flex tw-shrink-0 tw-items-center tw-gap-2 tw-pb-2">
+    <div
+      v-if="tasksContext && tasks.length > 0"
+      class="tw-flex tw-shrink-0 tw-items-center tw-gap-2 tw-pb-2"
+    >
       <span class="tw-inline-flex tw-items-center tw-gap-1 tw-rounded-md tw-bg-secondary tw-px-2 tw-py-0.5 tw-text-xs">
         已完成 {{ completedCount }}
       </span>
@@ -11,7 +14,11 @@
 
     <div class="tw-flex tw-flex-1 tw-flex-col tw-overflow-y-auto">
       <template v-if="!tasksContext || tasks.length === 0">
-        <PanelEmpty icon="lucide:list-x" title="暂无任务" description="当前会话没有任务计划。" />
+        <PanelEmpty
+          icon="lucide:list-x"
+          title="暂无任务"
+          description="当前会话没有任务计划。"
+        />
       </template>
       <template v-else>
         <button
@@ -20,7 +27,10 @@
           class="tw-flex tw-w-full tw-items-center tw-justify-center tw-rounded tw-py-1 hover:tw-bg-muted"
           @click="expanded = true"
         >
-          <Icon icon="lucide:ellipsis" class="tw-h-4 tw-w-4 tw-text-muted-foreground" />
+          <Icon
+            icon="lucide:ellipsis"
+            class="tw-h-4 tw-w-4 tw-text-muted-foreground"
+          />
         </button>
         <div
           v-for="task in displayedTasks"
@@ -36,11 +46,16 @@
           <div class="tw-flex tw-min-w-0 tw-flex-1 tw-flex-col tw-gap-0.5">
             <span class="tw-flex tw-items-center tw-gap-1.5">
               <span class="tw-font-mono tw-text-xs tw-text-muted-foreground">#{{ task.id }}</span>
-              <span class="tw-truncate" :class="task.state === 'completed' ? 'tw-line-through' : ''">{{
-                task.subject
-              }}</span>
+              <span
+                class="tw-truncate"
+                :class="task.state === 'completed' ? 'tw-line-through' : ''"
+                >{{ task.subject }}</span
+              >
             </span>
-            <span v-if="task.blocked_by && task.blocked_by.length > 0" class="tw-text-xs tw-text-muted-foreground">
+            <span
+              v-if="task.blocked_by && task.blocked_by.length > 0"
+              class="tw-text-xs tw-text-muted-foreground"
+            >
               ← 依赖 {{ task.blocked_by.map((id) => `#${id}`).join(', ') }}
             </span>
           </div>
