@@ -9,19 +9,19 @@ import { useStore } from '@/composables/vuex';
 export function useUploadCenter() {
   const store = useStore();
 
-  function enqueue(knowledgeBaseId, files) {
+  async function enqueue(knowledgeBaseId, files) {
     return store.dispatch('upload/enqueue', { knowledgeBaseId, files });
   }
-  function cancel(taskId) {
+  async function cancel(taskId) {
     return store.dispatch('upload/cancel', taskId);
   }
-  function dismiss(taskId) {
+  async function dismiss(taskId) {
     return store.dispatch('upload/dismiss', taskId);
   }
-  function clearFinishedForKb(knowledgeBaseId) {
+  async function clearFinishedForKb(knowledgeBaseId) {
     return store.dispatch('upload/clearFinishedForKb', knowledgeBaseId);
   }
-  function applyServerStatuses(knowledgeBaseId, items) {
+  async function applyServerStatuses(knowledgeBaseId, items) {
     return store.dispatch('upload/applyServerStatuses', { knowledgeBaseId, items });
   }
   function tasksForKb(knowledgeBaseId) {

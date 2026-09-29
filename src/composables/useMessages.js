@@ -34,31 +34,31 @@ export function useMessages(agentId, sessionId, options = {}) {
     { immediate: true },
   );
 
-  function send(contentBlocks) {
+  async function send(contentBlocks) {
     return store.dispatch('chat/send', contentBlocks);
   }
 
-  function onUserConfirm(toolCall, confirm, replyId, rules) {
+  async function onUserConfirm(toolCall, confirm, replyId, rules) {
     return store.dispatch('chat/confirm', { toolCall, confirm, rules });
   }
 
-  function onSubagentConfirm(entry, toolCall, confirm, rules) {
+  async function onSubagentConfirm(entry, toolCall, confirm, rules) {
     return store.dispatch('chat/subagentConfirm', { entry, toolCall, confirm, rules });
   }
 
-  function onAskUserSubmit(toolCall, replyId, answers) {
+  async function onAskUserSubmit(toolCall, replyId, answers) {
     return store.dispatch('chat/askUserSubmit', { toolCall, replyId, answers });
   }
 
-  function onSubagentAskUserSubmit(entry, toolCall, answers) {
+  async function onSubagentAskUserSubmit(entry, toolCall, answers) {
     return store.dispatch('chat/subagentAskUserSubmit', { entry, toolCall, answers });
   }
 
-  function interrupt() {
+  async function interrupt() {
     return store.dispatch('chat/interrupt');
   }
 
-  function abort() {
+  async function abort() {
     return store.dispatch('chat/closeConversation');
   }
 
