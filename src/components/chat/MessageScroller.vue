@@ -1,13 +1,13 @@
 <template>
   <div class="tw-relative tw-min-h-0 tw-flex-1">
-    <el-scrollbar
+    <Scrollbar
       ref="scrollerRef"
       class="tw-h-full tw-w-full tw-overflow-x-hidden"
       wrap-class="tw-overflow-x-hidden"
       view-class="tw-flex tw-min-h-full tw-flex-col tw-gap-6 tw-p-4"
     >
       <slot />
-    </el-scrollbar>
+    </Scrollbar>
     <!-- 用户上翻阅读历史时才出现的「回到底部」浮层按钮 -->
     <el-button
       v-if="showScrollButton"
@@ -28,6 +28,7 @@
 <script>
 import { defineComponent, ref, watch, nextTick, onMounted, onUnmounted } from '@/composables/vue';
 import { Icon } from '@/components/iconify/index';
+import Scrollbar from '@/components/ui/Scrollbar.vue';
 
 /**
  * MessageScroller —— 聊天消息区的自动滚动容器。
@@ -45,7 +46,7 @@ import { Icon } from '@/components/iconify/index';
  */
 export default defineComponent({
   name: 'MessageScroller',
-  components: { Icon },
+  components: { Icon, Scrollbar },
   props: {
     /** 是否开启自动滚动；关闭后仅在用户点击按钮时回到底部 */
     autoScroll: { type: Boolean, default: true },

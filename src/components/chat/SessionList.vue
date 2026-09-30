@@ -89,7 +89,7 @@
           title="暂无会话"
           :description="agentId ? '当前助手下还没有会话' : '请先选择一个助手'"
         />
-        <el-scrollbar
+        <Scrollbar
           v-else-if="sessions.length > 0"
           class="tw-min-h-0 tw-flex-1 tw-overflow-x-hidden tw-py-2"
           wrapClass="tw-overflow-x-hidden tw-pr-1"
@@ -123,7 +123,7 @@
               </li>
             </ul>
           </Collapsible>
-        </el-scrollbar>
+        </Scrollbar>
 
         <div
           v-if="sessionsLoading"
@@ -143,13 +143,14 @@ import { Icon } from '@/components/iconify/index.js';
 import { isToday, isYesterday, isValid, format } from 'date-fns';
 import AgentSelect from '@/components/select/AgentSelect.vue';
 import Spinner from '@/components/ui/Spinner.vue';
+import Scrollbar from '@/components/ui/Scrollbar.vue';
 import PanelEmpty from '@/components/panel/PanelEmpty.vue';
 import Collapsible from '@/components/ui/Collapsible.vue';
 import SessionListItem from './SessionListItem.vue';
 
 export default defineComponent({
   name: 'SessionList',
-  components: { Icon, AgentSelect, Spinner, PanelEmpty, Collapsible, SessionListItem },
+  components: { Icon, AgentSelect, Spinner, PanelEmpty, Collapsible, SessionListItem, Scrollbar },
   props: {
     agents: { type: Array, default: () => [] },
     agentId: { type: String, default: '' },
