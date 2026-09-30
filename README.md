@@ -6,6 +6,12 @@
 
 原示例为 React 实现，为了让现有 Vue 2 业务低成本接入 AgentScope 的聊天、知识库、MCP、定时任务等能力，我们将其完整迁移为 Vue 组件体系，同时保留原项目的交互逻辑与后端协议。
 
+## 界面预览
+
+<p align="center">
+  <img src="docs/images/screenshot.png" alt="AgentScope Web UI 运行效果" width="880" />
+</p>
+
 ## 技术栈与兼容策略
 
 | 依赖 | 当前实现 | 说明 |
