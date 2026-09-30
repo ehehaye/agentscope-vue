@@ -99,7 +99,7 @@
 import { defineComponent, ref, computed } from '@/composables/vue';
 import { Icon } from '@/components/iconify/index';
 import DotSpinner from '@/components/ui/DotSpinner.vue';
-import { AppConnectionState, AppReplyPhase } from '@/store/modules/chat';
+import { AppConnectionState, AppReplyPhase } from '@/constants/app-state';
 
 export default defineComponent({
   name: 'TextInput',

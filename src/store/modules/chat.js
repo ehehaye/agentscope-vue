@@ -3,52 +3,23 @@
  *
  * 职责：持有当前会话的消息列表与 SSE 订阅，并把 SDK 事件分发给消息状态机。
  *
- * 常量来源（详见 `src/lib/protocol.js` 的说明）：
- * - SDK 提供：`EventType` 事件类型、`UserMsg / AssistantMsg / appendEvent` 等消息工具、块与工具状态；
- * - 本应用自定义：本文件的 `AppReplyPhase` / `AppConnectionState`，以及 `currentKey` /
- *   `pendingInput` / `subagentHitl` 等 state 字段——SDK 不提供这些概念，全部由前端维护。
+ * 常量来源（`src/constants/` 下集中定义）：
+ * - SDK 提供：`EventType` 事件类型、`UserMsg / AssistantMsg / appendEvent` 等消息工具，
+ *   以及块与工具状态取值（`Sdk*`，见 `constants/protocol.js`）；
+ * - 后端约定：`EventType.CUSTOM` 下的事件名（`Backend*`，同上）；
+ * - 本应用自定义：回复相位与连接状态（`App*`，见 `constants/app-state.js`），
+ *   以及本模块的 `currentKey` / `pendingInput` / `subagentHitl` 等 state 字段。
  */
 import { EventType } from '@agentscope-ai/agentscope/event';
 import { appendEvent, AssistantMsg, UserMsg } from '@agentscope-ai/agentscope/message';
+import { AppConnectionState, AppReplyPhase } from '@/constants/app-state';
 import {
   BackendCustomEventName,
   SdkBlockType,
   SdkMessageRole,
   SdkToolCallState,
   SdkToolResultState,
-} from '@/lib/protocol';
-
-/**
- * 回复相位（本应用自定义）。
- *
- * SDK 没有「相位」概念：一轮回复的边界由 `EventType.REPLY_START / REPLY_END` 表达，
- * 等待工具结果之类的内部状态由 SDK 的 `GenerateReason` 表达。这里是为了驱动输入框
- * （可发送 / 可停止 / 中断中）而自己维护的较小状态机。
- */
-export const AppReplyPhase = {
-  IDLE: 'idle',
-  STREAMING: 'streaming',
-  INTERRUPTING: 'interrupting',
-};
-
-/**
- * 会话连接状态（本应用自定义）。
- *
- * 覆盖从创建会话到 SSE 就绪的完整窗口，避免「会话已创建但连接未建立」
- * 这段中间态没有任何标识。SDK 只提供事件协议，不知道前端连没连上。
- */
-export const AppConnectionState = {
-  /** 无会话，或已关闭。 */
-  IDLE: 'idle',
-  /** 正在创建会话（HTTP 往返中），此时还没有可打开的会话。 */
-  CREATING: 'creating',
-  /** 正在拉取历史消息。 */
-  LOADING: 'loading',
-  /** 历史已就绪，正在建立 SSE 连接。 */
-  CONNECTING: 'connecting',
-  /** SSE 已连接，可正常收发事件。 */
-  READY: 'ready',
-};
+} from '@/constants/protocol';
 
 const INTERRUPT_TIMEOUT_MS = 10000;
 

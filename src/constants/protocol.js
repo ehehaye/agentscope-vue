@@ -4,7 +4,7 @@
  * 本仓库用前缀区分「常量是谁定义的」，避免把外部约定误当成应用自己的枚举：
  * - `Sdk*`      —— 取值由 agentscope SDK（`@agentscope-ai/agentscope`）定义。
  * - `Backend*`  —— 由本应用对接的 agent 后端约定，改动需前后端同步。
- * - `App*`      —— 本应用自定义的状态枚举，定义在 `src/store/modules/chat.js`。
+ * - `App*`      —— 本应用自定义的状态枚举，见 `./app-state.js`。
  *
  * 注意：SDK 对 `EventType` / `ReplyFinishedReason` / `ErrorType` 提供了运行时常量，
  * 用到时请直接从 `@agentscope-ai/agentscope/event` 导入，不要经过本文件；

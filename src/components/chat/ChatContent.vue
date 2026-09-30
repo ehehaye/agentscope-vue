@@ -111,8 +111,9 @@ import { defineComponent, computed, ref, watch, onUnmounted } from '@/composable
 import { Icon } from '@/components/iconify/index.js';
 import { getContentBlocks } from '@agentscope-ai/agentscope/message';
 import { ReplyFinishedReason } from '@agentscope-ai/agentscope/event';
-import { SdkBlockType, SdkToolCallState } from '@/lib/protocol';
-import { AppConnectionState, AppReplyPhase, hitlKey } from '@/store/modules/chat.js';
+import { SdkBlockType, SdkToolCallState } from '@/constants/protocol';
+import { AppConnectionState, AppReplyPhase } from '@/constants/app-state';
+import { hitlKey } from '@/store/modules/chat.js';
 import Spinner from '@/components/ui/Spinner.vue';
 import MessageScroller from './MessageScroller.vue';
 import ASMessageBubble from './ASMessageBubble.vue';

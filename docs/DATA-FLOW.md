@@ -449,11 +449,11 @@ dispatch('chat/processEvent', { event, callbacks })                  store/modul
 
 | 前缀 | 含义 | 定义位置 |
 | --- | --- | --- |
-| `App*` | 本应用自定义 | [store/modules/chat.js](../src/store/modules/chat.js)（`AppReplyPhase` / `AppConnectionState`） |
-| `Sdk*` | agentscope SDK 定义 | [src/lib/protocol.js](../src/lib/protocol.js)（`SdkBlockType` / `SdkToolCallState` / `SdkToolResultState` / `SdkMessageRole`） |
-| `Backend*` | 后端约定 | [src/lib/protocol.js](../src/lib/protocol.js)（`BackendCustomEventName`） |
+| `App*` | 本应用自定义 | [src/constants/app-state.js](../src/constants/app-state.js)（`AppReplyPhase` / `AppConnectionState`） |
+| `Sdk*` | agentscope SDK 定义 | [src/constants/protocol.js](../src/constants/protocol.js)（`SdkBlockType` / `SdkToolCallState` / `SdkToolResultState` / `SdkMessageRole`） |
+| `Backend*` | 后端约定 | [src/constants/protocol.js](../src/constants/protocol.js)（`BackendCustomEventName`） |
 
-注意：`EventType` / `ReplyFinishedReason` / `ErrorType` **SDK 已提供运行时常量**，直接 `import` 使用，不经过 `protocol.js`；`protocol.js` 只镜像 SDK「仅导出 TS 类型、运行时取不到值」的那些取值（块类型判别字段、ToolCall / ToolResult 状态、消息角色）。
+注意：`EventType` / `ReplyFinishedReason` / `ErrorType` **SDK 已提供运行时常量**，直接 `import` 使用，不经过 `constants/protocol.js`；该文件只镜像 SDK「仅导出 TS 类型、运行时取不到值」的那些取值（块类型判别字段、ToolCall / ToolResult 状态、消息角色）。
 
 ### 6.1 连接状态机：`AppConnectionState`（本应用自定义）
 
@@ -490,7 +490,7 @@ ready ──RESET / closeConversation()──▶ idle
   - 事件分发：[src/store/modules/chat.js#processEvent](../src/store/modules/chat.js#L293)
   - SSE 主循环：[src/store/modules/chat.js#openConversation](../src/store/modules/chat.js#L171-L236)
   - HITL action：[src/store/modules/chat.js#confirm / askUserSubmit / subagentConfirm / subagentAskUserSubmit / interrupt](../src/store/modules/chat.js#L404-L600)
-  - 外部协议常量：[src/lib/protocol.js](../src/lib/protocol.js)
+  - 外部协议常量：[src/constants/protocol.js](../src/constants/protocol.js)、应用状态枚举：[src/constants/app-state.js](../src/constants/app-state.js)
   - 端点映射：[src/api/mapping.js#L276-L281](../src/api/mapping.js#L276-L281)
   - 接口文档：[docs/API.md](../docs/API.md)、[docs/API-java-proxy.md](../docs/API-java-proxy.md)
 - **相关规范**：[Server-Sent Events（HTML Living Standard）](https://html.spec.whatwg.org/multipage/server-sent-events.html)、[Fetch API（WHATWG）](https://fetch.spec.whatwg.org/)、[AbortController / AbortSignal（DOM Living Standard）](https://dom.spec.whatwg.org/#aborting-ongoing-activities)

@@ -161,7 +161,7 @@ import { useKnowledgeBases } from '@/composables/useKnowledgeBases';
 import { useAvailableModels } from '@/composables/useAvailableModels';
 import { provideAudioCenter, useAudioCenter } from '@/composables/useAudioCenter.js';
 import { sessionApi, credentialApi } from '@/api';
-import { AppReplyPhase } from '@/store/modules/chat';
+import { AppReplyPhase } from '@/constants/app-state';
 import { Icon } from '@/components/iconify/index';
 import ChatContent from '@/components/chat/ChatContent.vue';
 import ConnectionStatus from '@/components/chat/ConnectionStatus.vue';

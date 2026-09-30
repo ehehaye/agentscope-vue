@@ -14,7 +14,7 @@
 
 <script>
 import { defineComponent, computed } from '@/composables/vue';
-import { AppConnectionState } from '@/store/modules/chat';
+import { AppConnectionState } from '@/constants/app-state';
 
 /**
  * 本应用自定义的连接状态 → 展示映射（文案与灯色都属于前端约定，SDK 不提供）。

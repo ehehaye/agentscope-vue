@@ -7,7 +7,7 @@
  */
 import { computed, watch, unref } from '@/composables/vue';
 import { useStore } from '@/composables/vuex';
-import { AppConnectionState, AppReplyPhase } from '@/store/modules/chat';
+import { AppConnectionState, AppReplyPhase } from '@/constants/app-state';
 
 export function useMessages(agentId, sessionId, options = {}) {
   const store = useStore();
