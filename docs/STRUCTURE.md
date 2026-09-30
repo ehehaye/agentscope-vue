@@ -45,7 +45,7 @@ components/
   badge/ chat/ common/ dialog/ drawer/ form/ iconify/
   knowledge/ layout/ panel/ popover/ select/ ui/
 composables/               # 桥接层 + 业务 composable（useAgents/useMessages/...）
-lib/                       # toast/utils
+lib/                       # toast/utils/protocol（外部协议常量：Sdk* 镜像与 Backend* 自定义事件名）
 plugins/                   # setupPlugins(Vue) 拆分的子 setup
   composition-api.js element.js fonts.js styles.js index.js
 polyfills/                 # AbortSignal 等旧浏览器补齐
