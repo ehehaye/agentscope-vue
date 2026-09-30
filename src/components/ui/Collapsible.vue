@@ -20,7 +20,7 @@
         <Icon
           v-if="expandable"
           icon="lucide:chevron-right"
-          class="tw-h-3 tw-w-3 tw-shrink-0 tw-transition-transform"
+          class="tw-h-3 tw-w-3 tw-shrink-0 tw-transform tw-transition-transform"
           :class="{ 'tw-rotate-90': isOpen }"
         />
       </slot>
