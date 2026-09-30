@@ -1,4 +1,4 @@
-# 数据流向：以 [src/views/chat/index.vue](file:///Users/tang/workspace/projects/agentscope-vue/src/views/chat/index.vue) 发起会话为例
+# 数据流向：以 [src/views/chat/index.vue](../src/views/chat/index.vue) 发起会话为例
 
 本文以「在 `/chat?agentId=X`（尚无 `sessionId`）的会话页点击发送按钮」为入口，端到端追踪数据从组件输入到 SSE 流回放的完整走向。涉及的所有源码路径均为相对仓库根的相对路径。
 
@@ -64,9 +64,9 @@ store/modules/chat.send(contentBlocks)
 
 ### 2.1 路由门禁
 
-[src/router/index.js](file:///Users/tang/workspace/projects/agentscope-vue/src/router/index.js) 通过 `beforeEach` 强制未配置 `server_url` / `username` 时重定向到 `/setup`。会话页路径 `/chat?agentId=X&sessionId=Y&memberId=Z`，所有 agent/session 状态以 URL Query 为单一真源；组件内 `agentId / sessionId / memberId` 均为 `route.query` 的 computed。
+[src/router/index.js](../src/router/index.js) 通过 `beforeEach` 强制未配置 `server_url` / `username` 时重定向到 `/setup`。会话页路径 `/chat?agentId=X&sessionId=Y&memberId=Z`，所有 agent/session 状态以 URL Query 为单一真源；组件内 `agentId / sessionId / memberId` 均为 `route.query` 的 computed。
 
-### 2.2 视图层：[views/chat/index.vue](file:///Users/tang/workspace/projects/agentscope-vue/src/views/chat/index.vue)
+### 2.2 视图层：[views/chat/index.vue](../src/views/chat/index.vue)
 
 `setup()` 内组合并初始化以下 composable：
 
@@ -93,13 +93,13 @@ main
 └── Dialogs（AgentDialog / EditAgentDialog / RenameSessionDialog / CreateCredentialDialog）
 ```
 
-### 2.3 输入入口：[TextInput](file:///Users/tang/workspace/projects/agentscope-vue/src/components/chat/TextInput.vue) → [ChatContent](file:///Users/tang/workspace/projects/agentscope-vue/src/components/chat/ChatContent.vue)
+### 2.3 输入入口：[TextInput](../src/components/chat/TextInput.vue) → [ChatContent](../src/components/chat/ChatContent.vue)
 
 `TextInput` 用 `el-input`（autosize 1~8 行）+ `el-button`（paperclip / send-or-stop）构造 `contentBlocks` 数组（`{ type: 'text' | 'image' | 'audio' | 'file', ... }`），按下发送或 Enter+Ctrl/Meta 时 `emit('send', contentBlocks)`。
 
 `ChatContent` 监听 `@send` → `emit('send', blocks)` 透传；同时它直接渲染 `MessageScroller + ASMessageBubble`、维护 `pendingToolCall / pendingAskUser / subagentHitl`（HITL 状态由 props 传入）、`showMaxItersAlert`、时间标记。
 
-### 2.4 发送分支：[views/chat/index.vue#handleSend](file:///Users/tang/workspace/projects/agentscope-vue/src/views/chat/index.vue#L385-L402)
+### 2.4 发送分支：[views/chat/index.vue#handleSend](../src/views/chat/index.vue#L385-L402)
 
 ```js
 async function handleSend(contentBlocks) {
@@ -124,12 +124,12 @@ async function handleSend(contentBlocks) {
 
 关键点：
 
-1. **`createWithInput` → `useSessions.createWithInput`**（[useSessions.js](file:///Users/tang/workspace/projects/agentscope-vue/src/composables/useSessions.js#L64-L73)）：内部先 `create(body)`——它用 `chat/startCreating` / `chat/endCreating` 把连接状态标成 `AppConnectionState.CREATING`，覆盖「建会话 HTTP 往返 + 路由尚未切换」这段 chat 模块感知不到的空窗；随后 `chat/stageInput` 把首条消息暂存为 `pendingInput = { key, content }`，并返回新会话 id。
-2. **`session.create`**：`client.request('session.create', { body })`；它会把 `freshlyCreated` 集合标记为 true（[api/session.js](file:///Users/tang/workspace/projects/agentscope-vue/src/api/session.js#L19-L23)），用于在打开新会话时跳过历史消息拉取。
+1. **`createWithInput` → `useSessions.createWithInput`**（[useSessions.js](../src/composables/useSessions.js#L64-L73)）：内部先 `create(body)`——它用 `chat/startCreating` / `chat/endCreating` 把连接状态标成 `AppConnectionState.CREATING`，覆盖「建会话 HTTP 往返 + 路由尚未切换」这段 chat 模块感知不到的空窗；随后 `chat/stageInput` 把首条消息暂存为 `pendingInput = { key, content }`，并返回新会话 id。
+2. **`session.create`**：`client.request('session.create', { body })`；它会把 `freshlyCreated` 集合标记为 true（[api/session.js](../src/api/session.js#L19-L23)），用于在打开新会话时跳过历史消息拉取。
 3. **`pushConversation`**：把 `sessionId` 写进 URL 并返回 `router.push` 的 Promise（失败会 reject，供上面的 catch 感知）；普通的交互跳转走 `navigateTo`，它是 `pushConversation(...).catch(() => {})` 的吞错包装。
 4. **首条消息为什么不在视图里 `send`**：`chatApi.trigger` 是 HTTP POST，而回复事件全部从 SSE 流回来；若在 SSE 订阅建立前触发，`REPLY_START` 等事件会因没有接收方而丢失，界面会永远停在「回复中」。因此改为暂存，等 `openConversation` 收到 `onReady` 再补发（见 2.6）。
 
-### 2.5 消息状态机入口：[composables/useMessages.js](file:///Users/tang/workspace/projects/agentscope-vue/src/composables/useMessages.js)
+### 2.5 消息状态机入口：[composables/useMessages.js](../src/composables/useMessages.js)
 
 ```js
 watch(key, (newKey, oldKey) => {
@@ -144,7 +144,7 @@ watch(key, (newKey, oldKey) => {
 
 它把响应式状态 `msgs / connection / loading / phase / subagentHitl` 从 Vuex 透出：`msgs` 的元素是 SDK 的 `Msg`，而 `connection`（AppConnectionState）与 `phase`（AppReplyPhase）是本应用自定义状态。方法 `send / onUserConfirm / onSubagentConfirm / onAskUserSubmit / onSubagentAskUserSubmit / interrupt / abort / discardPendingInput` 全部转发到 `store.dispatch`。
 
-### 2.6 SSE 主循环：[store/modules/chat.js#openConversation](file:///Users/tang/workspace/projects/agentscope-vue/src/store/modules/chat.js#L171-L236)
+### 2.6 SSE 主循环：[store/modules/chat.js#openConversation](../src/store/modules/chat.js#L171-L236)
 
 ```text
 1. 取出 state.pendingInput（RESET 会清空它，故先暂存到局部变量）
@@ -170,7 +170,7 @@ watch(key, (newKey, oldKey) => {
 
 `connection` 的取值与转移见第 6 节「连接状态机」。
 
-### 2.7 多 watch 协同（[views/chat/index.vue](file:///Users/tang/workspace/projects/agentscope-vue/src/views/chat/index.vue#L661-L726)）
+### 2.7 多 watch 协同（[views/chat/index.vue](../src/views/chat/index.vue#L661-L726)）
 
 `sessionId` 变化时同时驱动：
 
@@ -181,7 +181,7 @@ watch(key, (newKey, oldKey) => {
 | `watch(view, { immediate: true })`（配置） | 用 `session.config` 写回 `selectedModel / selectedFallbackModel / selectedTTSModel / selectedKnowledgeConfig`；若没存过 `chat_model_config` 自动选第一个并 `sessionApi.update` 持久化 |
 | `watch(view, { immediate: true })`（权限模式） | 写回 `selectedPermissionMode = state.permission_context.mode \|\| 'default'` |
 
-### 2.8 事件分发：[store/modules/chat.js#processEvent](file:///Users/tang/workspace/projects/agentscope-vue/src/store/modules/chat.js#L188-L253)
+### 2.8 事件分发：[store/modules/chat.js#processEvent](../src/store/modules/chat.js#L188-L253)
 
 ```js
 if (event.type === EventType.CUSTOM) {
@@ -206,7 +206,7 @@ else {
 
 `appendEvent / AssistantMsg / UserMsg / getContentBlocks` 等工具来自 `@agentscope-ai/agentscope/message`（同一份 SDK 在官方 React 示例也直接用）。
 
-### 2.9 触发对话：[store/modules/chat.js#send](file:///Users/tang/workspace/projects/agentscope-vue/src/store/modules/chat.js#L260-L277)
+### 2.9 触发对话：[store/modules/chat.js#send](../src/store/modules/chat.js#L260-L277)
 
 ```js
 const userMsg = UserMsg({ name: 'user', content: contentBlocks });
@@ -220,9 +220,9 @@ await chatApi.trigger({
 
 `UserMsg` 立即出现在消息列表中（乐观更新），真正的回复以 SSE 事件流的形式通过 `streamEvents` 落到 `processEvent`。
 
-### 2.10 HTTP 客户端：[src/api/client.js](file:///Users/tang/workspace/projects/agentscope-vue/src/api/client.js)
+### 2.10 HTTP 客户端：[src/api/client.js](../src/api/client.js)
 
-- 所有请求通过 `client.request(key, options)` → `resolveEndpoint(key)`（[src/api/mapping.js](file:///Users/tang/workspace/projects/agentscope-vue/src/api/mapping.js#L300-L307)）取 `{ method, path }`。
+- 所有请求通过 `client.request(key, options)` → `resolveEndpoint(key)`（[src/api/mapping.js](../src/api/mapping.js#L300-L307)）取 `{ method, path }`。
 - `direct` 模式：`baseUrl = localStorage.server_url`（默认 `http://localhost:8000`，在 `/setup` 设置）。
 - `proxy` 模式：`baseUrl = localStorage.proxy_url`（Java 中转），仅 GET/POST，PATCH/DELETE 自动改写为 `POST {path}/update`、`POST {path}/delete`。
 - 请求头固定注入 `X-User-ID: localStorage.username`。
@@ -249,17 +249,17 @@ await chatApi.trigger({
 
 ### 3.1 协议层：SSE over HTTP
 
-会话实时事件通过 [src/api/session.js#streamEvents](file:///Users/tang/workspace/projects/agentscope-vue/src/api/session.js#L64-L96) 订阅：
+会话实时事件通过 [src/api/session.js#streamEvents](../src/api/session.js#L64-L96) 订阅：
 
-1. 入口对应 `mapping.js` 的 `session.streamEvents`：`GET /sessions/{sessionId}/stream`（[mapping.js#L276-L278](file:///Users/tang/workspace/projects/agentscope-vue/src/api/mapping.js#L276-L278)）。
+1. 入口对应 `mapping.js` 的 `session.streamEvents`：`GET /sessions/{sessionId}/stream`（[mapping.js#L276-L278](../src/api/mapping.js#L276-L278)）。
 2. 响应头 `Content-Type: text/event-stream`，前端通过 `client.request({ stream: true })` 拿到原生 `Response`，再用 `response.body.getReader() + TextDecoder` 把字节流解码为文本。
 3. 行格式遵循 SSE 规范：`data: <JSON>\n\n`。解码器按 `\n` 切分，`buffer` 累积尾部未完成行；每条 `data:` 行 `JSON.parse` 后 `yield` 给消费方。
 
-`onReady?.()` 在响应头到达时立刻回调，对应 `SET_CONNECTION(READY)`（见 [store/modules/chat.js#L188-L196](file:///Users/tang/workspace/projects/agentscope-vue/src/store/modules/chat.js#L188-L196)）；它同时是「新建会话首发」补发 `pendingInput` 的触发点。`AbortSignal` 任意时刻 cancel，reader 通过 `releaseLock` 释放，for-await 抛 `AbortError`，被 store 的 `catch (e?.name !== 'AbortError')` 过滤。
+`onReady?.()` 在响应头到达时立刻回调，对应 `SET_CONNECTION(READY)`（见 [store/modules/chat.js#L188-L196](../src/store/modules/chat.js#L188-L196)）；它同时是「新建会话首发」补发 `pendingInput` 的触发点。`AbortSignal` 任意时刻 cancel，reader 通过 `releaseLock` 释放，for-await 抛 `AbortError`，被 store 的 `catch (e?.name !== 'AbortError')` 过滤。
 
 ### 3.2 事件 Schema
 
-每条事件是 `@agentscope-ai/agentscope/event` 导出的 `AgentEvent` 联合类型，定义在 [node_modules/@agentscope-ai/agentscope/dist/event/index.d.ts](file:///Users/tang/workspace/projects/agentscope-vue/node_modules/@agentscope-ai/agentscope/dist/event/index.d.ts)（本仓库实际版本 `@agentscope-ai/agentscope@0.0.15`）。所有事件都继承 `EventBase { id, created_at, metadata? }`，分类如下：
+每条事件是 `@agentscope-ai/agentscope/event` 导出的 `AgentEvent` 联合类型，定义在 [node_modules/@agentscope-ai/agentscope/dist/event/index.d.ts](../node_modules/@agentscope-ai/agentscope/dist/event/index.d.ts)（本仓库实际版本 `@agentscope-ai/agentscope@0.0.15`）。所有事件都继承 `EventBase { id, created_at, metadata? }`，分类如下：
 
 | 类别 | 事件类型 | 主要字段 | 触发的副作用 |
 | --- | --- | --- | --- |
@@ -330,7 +330,7 @@ dispatch('chat/processEvent', { event, callbacks })                  store/modul
                → onAudioEnd?.(block_id)
 ```
 
-实现要点（见 [store/modules/chat.js#processEvent](file:///Users/tang/workspace/projects/agentscope-vue/src/store/modules/chat.js#L293-L358)）：
+实现要点（见 [store/modules/chat.js#processEvent](../src/store/modules/chat.js#L293-L358)）：
 
 - **`appendEvent` 由 SDK 提供**，不是本仓库实现。它是按 `event.reply_id` 匹配 message 后原地变更 `content` 数组的纯函数；本仓库用 `replaceMessage(state.messages, currentReplyId, …)` + 内容拷贝触发 Vuex 响应式刷新。
 - **`REPLY_START` 不调用 `appendEvent`**，由 store 直接做新增 / 切换 `currentReplyId`；其他事件一律交给 SDK `appendEvent`。
@@ -373,7 +373,7 @@ dispatch('chat/processEvent', { event, callbacks })                  store/modul
 
 - **`event.reply_id !== msg.id` 直接 `return msg` 并 warn**，避免错位串写。这是 SSE 多 reply 并发时唯一的一致性护栏。
 - **`findBlock` 按 (type, id) 双键查找**；SDK 对所有 `_START/_DELTA` 都做了双键存在性检查，缺失仅 warn 不抛错。
-- **错误分流**：`error: ErrorInfo { type: ErrorType, message }` 仅在 `finished_reason === ReplyFinishedReason.ERROR` 时携带。`ErrorType` 有 8 个枚举（`authentication / permission / rate_limit / invalid_request / upstream / connection / internal / unknown`），前端 UI 据此分类提示（见 [node_modules/.../event/index.d.ts#L57-L75](file:///Users/tang/workspace/projects/agentscope-vue/node_modules/@agentscope-ai/agentscope/dist/event/index.d.ts#L57-L75)）。
+- **错误分流**：`error: ErrorInfo { type: ErrorType, message }` 仅在 `finished_reason === ReplyFinishedReason.ERROR` 时携带。`ErrorType` 有 8 个枚举（`authentication / permission / rate_limit / invalid_request / upstream / connection / internal / unknown`），前端 UI 据此分类提示（见 [node_modules/.../event/index.d.ts#L57-L75](../node_modules/@agentscope-ai/agentscope/dist/event/index.d.ts#L57-L75)）。
 - **`ToolCallState` 转移图**：`pending → asking（要确认）→ allowed / finished；pending → submitted（外部执行）→ finished`。前端根据 `state` 渲染对应卡片（`ConfirmCard` / `AskUserCard` / 等待结果）。
 - **`ToolResultState`**：`success / error / interrupted / denied / running`，`TOOL_RESULT_END` 直接覆盖。
 
@@ -381,15 +381,15 @@ dispatch('chat/processEvent', { event, callbacks })                  store/modul
 
 | 事件 / 回调 | 触发位置 | 处理逻辑 | 出处 |
 | --- | --- | --- | --- |
-| `CUSTOM(name=BackendCustomEventName.TEAM_UPDATED)` | `processEvent` | `callbacks.onTeamUpdated?.()` → `useSessions.refresh` / `useWorkspace.refresh` | [chat.js#L296-L297](file:///Users/tang/workspace/projects/agentscope-vue/src/store/modules/chat.js#L296-L297) |
-| `CUSTOM(name=BackendCustomEventName.STATE_UPDATED)` | `processEvent` | `callbacks.onStateUpdated?.(value)` → `useWorkspaceStatus.update`（驱动 cwd / git） | [chat.js#L298-L299](file:///Users/tang/workspace/projects/agentscope-vue/src/store/modules/chat.js#L298-L299) |
-| `CUSTOM(name=BackendCustomEventName.SESSION_UPDATED)` | `processEvent` | `callbacks.onSessionUpdated?.()` → 重读当前 session（标签 / 配置） | [chat.js#L300-L301](file:///Users/tang/workspace/projects/agentscope-vue/src/store/modules/chat.js#L300-L301) |
-| `CUSTOM(name=BackendCustomEventName.SUBAGENT_REQUIRE_USER_CONFIRM)` | `processEvent` | `SET_SUBAGENT_HITL`：去重后合并新条目 | [chat.js#L302-L304](file:///Users/tang/workspace/projects/agentscope-vue/src/store/modules/chat.js#L302-L304) |
-| `CUSTOM(name=BackendCustomEventName.SUBAGENT_USER_CONFIRM_RESULT)` | `processEvent` | 从 `subagentHitl` 移除已处理项 | [chat.js#L305-L310](file:///Users/tang/workspace/projects/agentscope-vue/src/store/modules/chat.js#L305-L310) |
-| `DATA_BLOCK_START`（`audio/*`） | `processEvent` | `callbacks.onAudioStart(block_id, media_type)` | [chat.js#L347-L350](file:///Users/tang/workspace/projects/agentscope-vue/src/store/modules/chat.js#L347-L350) |
-| `DATA_BLOCK_DELTA`（`audio/*`） | `processEvent` | `callbacks.onAudioAppend(block_id, data)` | [chat.js#L351-L354](file:///Users/tang/workspace/projects/agentscope-vue/src/store/modules/chat.js#L351-L354) |
-| `DATA_BLOCK_END` | `processEvent` | `callbacks.onAudioEnd(block_id)` | [chat.js#L355-L356](file:///Users/tang/workspace/projects/agentscope-vue/src/store/modules/chat.js#L355-L356) |
-| `REPLY_START`（新一轮） | `processEvent` | `callbacks.onAudioStopAll?.()` 停掉上一轮实时音频 | [chat.js#L320-L321](file:///Users/tang/workspace/projects/agentscope-vue/src/store/modules/chat.js#L320-L321) |
+| `CUSTOM(name=BackendCustomEventName.TEAM_UPDATED)` | `processEvent` | `callbacks.onTeamUpdated?.()` → `useSessions.refresh` / `useWorkspace.refresh` | [chat.js#L296-L297](../src/store/modules/chat.js#L296-L297) |
+| `CUSTOM(name=BackendCustomEventName.STATE_UPDATED)` | `processEvent` | `callbacks.onStateUpdated?.(value)` → `useWorkspaceStatus.update`（驱动 cwd / git） | [chat.js#L298-L299](../src/store/modules/chat.js#L298-L299) |
+| `CUSTOM(name=BackendCustomEventName.SESSION_UPDATED)` | `processEvent` | `callbacks.onSessionUpdated?.()` → 重读当前 session（标签 / 配置） | [chat.js#L300-L301](../src/store/modules/chat.js#L300-L301) |
+| `CUSTOM(name=BackendCustomEventName.SUBAGENT_REQUIRE_USER_CONFIRM)` | `processEvent` | `SET_SUBAGENT_HITL`：去重后合并新条目 | [chat.js#L302-L304](../src/store/modules/chat.js#L302-L304) |
+| `CUSTOM(name=BackendCustomEventName.SUBAGENT_USER_CONFIRM_RESULT)` | `processEvent` | 从 `subagentHitl` 移除已处理项 | [chat.js#L305-L310](../src/store/modules/chat.js#L305-L310) |
+| `DATA_BLOCK_START`（`audio/*`） | `processEvent` | `callbacks.onAudioStart(block_id, media_type)` | [chat.js#L347-L350](../src/store/modules/chat.js#L347-L350) |
+| `DATA_BLOCK_DELTA`（`audio/*`） | `processEvent` | `callbacks.onAudioAppend(block_id, data)` | [chat.js#L351-L354](../src/store/modules/chat.js#L351-L354) |
+| `DATA_BLOCK_END` | `processEvent` | `callbacks.onAudioEnd(block_id)` | [chat.js#L355-L356](../src/store/modules/chat.js#L355-L356) |
+| `REPLY_START`（新一轮） | `processEvent` | `callbacks.onAudioStopAll?.()` 停掉上一轮实时音频 | [chat.js#L320-L321](../src/store/modules/chat.js#L320-L321) |
 
 ### 3.6 HITL 出向事件（前端 → 后端）
 
@@ -402,11 +402,11 @@ dispatch('chat/processEvent', { event, callbacks })                  store/modul
 | `subagentConfirm({ entry, toolCall, confirm, rules })` | `USER_CONFIRM_RESULT` | `entry.reply_id`（worker 的，不是 leader 的 currentReplyId） | 从 `subagentHitl` 中按 `hitlKey` 过滤掉已处理的 toolCall |
 | `subagentAskUserSubmit({ entry, toolCall, answers })` | `EXTERNAL_EXECUTION_RESULT` | `entry.reply_id` | 同上 |
 
-实现参见 [store/modules/chat.js#confirm / askUserSubmit / subagentConfirm / subagentAskUserSubmit](file:///Users/tang/workspace/projects/agentscope-vue/src/store/modules/chat.js#L404-L600)。
+实现参见 [store/modules/chat.js#confirm / askUserSubmit / subagentConfirm / subagentAskUserSubmit](../src/store/modules/chat.js#L404-L600)。
 
 ### 3.7 中断与超时
 
-`interrupt({})`（[chat.js#L603](file:///Users/tang/workspace/projects/agentscope-vue/src/store/modules/chat.js#L603-L630)）：
+`interrupt({})`（[chat.js#L603](../src/store/modules/chat.js#L603-L630)）：
 
 1. 若 `phase === STREAMING` → 切到 `INTERRUPTING`，并启动 `setTimeout(INTERRUPT_TIMEOUT_MS)` 兜底（10s 后强制回 `IDLE`），避免后端不响应时界面卡住。
 2. 调 `sessionApi.interrupt(sessionId, agentId)` → `POST /sessions/{sessionId}/interrupt`。
@@ -449,9 +449,9 @@ dispatch('chat/processEvent', { event, callbacks })                  store/modul
 
 | 前缀 | 含义 | 定义位置 |
 | --- | --- | --- |
-| `App*` | 本应用自定义 | [store/modules/chat.js](file:///Users/tang/workspace/projects/agentscope-vue/src/store/modules/chat.js)（`AppReplyPhase` / `AppConnectionState`） |
-| `Sdk*` | agentscope SDK 定义 | [src/lib/protocol.js](file:///Users/tang/workspace/projects/agentscope-vue/src/lib/protocol.js)（`SdkBlockType` / `SdkToolCallState` / `SdkToolResultState` / `SdkMessageRole`） |
-| `Backend*` | 后端约定 | [src/lib/protocol.js](file:///Users/tang/workspace/projects/agentscope-vue/src/lib/protocol.js)（`BackendCustomEventName`） |
+| `App*` | 本应用自定义 | [store/modules/chat.js](../src/store/modules/chat.js)（`AppReplyPhase` / `AppConnectionState`） |
+| `Sdk*` | agentscope SDK 定义 | [src/lib/protocol.js](../src/lib/protocol.js)（`SdkBlockType` / `SdkToolCallState` / `SdkToolResultState` / `SdkMessageRole`） |
+| `Backend*` | 后端约定 | [src/lib/protocol.js](../src/lib/protocol.js)（`BackendCustomEventName`） |
 
 注意：`EventType` / `ReplyFinishedReason` / `ErrorType` **SDK 已提供运行时常量**，直接 `import` 使用，不经过 `protocol.js`；`protocol.js` 只镜像 SDK「仅导出 TS 类型、运行时取不到值」的那些取值（块类型判别字段、ToolCall / ToolResult 状态、消息角色）。
 
@@ -481,16 +481,16 @@ ready ──RESET / closeConversation()──▶ idle
   - **React 聊天页**：[pages/chat/index.tsx](https://github.com/agentscope-ai/agentscope/blob/main/examples/web_ui/frontend/src/pages/chat/index.tsx) / [ChatViewport.tsx](https://github.com/agentscope-ai/agentscope/blob/main/examples/web_ui/frontend/src/pages/chat/ChatViewport.tsx)
   - **React 侧 useChat hook**：[hooks/useChat.ts](https://github.com/agentscope-ai/agentscope/blob/main/examples/web_ui/frontend/src/hooks/useChat.ts)
 - **JS SDK（与上游共享）**：
-  - **事件类型定义**：[node_modules/@agentscope-ai/agentscope/dist/event/index.d.ts](file:///Users/tang/workspace/projects/agentscope-vue/node_modules/@agentscope-ai/agentscope/dist/event/index.d.ts)（含 `EventType / ReplyFinishedReason / ErrorType / AgentEvent`）
-  - **`appendEvent / UserMsg / AssistantMsg / SystemMsg / createMsg / getTextContent / getContentBlocks`**：[node_modules/@agentscope-ai/agentscope/dist/message/index.mjs](file:///Users/tang/workspace/projects/agentscope-vue/node_modules/@agentscope-ai/agentscope/dist/message/index.mjs)（含逐 case 状态机实现）
-  - **Block 类型**：[node_modules/@agentscope-ai/agentscope/dist/block-CXAG11WY.d.ts](file:///Users/tang/workspace/projects/agentscope-vue/node_modules/@agentscope-ai/agentscope/dist/block-CXAG11WY.d.ts)（`TextBlock / ThinkingBlock / HintBlock / ToolCallBlock / ToolResultBlock / DataBlock / Base64Source / URLSource`）
-  - **包入口**：`@agentscope-ai/agentscope` v0.0.15，[package.json](file:///Users/tang/workspace/projects/agentscope-vue/node_modules/@agentscope-ai/agentscope/package.json)
+  - **事件类型定义**：[node_modules/@agentscope-ai/agentscope/dist/event/index.d.ts](../node_modules/@agentscope-ai/agentscope/dist/event/index.d.ts)（含 `EventType / ReplyFinishedReason / ErrorType / AgentEvent`）
+  - **`appendEvent / UserMsg / AssistantMsg / SystemMsg / createMsg / getTextContent / getContentBlocks`**：[node_modules/@agentscope-ai/agentscope/dist/message/index.mjs](../node_modules/@agentscope-ai/agentscope/dist/message/index.mjs)（含逐 case 状态机实现）
+  - **Block 类型**：[node_modules/@agentscope-ai/agentscope/dist/block-CXAG11WY.d.ts](../node_modules/@agentscope-ai/agentscope/dist/block-CXAG11WY.d.ts)（`TextBlock / ThinkingBlock / HintBlock / ToolCallBlock / ToolResultBlock / DataBlock / Base64Source / URLSource`）
+  - **包入口**：`@agentscope-ai/agentscope` v0.0.15，[package.json](../node_modules/@agentscope-ai/agentscope/package.json)
 - **本仓库相关源码**：
-  - SSE 解析：[src/api/session.js#streamEvents](file:///Users/tang/workspace/projects/agentscope-vue/src/api/session.js#L64-L96)
-  - 事件分发：[src/store/modules/chat.js#processEvent](file:///Users/tang/workspace/projects/agentscope-vue/src/store/modules/chat.js#L293)
-  - SSE 主循环：[src/store/modules/chat.js#openConversation](file:///Users/tang/workspace/projects/agentscope-vue/src/store/modules/chat.js#L171-L236)
-  - HITL action：[src/store/modules/chat.js#confirm / askUserSubmit / subagentConfirm / subagentAskUserSubmit / interrupt](file:///Users/tang/workspace/projects/agentscope-vue/src/store/modules/chat.js#L404-L600)
-  - 外部协议常量：[src/lib/protocol.js](file:///Users/tang/workspace/projects/agentscope-vue/src/lib/protocol.js)
-  - 端点映射：[src/api/mapping.js#L276-L281](file:///Users/tang/workspace/projects/agentscope-vue/src/api/mapping.js#L276-L281)
-  - 接口文档：[docs/API.md](file:///Users/tang/workspace/projects/agentscope-vue/docs/API.md)、[docs/API-java-proxy.md](file:///Users/tang/workspace/projects/agentscope-vue/docs/API-java-proxy.md)
+  - SSE 解析：[src/api/session.js#streamEvents](../src/api/session.js#L64-L96)
+  - 事件分发：[src/store/modules/chat.js#processEvent](../src/store/modules/chat.js#L293)
+  - SSE 主循环：[src/store/modules/chat.js#openConversation](../src/store/modules/chat.js#L171-L236)
+  - HITL action：[src/store/modules/chat.js#confirm / askUserSubmit / subagentConfirm / subagentAskUserSubmit / interrupt](../src/store/modules/chat.js#L404-L600)
+  - 外部协议常量：[src/lib/protocol.js](../src/lib/protocol.js)
+  - 端点映射：[src/api/mapping.js#L276-L281](../src/api/mapping.js#L276-L281)
+  - 接口文档：[docs/API.md](../docs/API.md)、[docs/API-java-proxy.md](../docs/API-java-proxy.md)
 - **相关规范**：[Server-Sent Events（HTML Living Standard）](https://html.spec.whatwg.org/multipage/server-sent-events.html)、[Fetch API（WHATWG）](https://fetch.spec.whatwg.org/)、[AbortController / AbortSignal（DOM Living Standard）](https://dom.spec.whatwg.org/#aborting-ongoing-activities)
