@@ -21,9 +21,9 @@
         <!-- top bar -->
         <div class="tw-mb-2 tw-flex tw-items-center tw-justify-between tw-gap-2 tw-px-2">
           <div class="tw-flex tw-min-w-0 tw-flex-1 tw-items-center tw-gap-2">
-            <!-- Agent 选择 -->
+            <!-- 会话连接状态 -->
             <div class="tw-flex tw-min-w-0 tw-items-center tw-gap-2 tw-text-sm">
-              <span class="tw-truncate tw-font-medium">{{ sessionName || '新对话' }}</span>
+              <ConnectionStatus :connection="connection" />
               <el-tag
                 v-if="focusedMember"
                 size="mini"
@@ -164,6 +164,7 @@ import { sessionApi, credentialApi } from '@/api';
 import { AppReplyPhase } from '@/store/modules/chat';
 import { Icon } from '@/components/iconify/index';
 import ChatContent from '@/components/chat/ChatContent.vue';
+import ConnectionStatus from '@/components/chat/ConnectionStatus.vue';
 import SessionList from '@/components/chat/SessionList.vue';
 import PanelDock from '@/components/panel/PanelDock.vue';
 import TaskPanel from '@/components/panel/TaskPanel.vue';
@@ -230,6 +231,7 @@ export default defineComponent({
   components: {
     Icon,
     ChatContent,
+    ConnectionStatus,
     SessionList,
     PanelDock,
     LlmSelect,
@@ -299,7 +301,6 @@ export default defineComponent({
     const effectiveSessionId = computed(() =>
       focusedMember.value?.session_id ? focusedMember.value.session_id : sessionId.value,
     );
-    const sessionName = computed(() => view.value?.session?.config?.name || route.query.name || '');
     const pendingCwd = ref(null);
     const cwd = computed(() => view.value?.session?.config?.cwd ?? pendingCwd.value ?? null);
 
@@ -502,6 +503,7 @@ export default defineComponent({
 
     const {
       msgs,
+      connection,
       loading,
       phase,
       error,
@@ -826,7 +828,7 @@ export default defineComponent({
       phase,
       error,
       subagentHitl,
-      sessionName,
+      connection,
       cwd,
       selectedModel,
       selectedFallbackModel,
