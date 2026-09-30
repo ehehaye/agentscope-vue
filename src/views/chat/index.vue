@@ -423,12 +423,13 @@ export default defineComponent({
       });
       await removeSession(sid, agentId.value);
       if (sid === sessionId.value) {
-        const remaining = sessions.value.filter((v) => v.session?.id !== sid);
-        if (remaining.length > 0) {
-          navigateTo(agentId.value, remaining[0].session.id);
-        } else {
-          router.push({ name: 'chat', query: { ...route.query, sessionId: undefined } }).catch(() => {});
-        }
+        // const remaining = sessions.value.filter((v) => v.session?.id !== sid);
+        // if (remaining.length > 0) {
+        //   navigateTo(agentId.value, remaining[0].session.id);
+        // } else {
+        //   router.push({ name: 'chat', query: { ...route.query, sessionId: undefined } }).catch(() => {});
+        // }
+        router.push({ name: 'chat', query: { ...route.query, sessionId: undefined } }).catch(() => {});
       }
     }
 
