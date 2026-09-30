@@ -264,6 +264,11 @@ export default {
       const userMsg = UserMsg({ name: 'user', content: contentBlocks });
       commit('SET_MESSAGES', [...state.messages, userMsg]);
 
+      // 消息已上屏即视为本轮回复进行中，立即进入 streaming（输入框转为停止按钮）。
+      // 发送与 SSE 是两条独立流，无需等 REPLY_START；REPLY_END 到达后回到 idle。
+      commit('SET_PHASE', ReplyPhase.STREAMING);
+      commit('SET_ERROR', null);
+
       try {
         const { chatApi } = await import('@/api');
         await chatApi.trigger({
@@ -272,7 +277,16 @@ export default {
           input: userMsg,
         });
       } catch (e) {
+        // 触发失败：消息实际未送达。回退状态，并在该条消息上标记失败供用户感知。
+        commit('SET_PHASE', ReplyPhase.IDLE);
         commit('SET_ERROR', e);
+        commit(
+          'SET_MESSAGES',
+          replaceMessage(state.messages, userMsg.id, (msg) => ({
+            ...msg,
+            error: e,
+          })),
+        );
       }
     },
 
@@ -297,6 +311,8 @@ export default {
         reply_id: replyId,
         confirm_results: [{ confirmed: confirm, tool_call: toolCall, rules: rules ?? null }],
       };
+
+      commit('SET_ERROR', null);
 
       try {
         const { chatApi } = await import('@/api');
@@ -355,6 +371,8 @@ export default {
         ],
       };
 
+      commit('SET_ERROR', null);
+
       try {
         const { chatApi } = await import('@/api');
         await chatApi.trigger({
@@ -384,6 +402,8 @@ export default {
         reply_id: entry.reply_id,
         confirm_results: [{ confirmed: confirm, tool_call: toolCall, rules: rules ?? null }],
       };
+
+      commit('SET_ERROR', null);
 
       try {
         const { chatApi } = await import('@/api');
@@ -446,6 +466,8 @@ export default {
         ],
       };
 
+      commit('SET_ERROR', null);
+
       try {
         const { chatApi } = await import('@/api');
         await chatApi.trigger({
@@ -475,6 +497,8 @@ export default {
     async interrupt({ commit, state }) {
       const [agentId, sessionId] = (state.currentKey || '').split(':');
       if (!agentId || !sessionId) return;
+
+      commit('SET_ERROR', null);
 
       if (state.phase === ReplyPhase.STREAMING) {
         commit('SET_PHASE', ReplyPhase.INTERRUPTING);

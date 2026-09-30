@@ -30,7 +30,7 @@
         v-model="value"
         class="chat-textarea"
         type="textarea"
-        :autosize="{ minRows: 1, maxRows: 8 }"
+        :autosize="{ minRows: 1, maxRows: 6 }"
         resize="none"
         clearable
         :maxlength="200"
@@ -43,10 +43,6 @@
       <div class="tw-flex tw-items-center tw-justify-between tw-gap-2 tw-px-2 tw-pb-2">
         <div class="tw-flex tw-min-w-0 tw-flex-1 tw-items-center tw-gap-1 tw-pl-3 tw-text-xs">
           <template v-if="errorText">
-            <Icon
-              icon="lucide:triangle-alert"
-              class="tw-h-3 tw-w-3 tw-shrink-0 tw-text-red-500 dark:tw-text-red-400"
-            />
             <span
               class="tw-min-w-0 tw-truncate tw-text-red-500 dark:tw-text-red-400"
               :title="errorText"
@@ -112,7 +108,7 @@ export default defineComponent({
     phase: { type: String, default: 'idle' },
     allowedInputTypes: { type: Array, default: () => [] },
     /** 最近一次交互的错误（chat store 的 error），存在时优先于阶段状态展示 */
-    error: { type: [Object, String], default: null },
+    error: { type: [Object, String, Error], default: null },
   },
   emits: ['send', 'interrupt'],
   setup(props, { emit }) {

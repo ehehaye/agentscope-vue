@@ -145,7 +145,7 @@ export default defineComponent({
     msgs: { type: Array, default: () => [] },
     loading: { type: Boolean, default: false },
     phase: { type: String, default: 'idle' },
-    error: { type: [Object, String], default: null },
+    error: { type: [Object, String, Error], default: null },
     disabled: { type: Boolean, default: false },
     allowedInputTypes: { type: Array, default: () => [] },
     subagentHitl: { type: Array, default: () => [] },

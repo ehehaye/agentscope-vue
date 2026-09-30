@@ -22,8 +22,9 @@
           </Bubble>
         </template>
 
+        <!-- 助手回复出错 / 用户消息发送失败（如网络异常，消息实际未送达） -->
         <div
-          v-if="message.finished_reason === 'error'"
+          v-if="message.finished_reason === 'error' || (isUser && message.error)"
           class="tw-rounded-md tw-border tw-border-red-200 tw-bg-red-50 tw-p-3 tw-text-sm tw-text-red-900 dark:tw-border-red-900 dark:tw-bg-red-950 dark:tw-text-red-50"
         >
           <div class="tw-flex tw-items-center tw-gap-2 tw-font-medium">
@@ -31,9 +32,11 @@
               icon="lucide:triangle-alert"
               class="tw-h-4 tw-w-4"
             />
-            回复出错
+            {{ message.finished_reason === 'error' ? '回复出错' : '发送失败' }}
           </div>
-          <p class="tw-mt-1 tw-text-xs">{{ message.error?.message || '未知错误' }}</p>
+          <p class="tw-mt-1 tw-text-xs">
+            {{ message.error?.message || (message.finished_reason === 'error' ? '未知错误' : '消息未送达，请重试') }}
+          </p>
         </div>
       </div>
 
