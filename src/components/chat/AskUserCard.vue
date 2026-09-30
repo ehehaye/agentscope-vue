@@ -10,14 +10,17 @@
       <pre class="tw-whitespace-pre-wrap tw-break-all">{{ toolCall.input }}</pre>
     </div>
 
-    <div
+    <Scrollbar
       v-else
-      class="tw-flex tw-flex-col tw-gap-y-4"
+      class="tw-flex tw-flex-col tw-gap-y-4 tw--mr-2"
+      :style="{
+        maxHeight: 'min(40vh, 400px)',
+      }"
     >
       <div
         v-for="(q, qi) in questions"
         :key="qi"
-        class="tw-flex tw-flex-col tw-gap-y-2"
+        class="tw-flex tw-flex-col tw-gap-y-2 tw-pr-2"
       >
         <div class="tw-flex tw-items-center tw-gap-x-2">
           <span
@@ -117,13 +120,14 @@
           </el-button>
         </div>
       </div>
-    </div>
+    </Scrollbar>
   </div>
 </template>
 
 <script>
 import { defineComponent, ref, computed } from '@/composables/vue';
 import { Icon } from '@/components/iconify/index';
+import Scrollbar from '@/components/ui/Scrollbar.vue';
 
 /** 解析 toolCall.input（JSON 字符串）中的 questions。 */
 function parseQuestions(input) {
@@ -144,7 +148,7 @@ function parseQuestions(input) {
  */
 export default defineComponent({
   name: 'AskUserCard',
-  components: { Icon },
+  components: { Icon, Scrollbar },
   props: {
     toolCall: { type: Object, required: true },
     /** 提交答案，返回 Promise；resolve 后卡片随会话恢复而消失。 */

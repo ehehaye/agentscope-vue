@@ -4,7 +4,7 @@
     :class="isEmpty ? 'tw-justify-center' : ''"
   >
     <div
-      v-if="showSpinner || isPreparing"
+      v-if="showSpinner"
       class="tw-flex tw-flex-1 tw-items-center tw-justify-center"
     >
       <Spinner class="tw-h-5 tw-w-5 tw-text-muted-foreground" />
@@ -88,19 +88,18 @@
         class="tw-mt-2 tw-w-full tw-rounded-32px tw-bg-muted tw-p-1"
         :disabled="disabled"
         :phase="inputPhase"
+        :error="error"
         :allowed-input-types="allowedInputTypes"
         @send="onSend"
         @interrupt="onInterrupt"
       >
-        <template #header>
-          <div class="tw-flex tw-w-full tw-items-center tw-px-2 tw-py-1">
-            <WorkingDirectoryDialog
-              :agent-id="agentId"
-              :session-id="sessionId"
-              :value="cwd"
-              :on-change="onCwdChange"
-            />
-          </div>
+        <template #actions>
+          <WorkingDirectoryDialog
+            :agent-id="agentId"
+            :session-id="sessionId"
+            :value="cwd"
+            :on-change="onCwdChange"
+          />
         </template>
       </TextInput>
     </div>
@@ -112,6 +111,8 @@ import { defineComponent, computed, ref, watch, onUnmounted } from '@/composable
 import { Icon } from '@/components/iconify/index.js';
 import { getContentBlocks } from '@agentscope-ai/agentscope/message';
 import { ReplyFinishedReason } from '@agentscope-ai/agentscope/event';
+import { SdkBlockType, SdkToolCallState } from '@/constants/protocol';
+import { AppConnectionState, AppReplyPhase } from '@/constants/app-state';
 import { hitlKey } from '@/store/modules/chat.js';
 import Spinner from '@/components/ui/Spinner.vue';
 import MessageScroller from './MessageScroller.vue';
@@ -143,9 +144,13 @@ export default defineComponent({
     WorkingDirectoryDialog,
   },
   props: {
+    /** SDK 的 `Msg[]`（由 appendEvent 维护） */
     msgs: { type: Array, default: () => [] },
+    /** 会话未就绪（创建/拉历史/建连中），来自本应用的 chat/preparing getter */
     loading: { type: Boolean, default: false },
-    phase: { type: String, default: 'idle' },
+    /** 回复相位，取值见 AppReplyPhase（本应用自定义） */
+    phase: { type: String, default: AppReplyPhase.IDLE },
+    error: { type: [Object, String, Error], default: null },
     disabled: { type: Boolean, default: false },
     allowedInputTypes: { type: Array, default: () => [] },
     subagentHitl: { type: Array, default: () => [] },
@@ -163,19 +168,20 @@ export default defineComponent({
   setup(props, { emit }) {
     const isEmpty = computed(() => !props.loading && props.msgs.length === 0);
 
-    // 新会话首发准备期：内容区显示 spinner，但输入框保持挂载
-    const isPreparing = computed(() => props.phase === 'preparing');
-
+    // 输入框相位：会同时出现两套本应用自定义取值——AppReplyPhase（回复相位）与
+    // AppConnectionState.LOADING（会话未就绪），后者用于在历史/建连期间禁用发送。
     // 切换会话加载历史期间：输入框保持挂载，避免被内容区加载态遮挡
-    const inputPhase = computed(() => (props.loading ? 'loading' : props.phase));
+    const inputPhase = computed(() => (props.loading ? AppConnectionState.LOADING : props.phase));
 
-    // spinner 延迟显示，避免短加载闪烁
+    // spinner 延迟显示，避免短加载闪烁。
+    // 仅在「加载中且还没有内容可展示」时占位：loading 会一直持续到 SSE 建连完成，
+    // 若期间历史已加载，不能再被 spinner 盖住。
     const showSpinner = ref(false);
     let spinnerTimer = null;
     watch(
-      () => props.loading,
-      (loading) => {
-        if (loading) {
+      () => props.loading && props.msgs.length === 0,
+      (shouldPlaceholder) => {
+        if (shouldPlaceholder) {
           spinnerTimer = setTimeout(() => {
             showSpinner.value = true;
           }, SPINNER_DELAY_MS);
@@ -194,7 +200,9 @@ export default defineComponent({
     const pendingToolCall = computed(() => {
       if (props.msgs.length === 0) return null;
       const lastMsg = props.msgs[props.msgs.length - 1];
-      const asking = getContentBlocks(lastMsg, 'tool_call').filter((tc) => tc.state === 'asking');
+      const asking = getContentBlocks(lastMsg, SdkBlockType.TOOL_CALL).filter(
+        (tc) => tc.state === SdkToolCallState.ASKING,
+      );
       if (asking.length === 0) return null;
       return { replyId: lastMsg.id, toolCall: asking[0] };
     });
@@ -203,8 +211,8 @@ export default defineComponent({
     const pendingAskUser = computed(() => {
       if (props.msgs.length === 0) return null;
       const lastMsg = props.msgs[props.msgs.length - 1];
-      const pending = getContentBlocks(lastMsg, 'tool_call').filter(
-        (tc) => tc.name === 'AskUser' && tc.state === 'submitted',
+      const pending = getContentBlocks(lastMsg, SdkBlockType.TOOL_CALL).filter(
+        (tc) => tc.name === 'AskUser' && tc.state === SdkToolCallState.SUBMITTED,
       );
       if (pending.length === 0) return null;
       return { replyId: lastMsg.id, toolCall: pending[0] };
@@ -229,7 +237,7 @@ export default defineComponent({
       () =>
         props.msgs.length > 0 &&
         props.msgs[props.msgs.length - 1].finished_reason === ReplyFinishedReason.EXCEED_MAX_ITERS &&
-        props.phase === 'idle',
+        props.phase === AppReplyPhase.IDLE,
     );
 
     function previousTimestamp(message, previous) {
@@ -274,7 +282,6 @@ export default defineComponent({
 
     return {
       isEmpty,
-      isPreparing,
       inputPhase,
       showSpinner,
       pendingToolCall,

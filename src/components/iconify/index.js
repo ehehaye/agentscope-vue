@@ -35,11 +35,15 @@ if (__ICONIFY_OFFLINE__) {
 export const Icon = {
   functional: true,
   render(h, ctx) {
+    // 模板里写死的 class="..." 在 Vue 2 会编译进 staticClass，
+    // 而下游 api.Icon 只读 contextData.class——所以这里必须显式把
+    // staticClass 也拼到 class 里。
+    const { staticClass, class: dynClass } = ctx.data;
     return h(
       api.Icon,
       {
         ...ctx.data,
-        class: ['tw-cursor-pointer', ctx.data.class],
+        class: ['tw-cursor-pointer', staticClass, dynClass],
       },
       ctx.children,
     );

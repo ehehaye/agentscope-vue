@@ -30,6 +30,9 @@
 .tw-max-w-48rem {
   max-width: 48rem;
 }
+.tw-max-w-65pct {
+  max-width: 65%;
+}
 .tw-max-w-85pct {
   max-width: 85%;
 }
@@ -102,4 +105,19 @@
  * 为 1:1 复刻原视觉，本类直接接管 ring 行为，原 ring-ring/50 同步删除。 */
 .tw-focus-ring-3px:focus-visible {
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--as-ring) 50%, transparent);
+}
+
+/* ── flex-shrink-0 兜底 ────────────────────────────────────
+ * Tailwind v2 的 JIT 不会对运行时新增 / 模板里被 functional 包装器吞掉的
+ * 类重新扫描：dev 下图标外层 <svg> 拿不到 tw-flex-shrink-0，prod build
+ * 因 purge 全量扫描可以命中，但 dev 会失效。这里手写兜底。 */
+.tw-shrink-0 {
+  flex-shrink: 0;
+}
+
+/* ── items-end 兜底 ────────────────────────────────────────
+ * 同 tw-shrink-0：dev 下 JIT 不会为模板新增的类重新产 CSS，
+ * 这里手写兜底，保证用户消息气泡（右对齐贴内容）在 dev 也生效。 */
+.tw-items-end {
+  align-items: flex-end;
 }

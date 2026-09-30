@@ -1,18 +1,10 @@
 <template>
   <div class="tw-flex tw-h-full tw-flex-col tw-gap-2">
     <span class="tw-text-sm tw-text-muted-foreground">当前会话已装备的技能。</span>
-    <InputGroup>
-      <InputGroupInput
-        v-model="search"
-        placeholder="搜索技能"
-      />
-      <InputGroupAddon align="inline-end">
-        <Icon
-          icon="lucide:search"
-          class="tw-h-4 tw-w-4"
-        />
-      </InputGroupAddon>
-    </InputGroup>
+    <el-input
+      v-model="search"
+      placeholder="搜索技能"
+    ></el-input>
 
     <div class="tw-flex tw-flex-1 tw-flex-col tw-gap-2 tw-overflow-y-auto">
       <template v-if="loading">

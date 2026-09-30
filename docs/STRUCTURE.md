@@ -1,6 +1,6 @@
 # 项目文件结构对照
 
-本文档对照 [AgentScope 官方 Web UI 示例（React + Vite）](https://github.com/agentscope-ai/agentscope/tree/main/examples/web_ui/frontend) 与本仓库 [agentscope-vue（Vue 2.6 + vue-cli 4）](file:///Users/tang/workspace/projects/agentscope-vue) 的源码组织差异，便于迁移期对照开发。
+本文档对照 [AgentScope 官方 Web UI 示例（React + Vite）](https://github.com/agentscope-ai/agentscope/tree/main/examples/web_ui/frontend) 与本仓库 [agentscope-vue（Vue 2.6 + vue-cli 4）](..) 的源码组织差异，便于迁移期对照开发。
 
 ## 1. 顶层差异
 
@@ -45,6 +45,7 @@ components/
   badge/ chat/ common/ dialog/ drawer/ form/ iconify/
   knowledge/ layout/ panel/ popover/ select/ ui/
 composables/               # 桥接层 + 业务 composable（useAgents/useMessages/...）
+constants/                 # 常量来源集中地（app-state.js：App* 自定义枚举；protocol.js：Sdk*/Backend* 外部协议）
 lib/                       # toast/utils
 plugins/                   # setupPlugins(Vue) 拆分的子 setup
   composition-api.js element.js fonts.js styles.js index.js
@@ -106,5 +107,5 @@ views/                     # 业务页（路由层）
 
 接口文档拆分：
 
-- 直连清单：[docs/API.md](file:///Users/tang/workspace/projects/agentscope-vue/docs/API.md)
-- Java 中转映射版：[docs/API-java-proxy.md](file:///Users/tang/workspace/projects/agentscope-vue/docs/API-java-proxy.md)
+- 直连清单：[docs/API.md](../docs/API.md)
+- Java 中转映射版：[docs/API-java-proxy.md](../docs/API-java-proxy.md)

@@ -25,7 +25,7 @@ import { defineComponent, computed } from '@/composables/vue';
 import Collapsible from '@/components/ui/Collapsible.vue';
 import ToolStateIcon from './ToolStateIcon.vue';
 import { parseInput, tryGetFileName, tryGetFilePath } from './tool-utils';
-import { getRenderer } from './tool-renderers';
+import { getRenderer } from './tool-renderers/index';
 import DefaultRenderer from './tool-renderers/DefaultRenderer.vue';
 
 export default defineComponent({
