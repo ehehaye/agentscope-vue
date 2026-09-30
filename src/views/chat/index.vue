@@ -97,7 +97,7 @@
             class="tw-w-full"
             :msgs="msgs"
             :loading="loading"
-            :phase="chatPhase"
+            :phase="phase"
             :error="error"
             :disabled="sendDisabled"
             :allowed-input-types="allowedInputTypes"
@@ -151,10 +151,9 @@
 <script>
 import { defineComponent, ref, computed, watch, onUnmounted } from '@/composables/vue';
 import { useRoute, useRouter } from '@/composables/vue-router';
-import { useStore } from '@/composables/vuex';
 import { MessageBox } from 'element-ui';
 import { useMessages } from '@/composables/useMessages';
-import { useSessions, waitForConversationReady } from '@/composables/useSessions';
+import { useSessions } from '@/composables/useSessions';
 import { useAgents } from '@/composables/useAgents';
 import { useWorkspace } from '@/composables/useWorkspace';
 import { useWorkspaceStatus } from '@/composables/useWorkspaceStatus';
@@ -162,6 +161,7 @@ import { useKnowledgeBases } from '@/composables/useKnowledgeBases';
 import { useAvailableModels } from '@/composables/useAvailableModels';
 import { provideAudioCenter, useAudioCenter } from '@/composables/useAudioCenter.js';
 import { sessionApi, credentialApi } from '@/api';
+import { AppReplyPhase } from '@/store/modules/chat';
 import { Icon } from '@/components/iconify/index';
 import ChatContent from '@/components/chat/ChatContent.vue';
 import SessionList from '@/components/chat/SessionList.vue';
@@ -243,7 +243,6 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const router = useRouter();
-    const store = useStore();
     const agentId = computed(() => route.query.agentId || null);
     const sessionId = computed(() => route.query.sessionId || null);
     const memberId = computed(() => route.query.memberId || null);
@@ -257,7 +256,7 @@ export default defineComponent({
       sessions,
       loading: sessionsLoading,
       refetch: refetchSessions,
-      create: createSession,
+      createWithInput,
       update: updateSession,
       remove: removeSession,
     } = useSessions(agentId);
@@ -272,8 +271,6 @@ export default defineComponent({
     const tasksContext = ref(null);
     const permissionContext = ref(null);
     const configPending = ref(false);
-    // 新会话首次发送前的“建会话 + 等连接就绪”期间，用于展示 loading
-    const conversationPreparing = ref(false);
     const panelLayout = ref(loadLayout());
     const taskPanelOpenedFor = ref(null);
 
@@ -306,10 +303,17 @@ export default defineComponent({
     const pendingCwd = ref(null);
     const cwd = computed(() => view.value?.session?.config?.cwd ?? pendingCwd.value ?? null);
 
+    /** 跳转到指定会话，返回路由跳转的 Promise（失败时 reject）。 */
+    function pushConversation(aid, sid) {
+      return router.push({
+        name: 'chat',
+        query: { ...route.query, agentId: aid, sessionId: sid, memberId: undefined },
+      });
+    }
+
+    /** 跳转并忽略失败（重复导航、被新导航打断等），供普通交互调用。 */
     function navigateTo(aid, sid) {
-      router
-        .push({ name: 'chat', query: { ...route.query, agentId: aid, sessionId: sid, memberId: undefined } })
-        .catch(() => {});
+      pushConversation(aid, sid).catch(() => {});
     }
 
     function handleAgentChange(aid) {
@@ -375,7 +379,8 @@ export default defineComponent({
     /**
      * 发送消息入口：
      * - 已有会话：直接发送。
-     * - 无会话：以消息为标题创建会话并选中，待连接就绪后发送。
+     * - 无会话：以消息为标题创建会话并选中。首条消息由 createWithInput 暂存到
+     *   chat 模块，待新会话 SSE 订阅建立后由其补发，避免回复事件丢失。
      */
     async function handleSend(contentBlocks) {
       if (sessionId.value) {
@@ -383,18 +388,16 @@ export default defineComponent({
         return;
       }
       if (!agentId.value) return;
-      conversationPreparing.value = true;
       try {
         const title = extractTitle(contentBlocks);
-        const res = await createSession(buildSessionBody(title));
-        const newSessionId = res.session_id;
-        navigateTo(agentId.value, newSessionId);
-        await waitForConversationReady(agentId.value, newSessionId);
-        send(contentBlocks);
+        const newSessionId = await createWithInput(buildSessionBody(title), contentBlocks);
+        await pushConversation(agentId.value, newSessionId);
       } catch (e) {
         console.error('Failed to create session for sending', e);
-      } finally {
-        conversationPreparing.value = false;
+        // 会话已创建但没能打开：回收暂存的首条消息并提示，避免消息静默丢失
+        if (await discardPendingInput()) {
+          MessageBox.alert('新会话未能打开，消息未发送。', '发送失败', { type: 'error' }).catch(() => {});
+        }
       }
     }
 
@@ -510,6 +513,7 @@ export default defineComponent({
       onSubagentAskUserSubmit,
       interrupt,
       abort,
+      discardPendingInput,
     } = useMessages(effectiveAgentId, effectiveSessionId, {
       onTeamUpdated: handleTeamUpdated,
       onStateUpdated: handleStateUpdated,
@@ -520,11 +524,9 @@ export default defineComponent({
       onAudioStopAll: () => audioManager?.stopAllPlayback(),
     });
 
-    // 新会话首发准备期呈现为 preparing 阶段（保持输入框挂载，避免闪烁）
-    const chatPhase = computed(() => (conversationPreparing.value ? 'preparing' : phase.value));
-
     watch(phase, (next, prev) => {
-      if (prev !== 'idle' && next === 'idle') {
+      // 一轮回复结束（本应用的 AppReplyPhase 从非 idle 回到 idle）后刷新工作区状态
+      if (prev !== AppReplyPhase.IDLE && next === AppReplyPhase.IDLE) {
         refetchWorkspaceStatus();
       }
     });
@@ -821,7 +823,7 @@ export default defineComponent({
     return {
       msgs,
       loading,
-      chatPhase,
+      phase,
       error,
       subagentHitl,
       sessionName,

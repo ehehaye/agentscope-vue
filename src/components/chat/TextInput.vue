@@ -51,7 +51,7 @@
           </template>
           <DotSpinner
             class="tw-pl-2"
-            v-else-if="showWorking"
+            v-else-if="phase === AppReplyPhase.STREAMING"
           />
         </div>
         <div class="tw-flex tw-shrink-0 tw-items-center">
@@ -99,13 +99,19 @@
 import { defineComponent, ref, computed } from '@/composables/vue';
 import { Icon } from '@/components/iconify/index';
 import DotSpinner from '@/components/ui/DotSpinner.vue';
+import { AppConnectionState, AppReplyPhase } from '@/store/modules/chat';
 
 export default defineComponent({
   name: 'TextInput',
   components: { Icon, DotSpinner },
   props: {
     disabled: { type: Boolean, default: false },
-    phase: { type: String, default: 'idle' },
+    /**
+     * 输入框相位。取值来自两处，都是本应用自定义（SDK 没有相位概念）：
+     * - AppReplyPhase：`idle / streaming / interrupting`，由 chat store 维护；
+     * - AppConnectionState.LOADING：会话未就绪，由 ChatContent 覆盖相位以禁用发送。
+     */
+    phase: { type: String, default: AppReplyPhase.IDLE },
     allowedInputTypes: { type: Array, default: () => [] },
     /** 最近一次交互的错误（chat store 的 error），存在时优先于阶段状态展示 */
     error: { type: [Object, String, Error], default: null },
@@ -127,30 +133,28 @@ export default defineComponent({
 
     // 占位符与发送按钮状态保持一致，提示当前不可发送的原因
     const placeholder = computed(() => {
-      if (props.phase === 'preparing') return '正在准备会话...';
-      if (props.phase === 'loading') return '正在加载会话...';
-      if (props.phase === 'interrupting') return '正在中断回复...';
+      if (props.phase === AppReplyPhase.INTERRUPTING) return '正在中断回复...';
       if (props.disabled) return '请先选择助手与模型';
       return '输入消息...';
     });
 
     const sendButton = computed(() => {
-      if (props.phase === 'streaming') {
+      if (props.phase === AppReplyPhase.STREAMING) {
         return {
           icon: 'lucide:square',
           disabled: false,
           onClick: () => emit('interrupt'),
         };
       }
-      if (props.phase === 'interrupting') {
+      if (props.phase === AppReplyPhase.INTERRUPTING) {
         return {
           icon: 'lucide:square',
           disabled: true,
           onClick: () => emit('interrupt'),
         };
       }
-      // 会话准备/加载中，禁止重复发送
-      if (props.phase === 'preparing' || props.phase === 'loading') {
+      // 会话加载中，禁止重复发送
+      if (props.phase === AppConnectionState.LOADING) {
         return {
           icon: 'lucide:arrow-up',
           disabled: true,
@@ -164,9 +168,8 @@ export default defineComponent({
       };
     });
 
-    // 底部左侧：优先展示最近一次错误，否则在非 idle 阶段用三点跳动表示"工作中"
+    // 底部左侧：有错误时展示错误文案，否则在 streaming 阶段用三点跳动表示"工作中"
     const errorText = computed(() => (!props.error ? '' : props.error?.message || String(props.error)));
-    const showWorking = computed(() => props.phase !== 'idle');
 
     function handleKeyDown(e) {
       if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) {
@@ -272,6 +275,8 @@ export default defineComponent({
     }
 
     return {
+      // 模板里比较相位时使用，避免散落字面量
+      AppReplyPhase,
       value,
       files,
       textareaRef,
@@ -281,7 +286,6 @@ export default defineComponent({
       placeholder,
       sendButton,
       errorText,
-      showWorking,
       handleKeyDown,
       handleSend,
       openFilePicker,
