@@ -89,17 +89,19 @@
           title="暂无会话"
           :description="agentId ? '当前助手下还没有会话' : '请先选择一个助手'"
         />
-        <div
+        <el-scrollbar
           v-else-if="sessions.length > 0"
-          class="tw-min-h-0 tw-flex-1 tw-overflow-x-hidden tw-overflow-y-auto tw-py-2"
+          class="tw-min-h-0 tw-flex-1 tw-overflow-x-hidden tw-py-2"
+          wrapClass="tw-overflow-x-hidden tw-pr-1"
+          :style="{ marginRight: '-8px' }"
         >
           <Collapsible
             v-for="(group, index) in dayGroups"
             :key="group.key"
-            :cls="(isOpen) => (isOpen ? 'tw-mb-1' : 'tw-mb-4')"
+            :cls="(isOpen) => [isOpen ? 'tw-mb-1' : 'tw-mb-4', 'tw-pr-1']"
             content-class="tw-mt-2 tw-mb-1"
             default-open
-            trigger-class="tw-text-muted-foreground"
+            trigger-class="tw-text-muted-foreground tw-pr-2"
           >
             <template #trigger>
               <span class="tw-text-xs tw-px-1">{{ group.label }}</span>
@@ -122,7 +124,7 @@
               </li>
             </ul>
           </Collapsible>
-        </div>
+        </el-scrollbar>
 
         <div
           v-if="sessionsLoading"
