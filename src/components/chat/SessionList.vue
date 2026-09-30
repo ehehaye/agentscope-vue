@@ -93,7 +93,6 @@
           v-else-if="sessions.length > 0"
           class="tw-min-h-0 tw-flex-1 tw-overflow-x-hidden tw-py-2"
           wrapClass="tw-overflow-x-hidden tw-pr-1"
-          :style="{ marginRight: '-8px' }"
         >
           <Collapsible
             v-for="(group, index) in dayGroups"
