@@ -10,14 +10,17 @@
       <pre class="tw-whitespace-pre-wrap tw-break-all">{{ toolCall.input }}</pre>
     </div>
 
-    <div
+    <el-scrollbar
       v-else
-      class="tw-flex tw-flex-col tw-gap-y-4"
+      class="tw-flex tw-flex-col tw-gap-y-4 tw--mr-2"
+      :style="{
+        maxHeight: 'min(40vh, 400px)',
+      }"
     >
       <div
         v-for="(q, qi) in questions"
         :key="qi"
-        class="tw-flex tw-flex-col tw-gap-y-2"
+        class="tw-flex tw-flex-col tw-gap-y-2 tw-pr-2"
       >
         <div class="tw-flex tw-items-center tw-gap-x-2">
           <span
@@ -117,7 +120,7 @@
           </el-button>
         </div>
       </div>
-    </div>
+    </el-scrollbar>
   </div>
 </template>
 
