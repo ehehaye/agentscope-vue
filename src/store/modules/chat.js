@@ -155,6 +155,9 @@ export default {
       try {
         const { sessionApi, takeFreshlyCreated } = await import('@/api');
 
+        // 刚创建的会话无需拉历史：紧跟着的 `POST /chat/` 会通过 SSE 流带回首条消息，
+        // 此时先拉历史会和 POST 抢资源，导致首条消息丢失/重复。
+        // `takeFreshlyCreated` 消费即失效，返回 false 的分支走常规历史加载。
         if (takeFreshlyCreated(sessionId)) {
           commit('SET_CONNECTION', AppConnectionState.CONNECTING);
         } else {

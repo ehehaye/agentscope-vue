@@ -3,12 +3,27 @@
  */
 import { client } from './client';
 
+/**
+ * 新建会话的一次性标记集合。
+ *
+ * 设计意图：刚通过 `session.create` 创建出来的会话，立即打开时无需调用
+ * `session.messages` 拉取历史——因为紧接着会 `POST /chat/` 触发 SSE 流，
+ * 首次消息会通过事件流到达，先拉历史会和 POST 抢资源，造成首条消息丢失/重复。
+ * 这里用一个 Set 做"消费即失效"的一次性开关，由打开会话的逻辑读取并清除。
+ */
 const freshlyCreated = new Set();
 
+/**
+ * 检查并消费"刚创建"标记。
+ * @returns {boolean} 若该 sessionId 刚被创建过则返回 true（同时从集合中移除），否则返回 false。
+ */
 export function takeFreshlyCreated(sessionId) {
   return freshlyCreated.delete(sessionId);
 }
 
+/**
+ * 把 sessionId 标记为"刚创建"，供后续打开时跳过历史消息拉取。
+ */
 export function markFreshlyCreated(sessionId) {
   freshlyCreated.add(sessionId);
 }
@@ -18,7 +33,8 @@ export const sessionApi = {
 
   create: async (body) => {
     const res = await client.request('session.create', { body });
-    freshlyCreated.add(res.session_id);
+    // 标记为"刚创建"，下次打开时跳过历史拉取，避免与紧随其后的 POST /chat/ 抢 SSE 流。
+    markFreshlyCreated(res.session_id);
     return res;
   },
 
