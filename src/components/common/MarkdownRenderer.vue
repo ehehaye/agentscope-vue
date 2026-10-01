@@ -14,37 +14,13 @@ import DOMPurify from 'dompurify';
 import remend from 'remend';
 import { marked } from 'marked';
 import hljs from 'highlight.js/lib/common';
-import vsCss from 'highlight.js/styles/vs.css?url';
-import githubDarkCss from 'highlight.js/styles/github-dark.css?url';
 import { parseDocument } from 'htmlparser2';
 import NodeRenderer from './NodeRenderer.vue';
 
-// 动态切换 hljs 主题：浅色 vs.css / 深色 github-dark.css
-// CSS 静态导入无法按运行时主题切换，故用 <link> 注入，监听 <html>.dark 类变化。
-const HLJS_LINK_ID = 'hljs-theme-stylesheet';
-function applyHljsTheme() {
-  const isDark = document.documentElement.classList.contains('dark');
-  const href = isDark ? githubDarkCss : vsCss;
-  let link = document.getElementById(HLJS_LINK_ID);
-  if (!link) {
-    link = document.createElement('link');
-    link.id = HLJS_LINK_ID;
-    link.rel = 'stylesheet';
-    document.head.appendChild(link);
-  }
-  if (link.getAttribute('href') !== href) {
-    link.setAttribute('href', href);
-  }
-}
-applyHljsTheme();
-if (typeof MutationObserver !== 'undefined') {
-  new MutationObserver(() => applyHljsTheme()).observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ['class'],
-  });
-}
-
-// https://marked.js.org/using_pro#renderer
+// highlight.js 主题通过 LESS @import (less) 直接内联进组件样式块，
+// .markdown-renderer 包裹浅色、.dark .markdown-renderer 包裹深色，
+// 自动跟随 <html>.dark 切换；避开 webpack 4 + css-loader 3.x 的 ?url 失效问题。
+// 浅色用 paraiso-light（Sublime 风），深色用 github-dark。
 const renderer = {
   blockquote(token) {
     const inner = this.parser.parse(token.tokens);
@@ -343,5 +319,11 @@ export default defineComponent({
     border-top: 1px solid @border-color;
     margin: @spacing-lg 0;
   }
+
+  @import (less) '~highlight.js/styles/1c-light.css';
+}
+
+.dark .markdown-renderer {
+  @import (less) '~highlight.js/styles/github-dark.css';
 }
 </style>
