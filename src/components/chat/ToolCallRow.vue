@@ -1,7 +1,7 @@
 <template>
   <Collapsible :expandable="expandable">
     <template #trigger>
-      <div class="tw-group tw-flex tw-items-center tw-gap-2">
+      <div class="tw-group tw-flex tw-items-center tw-gap-2 tw-min-w-0 tw-flex-1">
         <span class="tw-shrink-0">{{ displayName }}</span>
         <span
           v-if="arg"
