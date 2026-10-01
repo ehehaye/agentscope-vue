@@ -104,7 +104,7 @@ router.beforeEach((to, _from, next) => {
 });
 
 router.afterEach((to) => {
-  if (to.meta?.title) document.title = `${to.meta.title} · AgentScope`;
+  if (to.meta?.title) document.title = `${to.meta.title} · AgentScope - Vue`;
 });
 
 export default router;
