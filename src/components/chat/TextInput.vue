@@ -3,7 +3,7 @@
     class="tw-flex tw-flex-col"
     :class="$attrs.class"
   >
-    <div class="tw-flex tw-w-full tw-flex-col tw-rounded-28px tw-border tw-bg-background tw-px-2">
+    <div class="tw-flex tw-w-full tw-flex-col tw-rounded-28px tw-border tw-bg-background tw-px-2 tw-group">
       <div
         v-if="files.length > 0"
         class="tw-flex tw-flex-wrap tw-gap-2 tw-px-1 tw-pt-1"
@@ -41,9 +41,7 @@
           type="textarea"
           :autosize="{ minRows: 1 }"
           resize="none"
-          clearable
-          :maxlength="200"
-          show-world-limit
+          :maxlength="maxlength"
           :disabled="disabled"
           :placeholder="placeholder"
           @keydown.native="handleKeyDown"
@@ -65,6 +63,20 @@
           />
         </div>
         <div class="tw-flex tw-shrink-0 tw-items-center">
+          <!-- 修复 el-input[type="textarea"] 时 clearable 无效 -->
+          <el-button
+            class="tw-opacity-0 tw-transition-opacity tw-duration-150 group-hover:tw-opacity-100 group-focus-within:tw-opacity-100"
+            type="text"
+            size="small"
+            circle
+            v-show="value.length"
+            @click="value = ''"
+          >
+            <Icon
+              icon="lucide:circle-x"
+              class="tw-h-4 tw-w-4"
+            />
+          </el-button>
           <slot name="actions" />
           <el-button
             type="text"
@@ -127,6 +139,7 @@ export default defineComponent({
     /** 最近一次交互的错误（chat store 的 error），存在时优先于阶段状态展示 */
     error: { type: [Object, String, Error], default: null },
     maxRows: { type: Number, default: 3 },
+    maxlength: { type: Number, default: 200 },
   },
   emits: ['send', 'interrupt'],
   setup(props, { emit }) {

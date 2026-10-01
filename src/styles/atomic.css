@@ -121,3 +121,14 @@
 .tw-items-end {
   align-items: flex-end;
 }
+
+/* ── group-focus-within: 兜底 ────────────────────────────────
+ * Tailwind v2.2.17（@tailwindcss/postcss7-compat）不支持 group-focus-within
+ * 变体（v2.4+ 才有），且兼容包未暴露 addVariant 入口。
+ * 临时方案：把当前用例用到的属性手写规则。新增属性时在这里追加。 */
+.tw-group:focus-within .group-focus-within\:tw-opacity-100 {
+  opacity: 1;
+}
+.tw-group:focus-within .group-focus-within\:tw-pointer-events-auto {
+  pointer-events: auto;
+}
