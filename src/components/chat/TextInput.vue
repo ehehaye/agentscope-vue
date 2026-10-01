@@ -25,20 +25,30 @@
           />
         </div>
       </div>
-      <el-input
-        ref="textareaRef"
-        v-model="value"
-        class="chat-textarea"
-        type="textarea"
-        :autosize="{ minRows: 1, maxRows: 6 }"
-        resize="none"
-        clearable
-        :maxlength="200"
-        show-world-limit
-        :disabled="disabled"
-        :placeholder="placeholder"
-        @keydown.native="handleKeyDown"
-      />
+
+      <Scrollbar
+        class="tw-w-full"
+        :style="{
+          height: `${inputHeight}px`,
+          maxHeight: `${inputHeight}px`,
+        }"
+        wrapClass="tw-overflow-x-hidden"
+      >
+        <el-input
+          ref="textareaRef"
+          v-model="value"
+          class="chat-textarea"
+          type="textarea"
+          :autosize="{ minRows: 1 }"
+          resize="none"
+          clearable
+          :maxlength="200"
+          show-world-limit
+          :disabled="disabled"
+          :placeholder="placeholder"
+          @keydown.native="handleKeyDown"
+        />
+      </Scrollbar>
       <!-- 底部工具栏：左侧错误/会话状态，右侧根目录、附件与操作按钮 -->
       <div class="tw-flex tw-items-center tw-justify-between tw-gap-2 tw-px-2 tw-pb-2">
         <div class="tw-flex tw-min-w-0 tw-flex-1 tw-items-center tw-gap-1 tw-pl-3 tw-text-xs">
@@ -99,11 +109,12 @@
 import { defineComponent, ref, computed } from '@/composables/vue';
 import { Icon } from '@/components/iconify/index';
 import DotSpinner from '@/components/ui/DotSpinner.vue';
+import Scrollbar from '@/components/ui/Scrollbar.vue';
 import { AppConnectionState, AppReplyPhase } from '@/constants/app-state';
 
 export default defineComponent({
   name: 'TextInput',
-  components: { Icon, DotSpinner },
+  components: { Icon, DotSpinner, Scrollbar },
   props: {
     disabled: { type: Boolean, default: false },
     /**
@@ -115,6 +126,7 @@ export default defineComponent({
     allowedInputTypes: { type: Array, default: () => [] },
     /** 最近一次交互的错误（chat store 的 error），存在时优先于阶段状态展示 */
     error: { type: [Object, String, Error], default: null },
+    maxRows: { type: Number, default: 3 },
   },
   emits: ['send', 'interrupt'],
   setup(props, { emit }) {
@@ -170,6 +182,15 @@ export default defineComponent({
 
     // 底部左侧：有错误时展示错误文案，否则在 streaming 阶段用三点跳动表示"工作中"
     const errorText = computed(() => (!props.error ? '' : props.error?.message || String(props.error)));
+
+    // 输入框高度自适应，根据内容动态调整展示滚动条
+    const inputHeight = computed(() => {
+      const textRows = value.value.split('\n').length;
+      const effectiveRows = textRows >= props.maxRows ? props.maxRows : textRows;
+      const lineHeight = 26;
+      const paddingY = 12;
+      return effectiveRows * lineHeight + paddingY * 2;
+    });
 
     function handleKeyDown(e) {
       if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) {
@@ -286,6 +307,7 @@ export default defineComponent({
       placeholder,
       sendButton,
       errorText,
+      inputHeight,
       handleKeyDown,
       handleSend,
       openFilePicker,
