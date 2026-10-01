@@ -5,7 +5,10 @@
     </template>
 
     <template v-else-if="block.type === 'thinking'">
-      <Collapsible trigger-class="tw-text-sm tw-text-muted-foreground">
+      <Collapsible
+        trigger-class="tw-text-sm tw-text-muted-foreground"
+        :default-open="isThinkingRunning"
+      >
         <template #trigger>
           <div
             class="tw-flex tw-items-center tw-gap-2"
@@ -90,7 +93,9 @@ export default defineComponent({
       const endMs = props.block.finished_at ? new Date(props.block.finished_at).getTime() : now.value;
       const seconds = Math.max(0, (endMs - startMs) / 1000);
       const duration = formatTime(seconds);
-      return seconds < 1 ? '思考中' : `思考中 ${duration}`;
+      const status = isThinkingRunning.value ? '思考中' : '思考完成';
+      const durationText = seconds > 1 ? `（用时${duration}）` : '';
+      return `${status}${durationText}`;
     });
 
     const hintLabel = computed(() => {
