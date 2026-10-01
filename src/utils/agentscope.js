@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import { appendEvent } from '@agentscope-ai/agentscope/message';
+import { SdkBlockType, SdkMessageRole, SdkToolCallState } from '@/constants/protocol';
 
 /**
  * 包装 SDK 的 appendEvent：暴力把 msg.content 下每个 block 的所有 ownKeys
@@ -28,4 +29,27 @@ export function appendEventReactive(msg, event) {
   }
 
   return msg;
+}
+
+/** 末尾消息是否停在待用户处理的工具调用上（取值均为 SDK 定义的块类型 / 工具状态）。 */
+export function hasPendingToolCall(msg) {
+  if (!msg || msg.role !== SdkMessageRole.ASSISTANT) return false;
+  for (const block of msg.content) {
+    if (block.type !== SdkBlockType.TOOL_CALL) continue;
+    if (block.state === SdkToolCallState.ASKING || block.state === SdkToolCallState.SUBMITTED) return true;
+  }
+  return false;
+}
+
+export function hitlKey(e) {
+  return `${e.worker_session_id}:${e.reply_id}`;
+}
+
+export function replaceMessage(messages, id, updater) {
+  const idx = messages.findIndex((m) => m.id === id);
+  if (idx === -1) return messages;
+  const next = updater(messages[idx]);
+  const copy = messages.slice();
+  copy[idx] = next;
+  return copy;
 }

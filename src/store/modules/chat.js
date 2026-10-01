@@ -13,39 +13,10 @@
 import { EventType } from '@agentscope-ai/agentscope/event';
 import { appendEvent, AssistantMsg, UserMsg } from '@agentscope-ai/agentscope/message';
 import { AppConnectionState, AppReplyPhase } from '@/constants/app-state';
-import {
-  BackendCustomEventName,
-  SdkBlockType,
-  SdkMessageRole,
-  SdkToolCallState,
-  SdkToolResultState,
-} from '@/constants/protocol';
-import { appendEventReactive } from '@/utils/agentscope';
+import { BackendCustomEventName, SdkBlockType, SdkToolResultState } from '@/constants/protocol';
+import { appendEventReactive, hasPendingToolCall, hitlKey, replaceMessage } from '@/utils/agentscope';
 
 const INTERRUPT_TIMEOUT_MS = 10000;
-
-/** 末尾消息是否停在待用户处理的工具调用上（取值均为 SDK 定义的块类型 / 工具状态）。 */
-function hasPendingToolCall(msg) {
-  if (!msg || msg.role !== SdkMessageRole.ASSISTANT) return false;
-  for (const block of msg.content) {
-    if (block.type !== SdkBlockType.TOOL_CALL) continue;
-    if (block.state === SdkToolCallState.ASKING || block.state === SdkToolCallState.SUBMITTED) return true;
-  }
-  return false;
-}
-
-export function hitlKey(e) {
-  return `${e.worker_session_id}:${e.reply_id}`;
-}
-
-function replaceMessage(messages, id, updater) {
-  const idx = messages.findIndex((m) => m.id === id);
-  if (idx === -1) return messages;
-  const next = updater(messages[idx]);
-  const copy = messages.slice();
-  copy[idx] = next;
-  return copy;
-}
 
 export default {
   namespaced: true,
