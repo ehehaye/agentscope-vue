@@ -20,6 +20,7 @@ import {
   SdkToolCallState,
   SdkToolResultState,
 } from '@/constants/protocol';
+import { appendEventReactive } from '@/utils/agentscope';
 
 const INTERRUPT_TIMEOUT_MS = 10000;
 
@@ -303,7 +304,7 @@ export default {
         const replyId = state.currentReplyId;
         if (replyId) {
           const nextMessages = replaceMessage(state.messages, replyId, (reply) => {
-            appendEvent(reply, event);
+            appendEventReactive(reply, event);
             return { ...reply, content: reply.content.slice() };
           });
           commit('SET_MESSAGES', nextMessages);
