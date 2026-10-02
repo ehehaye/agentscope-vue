@@ -17,10 +17,6 @@ import hljs from 'highlight.js/lib/common';
 import { parseDocument } from 'htmlparser2';
 import NodeRenderer from './NodeRenderer.vue';
 
-// highlight.js 主题通过 LESS @import (less) 直接内联进组件样式块，
-// .markdown-renderer 包裹浅色、.dark .markdown-renderer 包裹深色，
-// 自动跟随 <html>.dark 切换；避开 webpack 4 + css-loader 3.x 的 ?url 失效问题。
-// 浅色用 paraiso-light（Sublime 风），深色用 github-dark。
 const renderer = {
   blockquote(token) {
     const inner = this.parser.parse(token.tokens);
