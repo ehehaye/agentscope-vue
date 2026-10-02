@@ -93,11 +93,15 @@
         :phase="inputPhase"
         :error="error"
         :allowed-input-types="allowedInputTypes"
-        :exportable="msgs.length > 0"
         @send="onSend"
         @interrupt="onInterrupt"
       >
         <template #actions>
+          <PrintHistoryButton
+            target="#as-chat-history"
+            v-show="msgs.length > 0"
+            :disabled="showFlipCard"
+          />
           <WorkingDirectoryDialog
             :agent-id="agentId"
             :session-id="sessionId"
@@ -127,6 +131,7 @@ import ConfirmCard from './ConfirmCard.vue';
 import AskUserCard from './AskUserCard.vue';
 import SubagentHitlCard from './SubagentHitlCard.vue';
 import TimeMarker from './TimeMarker.vue';
+import PrintHistoryButton from './PrintHistoryButton.vue';
 import WorkingDirectoryDialog from '@/components/dialog/WorkingDirectoryDialog.vue';
 
 const TIME_MARKER_GAP_MS = 10 * 60 * 1000;
@@ -145,6 +150,7 @@ export default defineComponent({
     AskUserCard,
     SubagentHitlCard,
     TimeMarker,
+    PrintHistoryButton,
     WorkingDirectoryDialog,
   },
   props: {
