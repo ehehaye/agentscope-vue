@@ -1,14 +1,30 @@
-// webpack 4 不支持 uuid@14 的 exports 字段（包无 main），深路径直接引浏览器构建
-import uuidv4 from 'uuid/dist/v4.js';
-
-// crypto.randomUUID 仅在安全上下文（HTTPS / localhost）且较新的浏览器中可用，
-// 缺失时会导致依赖（如 @agentscope-ai/agentscope）内部调用直接抛错。
-// 这里用 uuid v4 兜底补齐，保证所有依赖的调用均可用
+// crypto.randomUUID 仅在安全上下文（HTTPS / localhost）可用，缺失时依赖内部调用会直接抛错。
+// 不能用 uuid@14 的 v4 兜底：它会优先回调 crypto.randomUUID，造成无限递归（栈溢出）。
+// getRandomValues 在 HTTP 下同样可用，这里自行实现 v4 UUID。
 const cryptoObj = typeof globalThis.crypto !== 'undefined' ? globalThis.crypto : undefined;
-if (!cryptoObj || typeof cryptoObj.randomUUID !== 'function') {
-  if (cryptoObj) {
-    cryptoObj.randomUUID = uuidv4;
+
+const HEX = '0123456789abcdef';
+
+function randomUUID() {
+  const bytes = new Uint8Array(16);
+  if (cryptoObj && typeof cryptoObj.getRandomValues === 'function') {
+    cryptoObj.getRandomValues(bytes);
   } else {
-    globalThis.crypto = { randomUUID: uuidv4 };
+    // 极老环境兜底：Math.random 强度较低，仅保证可用性
+    for (let i = 0; i < 16; i++) bytes[i] = Math.floor(Math.random() * 256);
   }
+  bytes[6] = (bytes[6] & 0x0f) | 0x40; // version 4
+  bytes[8] = (bytes[8] & 0x3f) | 0x80; // variant 10xx
+  let s = '';
+  for (let i = 0; i < 16; i++) {
+    s += HEX[bytes[i] >> 4] + HEX[bytes[i] & 0x0f];
+    if (i === 3 || i === 5 || i === 7 || i === 9) s += '-';
+  }
+  return s;
+}
+
+if (!cryptoObj) {
+  globalThis.crypto = { randomUUID };
+} else if (typeof cryptoObj.randomUUID !== 'function') {
+  cryptoObj.randomUUID = randomUUID;
 }
