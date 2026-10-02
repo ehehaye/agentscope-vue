@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import { set } from '@/composables/vue';
 import { appendEvent } from '@agentscope-ai/agentscope/message';
 import { SdkBlockType, SdkMessageRole, SdkToolCallState } from '@/constants/protocol';
 
@@ -24,7 +24,7 @@ export function appendEventReactive(msg, event) {
     const snapshot = keys.map((k) => [k, block[k]]);
     for (let i = 0; i < keys.length; i++) delete block[keys[i]];
     for (let i = 0; i < snapshot.length; i++) {
-      Vue.set(block, snapshot[i][0], snapshot[i][1]);
+      set(block, snapshot[i][0], snapshot[i][1]);
     }
   }
 

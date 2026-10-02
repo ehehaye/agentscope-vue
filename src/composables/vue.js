@@ -22,4 +22,5 @@ export {
   defineComponent,
   getCurrentInstance,
   h,
+  set,
 } from '@vue/composition-api';
