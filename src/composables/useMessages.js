@@ -6,11 +6,10 @@
  * （AppReplyPhase / AppConnectionState），SDK 没有这两个概念。
  */
 import { computed, watch, unref } from '@/composables/vue';
-import { useStore } from '@/composables/vuex';
 import { AppConnectionState, AppReplyPhase } from '@/constants/app-state';
+import store from '@/store';
 
 export function useMessages(agentId, sessionId, options = {}) {
-  const store = useStore();
   const key = computed(() => {
     const aid = unref(agentId);
     const sid = unref(sessionId);

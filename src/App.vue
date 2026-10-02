@@ -14,12 +14,11 @@
 
 <script>
 import { watch, onMounted, onUnmounted } from '@/composables/vue';
-import { useStore } from '@/composables/vuex';
+import store from '@/store';
 
 export default {
   name: 'App',
   setup() {
-    const store = useStore();
     let handler = null;
 
     function syncBeforeUnload(hasInFlight) {
