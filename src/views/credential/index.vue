@@ -438,7 +438,7 @@ export default defineComponent({
       const credential = this.selectedCredential;
       if (!credential) return;
       const name = credential.data?.name || credential.id;
-      await MessageBox.confirm('删除后无法恢复，是否继续？', `删除凭证「${name}」`, {
+      await MessageBox.confirm(`确定删除凭证「${name}」吗？删除后无法恢复。`, '删除凭证', {
         type: 'warning',
         confirmButtonText: '删除',
         cancelButtonText: '取消',

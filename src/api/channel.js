@@ -11,7 +11,7 @@ export const channelApi = {
 
   update: (channelId, body) => client.request('channel.update', { pathParams: { channelId }, body }),
 
-  delete: (channelId) => client.request('channel.delete', { pathParams: { channelId } }),
+  remove: (channelId) => client.request('channel.remove', { pathParams: { channelId } }),
 
   enable: (channelId) => client.request('channel.enable', { pathParams: { channelId } }),
 
@@ -25,7 +25,7 @@ export const channelApi = {
 
   startBinding: (channelType) => client.request('channel.startBinding', { body: { channel_type: channelType } }),
 
-  /** Report the session; this call is also what advances it. */
+  /** 上报绑定会话状态；该调用本身也会推进绑定流程。 */
   pollBinding: (bindingId) => client.request('channel.pollBinding', { pathParams: { bindingId } }),
 
   cancelBinding: (bindingId, options = {}) =>

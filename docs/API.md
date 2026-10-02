@@ -10,11 +10,7 @@
   - 所有请求自动携带 `X-User-ID`（取 `localStorage.username`）；
   - 含 Body 的请求自动携带 `Content-Type: application/json`。
 - **client 方法签名**（`src/api/client.js`）：
-  - `client.get(path, params, options)`
-  - `client.post(path, body, params, options)`
-  - `client.patch(path, body, params, options)`
-  - `client.delete(path, params)`
-  - `client.stream(path, options)` —— 只返回原始 `Response`，SSE 解析由上层处理
+  - `client.request(key, options)` —— `key` 为 mapping.js 端点键；`options` 支持 `pathParams` / `params` / `body` / `silent` / `signal` / `timeoutMs` / `baseUrl` / `userId` / `mode`；`stream: true` 时只返回原始 `Response`，SSE 解析由上层处理
 - **参数位置**：`params` → URL Query（值会被 String 化）；`body` → JSON 请求体；`options` 仅为前端控制项（`silent` / `baseUrl` / `userId` / `timeoutMs` / `signal`），不发送到后端。
 - **错误处理**：非 2xx 统一抛出 `ApiError(status, detail)`，`silent` 模式不弹 toast；HTTP 204 返回 `undefined`。
 - 下表中 `{xxx}` 表示路径参数；标注“透传”的 Body 表示前端不约束字段，结构由后端 schema 决定。
@@ -56,7 +52,7 @@
 | credentialApi.schemas | `/credential/schemas` | GET | 无 |
 | credentialApi.create | `/credential/` | POST | Body：凭据对象（透传） |
 | credentialApi.update | `/credential/{credentialId}` | PATCH | Body：凭据更新字段（透传） |
-| credentialApi.delete | `/credential/{credentialId}` | DELETE | 无 |
+| credentialApi.remove | `/credential/{credentialId}` | DELETE | 无 |
 
 ## 4. model（模型列表）
 
@@ -79,7 +75,7 @@
 | channelApi.get | `/channels/{channelId}` | GET | 无 |
 | channelApi.create | `/channels/` | POST | Body：渠道配置对象（透传） |
 | channelApi.update | `/channels/{channelId}` | PATCH | Body：渠道更新字段（透传） |
-| channelApi.delete | `/channels/{channelId}` | DELETE | 无 |
+| channelApi.remove | `/channels/{channelId}` | DELETE | 无 |
 | channelApi.enable | `/channels/{channelId}/enable` | POST | 无 |
 | channelApi.disable | `/channels/{channelId}/disable` | POST | 无 |
 | channelApi.status | `/channels/{channelId}/status` | GET | 无 |
@@ -99,7 +95,7 @@
 | agentApi.getSchema | `/agent/schema/v2` | GET | 无 |
 | agentApi.create | `/agent/` | POST | Body：Agent 创建配置（透传；支持 options.silent） |
 | agentApi.update | `/agent/{agentId}` | PATCH | Body：Agent 更新字段（透传；支持 options.silent） |
-| agentApi.delete | `/agent/{agentId}` | DELETE | 无 |
+| agentApi.remove | `/agent/{agentId}` | DELETE | 无 |
 
 ## 7. schedule（定时任务）
 
@@ -110,7 +106,7 @@
 | scheduleApi.list | `/schedule/` | GET | 无 |
 | scheduleApi.create | `/schedule/` | POST | Body：定时任务对象（透传） |
 | scheduleApi.update | `/schedule/{scheduleId}` | PATCH | Body：定时任务更新字段（透传） |
-| scheduleApi.delete | `/schedule/{scheduleId}` | DELETE | 无 |
+| scheduleApi.remove | `/schedule/{scheduleId}` | DELETE | 无 |
 | scheduleApi.listSessions | `/schedule/{scheduleId}/sessions` | GET | 无 |
 
 ## 8. knowledgeBase（知识库与文档）
@@ -126,11 +122,11 @@
 | knowledgeBaseApi.supportedContentTypes | `/knowledge_bases/supported_content_types` | GET | 无 |
 | knowledgeBaseApi.create | `/knowledge_bases/` | POST | Body：知识库配置对象（透传） |
 | knowledgeBaseApi.update | `/knowledge_bases/{knowledgeBaseId}` | PATCH | Body：知识库更新字段（透传） |
-| knowledgeBaseApi.delete | `/knowledge_bases/{knowledgeBaseId}` | DELETE | 无 |
+| knowledgeBaseApi.remove | `/knowledge_bases/{knowledgeBaseId}` | DELETE | 无 |
 | knowledgeBaseApi.listDocuments | `/knowledge_bases/{knowledgeBaseId}/documents` | GET | Query：透传参数；分页 `page`、`page_size` |
 | knowledgeBaseApi.listDocumentChunks | `/knowledge_bases/{knowledgeBaseId}/documents/{documentId}/chunks` | GET | Query：`page`（默认 1）、`page_size`（默认 30）；silent |
 | knowledgeBaseApi.createDocumentDownloadToken | `/knowledge_bases/{knowledgeBaseId}/documents/{documentId}/download_token` | POST | 无 |
-| knowledgeBaseApi.fetchDocumentText | `/knowledge_bases/{knowledgeBaseId}/documents/{documentId}` | GET（`client.stream`，取原始文本） | 无 |
+| knowledgeBaseApi.fetchDocumentText | `/knowledge_bases/{knowledgeBaseId}/documents/{documentId}` | GET（`stream: true`，取原始文本） | 无 |
 | knowledgeBaseApi.getDocumentStatus | `/knowledge_bases/{knowledgeBaseId}/documents/status` | GET | Query：`ids`（多个 ID 逗号拼接；空数组不发请求） |
 | knowledgeBaseApi.deleteDocument | `/knowledge_bases/{knowledgeBaseId}/documents/{documentId}` | DELETE | 无 |
 | knowledgeBaseApi.search | `/knowledge_bases/{knowledgeBaseId}/search` | POST | Body：检索请求对象（透传） |
@@ -179,10 +175,10 @@
 | sessionApi.list | `/sessions/` | GET | Query：`agent_id` |
 | sessionApi.create | `/sessions/` | POST | Body：会话创建对象（透传；成功后前端标记返回的 `session_id`） |
 | sessionApi.update | `/sessions/{sessionId}` | PATCH | Query：`agent_id`；Body：会话更新字段（透传；支持 options.silent） |
-| sessionApi.delete | `/sessions/{sessionId}` | DELETE | Query：`agent_id` |
+| sessionApi.remove | `/sessions/{sessionId}` | DELETE | Query：`agent_id` |
 | sessionApi.interrupt | `/sessions/{sessionId}/interrupt` | POST | Query：`agent_id`；Body：`null` |
 | sessionApi.messages | `/sessions/{sessionId}/messages` | GET | Query：`agent_id`、`before`（可选）、`limit`（可选） |
-| sessionApi.streamEvents | `/sessions/{sessionId}/stream` | GET（`client.stream`，SSE 事件流） | Query：`agent_id`；options.signal 可中止；解析 `data: ` 行 JSON |
+| sessionApi.streamEvents | `/sessions/{sessionId}/stream` | GET（`stream: true`，SSE 事件流） | Query：`agent_id`；options.signal 可中止；解析 `data: ` 行 JSON |
 
 ## 13. chat（触发对话生成）
 

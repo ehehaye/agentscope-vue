@@ -2,7 +2,7 @@ import { ref, onMounted } from '@/composables/vue';
 import { knowledgeBaseApi } from '@/api';
 
 /**
- * Knowledge base CRUD + search wrapper.
+ * 知识库 CRUD + 搜索 composable。
  * @returns {{ knowledgeBases: Ref<any[]>, loading: Ref<boolean>, creating: Ref<boolean>, error: Ref<Error|null>, refetch: () => Promise<any[]>, create: (body: any) => Promise<string>, remove: (id: string) => Promise<void>, update: (id: string, body: any) => Promise<any>, uploadDocument: (kbId: string, file: File) => Promise<any>, deleteDocument: (kbId: string, docId: string) => Promise<void>, search: (kbId: string, body: any) => Promise<any> }}
  */
 export function useKnowledgeBases() {
@@ -44,7 +44,7 @@ export function useKnowledgeBases() {
   }
 
   async function remove(knowledgeBaseId) {
-    await knowledgeBaseApi.delete(knowledgeBaseId);
+    await knowledgeBaseApi.remove(knowledgeBaseId);
     await refetch();
   }
 

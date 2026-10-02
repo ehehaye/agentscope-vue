@@ -9,5 +9,5 @@ export const agentApi = {
 
   update: (agentId, body, options) => client.request('agent.update', { pathParams: { agentId }, body, ...options }),
 
-  delete: (agentId) => client.request('agent.delete', { pathParams: { agentId } }),
+  remove: (agentId) => client.request('agent.remove', { pathParams: { agentId } }),
 };

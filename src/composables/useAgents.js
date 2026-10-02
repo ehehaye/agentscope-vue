@@ -41,7 +41,7 @@ export function useAgents() {
   }
 
   async function remove(agentId) {
-    await agentApi.delete(agentId);
+    await agentApi.remove(agentId);
     await refetch();
   }
 

@@ -41,7 +41,7 @@ export function useCredentials() {
   }
 
   async function remove(credentialId) {
-    await credentialApi.delete(credentialId);
+    await credentialApi.remove(credentialId);
     await refetch();
   }
 

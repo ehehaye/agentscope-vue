@@ -60,7 +60,7 @@
 | credentialApi.schemas | `/credential/schemas` | GET | `/credential/schemas` | GET | 无 | 标准 JSON |
 | credentialApi.create | `/credential/` | POST | `/credential/` | POST | Body：凭据对象（透传） | 标准 JSON |
 | credentialApi.update | `/credential/{credentialId}` | PATCH | `/credential/{credentialId}/update` | POST | Body：凭据更新字段（透传） | 标准 JSON |
-| credentialApi.delete | `/credential/{credentialId}` | DELETE | `/credential/{credentialId}/delete` | POST | 无 Body | 标准 JSON |
+| credentialApi.remove | `/credential/{credentialId}` | DELETE | `/credential/{credentialId}/delete` | POST | 无 Body | 标准 JSON |
 
 ## 4. model（模型列表）
 
@@ -83,7 +83,7 @@
 | channelApi.get | `/channels/{channelId}` | GET | `/channels/{channelId}` | GET | 无 | 标准 JSON |
 | channelApi.create | `/channels/` | POST | `/channels/` | POST | Body：渠道配置对象（透传） | 标准 JSON |
 | channelApi.update | `/channels/{channelId}` | PATCH | `/channels/{channelId}/update` | POST | Body：渠道更新字段（透传） | 标准 JSON |
-| channelApi.delete | `/channels/{channelId}` | DELETE | `/channels/{channelId}/delete` | POST | 无 Body | 标准 JSON |
+| channelApi.remove | `/channels/{channelId}` | DELETE | `/channels/{channelId}/delete` | POST | 无 Body | 标准 JSON |
 | channelApi.enable | `/channels/{channelId}/enable` | POST | `/channels/{channelId}/enable` | POST | 无 Body | 标准 JSON |
 | channelApi.disable | `/channels/{channelId}/disable` | POST | `/channels/{channelId}/disable` | POST | 无 Body | 标准 JSON |
 | channelApi.status | `/channels/{channelId}/status` | GET | `/channels/{channelId}/status` | GET | 无 | 标准 JSON |
@@ -103,7 +103,7 @@
 | agentApi.getSchema | `/agent/schema/v2` | GET | `/agent/schema/v2` | GET | 无 | 标准 JSON |
 | agentApi.create | `/agent/` | POST | `/agent/` | POST | Body：Agent 创建配置（透传） | 标准 JSON；前端支持 silent |
 | agentApi.update | `/agent/{agentId}` | PATCH | `/agent/{agentId}/update` | POST | Body：Agent 更新字段（透传） | 标准 JSON；前端支持 silent |
-| agentApi.delete | `/agent/{agentId}` | DELETE | `/agent/{agentId}/delete` | POST | 无 Body | 标准 JSON |
+| agentApi.remove | `/agent/{agentId}` | DELETE | `/agent/{agentId}/delete` | POST | 无 Body | 标准 JSON |
 
 ## 7. schedule（定时任务）
 
@@ -114,7 +114,7 @@
 | scheduleApi.list | `/schedule/` | GET | `/schedule/` | GET | 无 | 标准 JSON |
 | scheduleApi.create | `/schedule/` | POST | `/schedule/` | POST | Body：定时任务对象（透传） | 标准 JSON |
 | scheduleApi.update | `/schedule/{scheduleId}` | PATCH | `/schedule/{scheduleId}/update` | POST | Body：定时任务更新字段（透传） | 标准 JSON |
-| scheduleApi.delete | `/schedule/{scheduleId}` | DELETE | `/schedule/{scheduleId}/delete` | POST | 无 Body | 标准 JSON |
+| scheduleApi.remove | `/schedule/{scheduleId}` | DELETE | `/schedule/{scheduleId}/delete` | POST | 无 Body | 标准 JSON |
 | scheduleApi.listSessions | `/schedule/{scheduleId}/sessions` | GET | `/schedule/{scheduleId}/sessions` | GET | 无 | 标准 JSON |
 
 ## 8. knowledgeBase（知识库与文档）
@@ -130,7 +130,7 @@
 | knowledgeBaseApi.supportedContentTypes | `/knowledge_bases/supported_content_types` | GET | `/knowledge_bases/supported_content_types` | GET | 无 | 标准 JSON |
 | knowledgeBaseApi.create | `/knowledge_bases/` | POST | `/knowledge_bases/` | POST | Body：知识库配置对象（透传） | 标准 JSON |
 | knowledgeBaseApi.update | `/knowledge_bases/{knowledgeBaseId}` | PATCH | `/knowledge_bases/{knowledgeBaseId}/update` | POST | Body：知识库更新字段（透传） | 标准 JSON |
-| knowledgeBaseApi.delete | `/knowledge_bases/{knowledgeBaseId}` | DELETE | `/knowledge_bases/{knowledgeBaseId}/delete` | POST | 无 Body | 标准 JSON |
+| knowledgeBaseApi.remove | `/knowledge_bases/{knowledgeBaseId}` | DELETE | `/knowledge_bases/{knowledgeBaseId}/delete` | POST | 无 Body | 标准 JSON |
 | knowledgeBaseApi.listDocuments | `/knowledge_bases/{knowledgeBaseId}/documents` | GET | `/knowledge_bases/{knowledgeBaseId}/documents` | GET | Query：透传参数；分页 `page`、`page_size` | 标准 JSON |
 | knowledgeBaseApi.listDocumentChunks | `/knowledge_bases/{knowledgeBaseId}/documents/{documentId}/chunks` | GET | `/knowledge_bases/{knowledgeBaseId}/documents/{documentId}/chunks` | GET | Query：`page`（默认 1）、`page_size`（默认 30） | 标准 JSON；前端 silent |
 | knowledgeBaseApi.createDocumentDownloadToken | `/knowledge_bases/{knowledgeBaseId}/documents/{documentId}/download_token` | POST | `/knowledge_bases/{knowledgeBaseId}/documents/{documentId}/download_token` | POST | 无 Body | 标准 JSON；返回一次性下载 token |
@@ -183,7 +183,7 @@
 | sessionApi.list | `/sessions/` | GET | `/sessions/` | GET | Query：`agent_id` | 标准 JSON |
 | sessionApi.create | `/sessions/` | POST | `/sessions/` | POST | Body：会话创建对象（透传） | 标准 JSON；前端依据返回体 `session_id` 做新会话标记 |
 | sessionApi.update | `/sessions/{sessionId}` | PATCH | `/sessions/{sessionId}/update` | POST | Query：`agent_id`；Body：会话更新字段（透传） | 标准 JSON；前端支持 silent |
-| sessionApi.delete | `/sessions/{sessionId}` | DELETE | `/sessions/{sessionId}/delete` | POST | Query：`agent_id`；无 Body | 标准 JSON |
+| sessionApi.remove | `/sessions/{sessionId}` | DELETE | `/sessions/{sessionId}/delete` | POST | Query：`agent_id`；无 Body | 标准 JSON |
 | sessionApi.interrupt | `/sessions/{sessionId}/interrupt` | POST | `/sessions/{sessionId}/interrupt` | POST | Query：`agent_id`；Body：`null` | 标准 JSON；中断正在进行的生成 |
 | sessionApi.messages | `/sessions/{sessionId}/messages` | GET | `/sessions/{sessionId}/messages` | GET | Query：`agent_id`、`before`（可选）、`limit`（可选） | 标准 JSON |
 | sessionApi.streamEvents | `/sessions/{sessionId}/stream` | GET（stream） | `/sessions/{sessionId}/stream` | GET | Query：`agent_id` | **SSE 流（`text/event-stream`），非 JSON 单次响应**：长连接，逐行读取 `data: {json}` 事件；Java 层必须以流式/SSE 透传（关闭缓冲、支持请求中止 signal），不能缓存整体响应 |

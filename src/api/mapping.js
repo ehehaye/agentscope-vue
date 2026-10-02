@@ -3,7 +3,8 @@
  *
  * 两种模式（对应 docs/API.md 与 docs/API-java-proxy.md）：
  * - direct：前端直连 Python 后端（GET/POST/PATCH/DELETE），Base URL 为 localStorage.server_url；
- * - proxy ：经 Java 中转服务，仅开放 GET/POST，Base URL 为 Base URL 为 localStorage.server_url，支持到路径：如 :http://hostname/proxy/api/
+ * - proxy ：经 Java 中转服务，仅开放 GET/POST，Base URL 为 localStorage.server_url
+ *   （含代理前缀路径，如 http://hostname/proxy/api/）。
  *   PATCH  -> POST {path}/update
  *   DELETE -> POST {path}/delete
  *
@@ -67,7 +68,7 @@ export const ENDPOINTS = {
     direct: { method: 'PATCH', path: '/credential/{credentialId}' },
     proxy: { method: 'POST', path: '/credential/{credentialId}/update' },
   },
-  'credential.delete': {
+  'credential.remove': {
     direct: { method: 'DELETE', path: '/credential/{credentialId}' },
     proxy: { method: 'POST', path: '/credential/{credentialId}/delete' },
   },
@@ -86,7 +87,7 @@ export const ENDPOINTS = {
     direct: { method: 'PATCH', path: '/channels/{channelId}' },
     proxy: { method: 'POST', path: '/channels/{channelId}/update' },
   },
-  'channel.delete': {
+  'channel.remove': {
     direct: { method: 'DELETE', path: '/channels/{channelId}' },
     proxy: { method: 'POST', path: '/channels/{channelId}/delete' },
   },
@@ -115,7 +116,7 @@ export const ENDPOINTS = {
     direct: { method: 'PATCH', path: '/agent/{agentId}' },
     proxy: { method: 'POST', path: '/agent/{agentId}/update' },
   },
-  'agent.delete': {
+  'agent.remove': {
     direct: { method: 'DELETE', path: '/agent/{agentId}' },
     proxy: { method: 'POST', path: '/agent/{agentId}/delete' },
   },
@@ -127,7 +128,7 @@ export const ENDPOINTS = {
     direct: { method: 'PATCH', path: '/schedule/{scheduleId}' },
     proxy: { method: 'POST', path: '/schedule/{scheduleId}/update' },
   },
-  'schedule.delete': {
+  'schedule.remove': {
     direct: { method: 'DELETE', path: '/schedule/{scheduleId}' },
     proxy: { method: 'POST', path: '/schedule/{scheduleId}/delete' },
   },
@@ -152,7 +153,7 @@ export const ENDPOINTS = {
     direct: { method: 'PATCH', path: '/knowledge_bases/{knowledgeBaseId}' },
     proxy: { method: 'POST', path: '/knowledge_bases/{knowledgeBaseId}/update' },
   },
-  'kb.delete': {
+  'kb.remove': {
     direct: { method: 'DELETE', path: '/knowledge_bases/{knowledgeBaseId}' },
     proxy: { method: 'POST', path: '/knowledge_bases/{knowledgeBaseId}/delete' },
   },
@@ -262,7 +263,7 @@ export const ENDPOINTS = {
     direct: { method: 'PATCH', path: '/sessions/{sessionId}' },
     proxy: { method: 'POST', path: '/sessions/{sessionId}/update' },
   },
-  'session.delete': {
+  'session.remove': {
     direct: { method: 'DELETE', path: '/sessions/{sessionId}' },
     proxy: { method: 'POST', path: '/sessions/{sessionId}/delete' },
   },

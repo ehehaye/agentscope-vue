@@ -1,7 +1,7 @@
 import { ApiError, client, getBaseUrl, getUserId } from './client';
 import { resolveEndpoint } from './mapping';
 
-/** Drop undefined values and stringify the rest for query params. */
+/** 丢弃 undefined 值，其余转成字符串，用于拼接 query 参数。 */
 function toQuery(params) {
   const query = {};
   for (const [key, value] of Object.entries(params)) {
@@ -10,11 +10,11 @@ function toQuery(params) {
   return query;
 }
 
-/** The backend caps `page_size` at 128. */
+/** 后端将 `page_size` 上限固定为 128。 */
 const MAX_PAGE_SIZE = 128;
 
 /**
- * Drain a paginated endpoint into one flat array.
+ * 把分页端点逐页取完，摊平成一个数组。
  */
 async function fetchAllPages(fetchPage) {
   const all = [];
@@ -27,7 +27,7 @@ async function fetchAllPages(fetchPage) {
 }
 
 /**
- * XHR-based upload — fetch does not surface byte-level send progress.
+ * 基于 XHR 的上传——fetch 无法暴露字节级发送进度。
  */
 function uploadDocumentXhr(knowledgeBaseId, file, options = {}) {
   const { onProgress, signal } = options;
@@ -78,13 +78,13 @@ function uploadDocumentXhr(knowledgeBaseId, file, options = {}) {
         if (typeof json.detail === 'string') detail = json.detail;
         else if (json.detail !== undefined) detail = JSON.stringify(json.detail);
       } catch {
-        // keep raw text
+        // 解析失败则保留原始文本
       }
       reject(new ApiError(xhr.status, detail));
     };
     xhr.onerror = () => {
       cleanup();
-      reject(new ApiError(0, 'Network error'));
+      reject(new ApiError(0, '无法连接到服务器，请检查服务器地址和网络。'));
     };
     xhr.onabort = () => {
       cleanup();
@@ -116,7 +116,7 @@ export const knowledgeBaseApi = {
 
   update: (knowledgeBaseId, body) => client.request('kb.update', { pathParams: { knowledgeBaseId }, body }),
 
-  delete: (knowledgeBaseId) => client.request('kb.delete', { pathParams: { knowledgeBaseId } }),
+  remove: (knowledgeBaseId) => client.request('kb.remove', { pathParams: { knowledgeBaseId } }),
 
   listDocuments: (knowledgeBaseId, params = {}) =>
     client.request('kb.listDocuments', {

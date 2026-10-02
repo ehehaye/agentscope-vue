@@ -90,7 +90,7 @@ async function streamRequest(path, options = {}) {
     throw error;
   }
 
-  // 提取代理错误（在此填写你的自定义校验逻辑）
+  // 提取代理错误：中转服务会把业务失败包装成 200 + {success:false}，需在此识别
   if (getApiMode() === API_MODES.PROXY && res.headers.get('content-type')?.includes('application/json')) {
     const text = await res.clone().text();
     if (isValidJsonStr(text)) {

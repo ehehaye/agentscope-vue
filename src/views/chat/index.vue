@@ -336,10 +336,7 @@ export default defineComponent({
      * 后续发送第一条消息时会自动创建会话。
      */
     function handleCreateSession() {
-      // TODO: ask for confirm
-      // if (phase.value === 'streaming' || phase.value === 'interrupting') {
-      //   interrupt().catch(() => {});
-      // }
+      // TODO: 回复进行中时，是否先弹确认再新建会话
       abort();
       router
         .push({ path: '/chat', query: { ...route.query, sessionId: undefined, memberId: undefined } })
@@ -423,12 +420,6 @@ export default defineComponent({
       });
       await removeSession(sid, agentId.value);
       if (sid === sessionId.value) {
-        // const remaining = sessions.value.filter((v) => v.session?.id !== sid);
-        // if (remaining.length > 0) {
-        //   navigateTo(agentId.value, remaining[0].session.id);
-        // } else {
-        //   router.push({ name: 'chat', query: { ...route.query, sessionId: undefined } }).catch(() => {});
-        // }
         router.push({ name: 'chat', query: { ...route.query, sessionId: undefined } }).catch(() => {});
       }
     }
@@ -440,7 +431,8 @@ export default defineComponent({
 
     async function openDeleteAgent(agent) {
       if (!agent) return;
-      const name = agent.name || agent.id;
+      
+      const name = agent.data?.name || agent.id;
       await MessageBox.confirm(`确定删除助手「${name}」吗？`, '删除助手', {
         type: 'warning',
         confirmButtonText: '删除',

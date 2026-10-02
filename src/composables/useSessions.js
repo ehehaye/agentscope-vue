@@ -84,7 +84,7 @@ export function useSessions(agentId) {
   }
 
   async function remove(sid, aid) {
-    await sessionApi.delete(sid, aid);
+    await sessionApi.remove(sid, aid);
     await refetch();
   }
 

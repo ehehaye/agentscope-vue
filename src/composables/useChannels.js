@@ -41,7 +41,7 @@ export function useChannels() {
   }
 
   async function remove(channelId) {
-    await channelApi.delete(channelId);
+    await channelApi.remove(channelId);
     await refetch();
   }
 

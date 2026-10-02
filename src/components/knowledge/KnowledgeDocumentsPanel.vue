@@ -37,7 +37,7 @@
       v-if="loading"
       class="tw-py-4 tw-text-center tw-text-sm tw-text-muted-foreground"
     >
-      加载中...
+      加载中…
     </div>
     <template v-else>
       <div
@@ -415,7 +415,7 @@ export default defineComponent({
 
     async function handleDelete(doc) {
       if (!doc) return;
-      await MessageBox.confirm(`确定删除「${doc.filename}」吗？`, '删除文档', {
+      await MessageBox.confirm(`确定删除文档「${doc.filename}」吗？`, '删除文档', {
         type: 'warning',
         confirmButtonText: '删除',
         cancelButtonText: '取消',

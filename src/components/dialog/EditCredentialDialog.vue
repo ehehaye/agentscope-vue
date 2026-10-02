@@ -20,7 +20,7 @@
         v-else
         class="tw-text-sm tw-text-muted-foreground"
       >
-        加载中...
+        加载中…
       </p>
     </div>
 

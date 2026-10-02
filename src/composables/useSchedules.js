@@ -41,7 +41,7 @@ export function useSchedules() {
   }
 
   async function remove(scheduleId) {
-    await scheduleApi.delete(scheduleId);
+    await scheduleApi.remove(scheduleId);
     await refetch();
   }
 

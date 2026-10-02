@@ -3,7 +3,7 @@
     icon="lucide:loader-2"
     :class="cn('tw-size-4 tw-animate-spin', className)"
     role="status"
-    aria-label="Loading"
+    aria-label="加载中"
     v-bind="$attrs"
   />
 </template>

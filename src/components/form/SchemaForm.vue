@@ -1,14 +1,14 @@
 <template>
   <el-form
     label-position="top"
-    class="tw-schema-form"
-    :class="columns > 1 ? 'tw-schema-form--cols' : null"
+    class="as-schema-form"
+    :class="columns > 1 ? 'as-schema-form--cols' : null"
   >
     <el-form-item
       v-for="[key, prop] in entries"
       :key="key"
       :label="labelFor(key, prop)"
-      :class="columns > 1 && prop.format === 'textarea' ? 'tw-schema-form__item--wide' : null"
+      :class="columns > 1 && prop.format === 'textarea' ? 'as-schema-form__item--wide' : null"
     >
       <template v-if="effectiveType(prop) === 'boolean'">
         <el-switch
@@ -135,12 +135,12 @@ export default defineComponent({
 
 <style lang="less">
 /* columns>1 时的双列网格；textarea 跨整行。窄视口下随弹窗全局 max-width 收缩回落单列。 */
-.tw-schema-form--cols {
+.as-schema-form--cols {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   column-gap: 16px;
 
-  .tw-schema-form__item--wide {
+  .as-schema-form__item--wide {
     grid-column: 1 / -1;
   }
 

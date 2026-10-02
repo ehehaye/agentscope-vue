@@ -16,7 +16,7 @@
         v-if="loading"
         class="tw-flex tw-h-full tw-items-center tw-justify-center tw-text-muted-foreground"
       >
-        加载中...
+        加载中…
       </div>
       <EmptyState v-else-if="filteredSchedules.length === 0" />
       <div

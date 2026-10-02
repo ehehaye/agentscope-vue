@@ -194,7 +194,7 @@ export default defineComponent({
     async function askRemove(skill) {
       if (!skill) return;
       const name = skill.display_name || skill.name || '';
-      await MessageBox.confirm('此操作无法撤销。', `删除浏览并安装技能 "${name}"？`, {
+      await MessageBox.confirm(`确定删除技能「${name}」吗？删除后无法恢复。`, '删除技能', {
         type: 'warning',
         confirmButtonText: '删除',
         cancelButtonText: '取消',

@@ -188,7 +188,7 @@ export default defineComponent({
       emit('update:open', v);
     });
 
-    // watch activeTab to load preview when switching
+    // 切到预览页签时按需加载正文
     watch(activeTab, (tab) => {
       if (tab === 'preview' && text.value === null && !tokenUrl.value && !previewLoading.value) {
         loadPreview();
@@ -259,7 +259,7 @@ export default defineComponent({
           '_blank',
         );
       } catch (e) {
-        // error is toasted by client
+        // 错误已由 client 层统一弹 toast，这里不再处理
       }
     }
 

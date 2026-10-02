@@ -144,7 +144,7 @@ export default defineComponent({
 
     async function askRemove(name) {
       if (!name) return;
-      await MessageBox.confirm('删除后无法恢复，是否继续？', `删除 MCP "${name}"？`, {
+      await MessageBox.confirm(`确定删除 MCP「${name}」吗？`, '删除 MCP', {
         type: 'warning',
         confirmButtonText: '删除',
         cancelButtonText: '取消',

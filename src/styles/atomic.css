@@ -1,4 +1,4 @@
-/* 抽离自 Tailwind v4 任意值 [xxx] 语法的原子类（as- 前缀）。
+/* 抽离自 Tailwind v4 任意值 [xxx] 语法的原子类（tw- 前缀）。
  * 仅收录简单任意值；任意变体（如 [&>x]:、has-[...]:、data-[x=y]:）留在原位。
  * 由 src/main.js 在 index.css / element-ui 之后引入，作为 plain CSS 加载，
  * specificity 与 Tailwind 工具类相同，但后加载可覆盖同名属性。

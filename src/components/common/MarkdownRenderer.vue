@@ -116,7 +116,7 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
-    // 打字机速度倍率，默认 1；越大越快（同时影响追帧灵敏度与每帧吐字上限）
+    // 打字机速度倍率，默认 0.5；越大越快（同时影响追帧灵敏度与每帧吐字上限）
     speed: {
       type: Number,
       default: 0.5,
@@ -194,9 +194,8 @@ export default defineComponent({
     getHtml() {
       const { displayContent } = this;
       /**
-       * Avoid flickering by building self-healing markdown content used remend
-       * example: "This is **bold text"
-       * output: "This is **bold text**"
+       * 用 remend 把不完整的 Markdown 自动补全，避免打字机输出半截语法导致闪烁。
+       * 例："This is **bold text" → "This is **bold text**"
        */
       return displayContent
         ? DOMPurify.sanitize(marked(remend(displayContent)), {
@@ -213,7 +212,7 @@ export default defineComponent({
         this.pendingUpdate = false;
         this.htmlRafId = null;
 
-        // Convert HTML to vNodes so that every content change triggers Vue's diff algorithm for incremental updates only.
+        // 把 HTML 转成 vNode 树，让每次内容变化只触发 Vue diff 做增量更新。
         const html = this.getHtml();
         this.astTree = html ? parseDocument(html).children : [];
       });
@@ -281,7 +280,7 @@ export default defineComponent({
     margin: @spacing-xs 0;
 
     .md-code-lang {
-      tw-text-align: left;
+      text-align: left;
       font-size: 12px;
       color: @text-secondary;
       padding: 4px @spacing-sm;
@@ -299,7 +298,7 @@ export default defineComponent({
       background-color: @surface-muted;
       user-select: none;
       min-width: 40px;
-      tw-text-align: right;
+      text-align: right;
 
       span {
         display: block;
@@ -342,7 +341,7 @@ export default defineComponent({
     .md-td {
       border: 1px solid @border-color;
       padding: @spacing-sm @spacing-md;
-      tw-text-align: left;
+      text-align: left;
     }
 
     .md-th {
@@ -353,10 +352,10 @@ export default defineComponent({
 
   .md-link {
     color: @primary-color;
-    tw-text-decoration: none;
+    text-decoration: none;
 
     &:hover {
-      tw-text-decoration: underline;
+      text-decoration: underline;
     }
   }
 

@@ -257,7 +257,7 @@ export default defineComponent({
       if (!ch) return;
       const name =
         ch.name?.trim() || `${typeOf(ch.channel_type)?.display_name || ch.channel_type} · ${ch.id.slice(0, 8)}`;
-      await MessageBox.confirm('删除后无法恢复，是否继续？', `删除频道「${name}」`, {
+      await MessageBox.confirm(`确定删除频道「${name}」吗？删除后无法恢复。`, '删除频道', {
         type: 'warning',
         confirmButtonText: '删除',
         cancelButtonText: '取消',

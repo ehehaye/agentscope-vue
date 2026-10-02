@@ -1,13 +1,13 @@
-/** Display label for a credential: its user-facing name, or a short id prefix. */
+/** 凭证的展示名：优先取用户设置的名字，否则退化为短 id 前缀。 */
 export function credentialLabel(credential) {
   return credential.data.name || credential.id.slice(0, 8);
 }
 
 /**
- * Copy a string to the system clipboard.
+ * 把字符串复制到系统剪贴板。
  *
- * @param {string} text The text content to copy.
- * @returns {Promise<boolean>} A promise that resolves to true if the copy succeeds; false otherwise.
+ * @param {string} text 要复制的文本。
+ * @returns {Promise<boolean>} 复制成功返回 true，否则 false。
  */
 export const copyToClipboard = async (text) => {
   try {
@@ -33,9 +33,9 @@ export const copyToClipboard = async (text) => {
 };
 
 /**
- * Format a number to a human-readable string with commas and suffixes
- * @param {number} num - The number to format
- * @returns {string} Formatted string (e.g., "1,000", "10.2k", "1.5M")
+ * 把数字格式化为易读字符串：千位加逗号，超过千用 k/M/B 后缀。
+ * @param {number} num 要格式化的数字
+ * @returns {string} 如 "1,000"、"10.2k"、"1.5M"
  */
 export function formatNumber(num) {
   if (num < 1000) {
@@ -60,34 +60,10 @@ export function formatNumber(num) {
 }
 
 /**
- * Format a duration in seconds into a human-readable string with appropriate units.
- * @param {number} seconds - The duration in seconds to format
- * @returns {string} Formatted string with unit (e.g., "500.00ms" or "2.50s")
- */
-export const formatDurationWithUnit = (seconds) => {
-  if (seconds < 1) {
-    return `${(seconds * 1000).toFixed(2)}ms`;
-  }
-  return `${seconds.toFixed(2)}s`;
-};
-
-/**
- * Format a duration in seconds into a numeric value with appropriate scaling.
- * @param {number} seconds - The duration in seconds to format
- * @returns {number} Formatted number (in milliseconds if < 1 second, otherwise in seconds)
- */
-export const formatDuration = (seconds) => {
-  if (seconds < 1) {
-    return parseFloat((seconds * 1000).toFixed(2));
-  }
-  return parseFloat(seconds.toFixed(2));
-};
-
-/**
- * Format a duration in seconds into a human-readable, compact string.
- * @param {number} seconds - The duration in seconds to format
- * @param {{ leadingUnitOnly?: boolean }} [options]
- * @returns {string} Formatted string (e.g., "45s", "2min30s", "3h", "5d", "2y")
+ * 把秒数格式化为紧凑的可读时长字符串。
+ * @param {number} seconds 要格式化的秒数
+ * @param {{ leadingUnitOnly?: boolean }} [options] 是否只保留最高单位
+ * @returns {string} 如 "45s"、"2m30s"、"3h"、"5d"、"2y"
  */
 export const formatTime = (seconds, options = {}) => {
   const total = Math.floor(seconds);
@@ -115,13 +91,13 @@ export const formatTime = (seconds, options = {}) => {
 };
 
 /**
- * Convert an OKLCH colour to a 6-digit hex string for broad browser compatibility.
- * @param {number} L - Perceived lightness (0..1).
- * @param {number} C - Chroma (0..~0.4).
- * @param {number} H - Hue in degrees (0..360).
- * @returns {string} The colour as a hex string (e.g. "#d7f2ec").
+ * 把 OKLCH 颜色转成 6 位 hex 字符串，兼容更多浏览器。仅供本文件内部使用。
+ * @param {number} L 感知亮度（0..1）
+ * @param {number} C 彩度（0..~0.4）
+ * @param {number} H 色相角度（0..360）
+ * @returns {string} hex 字符串（如 "#d7f2ec"）
  */
-export const oklchToHex = (L, C, H) => {
+const oklchToHex = (L, C, H) => {
   const hrad = (H * Math.PI) / 180;
   const a = C * Math.cos(hrad);
   const b = C * Math.sin(hrad);
@@ -150,8 +126,8 @@ export const oklchToHex = (L, C, H) => {
 };
 
 /**
- * A deterministic, readable colour pair for a fallback avatar.
- * @param {string} seed - Stable identity, e.g. the card or hub name.
+ * 为回退头像生成确定、可读性好的配色对。
+ * @param {string} seed 稳定标识，如卡片或 hub 名称
  * @returns {{ backgroundColor: string, color: string }}
  */
 export const avatarTint = (seed) => {

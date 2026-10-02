@@ -125,8 +125,8 @@ export default defineComponent({
 
     const renderer = computed(() => {
       const name = props.toolCall.name;
-      // Confirm body only makes sense for tools that visualise their input
-      // (file path, command, etc.). For everything else fall back to JSON.
+      // 确认卡片正文只对能可视化入参的工具（文件路径、命令等）有意义，
+      // 其余工具统一回退为 JSON 展示。
       if (name === 'Bash' || name === 'Read' || name === 'Write' || name === 'Edit') {
         return getRenderer(name);
       }

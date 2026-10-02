@@ -46,8 +46,8 @@ export const sessionApi = {
       ...options,
     }),
 
-  delete: (sessionId, agentId) =>
-    client.request('session.delete', {
+  remove: (sessionId, agentId) =>
+    client.request('session.remove', {
       pathParams: { sessionId },
       params: { agent_id: agentId },
     }),

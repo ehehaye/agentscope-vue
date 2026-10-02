@@ -140,7 +140,7 @@ export default defineComponent({
 
     async function askRemove(name) {
       if (!name) return;
-      await MessageBox.confirm('删除后无法恢复，是否继续？', `删除技能 "${name}"？`, {
+      await MessageBox.confirm(`确定删除技能「${name}」吗？`, '删除技能', {
         type: 'warning',
         confirmButtonText: '删除',
         cancelButtonText: '取消',

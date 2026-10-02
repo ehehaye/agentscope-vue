@@ -38,7 +38,7 @@
               v-if="sessionsLoading"
               class="tw-py-4 tw-text-center tw-text-sm tw-text-muted-foreground"
             >
-              加载中...
+              加载中…
             </div>
             <div
               v-else-if="sessions.length === 0"
@@ -160,7 +160,7 @@ export default defineComponent({
     async function handleDelete() {
       const schedule = props.schedule;
       if (!schedule) return;
-      await MessageBox.confirm('此操作无法撤销。', `删除日程 "${schedule.data?.name || ''}"？`, {
+      await MessageBox.confirm(`确定删除日程「${schedule.data?.name || ''}」吗？`, '删除日程', {
         type: 'warning',
         confirmButtonText: '删除',
         cancelButtonText: '取消',

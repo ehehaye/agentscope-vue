@@ -47,7 +47,7 @@ function startUpload(task) {
   if (!file) {
     store.commit('upload/UPLOAD_FAILED', {
       taskId: task.taskId,
-      error: 'Internal error: missing file payload.',
+      error: '内部错误：上传文件数据丢失。',
     });
     return;
   }
@@ -71,7 +71,7 @@ function startUpload(task) {
     })
     .catch((err) => {
       if (err instanceof DOMException && err.name === 'AbortError') return;
-      const message = err instanceof Error ? err.message : 'Upload failed.';
+      const message = err instanceof Error ? err.message : '上传失败。';
       store.commit('upload/UPLOAD_FAILED', { taskId: task.taskId, error: message });
     })
     .finally(() => {

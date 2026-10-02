@@ -219,7 +219,7 @@ export default defineComponent({
     async function askDelete(kb) {
       if (!kb) return;
       await MessageBox.confirm(
-        `确定删除知识库 "${kb.name || ''}"？相关文档与索引将一并删除，不可恢复。`,
+        `确定删除知识库「${kb.name || ''}」吗？相关文档与索引将一并删除，不可恢复。`,
         '删除知识库',
         {
           type: 'warning',

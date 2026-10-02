@@ -1,5 +1,5 @@
 /**
- * Streaming audio playback support for assistant DataBlocks.
+ * 助手 DataBlock 的流式音频播放支持。
  */
 
 function base64ToBytes(b64) {

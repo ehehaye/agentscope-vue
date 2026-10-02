@@ -9,5 +9,5 @@ export const credentialApi = {
 
   update: (credentialId, body) => client.request('credential.update', { pathParams: { credentialId }, body }),
 
-  delete: (credentialId) => client.request('credential.delete', { pathParams: { credentialId } }),
+  remove: (credentialId) => client.request('credential.remove', { pathParams: { credentialId } }),
 };

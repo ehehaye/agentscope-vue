@@ -7,7 +7,7 @@ export const scheduleApi = {
 
   update: (scheduleId, body) => client.request('schedule.update', { pathParams: { scheduleId }, body }),
 
-  delete: (scheduleId) => client.request('schedule.delete', { pathParams: { scheduleId } }),
+  remove: (scheduleId) => client.request('schedule.remove', { pathParams: { scheduleId } }),
 
   listSessions: (scheduleId) => client.request('schedule.listSessions', { pathParams: { scheduleId } }),
 };
