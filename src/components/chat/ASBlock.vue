@@ -1,7 +1,10 @@
 <template>
   <div>
     <template v-if="block.type === 'text'">
-      <MarkdownRenderer :content="block.text" />
+      <MarkdownRenderer
+        :content="block.text"
+        :typewriter="!block.finished_at"
+      />
     </template>
 
     <template v-else-if="block.type === 'thinking'">
@@ -18,7 +21,10 @@
           </div>
         </template>
         <div class="tw-mt-2 tw-rounded-md tw-bg-muted tw-p-2 tw-text-sm tw-text-muted-foreground">
-          <MarkdownRenderer :content="block.thinking" />
+          <MarkdownRenderer
+            :content="block.thinking"
+            :typewriter="!block.finished_at"
+          />
         </div>
       </Collapsible>
     </template>

@@ -111,21 +111,38 @@ export default defineComponent({
       type: String,
       default: '',
     },
+    // 打字机模式：displayContent 滞后于 content，逐帧追赶，实现平滑输出
+    typewriter: {
+      type: Boolean,
+      default: false,
+    },
+    // 打字机速度倍率，默认 1；越大越快（同时影响追帧灵敏度与每帧吐字上限）
+    speed: {
+      type: Number,
+      default: 0.5,
+    },
   },
   data() {
     return {
       htmlRafId: null,
       pendingUpdate: false,
       astTree: [],
+      displayContent: '',
+      twRafId: null,
     };
   },
   watch: {
     content: {
-      handler() {
-        if (!this.pendingUpdate) {
-          this.pendingUpdate = true;
+      handler(val) {
+        const isAppend = val.startsWith(this.displayContent);
+        // 非纯追加（整段替换/历史回填）或首次渲染时直接同步，不做动画
+        if (!this.typewriter || !isAppend) {
+          this.stopTypewriter();
+          this.displayContent = val;
           this.updateAstTree();
+          return;
         }
+        this.scheduleTypewriter();
       },
       immediate: true,
     },
@@ -134,17 +151,45 @@ export default defineComponent({
     if (this.htmlRafId) {
       cancelAnimationFrame(this.htmlRafId);
     }
+    this.stopTypewriter();
   },
   methods: {
+    stopTypewriter() {
+      if (this.twRafId) {
+        cancelAnimationFrame(this.twRafId);
+        this.twRafId = null;
+      }
+    },
+    scheduleTypewriter() {
+      if (this.twRafId) {
+        return;
+      }
+      const step = () => {
+        this.twRafId = null;
+        const target = this.content.length;
+        const current = this.displayContent.length;
+        const backlog = target - current;
+        if (backlog <= 0) {
+          return;
+        }
+        // 自适应速度：积压越多每帧吐字越多，平滑的同时保证追得上流式速度；speed 为整体倍率
+        const speed = this.speed > 0 ? this.speed : 1;
+        const stepChars = Math.min(Math.max(Math.ceil((backlog / 12) * speed), 1), Math.ceil(24 * speed));
+        this.displayContent = this.content.slice(0, current + stepChars);
+        this.updateAstTree();
+        this.twRafId = requestAnimationFrame(step);
+      };
+      this.twRafId = requestAnimationFrame(step);
+    },
     getHtml() {
-      const { content } = this;
+      const { displayContent } = this;
       /**
        * Avoid flickering by building self-healing markdown content used remend
        * example: "This is **bold text"
        * output: "This is **bold text**"
        */
-      return content
-        ? DOMPurify.sanitize(marked(remend(content)), {
+      return displayContent
+        ? DOMPurify.sanitize(marked(remend(displayContent)), {
             ADD_TAGS: this.CUSTOM_TAGS,
             ALLOW_DATA_ATTR: true,
           })
