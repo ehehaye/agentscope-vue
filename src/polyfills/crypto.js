@@ -1,4 +1,5 @@
 // crypto.randomUUID 仅在安全上下文（HTTPS / localhost）可用，缺失时依赖内部调用会直接抛错。
+// 如 @agentscope-ai/agentscope 的 dist/message/index.mjs 生成消息/内容块 id 时直接调用，必须 polyfill。
 // 不能用 uuid@14 的 v4 兜底：它会优先回调 crypto.randomUUID，造成无限递归（栈溢出）。
 // getRandomValues 在 HTTP 下同样可用，这里自行实现 v4 UUID。
 const cryptoObj = typeof globalThis.crypto !== 'undefined' ? globalThis.crypto : undefined;
