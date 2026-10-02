@@ -125,18 +125,28 @@ export default defineComponent({
   data() {
     return {
       htmlRafId: null,
+      twRafId: null,
       pendingUpdate: false,
       astTree: [],
       displayContent: '',
-      twRafId: null,
+      // 是否已完成首次同步：首次内容（含历史回填）直接渲染，不走打字机
+      initialized: false,
     };
   },
   watch: {
     content: {
       handler(val) {
-        const isAppend = val.startsWith(this.displayContent);
-        // 非纯追加（整段替换/历史回填）或首次渲染时直接同步，不做动画
-        if (!this.typewriter || !isAppend) {
+        // 首次渲染（含历史回填）直接同步，不做动画。
+        // 注意：此时 displayContent 为空串，startsWith('') 恒为 true，无法用追加判断区分，故用显式标记
+        if (!this.typewriter || !this.initialized) {
+          this.initialized = true;
+          this.stopTypewriter();
+          this.displayContent = val;
+          this.updateAstTree();
+          return;
+        }
+        // 非纯追加（整段替换）时直接同步，不做动画
+        if (!val.startsWith(this.displayContent)) {
           this.stopTypewriter();
           this.displayContent = val;
           this.updateAstTree();

@@ -3,7 +3,7 @@
     <template v-if="block.type === 'text'">
       <MarkdownRenderer
         :content="block.text"
-        :typewriter="!block.finished_at"
+        typewriter
       />
     </template>
 
@@ -23,7 +23,7 @@
         <div class="tw-mt-2 tw-rounded-md tw-bg-muted tw-p-2 tw-text-sm tw-text-muted-foreground">
           <MarkdownRenderer
             :content="block.thinking"
-            :typewriter="!block.finished_at"
+            typewriter
           />
         </div>
       </Collapsible>
