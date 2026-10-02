@@ -1,6 +1,6 @@
 <template>
   <el-button
-    v-print="target"
+    v-print="printOptions"
     type="text"
     size="small"
     circle
@@ -17,7 +17,7 @@
 <script>
 import Vue from 'vue';
 import print from 'vue-print-nb';
-import { defineComponent } from '@/composables/vue';
+import { computed, defineComponent } from '@/composables/vue';
 import { Icon } from '@/components/iconify/index';
 
 export default defineComponent({
@@ -25,10 +25,15 @@ export default defineComponent({
   directives: { print },
   components: { Icon },
   props: {
-    /** 打印目标节点 CSS 选择器（如 "#as-chat-history"） */
     target: { type: String, required: true },
-    /** 空会话时禁用，避免 v-print 找不到目标节点 */
+    title: { type: String, default: '' },
     disabled: { type: Boolean, default: false },
+  },
+  setup(props) {
+    // v-print 接受对象形式时可传入 id / popTitle 等；popTitle 会写入打印 iframe 的 <title>，
+    // 也是 Chrome 打印对话框「另存为 PDF」时的默认文件名来源。
+    const printOptions = computed(() => ({ id: props.target, popTitle: props.title || document.title }));
+    return { printOptions };
   },
 });
 </script>
