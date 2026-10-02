@@ -85,7 +85,7 @@
 <script>
 import { defineComponent, ref, computed } from '@/composables/vue';
 import { MessageBox } from 'element-ui';
-import { Icon } from '@/components/iconify/index.js';
+import { Icon } from '@/components/ui/Icon';
 import { InputGroup, InputGroupInput, InputGroupAddon } from '@/components/ui/InputGroup.js';
 import { Item, ItemMedia, ItemContent, ItemTitle, ItemDescription, ItemActions } from '@/components/ui/Item.js';
 import PanelEmpty from './PanelEmpty.vue';

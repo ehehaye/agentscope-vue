@@ -21,7 +21,7 @@
 
 <script>
 import { defineComponent } from '@/composables/vue';
-import { Icon } from '@/components/iconify/index';
+import { Icon } from '@/components/ui/Icon';
 
 export default defineComponent({
   name: 'ScheduleEmptyState',

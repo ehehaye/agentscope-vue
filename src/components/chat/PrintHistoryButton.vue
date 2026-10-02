@@ -18,7 +18,7 @@
 import Vue from 'vue';
 import print from 'vue-print-nb';
 import { computed, defineComponent } from '@/composables/vue';
-import { Icon } from '@/components/iconify/index';
+import { Icon } from '@/components/ui/Icon';
 
 export default defineComponent({
   name: 'PrintHistoryButton',

@@ -55,7 +55,7 @@
 
 <script>
 import { defineComponent, ref, watch } from '@/composables/vue';
-import { Icon } from '@/components/iconify';
+import { Icon } from '@/components/ui/Icon';
 
 /**
  * 3D 翻转卡片容器。

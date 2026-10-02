@@ -126,7 +126,7 @@
 
 <script>
 import { defineComponent, ref, computed } from '@/composables/vue';
-import { Icon } from '@/components/iconify/index';
+import { Icon } from '@/components/ui/Icon';
 import Scrollbar from '@/components/ui/Scrollbar.vue';
 
 /** 解析 toolCall.input（JSON 字符串）中的 questions。 */

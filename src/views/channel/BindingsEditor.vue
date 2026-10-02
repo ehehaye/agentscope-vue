@@ -106,7 +106,7 @@
 
 <script>
 import { defineComponent } from '@/composables/vue';
-import { Icon } from '@/components/iconify/index';
+import { Icon } from '@/components/ui/Icon';
 import AgentSelect from '@/components/select/AgentSelect.vue';
 
 export default defineComponent({

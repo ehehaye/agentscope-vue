@@ -174,7 +174,7 @@
 
 <script>
 import { defineComponent, ref, computed } from '@/composables/vue';
-import { Icon } from '@/components/iconify/index';
+import { Icon } from '@/components/ui/Icon';
 import Spinner from '@/components/ui/Spinner.vue';
 import { useMCPHubCards } from '@/composables/useMCPHubCards';
 

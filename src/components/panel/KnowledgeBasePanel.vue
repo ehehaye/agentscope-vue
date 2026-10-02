@@ -71,7 +71,7 @@
 
 <script>
 import { defineComponent, ref, computed } from '@/composables/vue';
-import { Icon } from '@/components/iconify/index.js';
+import { Icon } from '@/components/ui/Icon';
 import { InputGroup, InputGroupInput, InputGroupAddon } from '@/components/ui/InputGroup.js';
 import { Item, ItemContent, ItemTitle, ItemDescription } from '@/components/ui/Item.js';
 import PanelEmpty from './PanelEmpty.vue';

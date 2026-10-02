@@ -80,7 +80,7 @@
 <script>
 import { defineComponent, ref, computed, watch, getCurrentInstance } from '@/composables/vue';
 import { MessageBox } from 'element-ui';
-import { Icon } from '@/components/iconify/index';
+import { Icon } from '@/components/ui/Icon';
 import StatusBadge from '@/components/badge/StatusBadge.vue';
 import { scheduleApi } from '@/api';
 import { parseCronExpression, getFrequencyLabel } from './schedule-utils';

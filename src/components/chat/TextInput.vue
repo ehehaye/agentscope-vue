@@ -123,7 +123,7 @@
 
 <script>
 import { defineComponent, ref, computed } from '@/composables/vue';
-import { Icon } from '@/components/iconify/index';
+import { Icon } from '@/components/ui/Icon';
 import DotSpinner from '@/components/ui/DotSpinner.vue';
 import Scrollbar from '@/components/ui/Scrollbar.vue';
 import PrintHistoryButton from './PrintHistoryButton.vue';

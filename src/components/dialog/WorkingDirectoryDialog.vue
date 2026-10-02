@@ -141,7 +141,7 @@
 
 <script>
 import { defineComponent, ref, watch } from '@/composables/vue';
-import { Icon } from '@/components/iconify/index';
+import { Icon } from '@/components/ui/Icon';
 import Spinner from '@/components/ui/Spinner.vue';
 import { workspaceApi } from '@/api';
 

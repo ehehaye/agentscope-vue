@@ -27,7 +27,7 @@
 
 <script>
 import { defineComponent, ref, watch, nextTick, onMounted, onUnmounted } from '@/composables/vue';
-import { Icon } from '@/components/iconify/index';
+import { Icon } from '@/components/ui/Icon';
 import Scrollbar from '@/components/ui/Scrollbar.vue';
 
 /**

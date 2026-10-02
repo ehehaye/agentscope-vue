@@ -146,7 +146,7 @@
 <script>
 import { defineComponent, ref, computed } from '@/composables/vue';
 import { MessageBox } from 'element-ui';
-import { Icon } from '@/components/iconify/index';
+import { Icon } from '@/components/ui/Icon';
 import Spinner from '@/components/ui/Spinner.vue';
 import MarkdownRenderer from '@/components/common/MarkdownRenderer.vue';
 import { skillApi } from '@/api';

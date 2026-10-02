@@ -139,7 +139,7 @@
 
 <script>
 import { defineComponent, ref, computed, watch } from '@/composables/vue';
-import { Icon } from '@/components/iconify/index';
+import { Icon } from '@/components/ui/Icon';
 import Spinner from '@/components/ui/Spinner.vue';
 import { useMCPs } from '@/composables/useMCPs';
 import MCPConfigForm from './MCPConfigForm.vue';

@@ -111,7 +111,7 @@
 
 <script>
 import { defineComponent, computed } from '@/composables/vue';
-import { Icon } from '@/components/iconify/index';
+import { Icon } from '@/components/ui/Icon';
 import { useAvailableModels } from '@/composables/useAvailableModels';
 import { credentialLabel } from '@/utils/common';
 

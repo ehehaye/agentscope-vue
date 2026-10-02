@@ -32,7 +32,7 @@
 
 <script>
 import { defineComponent, computed } from '@/composables/vue';
-import { Icon } from '@/components/iconify/index.js';
+import { Icon } from '@/components/ui/Icon';
 import ConfirmCard from './ConfirmCard.vue';
 import AskUserCard from './AskUserCard.vue';
 

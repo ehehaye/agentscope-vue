@@ -67,7 +67,7 @@
 
 <script>
 import { defineComponent, ref, computed } from '@/composables/vue';
-import { Icon } from '@/components/iconify/index.js';
+import { Icon } from '@/components/ui/Icon';
 import PanelEmpty from './PanelEmpty.vue';
 
 export default defineComponent({

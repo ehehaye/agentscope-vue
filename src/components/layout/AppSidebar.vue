@@ -118,7 +118,7 @@
 
 <script>
 import { defineComponent } from '@/composables/vue';
-import { Icon } from '@/components/iconify/index';
+import { Icon } from '@/components/ui/Icon';
 import agentscopeLogo from '@/assets/imgs/agentscope.svg';
 
 export default defineComponent({

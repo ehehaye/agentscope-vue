@@ -184,7 +184,7 @@
 <script>
 import { defineComponent, ref, computed, watch, onBeforeUnmount } from '@/composables/vue';
 import { MessageBox } from 'element-ui';
-import { Icon } from '@/components/iconify/index.js';
+import { Icon } from '@/components/ui/Icon';
 import { channelApi } from '@/api';
 import { useChannels } from '@/composables/useChannels';
 import { useAgents } from '@/composables/useAgents';

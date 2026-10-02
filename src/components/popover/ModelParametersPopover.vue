@@ -145,7 +145,7 @@
 
 <script>
 import { defineComponent, ref, computed, watch } from '@/composables/vue';
-import { Icon } from '@/components/iconify/index';
+import { Icon } from '@/components/ui/Icon';
 import { useAvailableTTSModels } from '@/composables/useAvailableTTSModels';
 import { credentialLabel } from '@/utils/common';
 

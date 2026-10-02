@@ -194,7 +194,7 @@
 <script>
 import { defineComponent, computed, ref, watch } from '@/composables/vue';
 import { channelApi } from '@/api';
-import { Icon } from '@/components/iconify/index.js';
+import { Icon } from '@/components/ui/Icon';
 import TypeAvatar from './TypeAvatar.vue';
 import ChannelStatusBadge from './ChannelStatusBadge.vue';
 

@@ -78,7 +78,7 @@
 
 <script>
 import { defineComponent, computed } from '@/composables/vue';
-import { Icon } from '@/components/iconify/index';
+import { Icon } from '@/components/ui/Icon';
 import { parseCronExpression, getFrequencyLabel } from './schedule-utils';
 
 export default defineComponent({

@@ -139,7 +139,7 @@
 
 <script>
 import { defineComponent, computed } from '@/composables/vue';
-import { Icon } from '@/components/iconify/index.js';
+import { Icon } from '@/components/ui/Icon';
 import { isToday, isYesterday, isValid, format } from 'date-fns';
 import AgentSelect from '@/components/select/AgentSelect.vue';
 import Spinner from '@/components/ui/Spinner.vue';

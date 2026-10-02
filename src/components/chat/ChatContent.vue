@@ -112,7 +112,7 @@
 
 <script>
 import { defineComponent, computed, ref, watch, onUnmounted } from '@/composables/vue';
-import { Icon } from '@/components/iconify/index.js';
+import { Icon } from '@/components/ui/Icon';
 import { getContentBlocks } from '@agentscope-ai/agentscope/message';
 import { ReplyFinishedReason } from '@agentscope-ai/agentscope/event';
 import { SdkBlockType, SdkToolCallState } from '@/constants/protocol';

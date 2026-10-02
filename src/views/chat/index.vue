@@ -162,7 +162,7 @@ import { useAvailableModels } from '@/composables/useAvailableModels';
 import { provideAudioCenter, useAudioCenter } from '@/composables/useAudioCenter.js';
 import { sessionApi, credentialApi } from '@/api';
 import { AppReplyPhase } from '@/constants/app-state';
-import { Icon } from '@/components/iconify/index';
+import { Icon } from '@/components/ui/Icon';
 import ChatContent from '@/components/chat/ChatContent.vue';
 import ConnectionStatus from '@/components/chat/ConnectionStatus.vue';
 import SessionList from '@/components/chat/SessionList.vue';
