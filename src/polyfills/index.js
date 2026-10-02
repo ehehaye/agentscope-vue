@@ -1,3 +1,4 @@
-import { installAbortSignalPolyfill } from 'abort-signal-polyfill/dist/index.js';
-// 为不支持 AbortSignal.any / timeout / abort 的旧版浏览器补齐能力
-installAbortSignalPolyfill();
+// 各 polyfill 按职能独立成文件，在此统一引入；
+// 本模块是 main.js 的首个 import，保证所有补丁先于业务与依赖代码执行
+import './abort-signal';
+import './crypto';
