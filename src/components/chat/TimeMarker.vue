@@ -1,5 +1,5 @@
 <template>
-  <div class="tw-my-4 tw-flex tw-items-center tw-justify-center">
+  <div class="time-marker tw-my-4 tw-flex tw-items-center tw-justify-center">
     <span class="tw-rounded-full tw-bg-muted tw-px-3 tw-py-1 tw-font-mono tw-text-xs tw-text-muted-foreground">
       {{ stamp }}
     </span>
