@@ -24,7 +24,7 @@
           v-for="skill in filtered"
           :key="skill.name"
           variant="outline"
-          class="tw-group/skill"
+          class="tw-group"
         >
           <ItemMedia variant="image">
             <img
@@ -61,7 +61,7 @@
             <el-button
               type="text"
               size="mini"
-              class="tw-opacity-0 group-hover/skill:tw-opacity-100"
+              class="tw-opacity-0 group-hover:tw-opacity-100"
               @click="askRemove(skill.name)"
             >
               <Icon
@@ -86,7 +86,6 @@
 import { defineComponent, ref, computed } from '@/composables/vue';
 import { MessageBox } from 'element-ui';
 import { Icon } from '@/components/ui/Icon';
-import { InputGroup, InputGroupInput, InputGroupAddon } from '@/components/ui/InputGroup.js';
 import { Item, ItemMedia, ItemContent, ItemTitle, ItemDescription, ItemActions } from '@/components/ui/Item.js';
 import PanelEmpty from './PanelEmpty.vue';
 import AddSkillDialog from '@/components/dialog/AddSkillDialog.vue';
@@ -96,9 +95,6 @@ export default defineComponent({
   name: 'SkillPanel',
   components: {
     Icon,
-    InputGroup,
-    InputGroupInput,
-    InputGroupAddon,
     Item,
     ItemMedia,
     ItemContent,

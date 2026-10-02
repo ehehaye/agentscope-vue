@@ -24,7 +24,7 @@
           v-for="mcp in filtered"
           :key="mcp.name"
           variant="outline"
-          class="tw-group/mcp"
+          class="tw-group"
         >
           <ItemMedia variant="image">
             <img
@@ -69,7 +69,7 @@
             <el-button
               type="text"
               size="mini"
-              class="tw-opacity-0 group-hover/mcp:tw-opacity-100"
+              class="tw-opacity-0 group-hover:tw-opacity-100"
               @click="askRemove(mcp.name)"
             >
               <Icon

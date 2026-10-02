@@ -2,15 +2,7 @@ import { defineComponent, h } from '@/composables/vue';
 import { cn } from '@/lib/utils';
 
 const inputGroupClass =
-  'tw-group/input-group tw-relative tw-flex tw-h-8 tw-w-full tw-min-w-0 tw-items-center tw-rounded-lg tw-border tw-border-input tw-transition-colors tw-outline-none ' +
-  'in-data-[slot=combobox-content]:focus-within:tw-border-inherit in-data-[slot=combobox-content]:focus-within:tw-ring-0 ' +
-  'has-disabled:bg-input/50 has-disabled:opacity-50 ' +
-  'has-[[data-slot=input-group-control]:focus-visible]:tw-border-ring has-[[data-slot=input-group-control]:focus-visible]:tw-ring-3 has-[[data-slot=input-group-control]:focus-visible]:tw-ring-ring/50 ' +
-  'has-[[data-slot][aria-invalid=true]]:tw-border-destructive has-[[data-slot][aria-invalid=true]]:tw-ring-3 has-[[data-slot][aria-invalid=true]]:tw-ring-destructive/20 ' +
-  'has-[>[data-align=block-end]]:tw-h-auto has-[>[data-align=block-end]]:tw-flex-col has-[>[data-align=block-start]]:tw-h-auto has-[>[data-align=block-start]]:tw-flex-col ' +
-  'dark:tw-bg-input/30 dark:has-disabled:tw-bg-input/80 dark:has-[[data-slot][aria-invalid=true]]:tw-ring-destructive/40 ' +
-  'has-[>[data-align=block-end]]:[&>input]:tw-pt-3 has-[>[data-align=block-start]]:[&>input]:tw-pb-3 ' +
-  'has-[>[data-align=inline-end]]:[&>input]:tw-pr-1.5 has-[>[data-align=inline-start]]:[&>input]:tw-pl-1.5';
+  'tw-relative tw-flex tw-h-8 tw-w-full tw-min-w-0 tw-items-center tw-rounded-lg tw-border tw-border-input tw-transition-colors tw-outline-none';
 
 export const InputGroup = defineComponent({
   name: 'InputGroup',
@@ -25,15 +17,13 @@ export const InputGroup = defineComponent({
 });
 
 const addonClass =
-  "tw-flex tw-h-auto tw-cursor-text tw-items-center tw-justify-center tw-gap-2 tw-py-1.5 tw-text-sm tw-font-medium tw-text-muted-foreground tw-select-none group-data-[disabled=true]/input-group:tw-opacity-50 [&>kbd]:tw-rounded-[calc(var(--as-radius)-5px)] [&>svg:not([class*='size-'])]:tw-size-4";
+  'tw-flex tw-h-auto tw-cursor-text tw-items-center tw-justify-center tw-gap-2 tw-py-1.5 tw-text-sm tw-font-medium tw-text-muted-foreground tw-select-none';
 
 const addonAlign = {
-  'tw-inline-start': 'tw-order-first tw-pl-2 has-[>button]:tw-ml-[-0.3rem] has-[>kbd]:tw-ml-[-0.15rem]',
-  'tw-inline-end': 'tw-order-last tw-pr-2 has-[>button]:tw-mr-[-0.3rem] has-[>kbd]:tw-mr-[-0.15rem]',
-  'tw-block-start':
-    'tw-order-first tw-w-full tw-justify-start tw-px-2.5 tw-pt-2 group-has-[>input]/input-group:tw-pt-2 [.border-b]:tw-pb-2',
-  'tw-block-end':
-    'tw-order-last tw-w-full tw-justify-start tw-px-2.5 tw-pb-2 group-has-[>input]/input-group:tw-pb-2 [.border-t]:tw-pt-2',
+  'tw-inline-start': 'tw-order-first tw-pl-2',
+  'tw-inline-end': 'tw-order-last tw-pr-2',
+  'tw-block-start': 'tw-order-first tw-w-full tw-justify-start tw-px-2.5 tw-pt-2',
+  'tw-block-end': 'tw-order-last tw-w-full tw-justify-start tw-px-2.5 tw-pb-2',
 };
 
 export const InputGroupAddon = defineComponent({
@@ -65,10 +55,10 @@ export const InputGroupAddon = defineComponent({
 const buttonClass = 'tw-flex tw-items-center tw-gap-2 tw-text-sm tw-shadow-none';
 
 const buttonSizes = {
-  xs: "tw-h-6 tw-gap-1 tw-rounded-calc-r-3px tw-px-1.5 [&>svg:not([class*='size-'])]:tw-size-3.5",
+  xs: 'tw-h-6 tw-gap-1 tw-rounded-calc-r-3px tw-px-1.5',
   sm: '',
-  'icon-xs': 'tw-size-6 tw-rounded-calc-r-3px tw-p-0 has-[>svg]:tw-p-0',
-  'icon-sm': 'tw-size-8 tw-p-0 has-[>svg]:tw-p-0',
+  'icon-xs': 'tw-size-6 tw-rounded-calc-r-3px tw-p-0',
+  'icon-sm': 'tw-size-8 tw-p-0',
 };
 
 export const InputGroupButton = defineComponent({
@@ -100,10 +90,7 @@ export const InputGroupText = defineComponent({
     return h(
       'span',
       {
-        class: cn(
-          "tw-flex tw-items-center tw-gap-2 tw-text-sm tw-text-muted-foreground [&_svg]:tw-pointer-events-none [&_svg:not([class*='size-'])]:tw-size-4",
-          this.className,
-        ),
+        class: cn('tw-flex tw-items-center tw-gap-2 tw-text-sm tw-text-muted-foreground', this.className),
       },
       this.$slots.default,
     );

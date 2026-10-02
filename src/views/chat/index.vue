@@ -431,7 +431,6 @@ export default defineComponent({
 
     async function openDeleteAgent(agent) {
       if (!agent) return;
-      
       const name = agent.data?.name || agent.id;
       await MessageBox.confirm(`确定删除助手「${name}」吗？`, '删除助手', {
         type: 'warning',

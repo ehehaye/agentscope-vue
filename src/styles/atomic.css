@@ -1,6 +1,7 @@
 /* 抽离自 Tailwind v4 任意值 [xxx] 语法的原子类（tw- 前缀）。
- * 仅收录简单任意值；任意变体（如 [&>x]:、has-[...]:、data-[x=y]:）留在原位。
- * 由 src/main.js 在 index.css / element-ui 之后引入，作为 plain CSS 加载，
+ * 仅收录简单任意值；带方括号的变体（has-[...]、group-data-[...] 等）编译链不支持，
+ * 统一改写为文件末尾「组件变体补丁」段的普通 CSS。
+ * 由 src/plugins/styles.js 在 index.css / element-ui 之后引入，作为 plain CSS 加载，
  * specificity 与 Tailwind 工具类相同，但后加载可覆盖同名属性。
  */
 
@@ -131,4 +132,67 @@
 }
 .tw-group:focus-within .group-focus-within\:tw-pointer-events-auto {
   pointer-events: auto;
+}
+
+/* ── 组件变体补丁（shadcn 移植组件） ──────────────────────
+ * ui/Item.js、ui/InputGroup.js 源自 shadcn/ui（Tailwind v4 语法）。当前编译链
+ * 只支持基础变体（hover / focus-within / dark 等），一切带方括号的变体
+ * （has-[...]、group-data-[...]、[&_svg]:...）不会产出 CSS。
+ * 以下用组件自带的 data-* 属性改写等价规则，仅覆盖当前实际用到的场景；
+ * 用不到的变体已直接从类名字符串中删除。:has() 与全站 CSS 基线（Chrome 112+）一致。 */
+
+/* Item：条目含描述时，媒体块顶部对齐并微调基线 */
+[data-slot='item']:has([data-slot='item-description']) [data-slot='item-media'] {
+  align-self: flex-start;
+  transform: translateY(0.125rem);
+}
+[data-slot='item'] a {
+  transition:
+    color 0.1s,
+    background-color 0.1s;
+}
+[data-slot='item'] a:hover {
+  background-color: var(--as-muted);
+}
+[data-slot='item-media'] svg {
+  pointer-events: none;
+}
+[data-slot='item-media'] > svg:not([class*='tw-size-']) {
+  width: 1rem;
+  height: 1rem;
+}
+[data-slot='item-content'] + [data-slot='item-content'] {
+  flex: none;
+}
+[data-slot='item-description'] > a {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+[data-slot='item-description'] > a:hover {
+  color: var(--as-primary);
+}
+
+/* InputGroup：输入控件聚焦时整组描边 */
+[data-slot='input-group']:focus-within {
+  border-color: var(--as-ring);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--as-ring) 50%, transparent);
+}
+[data-slot='input-group-addon'] > svg:not([class*='tw-size-']) {
+  width: 1rem;
+  height: 1rem;
+}
+[data-slot='input-group-addon'] > kbd {
+  border-radius: calc(var(--as-radius) - 5px);
+}
+[data-slot='input-group-addon'][data-align='inline-start'] > button {
+  margin-left: -0.3rem;
+}
+[data-slot='input-group-addon'][data-align='inline-start'] > kbd {
+  margin-left: -0.15rem;
+}
+[data-slot='input-group-addon'][data-align='inline-end'] > button {
+  margin-right: -0.3rem;
+}
+[data-slot='input-group-addon'][data-align='inline-end'] > kbd {
+  margin-right: -0.15rem;
 }

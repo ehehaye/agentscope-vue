@@ -17,6 +17,20 @@ import hljs from 'highlight.js/lib/common';
 import { parseDocument } from 'htmlparser2';
 import NodeRenderer from './NodeRenderer.vue';
 
+/** 属性级转义：token 内容拼入 HTML 属性前统一转义，不依赖最终 DOMPurify 兜底。 */
+const escapeHtml = (value) =>
+  String(value ?? '').replace(
+    /[&<>"']/g,
+    (ch) =>
+      ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+      })[ch],
+  );
+
 const renderer = {
   blockquote(token) {
     const inner = this.parser.parse(token.tokens);
@@ -26,14 +40,14 @@ const renderer = {
   code({ text, lang }) {
     const language = hljs.getLanguage(lang) ? lang : 'plaintext';
     const highlighted = hljs.highlight(text, { language }).value;
-    const langTag = lang ? `<div class="md-code-lang">${lang}</div>` : '';
+    const langTag = lang ? `<div class="md-code-lang">${escapeHtml(lang)}</div>` : '';
     const lines = text.split('\n');
     const lineNumbers = lines.map((_, i) => `<span>${i + 1}</span>`).join('');
     return `<div class="md-code-wrapper">${langTag}<div class="md-code-scroll"><div class="md-code-lines">${lineNumbers}</div><pre class="md-pre"><code class="md-code hljs language-${language}">${highlighted}</code></pre></div></div>`;
   },
 
   codespan({ text }) {
-    return `<code class="md-code">${text}</code>`;
+    return `<code class="md-code">${escapeHtml(text)}</code>`;
   },
 
   heading({ tokens, depth }) {
@@ -46,11 +60,11 @@ const renderer = {
   },
 
   image({ href, title, text }) {
-    return `<img class="md-img" src="${href}"${title ? ` title="${title}"` : ''} alt="${text}" />`;
+    return `<img class="md-img" src="${escapeHtml(href)}"${title ? ` title="${escapeHtml(title)}"` : ''} alt="${escapeHtml(text)}" />`;
   },
 
   link({ href, title, text }) {
-    return `<a class="md-link" href="${href}"${title ? ` title="${title}"` : ''}>${text}</a>`;
+    return `<a class="md-link" href="${escapeHtml(href)}"${title ? ` title="${escapeHtml(title)}"` : ''}>${text}</a>`;
   },
 
   list(token) {
@@ -200,7 +214,7 @@ export default defineComponent({
       return displayContent
         ? DOMPurify.sanitize(marked(remend(displayContent)), {
             ADD_TAGS: this.CUSTOM_TAGS,
-            ALLOW_DATA_ATTR: true,
+            ALLOW_DATA_ATTR: false,
           })
         : '';
     },
