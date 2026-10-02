@@ -53,7 +53,7 @@
 
       <div
         v-if="!isUser"
-        class="tw-flex tw-items-center tw-gap-1 tw-pl-2"
+        class="as-message-toolbar tw-flex tw-items-center tw-gap-1 tw-pl-2"
       >
         <span class="tw-font-mono tw-text-xs tw-text-muted-foreground">{{ timeText }}</span>
         <Badge
@@ -103,7 +103,7 @@
       </div>
       <div
         v-else
-        class="tw-flex tw-items-center tw-justify-end tw-gap-1"
+        class="as-message-toolbar tw-flex tw-items-center tw-justify-end tw-gap-1"
       >
         <span class="tw-font-mono tw-text-xs tw-text-muted-foreground">{{ timeText }}</span>
         <el-button

@@ -22,7 +22,10 @@
       :items-length="msgs.length"
       class="tw-flex-1"
     >
-      <div class="tw-flex tw-flex-col tw-gap-6">
+      <div
+        id="as-chat-history"
+        class="tw-flex tw-flex-col tw-gap-6"
+      >
         <div
           v-for="(message, index) in msgs"
           :key="message.id"
@@ -90,6 +93,7 @@
         :phase="inputPhase"
         :error="error"
         :allowed-input-types="allowedInputTypes"
+        :exportable="msgs.length > 0"
         @send="onSend"
         @interrupt="onInterrupt"
       >

@@ -62,7 +62,7 @@
             v-else-if="phase === AppReplyPhase.STREAMING"
           />
         </div>
-        <div class="tw-flex tw-shrink-0 tw-items-center">
+        <div class="actions tw-flex tw-shrink-0 tw-items-center">
           <!-- 修复 el-input[type="textarea"] 时 clearable 无效 -->
           <el-button
             class="tw-opacity-0 tw-transition-opacity tw-duration-150 group-hover:tw-opacity-100 group-focus-within:tw-opacity-100"
@@ -77,6 +77,10 @@
               class="tw-h-4 tw-w-4"
             />
           </el-button>
+          <PrintHistoryButton
+            target="#as-chat-history"
+            v-show="exportable"
+          />
           <slot name="actions" />
           <el-button
             type="text"
@@ -122,11 +126,12 @@ import { defineComponent, ref, computed } from '@/composables/vue';
 import { Icon } from '@/components/iconify/index';
 import DotSpinner from '@/components/ui/DotSpinner.vue';
 import Scrollbar from '@/components/ui/Scrollbar.vue';
+import PrintHistoryButton from './PrintHistoryButton.vue';
 import { AppConnectionState, AppReplyPhase } from '@/constants/app-state';
 
 export default defineComponent({
   name: 'TextInput',
-  components: { Icon, DotSpinner, Scrollbar },
+  components: { Icon, DotSpinner, Scrollbar, PrintHistoryButton },
   props: {
     disabled: { type: Boolean, default: false },
     /**
@@ -138,6 +143,8 @@ export default defineComponent({
     allowedInputTypes: { type: Array, default: () => [] },
     /** 最近一次交互的错误（chat store 的 error），存在时优先于阶段状态展示 */
     error: { type: [Object, String, Error], default: null },
+    /** 是否允许导出历史消息。空会话（无消息渲染）时为 false，避免 v-print 找不到目标节点。 */
+    exportable: { type: Boolean, default: true },
     maxRows: { type: Number, default: 3 },
     maxlength: { type: Number, default: 200 },
   },
@@ -362,5 +369,11 @@ export default defineComponent({
 .send-btn.el-button.is-circle {
   padding: 3px;
   margin: 0 5px 0 5px;
+}
+
+.actions {
+  > .el-button {
+    margin: 0 !important;
+  }
 }
 </style>
