@@ -368,7 +368,7 @@ export default defineComponent({
    这里需三个类才能稳定覆盖。 */
 .send-btn.el-button.is-circle {
   padding: 3px;
-  margin: 0 5px 0 5px;
+  margin: 0 5px 0 5px !important;
 }
 
 .actions {
