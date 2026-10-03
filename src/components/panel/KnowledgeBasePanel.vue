@@ -97,7 +97,7 @@ export default defineComponent({
     loading: { type: Boolean, default: false },
     value: { type: Object, default: null },
     disabled: { type: Boolean, default: false },
-    onChange: { type: Function, default: null },
+    onChange: { type: Function, default: () => {} },
   },
   setup(props) {
     const search = ref('');

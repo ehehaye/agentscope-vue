@@ -151,8 +151,7 @@ export default defineComponent({
   components: { Icon, Scrollbar },
   props: {
     toolCall: { type: Object, required: true },
-    /** 提交答案，返回 Promise；resolve 后卡片随会话恢复而消失。 */
-    onSubmit: { type: Function, default: null },
+    onSubmit: { type: Function, default: () => Promise.resolve(null) },
   },
   setup(props) {
     const questions = computed(() => parseQuestions(props.toolCall.input));

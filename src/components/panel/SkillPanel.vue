@@ -107,9 +107,9 @@ export default defineComponent({
   props: {
     skills: { type: Array, default: () => [] },
     loading: { type: Boolean, default: false },
-    onUpload: { type: Function, default: null },
-    onAddFromLibrary: { type: Function, default: null },
-    onRemove: { type: Function, default: null },
+    onUpload: { type: Function, default: () => Promise.resolve(null) },
+    onAddFromLibrary: { type: Function, default: () => Promise.resolve(null) },
+    onRemove: { type: Function, default: () => Promise.resolve(null) },
   },
   setup(props) {
     const search = ref('');

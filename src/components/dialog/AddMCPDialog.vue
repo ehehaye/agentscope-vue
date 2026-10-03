@@ -186,12 +186,9 @@ export default defineComponent({
   name: 'AddMCPDialog',
   components: { Icon, Spinner, MCPConfigForm },
   props: {
-    /** 当前工作区已有的 MCP 名称，不可再选。 */
     present: { type: Set, default: () => new Set() },
-    /** 粘贴配置添加，入参为 MCPClient[]。 */
-    onAdd: { type: Function, default: null },
-    /** 从已安装库添加，入参为 mcpId[]。 */
-    onAddFromLibrary: { type: Function, default: null },
+    onAdd: { type: Function, default: () => Promise.resolve(null) },
+    onAddFromLibrary: { type: Function, default: () => Promise.resolve(null) },
   },
   setup(props) {
     const open = ref(false);

@@ -163,9 +163,7 @@ export default defineComponent({
   components: { SchemaForm },
   props: {
     visible: { type: Boolean, default: false },
-    /** 打开「新建凭证」的入口；由页面提供。 */
     onAddCredential: { type: Function, default: null },
-    /** 外部递增以触发嵌入模型重新拉取（如凭证创建完成）。 */
     credentialRefetchTrigger: { type: Number, default: 0 },
   },
   setup(props, { emit }) {

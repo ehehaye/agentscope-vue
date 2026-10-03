@@ -115,9 +115,9 @@ export default defineComponent({
   props: {
     mcps: { type: Array, default: () => [] },
     loading: { type: Boolean, default: false },
-    onAdd: { type: Function, default: null },
-    onAddFromLibrary: { type: Function, default: null },
-    onRemove: { type: Function, default: null },
+    onAdd: { type: Function, default: () => Promise.resolve(null) },
+    onAddFromLibrary: { type: Function, default: () => Promise.resolve(null) },
+    onRemove: { type: Function, default: () => Promise.resolve(null) },
   },
   setup(props) {
     const search = ref('');

@@ -154,11 +154,8 @@ export default defineComponent({
     WorkingDirectoryDialog,
   },
   props: {
-    /** SDK 的 `Msg[]`（由 appendEvent 维护） */
     msgs: { type: Array, default: () => [] },
-    /** 会话未就绪（创建/拉历史/建连中），来自本应用的 chat/preparing getter */
     loading: { type: Boolean, default: false },
-    /** 回复相位，取值见 AppReplyPhase（本应用自定义） */
     phase: { type: String, default: AppReplyPhase.IDLE },
     error: { type: [Object, String, Error], default: null },
     disabled: { type: Boolean, default: false },
@@ -167,12 +164,9 @@ export default defineComponent({
     agentId: { type: String, default: null },
     sessionId: { type: String, default: null },
     cwd: { type: String, default: null },
-    /** 提交 AskUser 答案（外部执行 HITL），返回 Promise。 */
-    onAskUserSubmit: { type: Function, default: null },
-    /** 提交子代理 AskUser 答案（外部执行 HITL），返回 Promise。 */
-    onSubagentAskUserSubmit: { type: Function, default: null },
-    /** 保存工作目录，返回 Promise，失败时留在弹窗内提示。 */
-    onCwdChange: { type: Function, default: null },
+    onAskUserSubmit: { type: Function, default: () => Promise.resolve(null) },
+    onSubagentAskUserSubmit: { type: Function, default: () => Promise.resolve(null) },
+    onCwdChange: { type: Function, default: () => Promise.resolve(null) },
   },
   emits: ['send', 'user-confirm', 'subagent-confirm', 'interrupt'],
   setup(props, { emit }) {

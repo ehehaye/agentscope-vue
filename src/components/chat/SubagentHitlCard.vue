@@ -41,12 +41,10 @@ export default defineComponent({
   components: { Icon, ConfirmCard, AskUserCard },
   props: {
     entry: { type: Object, required: true },
-    /** 提交外部执行答案，返回 Promise（对应 AskUserCard.onSubmit）。 */
-    onAskUserSubmit: { type: Function, default: null },
+    onAskUserSubmit: { type: Function, default: () => Promise.resolve(null) },
   },
   emits: ['confirm'],
   setup(props, { emit }) {
-    // 成员会话停在「等待确认」还是「等待外部执行结果」，决定用哪种卡片
     const isExternal = computed(() => props.entry.event_type === 'require_external_execution');
     const toolCalls = computed(() => props.entry.event?.tool_calls ?? []);
     const askUserCalls = computed(() => toolCalls.value.filter((tc) => tc.name === 'AskUser'));

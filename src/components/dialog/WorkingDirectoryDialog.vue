@@ -153,10 +153,6 @@ export default defineComponent({
     sessionId: { type: String, default: null },
     value: { type: String, default: null },
     disabled: { type: Boolean, default: false },
-    /**
-     * 保存回调，需返回 Promise。优先使用它以便等待父级异步保存结果，
-     * 保存失败时留在弹窗内联报错；未提供时回落到 `change` 事件。
-     */
     onChange: { type: Function, default: null },
   },
   emits: ['change'],

@@ -219,12 +219,9 @@ export default defineComponent({
   name: 'AddSkillDialog',
   components: { Icon, Spinner },
   props: {
-    /** 当前工作区已有的技能名称，不可再选。 */
     present: { type: Set, default: () => new Set() },
-    /** 上传文件夹，入参为 File[] 与 { onProgress }。 */
-    onUpload: { type: Function, default: null },
-    /** 从已安装库添加，入参为 skillId[]。 */
-    onAddFromLibrary: { type: Function, default: null },
+    onUpload: { type: Function, default: () => Promise.resolve(null) },
+    onAddFromLibrary: { type: Function, default: () => Promise.resolve(null) },
   },
   setup(props) {
     const open = ref(false);
