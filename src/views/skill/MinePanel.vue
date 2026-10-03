@@ -145,11 +145,11 @@
 
 <script>
 import { defineComponent, ref, computed } from '@/composables/vue';
-import { MessageBox } from 'element-ui';
 import { Icon } from '@/components/ui/Icon';
 import Spinner from '@/components/ui/Spinner.vue';
 import MarkdownRenderer from '@/components/common/MarkdownRenderer.vue';
 import { skillApi } from '@/api';
+import { confirmDialog } from '@/utils/common';
 
 export default defineComponent({
   name: 'SkillMinePanel',
@@ -194,12 +194,10 @@ export default defineComponent({
     async function askRemove(skill) {
       if (!skill) return;
       const name = skill.display_name || skill.name || '';
-      await MessageBox.confirm(`确定删除技能「${name}」吗？删除后无法恢复。`, '删除技能', {
-        type: 'warning',
-        confirmButtonText: '删除',
-        cancelButtonText: '取消',
+      await confirmDialog({
+        message: `确定删除技能「${name}」吗？删除后无法恢复。`,
+        onSubmit: () => emit('remove', skill.id),
       });
-      await emit('remove', skill.id);
     }
 
     return {

@@ -278,14 +278,13 @@
 
 <script>
 import { defineComponent } from '@/composables/vue';
-import { MessageBox } from 'element-ui';
 import { Icon } from '@/components/ui/Icon';
 import { useCredentials } from '@/composables/useCredentials';
 import { credentialApi, modelApi, ttsModelApi, embeddingModelApi } from '@/api';
 import CreateCredentialDialog from '@/components/dialog/CreateCredentialDialog.vue';
 import EditCredentialDialog from '@/components/dialog/EditCredentialDialog.vue';
 import MaskedValue from './MaskedValue.vue';
-import { formatNumber } from '@/utils/common';
+import { confirmDialog, formatNumber } from '@/utils/common';
 
 const MODALITIES = new Set(['text', 'image', 'video', 'audio']);
 const THINKING_TYPE = 'application/x-thinking';
@@ -438,13 +437,13 @@ export default defineComponent({
       const credential = this.selectedCredential;
       if (!credential) return;
       const name = credential.data?.name || credential.id;
-      await MessageBox.confirm(`确定删除凭证「${name}」吗？删除后无法恢复。`, '删除凭证', {
-        type: 'warning',
-        confirmButtonText: '删除',
-        cancelButtonText: '取消',
+      await confirmDialog({
+        message: `确定删除凭证「${name}」吗？删除后无法恢复。`,
+        onSubmit: async () => {
+          await this.remove(credential.id);
+          this.selectedId = null;
+        },
       });
-      await this.remove(credential.id);
-      this.selectedId = null;
     },
   },
 });

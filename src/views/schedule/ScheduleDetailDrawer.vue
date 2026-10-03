@@ -79,11 +79,11 @@
 
 <script>
 import { defineComponent, ref, computed, watch, getCurrentInstance } from '@/composables/vue';
-import { MessageBox } from 'element-ui';
 import { Icon } from '@/components/ui/Icon';
 import StatusBadge from '@/components/badge/StatusBadge.vue';
 import { scheduleApi } from '@/api';
 import { parseCronExpression, getFrequencyLabel } from './schedule-utils';
+import { confirmDialog } from '@/utils/common';
 
 export default defineComponent({
   name: 'ScheduleDetailDrawer',
@@ -160,13 +160,13 @@ export default defineComponent({
     async function handleDelete() {
       const schedule = props.schedule;
       if (!schedule) return;
-      await MessageBox.confirm(`确定删除日程「${schedule.data?.name || ''}」吗？`, '删除日程', {
-        type: 'warning',
-        confirmButtonText: '删除',
-        cancelButtonText: '取消',
+      await confirmDialog({
+        message: `确定删除日程「${schedule.data?.name || ''}」吗？`,
+        onSubmit: async () => {
+          await emit('delete', schedule.id);
+          emit('update:visible', false);
+        },
       });
-      await emit('delete', schedule.id);
-      emit('update:visible', false);
     }
 
     return {

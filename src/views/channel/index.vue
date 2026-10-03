@@ -183,7 +183,6 @@
 
 <script>
 import { defineComponent, ref, computed, watch, onBeforeUnmount } from '@/composables/vue';
-import { MessageBox } from 'element-ui';
 import { Icon } from '@/components/ui/Icon';
 import { channelApi } from '@/api';
 import { useChannels } from '@/composables/useChannels';
@@ -193,6 +192,7 @@ import ChannelStatusBadge from './ChannelStatusBadge.vue';
 import ChannelDetailPanel from './ChannelDetailPanel.vue';
 import CreateChannelDialog from './CreateChannelDialog.vue';
 import EditChannelDialog from './EditChannelDialog.vue';
+import { confirmDialog } from '@/utils/common';
 
 export default defineComponent({
   name: 'ChannelPage',
@@ -257,13 +257,13 @@ export default defineComponent({
       if (!ch) return;
       const name =
         ch.name?.trim() || `${typeOf(ch.channel_type)?.display_name || ch.channel_type} · ${ch.id.slice(0, 8)}`;
-      await MessageBox.confirm(`确定删除频道「${name}」吗？删除后无法恢复。`, '删除频道', {
-        type: 'warning',
-        confirmButtonText: '删除',
-        cancelButtonText: '取消',
+      await confirmDialog({
+        message: `确定删除频道「${name}」吗？删除后无法恢复。`,
+        onSubmit: async () => {
+          await remove(ch.id);
+          selectedId.value = null;
+        },
       });
-      await remove(ch.id);
-      selectedId.value = null;
     }
 
     const detailOpen = computed({
