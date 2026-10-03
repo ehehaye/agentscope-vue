@@ -1,6 +1,6 @@
 <template>
   <div
-    class="tw-group tw-flex tw-cursor-pointer tw-items-center tw-justify-between tw-gap-2 tw-rounded-md tw-px-2 tw-py-1.5 hover:tw-bg-row-hover"
+    class="tw-group tw-flex tw-items-center tw-justify-between tw-gap-2 tw-rounded-md tw-px-2 tw-py-1.5 hover:tw-bg-row-hover tw-cursor-pointer"
     :class="{ 'tw-bg-accent tw-text-foreground': active, 'tw-text-muted-foreground': !active }"
     @click="$emit('click')"
   >
