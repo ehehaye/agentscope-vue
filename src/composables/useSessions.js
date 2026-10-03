@@ -1,6 +1,6 @@
 import { ref, watch, unref } from '@/composables/vue';
-import { useStore } from '@/composables/vuex';
 import { sessionApi } from '@/api';
+import store from '@/store';
 
 /**
  * 拉取某个 agent 下的会话列表（含团队信息）。
@@ -12,7 +12,6 @@ import { sessionApi } from '@/api';
  * @param {import('vue').Ref<string|null>|string|null} agentId
  */
 export function useSessions(agentId) {
-  const store = useStore();
   const sessions = ref([]);
   const loading = ref(false);
   const error = ref(null);

@@ -4,11 +4,9 @@
  * tasksForKb/applyServerStatuses/pollableDocumentIds。
  */
 import { computed } from '@/composables/vue';
-import { useStore } from '@/composables/vuex';
+import store from '@/store';
 
 export function useUploadCenter() {
-  const store = useStore();
-
   async function enqueue(knowledgeBaseId, files) {
     return store.dispatch('upload/enqueue', { knowledgeBaseId, files });
   }
