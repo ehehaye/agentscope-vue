@@ -107,11 +107,11 @@
             :cwd="cwd"
             :on-ask-user-submit="handleAskUserSubmit"
             :on-subagent-ask-user-submit="handleSubagentAskUserSubmit"
+            :on-cwd-change="handleCwdChange"
             @send="handleSend"
             @user-confirm="handleUserConfirm"
             @subagent-confirm="handleSubagentConfirm"
             @interrupt="interrupt"
-            :on-cwd-change="handleCwdChange"
           />
         </div>
       </div>
@@ -160,7 +160,7 @@ import { useWorkspaceStatus } from '@/composables/useWorkspaceStatus';
 import { useKnowledgeBases } from '@/composables/useKnowledgeBases';
 import { useAvailableModels } from '@/composables/useAvailableModels';
 import { provideAudioCenter, useAudioCenter } from '@/composables/useAudioCenter.js';
-import { sessionApi, credentialApi } from '@/api';
+import { credentialApi } from '@/api';
 import { AppReplyPhase } from '@/constants/app-state';
 import { Icon } from '@/components/ui/Icon';
 import ChatContent from '@/components/chat/ChatContent.vue';
@@ -180,51 +180,9 @@ import AgentDialog from '@/components/dialog/AgentDialog.vue';
 import EditAgentDialog from '@/components/dialog/EditAgentDialog.vue';
 import RenameSessionDialog from '@/components/dialog/RenameSessionDialog.vue';
 import PermissionModeSelect from '@/components/select/PermissionModeSelect.vue';
-
-const PANEL_LAYOUT_KEY = 'chat_panel_layout';
-const MAX_PANELS_PER_COLUMN = 2;
-
-const PANEL_MENU = [
-  { key: 'plan', label: '任务', icon: 'lucide:list-todo' },
-  { key: 'mcp', label: 'MCP', icon: 'lucide:plug' },
-  { key: 'skill', label: '技能', icon: 'lucide:book-text' },
-  { key: 'permission', label: '权限', icon: 'lucide:shield-check' },
-  { key: 'knowledge', label: '知识库', icon: 'lucide:database' },
-  { key: 'team', label: '团队', icon: 'lucide:users-round' },
-];
-
-const KNOWN_PANELS = new Set(PANEL_MENU.map((i) => i.key));
-
-function loadLayout() {
-  try {
-    const raw = JSON.parse(localStorage.getItem(PANEL_LAYOUT_KEY) || 'tw-[]');
-    if (!Array.isArray(raw)) return [];
-    return raw
-      .map((column) => (Array.isArray(column) ? column.filter((k) => KNOWN_PANELS.has(k)) : []))
-      .filter((column) => column.length > 0);
-  } catch {
-    return [];
-  }
-}
-
-function saveLayout(layout) {
-  try {
-    localStorage.setItem(PANEL_LAYOUT_KEY, JSON.stringify(layout));
-  } catch {
-    // ignore
-  }
-}
-
-function openPanel(layout, key) {
-  if (layout.some((column) => column.includes(key))) return layout;
-  const idx = layout.findIndex((column) => column.length < MAX_PANELS_PER_COLUMN);
-  if (idx === -1) return [...layout, [key]];
-  return layout.map((column, i) => (i === idx ? [...column, key] : column));
-}
-
-function closePanelInLayout(layout, key) {
-  return layout.map((column) => column.filter((k) => k !== key)).filter((column) => column.length > 0);
-}
+import { PANEL_MENU, usePanelLayout } from './usePanelLayout';
+import { useModelConfig } from './useModelConfig';
+import { useSessionManager } from './useSessionManager';
 
 export default defineComponent({
   name: 'ChatPage',
@@ -265,31 +223,15 @@ export default defineComponent({
     const { groups: modelGroups, refetch: refetchAvailableModels } = useAvailableModels();
     const { knowledgeBases, loading: kbLoading, refetch: refetchKnowledgeBases } = useKnowledgeBases();
 
-    const selectedModel = ref(null);
-    const selectedFallbackModel = ref(null);
-    const selectedTTSModel = ref(null);
-    const selectedPermissionMode = ref('default');
-    const selectedKnowledgeConfig = ref(null);
+    // ── 右侧面板：停靠布局 ─────────────────────────────────
+    const { panelLayout, isPanelOpen, togglePanel, closePanel, openPanelInLayout } = usePanelLayout();
+
+    // ── 面板数据：任务 / 权限上下文 ─────────────────────────
     const tasksContext = ref(null);
     const permissionContext = ref(null);
-    const configPending = ref(false);
-    const panelLayout = ref(loadLayout());
     const taskPanelOpenedFor = ref(null);
 
-    // 会话/Agent 管理状态
-    const agentDialogVisible = ref(false);
-    const editAgentDialogVisible = ref(false);
-    const editingAgent = ref(null);
-    const renameDialogVisible = ref(false);
-    const renamingSession = ref(null);
-    const credentialDialogVisible = ref(false);
-    const credentialTrigger = ref(0);
-    watch(credentialTrigger, () => {
-      refetchAvailableModels();
-    });
-
-    watch(panelLayout, saveLayout, { deep: true });
-
+    // ── 当前会话视图 ───────────────────────────────────────
     const view = computed(() => sessions.value.find((v) => v.session?.id === sessionId.value) || null);
     const focusedMember = computed(() => {
       if (!memberId.value || !view.value?.team?.members) return null;
@@ -301,47 +243,137 @@ export default defineComponent({
     const effectiveSessionId = computed(() =>
       focusedMember.value?.session_id ? focusedMember.value.session_id : sessionId.value,
     );
-    const pendingCwd = ref(null);
+
+    // ── 模型与参数选择 ─────────────────────────────────────
+    const {
+      selectedModel,
+      selectedFallbackModel,
+      selectedTTSModel,
+      selectedPermissionMode,
+      selectedKnowledgeConfig,
+      pendingCwd,
+      allowedInputTypes,
+      sendDisabled,
+      handleLlmChange,
+      handleModelParamsChange,
+      handleFallbackModelChange,
+      handleTTSChange,
+      handleCwdChange,
+      handlePermissionModeChange,
+      handleKnowledgeConfigChange,
+    } = useModelConfig({ agentId, sessionId, view, modelGroups, refetchSessions });
+
     const cwd = computed(() => view.value?.session?.config?.cwd ?? pendingCwd.value ?? null);
 
-    /** 跳转到指定会话，返回路由跳转的 Promise（失败时 reject）。 */
-    function pushConversation(aid, sid) {
-      return router.push({
-        name: 'chat',
-        query: { ...route.query, agentId: aid, sessionId: sid, memberId: undefined },
-      });
+    // ── 工作区（MCP / 技能） ────────────────────────────────
+    const { status: workspaceStatus, refetch: refetchWorkspaceStatus } = useWorkspaceStatus(
+      effectiveAgentId,
+      effectiveSessionId,
+      cwd,
+    );
+
+    const {
+      mcps,
+      skills,
+      loading: workspaceLoading,
+      addMcps,
+      addMcpsFromLibrary,
+      removeMcp,
+      uploadSkill,
+      addSkillsFromLibrary,
+      removeSkill,
+    } = useWorkspace(effectiveAgentId, effectiveSessionId);
+
+    function onSessionsChanged() {
+      refetchSessions();
+      refetchKnowledgeBases();
     }
 
-    /** 跳转并忽略失败（重复导航、被新导航打断等），供普通交互调用。 */
-    function navigateTo(aid, sid) {
-      pushConversation(aid, sid).catch(() => {});
+    async function handleTeamUpdated() {
+      const next = await refetchSessions();
+      if (next.some((v) => v.session?.id === sessionId.value && v.team)) {
+        panelLayout.value = openPanelInLayout(panelLayout.value, 'team');
+      }
+      onSessionsChanged();
     }
 
-    function handleAgentChange(aid) {
-      router
-        .push({ name: 'chat', query: { ...route.query, agentId: aid, sessionId: undefined, memberId: undefined } })
-        .catch(() => {});
+    async function handleSessionUpdated() {
+      await refetchSessions();
+      onSessionsChanged();
     }
 
-    function handleSessionCommand(command) {
-      if (command === '__new__') {
-        handleCreateSession();
-      } else {
-        navigateTo(agentId.value, command);
+    function handleStateUpdated(value) {
+      if (value?.tasks_context) {
+        tasksContext.value = value.tasks_context;
+        if (value.tasks_context.tasks?.length > 0 && taskPanelOpenedFor.value !== sessionId.value) {
+          taskPanelOpenedFor.value = sessionId.value;
+          panelLayout.value = openPanelInLayout(panelLayout.value, 'plan');
+        }
+      }
+      if (value?.permission_context) {
+        permissionContext.value = value.permission_context;
       }
     }
 
-    /**
-     * “新会话”按钮：结束当前回复（如有）、清空当前会话，回到无会话状态。
-     * 后续发送第一条消息时会自动创建会话。
-     */
-    function handleCreateSession() {
-      // TODO: 回复进行中时，是否先弹确认再新建会话
-      abort();
-      router
-        .push({ path: '/chat', query: { ...route.query, sessionId: undefined, memberId: undefined } })
-        .catch(() => {});
-    }
+    // ── 消息流（SSE） ──────────────────────────────────────
+    const {
+      msgs,
+      connection,
+      loading,
+      phase,
+      error,
+      subagentHitl,
+      send,
+      onUserConfirm,
+      onSubagentConfirm,
+      onAskUserSubmit,
+      onSubagentAskUserSubmit,
+      interrupt,
+      abort,
+      discardPendingInput,
+    } = useMessages(effectiveAgentId, effectiveSessionId, {
+      onTeamUpdated: handleTeamUpdated,
+      onStateUpdated: handleStateUpdated,
+      onSessionUpdated: handleSessionUpdated,
+      onAudioStart: (blockId, mediaType) => audioManager?.start(blockId, mediaType),
+      onAudioAppend: (blockId, data) => audioManager?.append(blockId, data),
+      onAudioEnd: (blockId) => audioManager?.end(blockId),
+      onAudioStopAll: () => audioManager?.stopAllPlayback(),
+    });
+
+    watch(phase, (next, prev) => {
+      // 一轮回复结束（本应用的 AppReplyPhase 从非 idle 回到 idle）后刷新工作区状态
+      if (prev !== AppReplyPhase.IDLE && next === AppReplyPhase.IDLE) {
+        refetchWorkspaceStatus();
+      }
+    });
+
+    // ── 会话 / Agent 管理 ──────────────────────────────────
+    const {
+      agentDialogVisible,
+      editAgentDialogVisible,
+      editingAgent,
+      renameDialogVisible,
+      renamingSession,
+      pushConversation,
+      navigateTo,
+      handleAgentChange,
+      handleCreateSession,
+      openRename,
+      handleRenameConfirm,
+      openDeleteSession,
+      openEditAgent,
+      openDeleteAgent,
+    } = useSessionManager({
+      route,
+      router,
+      agentId,
+      sessionId,
+      updateSession,
+      removeSession,
+      removeAgent,
+      abort,
+    });
 
     /**
      * 从内容块中提取会话标题（取文本内容，最长 50 字符）。
@@ -399,271 +431,32 @@ export default defineComponent({
       }
     }
 
-    function openRename(session) {
-      renamingSession.value = session;
-      renameDialogVisible.value = true;
+    function handleUserConfirm({ toolCall, confirm, replyId, rules }) {
+      onUserConfirm(toolCall, confirm, replyId, rules);
     }
 
-    async function handleRenameConfirm(name) {
-      if (!renamingSession.value) return;
-      await updateSession(renamingSession.value.session.id, agentId.value, { name });
+    function handleSubagentConfirm({ entry, toolCall, confirm, rules }) {
+      onSubagentConfirm(entry, toolCall, confirm, rules);
     }
 
-    async function openDeleteSession(session) {
-      const sid = session?.session?.id;
-      if (!sid) return;
-      const name = session.session?.config?.name || sid;
-      await MessageBox.confirm(`确定删除会话「${name}」吗？`, '删除会话', {
-        type: 'warning',
-        confirmButtonText: '删除',
-        cancelButtonText: '取消',
-      });
-      await removeSession(sid, agentId.value);
-      if (sid === sessionId.value) {
-        router.push({ name: 'chat', query: { ...route.query, sessionId: undefined } }).catch(() => {});
-      }
+    function handleAskUserSubmit(toolCall, replyId, answers) {
+      return onAskUserSubmit(toolCall, replyId, answers);
     }
 
-    function openEditAgent(agent) {
-      editingAgent.value = agent;
-      editAgentDialogVisible.value = true;
+    function handleSubagentAskUserSubmit(entry, toolCall, answers) {
+      return onSubagentAskUserSubmit(entry, toolCall, answers);
     }
 
-    async function openDeleteAgent(agent) {
-      if (!agent) return;
-      const name = agent.data?.name || agent.id;
-      await MessageBox.confirm(`确定删除助手「${name}」吗？`, '删除助手', {
-        type: 'warning',
-        confirmButtonText: '删除',
-        cancelButtonText: '取消',
-      });
-      await removeAgent(agent.id);
-      // 删除当前助手后清空路由回到 /chat
-      if (route.query.agentId) {
-        router.push({ name: 'chat', query: {} }).catch(() => {});
-      }
-    }
-
-    const { status: workspaceStatus, refetch: refetchWorkspaceStatus } = useWorkspaceStatus(
-      effectiveAgentId,
-      effectiveSessionId,
-      cwd,
-    );
-
-    const {
-      mcps,
-      skills,
-      loading: workspaceLoading,
-      addMcps,
-      addMcpsFromLibrary,
-      removeMcp,
-      uploadSkill,
-      addSkillsFromLibrary,
-      removeSkill,
-    } = useWorkspace(effectiveAgentId, effectiveSessionId);
-
-    function onSessionsChanged() {
-      refetchSessions();
-      refetchKnowledgeBases();
-    }
-
-    async function handleTeamUpdated() {
-      const next = await refetchSessions();
-      if (next.some((v) => v.session?.id === sessionId.value && v.team)) {
-        panelLayout.value = openPanel(panelLayout.value, 'team');
-      }
-      onSessionsChanged();
-    }
-
-    async function handleSessionUpdated() {
-      await refetchSessions();
-      onSessionsChanged();
-    }
-
-    function handleStateUpdated(value) {
-      if (value?.tasks_context) {
-        tasksContext.value = value.tasks_context;
-        if (value.tasks_context.tasks?.length > 0 && taskPanelOpenedFor.value !== sessionId.value) {
-          taskPanelOpenedFor.value = sessionId.value;
-          panelLayout.value = openPanel(panelLayout.value, 'plan');
-        }
-      }
-      if (value?.permission_context) {
-        permissionContext.value = value.permission_context;
-      }
-    }
-
-    const {
-      msgs,
-      connection,
-      loading,
-      phase,
-      error,
-      subagentHitl,
-      send,
-      onUserConfirm,
-      onSubagentConfirm,
-      onAskUserSubmit,
-      onSubagentAskUserSubmit,
-      interrupt,
-      abort,
-      discardPendingInput,
-    } = useMessages(effectiveAgentId, effectiveSessionId, {
-      onTeamUpdated: handleTeamUpdated,
-      onStateUpdated: handleStateUpdated,
-      onSessionUpdated: handleSessionUpdated,
-      onAudioStart: (blockId, mediaType) => audioManager?.start(blockId, mediaType),
-      onAudioAppend: (blockId, data) => audioManager?.append(blockId, data),
-      onAudioEnd: (blockId) => audioManager?.end(blockId),
-      onAudioStopAll: () => audioManager?.stopAllPlayback(),
+    // ── 面板数据：随会话切换重置 / 从会话状态播种 ────────────
+    const credentialDialogVisible = ref(false);
+    const credentialTrigger = ref(0);
+    watch(credentialTrigger, () => {
+      refetchAvailableModels();
     });
 
-    watch(phase, (next, prev) => {
-      // 一轮回复结束（本应用的 AppReplyPhase 从非 idle 回到 idle）后刷新工作区状态
-      if (prev !== AppReplyPhase.IDLE && next === AppReplyPhase.IDLE) {
-        refetchWorkspaceStatus();
-      }
-    });
-
-    function getFirstAvailableModel() {
-      const types = Object.keys(modelGroups.value);
-      if (types.length === 0) return null;
-      const items = modelGroups.value[types[0]];
-      if (!items || items.length === 0) return null;
-      const first = items[0];
-      const model = first.models?.[0];
-      if (!model) return null;
-      return {
-        type: types[0],
-        credential_id: first.credential.id,
-        model: model.name,
-        parameters: {},
-      };
-    }
-
-    function selectedModelCard() {
-      if (!selectedModel.value) return null;
-      const items = modelGroups.value[selectedModel.value.type];
-      if (!items) return null;
-      for (const group of items) {
-        if (group.credential.id !== selectedModel.value.credential_id) continue;
-        return group.models.find((m) => m.name === selectedModel.value.model) || null;
-      }
-      return null;
-    }
-
-    const allowedInputTypes = computed(() => {
-      const card = selectedModelCard();
-      const types = card?.input_types ?? [];
-      return types.filter(
-        (t) =>
-          /^(image|video|audio|text)\/.+/.test(t) ||
-          t === 'application/pdf' ||
-          t.startsWith('application/vnd.') ||
-          t.startsWith('application/msword') ||
-          t.startsWith('application/vnd.openxmlformats'),
-      );
-    });
-
-    const sendDisabled = computed(() => !agentId.value || !selectedModel.value);
-
-    async function patchConfig(body, apply) {
-      if (!sessionId.value || !agentId.value) return;
-      configPending.value = true;
-      try {
-        await sessionApi.update(sessionId.value, agentId.value, body, { silent: true });
-        apply();
-        await refetchSessions();
-      } finally {
-        configPending.value = false;
-      }
-    }
-
-    async function handleLlmChange(config) {
-      if (!config) return;
-      if (sessionId.value) {
-        await patchConfig({ chat_model_config: config }, () => {
-          selectedModel.value = config;
-        });
-      } else {
-        selectedModel.value = config;
-      }
-    }
-
-    async function handleModelParamsChange(parameters) {
-      if (!selectedModel.value) return;
-      const config = { ...selectedModel.value, parameters };
-      if (sessionId.value) {
-        await patchConfig({ chat_model_config: config }, () => {
-          selectedModel.value = config;
-        });
-      } else {
-        selectedModel.value = config;
-      }
-    }
-
-    async function handleFallbackModelChange(config) {
-      if (sessionId.value) {
-        await patchConfig({ fallback_chat_model_config: config }, () => {
-          selectedFallbackModel.value = config;
-        });
-      } else {
-        selectedFallbackModel.value = config;
-      }
-    }
-
-    async function handleTTSChange(config) {
-      if (sessionId.value) {
-        await patchConfig({ tts_model_config: config }, () => {
-          selectedTTSModel.value = config;
-        });
-      } else {
-        selectedTTSModel.value = config;
-      }
-    }
-
-    async function handleCwdChange(cwdValue) {
-      if (sessionId.value) {
-        await patchConfig({ cwd: cwdValue }, () => {});
-      } else {
-        pendingCwd.value = cwdValue;
-      }
-    }
-
-    async function handlePermissionModeChange(mode) {
-      if (sessionId.value) {
-        await patchConfig({ permission_mode: mode }, () => {
-          selectedPermissionMode.value = mode;
-        });
-      } else {
-        selectedPermissionMode.value = mode;
-      }
-    }
-
-    async function handleKnowledgeConfigChange(next) {
-      if (sessionId.value) {
-        await patchConfig({ knowledge_config: next }, () => {
-          selectedKnowledgeConfig.value = next;
-        });
-      } else {
-        selectedKnowledgeConfig.value = next;
-      }
-    }
-
-    watch(sessionId, (newSid) => {
-      selectedPermissionMode.value = 'default';
-      selectedKnowledgeConfig.value = null;
+    watch(sessionId, () => {
       tasksContext.value = null;
       permissionContext.value = null;
-      pendingCwd.value = null;
-      if (!newSid) {
-        // 进入无会话状态：保留已选模型，若无则自动选择首个可用模型
-        if (!selectedModel.value) {
-          selectedModel.value = getFirstAvailableModel();
-        }
-      } else {
-        selectedModel.value = null;
-      }
     });
 
     let seededSessionId = null;
@@ -685,68 +478,7 @@ export default defineComponent({
       { immediate: true },
     );
 
-    watch(
-      view,
-      async (nextView) => {
-        if (!nextView || !sessionId.value || !agentId.value) return;
-        const config = nextView.session.config || {};
-        if (config.chat_model_config) {
-          selectedModel.value = config.chat_model_config;
-        } else {
-          const first = getFirstAvailableModel();
-          if (first) {
-            selectedModel.value = first;
-            await sessionApi.update(sessionId.value, agentId.value, { chat_model_config: first }, { silent: true });
-            await refetchSessions();
-          }
-        }
-        selectedFallbackModel.value = config.fallback_chat_model_config ?? null;
-        selectedTTSModel.value = config.tts_model_config ?? null;
-        selectedKnowledgeConfig.value = config.knowledge_config ?? null;
-      },
-      { immediate: true },
-    );
-
-    watch(
-      view,
-      (nextView) => {
-        if (!nextView) return;
-        const mode = nextView.session.state?.permission_context?.mode;
-        selectedPermissionMode.value = mode || 'default';
-      },
-      { immediate: true },
-    );
-
-    function isPanelOpen(key) {
-      return panelLayout.value.some((column) => column.includes(key));
-    }
-
-    function togglePanel(key) {
-      panelLayout.value = isPanelOpen(key)
-        ? closePanelInLayout(panelLayout.value, key)
-        : openPanel(panelLayout.value, key);
-    }
-
-    function closePanel(key) {
-      panelLayout.value = closePanelInLayout(panelLayout.value, key);
-    }
-
-    function handleUserConfirm({ toolCall, confirm, replyId, rules }) {
-      onUserConfirm(toolCall, confirm, replyId, rules);
-    }
-
-    function handleSubagentConfirm({ entry, toolCall, confirm, rules }) {
-      onSubagentConfirm(entry, toolCall, confirm, rules);
-    }
-
-    function handleAskUserSubmit(toolCall, replyId, answers) {
-      return onAskUserSubmit(toolCall, replyId, answers);
-    }
-
-    function handleSubagentAskUserSubmit(entry, toolCall, answers) {
-      return onSubagentAskUserSubmit(entry, toolCall, answers);
-    }
-
+    // ── 右侧面板：注册表 ───────────────────────────────────
     const panels = computed(() => ({
       plan: {
         title: '任务',
@@ -865,7 +597,6 @@ export default defineComponent({
       renamingSession,
       handleAgentChange,
       handleCreateSession,
-      handleSessionCommand,
       navigateTo,
       openRename,
       handleRenameConfirm,
