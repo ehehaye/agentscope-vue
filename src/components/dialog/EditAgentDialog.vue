@@ -111,17 +111,13 @@ export default defineComponent({
       submitting.value = true;
       errorMsg.value = '';
       try {
-        await update(
-          props.agent.id,
-          {
-            name,
-            system_prompt: values.value.identity.system_prompt || undefined,
-            context_config: values.value.context_config,
-            react_config: values.value.react_config,
-            invite_config: values.value.invite_config,
-          },
-          { silent: true },
-        );
+        await update(props.agent.id, {
+          name,
+          system_prompt: values.value.identity.system_prompt || undefined,
+          context_config: values.value.context_config,
+          react_config: values.value.react_config,
+          invite_config: values.value.invite_config,
+        });
         dialogVisible.value = false;
         emit('updated');
       } catch (e) {

@@ -77,8 +77,8 @@ async function streamRequest(path, options = {}) {
     if (e instanceof DOMException && e.name === 'AbortError') throw e;
     const timedOut = e instanceof DOMException && e.name === 'TimeoutError';
     const error = timedOut
-      ? new ApiError(TIMEOUT_STATUS, '服务器响应超时。')
-      : new ApiError(0, '无法连接到服务器，请检查服务器地址和网络。');
+      ? new ApiError(TIMEOUT_STATUS, '连接超时')
+      : new ApiError(0, '无法连接到服务器，请检查服务器地址和网络');
     if (!silent) toast.error(error.detail);
     throw error;
   }
@@ -132,7 +132,7 @@ async function request(key, options = {}) {
     mode = getApiMode(),
     baseUrl,
     userId,
-    timeoutMs,
+    timeoutMs = 1000 * 30,
   } = options;
 
   const { method, path } = resolveEndpoint(key, { pathParams, mode });
