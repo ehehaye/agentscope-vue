@@ -10,12 +10,11 @@
 
 <script>
 import { defineComponent } from '@/composables/vue';
-import DOMPurify from 'dompurify';
-import remend from 'remend';
 import { marked } from 'marked';
 import hljs from 'highlight.js/lib/common';
 import { parseDocument } from 'htmlparser2';
 import NodeRenderer from './NodeRenderer.vue';
+import diff from './diff';
 
 /** 属性级转义：token 内容拼入 HTML 属性前统一转义，不依赖最终 DOMPurify 兜底。 */
 const escapeHtml = (value) =>
@@ -112,6 +111,7 @@ marked.setOptions({ breaks: true, gfm: true });
 
 export default defineComponent({
   name: 'MarkdownRenderer',
+  mixins: [diff],
   components: {
     NodeRenderer,
   },
@@ -199,31 +199,18 @@ export default defineComponent({
       };
       this.twRafId = requestAnimationFrame(step);
     },
-    getHtml() {
-      const { displayContent } = this;
-      /**
-       * 用 remend 把不完整的 Markdown 自动补全，避免打字机输出半截语法导致闪烁。
-       * 例："This is **bold text" → "This is **bold text**"
-       */
-      return displayContent
-        ? DOMPurify.sanitize(marked(remend(displayContent)), {
-            ALLOW_DATA_ATTR: true,
-          })
-        : '';
-    },
     updateAstTree() {
       if (this.htmlRafId) {
         cancelAnimationFrame(this.htmlRafId);
       }
       this.htmlRafId = requestAnimationFrame(() => {
         this.htmlRafId = null;
-
-        // 把 HTML 转成 vNode 树，让每次内容变化只触发 Vue diff 做增量更新。
         const html = this.getHtml();
         if (this.lastHtml === html) {
           return;
         }
         this.lastHtml = html;
+        // 把 HTML 转成 vNode 树，让每次内容变化只触发 Vue diff 做增量更新。
         this.astTree = html ? parseDocument(html).children : [];
       });
     },
