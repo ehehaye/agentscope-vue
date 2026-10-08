@@ -143,7 +143,6 @@
 
 <script>
 import { defineComponent, ref, computed, watch } from '@/composables/vue';
-import { MessageBox } from 'element-ui';
 import { Icon } from '@/components/ui/Icon';
 import { useRoute, useRouter } from '@/composables/vue-router';
 import CreateKnowledgeBaseDialog from '@/components/dialog/CreateKnowledgeBaseDialog.vue';
@@ -155,6 +154,7 @@ import PanelEmpty from '@/components/panel/PanelEmpty.vue';
 import DetailPanel from './DetailPanel.vue';
 import { useKnowledgeBases } from '@/composables/useKnowledgeBases';
 import { credentialApi } from '@/api';
+import { confirmDialog } from '@/utils/common';
 
 export default defineComponent({
   name: 'KnowledgePage',
@@ -218,20 +218,16 @@ export default defineComponent({
 
     async function askDelete(kb) {
       if (!kb) return;
-      await MessageBox.confirm(
-        `确定删除知识库「${kb.name || ''}」吗？相关文档与索引将一并删除，不可恢复。`,
-        '删除知识库',
-        {
-          type: 'warning',
-          confirmButtonText: '删除',
-          cancelButtonText: '取消',
+      await confirmDialog({
+        message: `确定删除知识库「${kb.name || ''}」吗？相关文档与索引将一并删除，不可恢复。`,
+        onSubmit: async () => {
+          await remove(kb.id);
+          if (selectedKbId.value === kb.id) {
+            selectedKbId.value = null;
+            router.replace('/knowledge');
+          }
         },
-      );
-      await remove(kb.id);
-      if (selectedKbId.value === kb.id) {
-        selectedKbId.value = null;
-        router.replace('/knowledge');
-      }
+      });
     }
 
     function openCredential() {

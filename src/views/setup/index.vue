@@ -111,17 +111,17 @@ export default defineComponent({
     mapError(e) {
       if (!(e instanceof ApiError)) {
         console.error(e);
-        return '连接失败，请检查服务器地址和网络。';
+        return '连接失败，请检查服务器地址和网络';
       }
       switch (e.status) {
         case 0:
-          return '无法连接到服务器，请检查地址是否正确、服务是否已启动。';
+          return '无法连接到服务器，请检查服务器地址和网络';
         case TIMEOUT_STATUS:
-          return '服务器响应超时，请稍后重试。';
+          return '连接超时';
         case 401:
           return '鉴权失败，请检查用户名配置。';
         case 503:
-          return '服务尚未就绪，请确认 AgentScope Studio 已完整启动。';
+          return '服务尚未就绪，请确认服务已完整启动';
         default:
           return `服务器返回错误（${e.status}）：${e.detail || e.message}`;
       }

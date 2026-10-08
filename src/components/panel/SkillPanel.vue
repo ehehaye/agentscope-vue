@@ -84,12 +84,12 @@
 
 <script>
 import { defineComponent, ref, computed } from '@/composables/vue';
-import { MessageBox } from 'element-ui';
 import { Icon } from '@/components/ui/Icon';
 import { Item, ItemMedia, ItemContent, ItemTitle, ItemDescription, ItemActions } from '@/components/ui/Item.js';
 import PanelEmpty from './PanelEmpty.vue';
 import AddSkillDialog from '@/components/dialog/AddSkillDialog.vue';
 import { useSkills } from '@/composables/useSkills';
+import { confirmDialog } from '@/utils/common';
 
 export default defineComponent({
   name: 'SkillPanel',
@@ -136,13 +136,13 @@ export default defineComponent({
 
     async function askRemove(name) {
       if (!name) return;
-      await MessageBox.confirm(`确定删除技能「${name}」吗？`, '删除技能', {
-        type: 'warning',
-        confirmButtonText: '删除',
-        cancelButtonText: '取消',
+      await confirmDialog({
+        message: `确定删除技能「${name}」吗？`,
+        onSubmit: async () => {
+          if (!props.onRemove) return;
+          await props.onRemove(name);
+        },
       });
-      if (!props.onRemove) return;
-      await props.onRemove(name);
     }
 
     return {

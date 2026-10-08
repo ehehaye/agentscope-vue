@@ -1,5 +1,5 @@
 import { ref } from '@/composables/vue';
-import { MessageBox } from 'element-ui';
+import { confirmDialog } from '@/utils/common';
 
 /**
  * 会话与 Agent 的管理交互：对话框开合、新建/重命名/删除、路由跳转。
@@ -76,15 +76,15 @@ export function useSessionManager({
     const sid = session?.session?.id;
     if (!sid) return;
     const name = session.session?.config?.name || sid;
-    await MessageBox.confirm(`确定删除会话「${name}」吗？`, '删除会话', {
-      type: 'warning',
-      confirmButtonText: '删除',
-      cancelButtonText: '取消',
+    await confirmDialog({
+      message: `确定删除会话「${name}」吗？`,
+      onSubmit: async () => {
+        await removeSession(sid, agentId.value);
+        if (sid === sessionId.value) {
+          router.push({ name: 'chat', query: { ...route.query, sessionId: undefined } }).catch(() => {});
+        }
+      },
     });
-    await removeSession(sid, agentId.value);
-    if (sid === sessionId.value) {
-      router.push({ name: 'chat', query: { ...route.query, sessionId: undefined } }).catch(() => {});
-    }
   }
 
   function openEditAgent(agent) {
@@ -95,16 +95,16 @@ export function useSessionManager({
   async function openDeleteAgent(agent) {
     if (!agent) return;
     const name = agent.data?.name || agent.id;
-    await MessageBox.confirm(`确定删除助手「${name}」吗？`, '删除助手', {
-      type: 'warning',
-      confirmButtonText: '删除',
-      cancelButtonText: '取消',
+    await confirmDialog({
+      message: `确定删除助手「${name}」吗？`,
+      onSubmit: async () => {
+        await removeAgent(agent.id);
+        // 删除当前助手后清空路由回到 /chat
+        if (route.query.agentId) {
+          router.push({ name: 'chat', query: {} }).catch(() => {});
+        }
+      },
     });
-    await removeAgent(agent.id);
-    // 删除当前助手后清空路由回到 /chat
-    if (route.query.agentId) {
-      router.push({ name: 'chat', query: {} }).catch(() => {});
-    }
   }
 
   return {

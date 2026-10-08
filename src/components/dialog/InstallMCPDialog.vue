@@ -144,12 +144,10 @@ export default defineComponent({
             ...(Object.keys(filled).length > 0 ? { values: filled } : {}),
           });
         } else if (props.card.hub_id && props.card.id) {
-          await hubApi.mcp.install(
-            props.card.hub_id,
-            props.card.id,
-            { name: name.value || null, values: values.value },
-            { silent: true },
-          );
+          await hubApi.mcp.install(props.card.hub_id, props.card.id, {
+            name: name.value || null,
+            values: values.value,
+          });
         }
         emit('installed');
         dialogVisible.value = false;

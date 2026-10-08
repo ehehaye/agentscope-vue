@@ -166,7 +166,6 @@
 
 <script>
 import { defineComponent, ref, computed, watch, toRef } from '@/composables/vue';
-import { MessageBox } from 'element-ui';
 import { Icon } from '@/components/ui/Icon';
 import { knowledgeBaseApi } from '@/api';
 import { toast } from '@/lib/toast';
@@ -174,6 +173,7 @@ import DocumentDetailDrawer from '@/components/knowledge/DocumentDetailDrawer.vu
 import { useUploadCenter } from '@/composables/useUploadCenter.js';
 import { useDocumentStatusPolling } from '@/composables/useDocumentStatusPolling.js';
 import { useKnowledgeDocuments } from '@/composables/useKnowledgeDocuments.js';
+import { confirmDialog } from '@/utils/common';
 import { useKnowledgeSupportedContentTypes } from '@/composables/useKnowledgeSupportedContentTypes.js';
 
 const TERMINAL_SERVER_STATUSES = ['ready', 'error'];
@@ -415,13 +415,13 @@ export default defineComponent({
 
     async function handleDelete(doc) {
       if (!doc) return;
-      await MessageBox.confirm(`确定删除文档「${doc.filename}」吗？`, '删除文档', {
-        type: 'warning',
-        confirmButtonText: '删除',
-        cancelButtonText: '取消',
+      await confirmDialog({
+        message: `确定删除文档「${doc.filename}」吗？`,
+        onSubmit: async () => {
+          await knowledgeBaseApi.deleteDocument(props.knowledgeBaseId, doc.id);
+          await refetch();
+        },
       });
-      await knowledgeBaseApi.deleteDocument(props.knowledgeBaseId, doc.id);
-      await refetch();
     }
 
     function handleOpenDetail(doc) {

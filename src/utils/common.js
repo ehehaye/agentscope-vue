@@ -1,3 +1,5 @@
+import { MessageBox } from 'element-ui';
+
 /** 凭证的展示名：优先取用户设置的名字，否则退化为短 id 前缀。 */
 export function credentialLabel(credential) {
   return credential.data.name || credential.id.slice(0, 8);
@@ -151,3 +153,56 @@ export const isValidJsonStr = (str = '') => {
     return false;
   }
 };
+
+/**
+ * 破坏性操作的统一确认弹窗。
+ *
+ * 标题固定「系统提示」，确认按钮固定「确认」。点击「确认」后执行 onSubmit，
+ * 此时确认按钮进入 loading、取消按钮置灰不可点；无论 onSubmit 成功与否均关闭弹窗。
+ *
+ * @param {object} options
+ * @param {string} options.message 确认内容
+ * @param {() => Promise<any>} [options.onSubmit] 点击「确认」时执行的异步操作
+ * @returns {Promise<void>} 点击「确认」并执行完 onSubmit 后 resolve，其余情况 reject
+ */
+export function confirmDialog({ message, onSubmit = () => Promise.resolve() } = {}) {
+  let submitting = false;
+
+  const setCancelDisabled = (instance, disabled) => {
+    const confirmEl = instance.$refs.confirm && instance.$refs.confirm.$el;
+    const cancelEl = confirmEl && confirmEl.previousElementSibling;
+    if (!cancelEl) return;
+    cancelEl.disabled = disabled;
+    cancelEl.classList.toggle('is-disabled', disabled);
+  };
+
+  return MessageBox.confirm(message, '系统提示', {
+    type: 'warning',
+    confirmButtonText: '确认',
+    cancelButtonText: '取消',
+    beforeClose: async (action, instance, done) => {
+      // 提交过程中忽略取消/关闭等操作，避免弹窗被提前关闭
+      if (submitting) return;
+      if (action !== 'confirm') {
+        done();
+        return;
+      }
+
+      submitting = true;
+      instance.confirmButtonLoading = true;
+      setCancelDisabled(instance, true);
+      try {
+        await onSubmit();
+      } catch {
+        // 失败时错误已由 API 层提示，这里只需保证弹窗关闭
+      } finally {
+        submitting = false;
+        instance.confirmButtonLoading = false;
+        setCancelDisabled(instance, false);
+        // 提交期间可能被标记为 cancel/close，这里统一按 confirm 收尾以正常 resolve
+        instance.action = 'confirm';
+        done();
+      }
+    },
+  });
+}
