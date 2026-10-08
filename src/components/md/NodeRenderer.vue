@@ -28,7 +28,6 @@ export default defineComponent({
   },
   computed: {
     resolved() {
-      // 命中注册表（如 ```echarts → VChart）时整体替换渲染；自定义组件不渲染子节点
       return (
         resolveRenderer(this.node) || {
           component: this.node.tagName,
