@@ -135,7 +135,6 @@ export default defineComponent({
     return {
       htmlRafId: null,
       twRafId: null,
-      pendingUpdate: false,
       astTree: [],
       displayContent: '',
       // 是否已完成首次同步：首次内容（含历史回填）直接渲染，不走打字机
@@ -217,11 +216,14 @@ export default defineComponent({
         cancelAnimationFrame(this.htmlRafId);
       }
       this.htmlRafId = requestAnimationFrame(() => {
-        this.pendingUpdate = false;
         this.htmlRafId = null;
 
         // 把 HTML 转成 vNode 树，让每次内容变化只触发 Vue diff 做增量更新。
         const html = this.getHtml();
+        if (this.lastHtml === html) {
+          return;
+        }
+        this.lastHtml = html;
         this.astTree = html ? parseDocument(html).children : [];
       });
     },
