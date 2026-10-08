@@ -1,7 +1,10 @@
 <template>
   <div>
     <template v-if="block.type === 'text'">
-      <template v-if="plain">{{ block.text }}</template>
+      <div
+        v-if="plain"
+        class="tw-whitespace-pre-wrap tw-break-words"
+      >{{ block.text }}</div>
       <MarkdownRenderer
         v-else
         :content="block.text"
