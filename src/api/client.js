@@ -144,7 +144,7 @@ async function request(key, options = {}) {
     silent,
     baseUrl: baseUrl ?? getBaseUrl(mode),
     userId,
-    timeoutMs,
+    timeoutMs: rawStream ? undefined : timeoutMs,
   });
 
   if (rawStream) return res;
