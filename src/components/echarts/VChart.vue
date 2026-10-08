@@ -80,11 +80,13 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      initChart();
-      if (props.autoResize && typeof ResizeObserver !== 'undefined') {
-        resizeObserver = new ResizeObserver(scheduleResize);
-        resizeObserver.observe(el.value);
-      }
+      requestAnimationFrame(() => {
+        initChart()
+        if (props.autoResize && typeof ResizeObserver !== 'undefined') {
+          resizeObserver = new ResizeObserver(scheduleResize);
+          resizeObserver.observe(el.value);
+        }
+      });
     });
 
     onBeforeUnmount(() => {
