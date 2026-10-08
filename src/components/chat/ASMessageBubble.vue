@@ -18,7 +18,10 @@
             :key="index"
             :variant="isUser ? 'muted' : 'ghost'"
           >
-            <ASBlock :block="block" />
+            <ASBlock
+              :block="block"
+              :plain="isUser"
+            />
           </Bubble>
         </template>
 

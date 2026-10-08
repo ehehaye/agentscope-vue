@@ -1,7 +1,9 @@
 <template>
   <div>
     <template v-if="block.type === 'text'">
+      <template v-if="plain">{{ block.text }}</template>
       <MarkdownRenderer
+        v-else
         :content="block.text"
         typewriter
       />
@@ -68,6 +70,7 @@ export default defineComponent({
   components: { MarkdownRenderer, Collapsible, DataBlockView, ToolCallGroup },
   props: {
     block: { type: Object, required: true },
+    plain: { type: Boolean, default: false },
   },
   setup(props) {
     const isThinkingRunning = computed(() => props.block.type === 'thinking' && !props.block.finished_at);
