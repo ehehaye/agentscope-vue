@@ -58,7 +58,7 @@
 
 <script>
 import { defineComponent, ref, computed, watch, onUnmounted } from '@/composables/vue';
-import MarkdownRenderer from '@/components/common/MarkdownRenderer.vue';
+import MarkdownRenderer from '@/components/md/MarkdownRenderer.vue';
 import Collapsible from '@/components/ui/Collapsible.vue';
 import DataBlockView from './DataBlockView.vue';
 import ToolCallGroup from './ToolCallGroup.vue';

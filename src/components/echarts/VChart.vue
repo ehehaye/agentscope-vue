@@ -2,7 +2,7 @@
   <div
     ref="el"
     :class="cn('tw-h-full tw-w-full', className)"
-    :style="style"
+    :style="{ height }"
   ></div>
 </template>
 
@@ -29,7 +29,7 @@ export default defineComponent({
     /** 容器尺寸变化时是否自动 resize */
     autoResize: { type: Boolean, default: true },
     /** 容器内联样式，建议至少显式指定宽高，否则依赖父容器撑开 */
-    style: { type: [String, Object], default: () => ({ height: '300px', width: '100%' }) },
+    height: { type: String, default: '300px' },
     className: { type: String, default: '' },
   },
   setup(props, { emit }) {

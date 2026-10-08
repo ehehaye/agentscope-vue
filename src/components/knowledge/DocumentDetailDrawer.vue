@@ -129,7 +129,7 @@
 <script>
 import { defineComponent, ref, computed, watch, watchEffect } from '@/composables/vue';
 import { knowledgeBaseApi } from '@/api';
-import MarkdownRenderer from '@/components/common/MarkdownRenderer.vue';
+import MarkdownRenderer from '@/components/md/MarkdownRenderer.vue';
 
 const CHUNK_PAGE_SIZE = 20;
 const MAX_INLINE_TEXT_BYTES = 2 * 1024 * 1024;

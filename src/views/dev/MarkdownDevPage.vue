@@ -58,7 +58,7 @@
 
 <script>
 import { defineComponent } from '@/composables/vue';
-import MarkdownRenderer from '@/components/common/MarkdownRenderer.vue';
+import MarkdownRenderer from '@/components/md/MarkdownRenderer.vue';
 
 const STATIC_SAMPLE = `# AgentScope 渲染验证
 
@@ -79,6 +79,10 @@ console.log(greet('AgentScope'));
 \`\`\`python
 def fib(n: int) -> int:
     return n if n < 2 else fib(n - 1) + fib(n - 2)
+\`\`\`
+
+\`\`\`echarts
+{"xAxis":{"type":"category","data":["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]},"yAxis":{"type":"value"},"series":[{"data":[150,230,224,218,135,147,260],"type":"line"}]}
 \`\`\`
 
 ## 表格
@@ -111,6 +115,10 @@ const STREAM_SAMPLE = `## 正在分析任务
 \`\`\`python
 result = await agent.reply(user_msg)
 print(result)
+\`\`\`
+
+\`\`\`echarts
+{"xAxis":{"type":"category","data":["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]},"yAxis":{"type":"value"},"series":[{"data":[150,230,224,218,135,147,260],"type":"line"}]}
 \`\`\`
 
 > 流式输出过程中，未闭合的 **粗体**、代码块等由 remend 自愈，避免整页闪烁。

@@ -78,7 +78,7 @@ views/                     # 业务页（路由层）
 | `components/panel/*` | `components/panel/*` | 一致 `Panel / PanelDock / PanelEmpty + KnowledgeBase / Mcp / Permission / Skill / Task / Team`。 |
 | `components/popover/*` | `components/popover/*` | `ModelParametersPopover` 等。 |
 | `components/layout/*` | `components/layout/*` | 入口壳 `AppLayout.vue` / `AppSidebar.vue`。 |
-| `components/ui/*`（shadcn 按钮/侧栏等） | `components/ui/*` + `components/common/*` | shadcn 风格 → Element UI + 自研 ui/common（图标入口为 `ui/Icon.js`）。 |
+| `components/ui/*`（shadcn 按钮/侧栏等） | `components/ui/*` + `components/md/*` | shadcn 风格 → Element UI + 自研 ui/md（图标入口为 `ui/Icon.js`）。 |
 | `components/markdown/*`（streamdown 包装） | `marked`（由 `ASBlock` 等使用） | 渲染管线不同。 |
 | `components/badge/` `form/` `drawer/` `tour/` `error/` `hub/` `knowledge/` | `components/badge/` `form/` `drawer/` `knowledge/`（其余未引入） | `tour` 官方独有；`hub` 并入 `views/mcp/views/skill` 与 `useMCPHubs/useSkillHubs`。 |
 | `types/`（TS 类型） | 无（迁移期未引入 TS） | — |

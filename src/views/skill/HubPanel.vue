@@ -189,7 +189,7 @@
 import { defineComponent, ref, computed } from '@/composables/vue';
 import { Icon } from '@/components/ui/Icon';
 import Spinner from '@/components/ui/Spinner.vue';
-import MarkdownRenderer from '@/components/common/MarkdownRenderer.vue';
+import MarkdownRenderer from '@/components/md/MarkdownRenderer.vue';
 import { useSkillHubCards } from '@/composables/useSkillHubCards';
 import { hubApi } from '@/api';
 import { formatTime } from '@/utils/common';

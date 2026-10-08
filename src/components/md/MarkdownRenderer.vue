@@ -43,7 +43,7 @@ const renderer = {
     const langTag = lang ? `<div class="md-code-lang">${escapeHtml(lang)}</div>` : '';
     const lines = text.split('\n');
     const lineNumbers = lines.map((_, i) => `<span>${i + 1}</span>`).join('');
-    return `<div class="md-code-wrapper">${langTag}<div class="md-code-scroll"><div class="md-code-lines">${lineNumbers}</div><pre class="md-pre"><code class="md-code hljs language-${language}">${highlighted}</code></pre></div></div>`;
+    return `<div class="md-code-wrapper" data-lang="${lang || language}">${langTag}<div class="md-code-scroll"><div class="md-code-lines">${lineNumbers}</div><pre class="md-pre"><code class="md-code hljs language-${language}">${highlighted}</code></pre></div></div>`;
   },
 
   codespan({ text }) {
@@ -114,11 +114,6 @@ export default defineComponent({
   name: 'MarkdownRenderer',
   components: {
     NodeRenderer,
-  },
-  inject: {
-    CUSTOM_TAGS: {
-      default: () => [],
-    },
   },
   props: {
     content: {
@@ -213,8 +208,7 @@ export default defineComponent({
        */
       return displayContent
         ? DOMPurify.sanitize(marked(remend(displayContent)), {
-            ADD_TAGS: this.CUSTOM_TAGS,
-            ALLOW_DATA_ATTR: false,
+            ALLOW_DATA_ATTR: true,
           })
         : '';
     },

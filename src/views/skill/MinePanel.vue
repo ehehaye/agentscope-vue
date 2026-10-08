@@ -147,7 +147,7 @@
 import { defineComponent, ref, computed } from '@/composables/vue';
 import { Icon } from '@/components/ui/Icon';
 import Spinner from '@/components/ui/Spinner.vue';
-import MarkdownRenderer from '@/components/common/MarkdownRenderer.vue';
+import MarkdownRenderer from '@/components/md/MarkdownRenderer.vue';
 import { skillApi } from '@/api';
 import { confirmDialog } from '@/utils/common';
 
