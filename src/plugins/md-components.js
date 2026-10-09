@@ -10,7 +10,7 @@ registerCodeBlockComp('echarts', {
     try {
       return { option: JSON.parse(code.trim()) };
     } catch (err) {
-      // JSON 未闭合/不合法（常见于流式输出中段），回退默认代码块渲染
+      // JSON 不合法，回退默认代码块渲染
       return null;
     }
   },
