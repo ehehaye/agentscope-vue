@@ -57,9 +57,7 @@ export function useSessionManager({
   function handleCreateSession() {
     // TODO: 回复进行中时，是否先弹确认再新建会话
     abort();
-    router
-      .push({ path: '/chat', query: { ...route.query, sessionId: undefined, memberId: undefined } })
-      .catch(() => {});
+    router.push({ name: 'chat', query: { ...route.query, sessionId: undefined, memberId: undefined } }).catch(() => {});
   }
 
   function openRename(session) {
