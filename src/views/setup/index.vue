@@ -74,7 +74,7 @@
 
 <script>
 import { defineComponent } from '@/composables/vue';
-import { healthApi, ApiError, TIMEOUT_STATUS, API_MODES } from '@/api';
+import { healthApi, ApiError, TIMEOUT_STATUS, API_MODES, getUserId, getBaseUrl, getApiMode } from '@/api';
 import { MODE_STORAGE_KEY } from '@/api/mapping';
 import agentscopeLogo from '@/assets/imgs/agentscope.svg';
 
@@ -85,9 +85,9 @@ export default defineComponent({
       API_MODES,
       agentscopeLogo,
       form: {
-        serverUrl: localStorage.getItem('server_url') ?? 'http://localhost:8000',
-        username: localStorage.getItem('username') ?? 'demo',
-        apiMode: localStorage.getItem(MODE_STORAGE_KEY) ?? API_MODES.DIRECT,
+        serverUrl: getBaseUrl(),
+        username: getUserId(),
+        apiMode: getApiMode(),
       },
       loading: false,
       errorMessage: '',

@@ -9,9 +9,9 @@ import { toast } from '@/lib/toast';
 import { API_MODES, getApiMode, resolveEndpoint } from './mapping';
 import { isValidJsonStr } from '@/utils/common';
 
-export const getBaseUrl = (mode = getApiMode()) => localStorage.getItem('server_url') ?? '';
+export const getBaseUrl = () => localStorage.getItem('server_url') ?? 'http://localhost:8000';
 
-export const getUserId = () => localStorage.getItem('username') ?? '';
+export const getUserId = () => localStorage.getItem('username') ?? 'demo';
 
 /** 非 2xx 响应的结构化错误；message 为可读 detail。 */
 export class ApiError extends Error {
