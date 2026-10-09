@@ -121,6 +121,8 @@ import { defineComponent } from '@/composables/vue';
 import { Icon } from '@/components/ui/Icon';
 import agentscopeLogo from '@/assets/imgs/agentscope.svg';
 
+const SIDEBAR_COLLAPSED_KEY = 'as-sidebarCollapsed';
+
 export default defineComponent({
   name: 'AppSidebar',
   components: { Icon },
@@ -141,7 +143,7 @@ export default defineComponent({
     };
   },
   mounted() {
-    const saved = localStorage.getItem('sidebarCollapsed');
+    const saved = localStorage.getItem(SIDEBAR_COLLAPSED_KEY);
     if (saved !== null) {
       this.collapsed = saved === 'true';
     }
@@ -163,7 +165,7 @@ export default defineComponent({
     },
     toggleCollapsed() {
       this.collapsed = !this.collapsed;
-      localStorage.setItem('sidebarCollapsed', String(this.collapsed));
+      localStorage.setItem(SIDEBAR_COLLAPSED_KEY, String(this.collapsed));
     },
   },
 });

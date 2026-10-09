@@ -6,9 +6,9 @@
 
 import { API_MODES, MODE_STORAGE_KEY } from '@/api/mapping';
 
-const THEME_KEY = 'theme';
-const SERVER_URL_KEY = 'server_url';
-const USERNAME_KEY = 'username';
+const THEME_KEY = 'as-theme';
+const SERVER_URL_KEY = 'as-server_url';
+const USERNAME_KEY = 'as-username';
 
 function initialDark() {
   // index.html 首帧脚本已按相同规则设置过 class，这里取真值，避免二次闪烁。

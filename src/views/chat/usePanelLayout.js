@@ -1,6 +1,6 @@
 import { ref, watch } from '@/composables/vue';
 
-const PANEL_LAYOUT_KEY = 'chat_panel_layout';
+const PANEL_LAYOUT_KEY = 'as-chat_panel_layout';
 const MAX_PANELS_PER_COLUMN = 2;
 
 export const PANEL_MENU = [
