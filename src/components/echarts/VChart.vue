@@ -104,11 +104,6 @@ export default defineComponent({
     usePrintEvents({
       beforePrint: () => {
         isPrint.value = true;
-        img.value = chart?.getDataURL({
-          pixelRatio: 4, // 确保高清
-          backgroundColor: '#fff',
-          excludeComponents: ['toolbox'],
-        });
       },
       afterPrint: () => {
         isPrint.value = false;
