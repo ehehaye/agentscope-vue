@@ -4,11 +4,12 @@
       <div
         v-if="plain"
         class="tw-whitespace-pre-wrap tw-break-words"
-      >{{ block.text }}</div>
+      >
+        {{ block.text }}
+      </div>
       <MarkdownRenderer
         v-else
         :content="block.text"
-        typewriter
       />
     </template>
 
@@ -26,10 +27,7 @@
           </div>
         </template>
         <div class="tw-mt-2 tw-rounded-md tw-bg-muted tw-p-2 tw-text-sm tw-text-muted-foreground">
-          <MarkdownRenderer
-            :content="block.thinking"
-            typewriter
-          />
+          <MarkdownRenderer :content="block.thinking" />
         </div>
       </Collapsible>
     </template>

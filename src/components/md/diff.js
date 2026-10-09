@@ -6,10 +6,10 @@ import { marked } from 'marked';
  * 块级增量解析 mixin
  *
  * 把每帧 O(n) 的全量 markdown 解析降为 O(tail)，
- * 整体打字机开销从 O(n²) 降到 O(n)。
+ * 整体开销从 O(n²) 降到 O(n)。
  *
  * 思路：markdown 是块结构（段落/代码块/列表），前面的块写完就不变，
- * 只有最后一个块在被追加。把 displayContent 切成 stablePrefix + tail：
+ * 只有最后一个块在被追加。把 content 切成 stablePrefix + tail：
  * - 稳定前缀的 HTML 字符串缓存复用，命中即跳过 marked/remend。
  * - 每帧只对 tail 调 marked + remend。
  * - DOMPurify 必须在拼接后整体跑一次（不能分开 sanitize，否则 tail 里的
@@ -73,10 +73,7 @@ export default {
      */
     findStableBoundaryCached(content) {
       // 整段替换检测：内容不再以缓存的 stable prefix 开头
-      if (
-        this.incrementalStablePrefix &&
-        !content.startsWith(this.incrementalStablePrefix)
-      ) {
+      if (this.incrementalStablePrefix && !content.startsWith(this.incrementalStablePrefix)) {
         this.incrementalStablePrefix = '';
         this.incrementalStablePrefixHtml = '';
         this.incrementalLastBoundary = null;
@@ -97,12 +94,12 @@ export default {
      * 单次复杂度 O(tail_size)，整体打字机总复杂度 O(n)。
      */
     getHtml() {
-      const { displayContent } = this;
-      if (!displayContent) return '';
+      const { content: fullContent } = this;
+      if (!fullContent) return '';
 
-      const boundary = this.findStableBoundaryCached(displayContent);
-      const stable = displayContent.slice(0, boundary);
-      const tail = displayContent.slice(boundary);
+      const boundary = this.findStableBoundaryCached(fullContent);
+      const stable = fullContent.slice(0, boundary);
+      const tail = fullContent.slice(boundary);
 
       // 复用稳定前缀（命中缓存 → 跳过 marked/remend）
       let stableUnsanitized;

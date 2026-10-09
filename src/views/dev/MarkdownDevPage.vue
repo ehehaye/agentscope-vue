@@ -41,7 +41,6 @@
           <h2 class="tw-mb-4 tw-text-sm tw-font-medium tw-text-muted-foreground">流式样例（remend 自愈，分块追加）</h2>
           <MarkdownRenderer
             :content="streamContent"
-            typewriter
           />
         </section>
 

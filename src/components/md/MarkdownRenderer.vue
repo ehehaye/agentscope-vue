@@ -123,47 +123,17 @@ export default defineComponent({
       type: String,
       default: '',
     },
-    // 打字机模式：displayContent 滞后于 content，逐帧追赶，实现平滑输出
-    typewriter: {
-      type: Boolean,
-      default: false,
-    },
-    // 打字机速度倍率，默认 0.5；越大越快（同时影响追帧灵敏度与每帧吐字上限）
-    speed: {
-      type: Number,
-      default: 0.5,
-    },
   },
   data() {
     return {
       htmlRafId: null,
-      twRafId: null,
       astTree: [],
-      displayContent: '',
-      // 是否已完成首次同步：首次内容（含历史回填）直接渲染，不走打字机
-      initialized: false,
     };
   },
   watch: {
     content: {
-      handler(val) {
-        // 首次渲染（含历史回填）直接同步，不做动画。
-        // 注意：此时 displayContent 为空串，startsWith('') 恒为 true，无法用追加判断区分，故用显式标记
-        if (!this.typewriter || !this.initialized) {
-          this.initialized = true;
-          this.stopTypewriter();
-          this.displayContent = val;
-          this.updateAstTree();
-          return;
-        }
-        // 非纯追加（整段替换）时直接同步，不做动画
-        if (!val.startsWith(this.displayContent)) {
-          this.stopTypewriter();
-          this.displayContent = val;
-          this.updateAstTree();
-          return;
-        }
-        this.scheduleTypewriter();
+      handler() {
+        this.updateAstTree();
       },
       immediate: true,
     },
@@ -172,36 +142,8 @@ export default defineComponent({
     if (this.htmlRafId) {
       cancelAnimationFrame(this.htmlRafId);
     }
-    this.stopTypewriter();
   },
   methods: {
-    stopTypewriter() {
-      if (this.twRafId) {
-        cancelAnimationFrame(this.twRafId);
-        this.twRafId = null;
-      }
-    },
-    scheduleTypewriter() {
-      if (this.twRafId) {
-        return;
-      }
-      const step = () => {
-        this.twRafId = null;
-        const target = this.content.length;
-        const current = this.displayContent.length;
-        const backlog = target - current;
-        if (backlog <= 0) {
-          return;
-        }
-        // 自适应速度：积压越多每帧吐字越多，平滑的同时保证追得上流式速度；speed 为整体倍率
-        const speed = this.speed > 0 ? this.speed : 1;
-        const stepChars = Math.min(Math.max(Math.ceil((backlog / 12) * speed), 1), Math.ceil(24 * speed));
-        this.displayContent = this.content.slice(0, current + stepChars);
-        this.updateAstTree();
-        this.twRafId = requestAnimationFrame(step);
-      };
-      this.twRafId = requestAnimationFrame(step);
-    },
     updateAstTree() {
       if (this.htmlRafId) {
         cancelAnimationFrame(this.htmlRafId);
