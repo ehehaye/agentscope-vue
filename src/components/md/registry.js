@@ -15,7 +15,14 @@ const CODE_BLOCK_COMPONENTS = new Map();
 const TAG_COMPONENTS = new Map();
 
 export function registerCodeBlockComp(lang, { component, resolve }) {
-  CODE_BLOCK_COMPONENTS.set(lang, { component, resolve });
+  CODE_BLOCK_COMPONENTS.set(lang, {
+    component,
+    resolve,
+    filter(node) {
+      const attribs = node.attribs || {};
+      return attribs['data-complete'] === '1';
+    },
+  });
 }
 
 export function registerTagComp(tag, { component, resolve, filter }) {
@@ -29,9 +36,7 @@ export function resolveRenderer(node) {
   const codeEntry = lang && CODE_BLOCK_COMPONENTS.get(lang);
   const entry = codeEntry || TAG_COMPONENTS.get(node.tagName);
   if (!entry) return null;
-  const ctx = codeEntry
-    ? { node, attribs, lang, code: extractCode(node) }
-    : { node, attribs };
+  const ctx = codeEntry ? { node, attribs, lang, code: extractCode(node) } : { node, attribs };
   if (entry.filter && !entry.filter(ctx)) return null;
   const props = entry.resolve ? entry.resolve(ctx) : attribs;
   return props == null ? null : { component: entry.component, props };
