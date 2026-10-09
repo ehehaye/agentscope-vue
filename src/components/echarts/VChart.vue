@@ -1,14 +1,33 @@
 <template>
   <div
-    ref="el"
-    :class="cn('tw-h-full tw-w-full', className)"
+    :class="cn('tw-h-full tw-w-full tw-relative', className)"
     :style="{ height }"
-  ></div>
+  >
+    <div
+      v-show="!isPrint"
+      ref="el"
+      class="tw-h-full tw-w-full"
+    ></div>
+    <img
+      v-if="isPrint && img"
+      class="tw-h-full tw-w-full tw-z-10 tw-top-0 tw-left-0"
+      :src="img"
+    />
+  </div>
 </template>
 
 <script>
 import * as echarts from 'echarts';
-import { defineComponent, ref, onMounted, onBeforeUnmount, watch, getCurrentInstance } from '@/composables/vue';
+import {
+  defineComponent,
+  ref,
+  onMounted,
+  onBeforeUnmount,
+  watch,
+  getCurrentInstance,
+  nextTick,
+} from '@/composables/vue';
+import { usePrintEvents } from '@/composables/usePrintEvents';
 import { cn } from '@/lib/utils';
 
 export default defineComponent({
@@ -54,7 +73,7 @@ export default defineComponent({
 
     const initChart = () => {
       if (!el.value) return;
-      chart = echarts.init(el.value, props.theme, props.initOptions);
+      chart = echarts.init(el.value, props.theme, { renderer: 'svg', ...props.initOptions });
       chart.setOption(props.option, { ...props.updateOptions });
       if (props.group) chart.group = props.group;
       if (props.loading) chart.showLoading();
@@ -79,9 +98,39 @@ export default defineComponent({
       });
     };
 
+    const isPrint = ref(false);
+    const img = ref(null);
+
+    usePrintEvents({
+      beforePrint: () => {
+        isPrint.value = true;
+        img.value = chart?.getDataURL({
+          pixelRatio: 4, // 确保高清
+          backgroundColor: '#fff',
+          excludeComponents: ['toolbox'],
+        });
+      },
+      afterPrint: () => {
+        isPrint.value = false;
+      },
+    });
+
+    watch(isPrint, (bool) => {
+      if (bool) {
+        img.value = chart?.getDataURL({
+          type: 'png',
+          pixelRatio: 3, // 高清
+          backgroundColor: '#fff',
+          excludeComponents: ['toolbox'],
+        });
+      } else {
+        img.value = '';
+      }
+    });
+
     onMounted(() => {
       requestAnimationFrame(() => {
-        initChart()
+        initChart();
         if (props.autoResize && typeof ResizeObserver !== 'undefined') {
           resizeObserver = new ResizeObserver(scheduleResize);
           resizeObserver.observe(el.value);
@@ -136,7 +185,7 @@ export default defineComponent({
       },
     );
 
-    return { el, cn, getChart: () => chart };
+    return { el, isPrint, img, cn, getChart: () => chart };
   },
 });
 </script>

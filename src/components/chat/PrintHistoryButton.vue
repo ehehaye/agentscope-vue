@@ -1,23 +1,30 @@
 <template>
-  <el-button
-    v-print="printOptions"
-    type="text"
-    size="small"
-    circle
-    :disabled="disabled"
-    :title="disabled ? '打印暂不可用' : '打印历史消息'"
-  >
-    <Icon
-      icon="lucide:printer"
-      class="tw-h-4 tw-w-4"
-    />
-  </el-button>
+  <div>
+    <el-button
+      type="text"
+      size="small"
+      circle
+      :disabled="disabled"
+      :title="disabled ? '打印暂不可用' : '打印历史消息'"
+      @click="trigger"
+    >
+      <Icon
+        icon="lucide:printer"
+        class="tw-h-4 tw-w-4"
+      />
+    </el-button>
+    <button
+      v-show="false"
+      v-print="printOptions"
+      ref="print"
+    ></button>
+  </div>
 </template>
 
 <script>
 import Vue from 'vue';
 import print from 'vue-print-nb';
-import { defineComponent, watch } from '@/composables/vue';
+import { defineComponent, watch, ref, nextTick } from '@/composables/vue';
 import { Icon } from '@/components/ui/Icon';
 
 // vue-print-nb 会把目标节点克隆进一个全新的 iframe 再打印，iframe 的 <html> 不携带宿主页面的 class，
@@ -47,6 +54,11 @@ export default defineComponent({
       // popTitle 会写入打印 iframe 的 <title>，也是 Chrome 打印对话框「另存为 PDF」时的默认文件名来源。
       popTitle: props.title || document.title,
       extraHead: buildExtraHead(props),
+      // 设为 true 启用调试模式，与实际场景略有偏差，比如没有 @media print 样式
+      preview: false,
+      closeCallback() {
+        window.dispatchEvent(new Event('afterprint'));
+      },
     };
 
     watch(
@@ -56,7 +68,16 @@ export default defineComponent({
       },
     );
 
-    return { printOptions };
+    const print = ref(null);
+    const trigger = async () => {
+      // 打印前可能需要更新数据、调整打印样式，这些 DOM 变更要在打印窗口弹出前完成。
+      // vue-print-nb 未提供异步回调，因此先派发 beforeprint，再用 nextTick 等待 DOM 更新后再触发打印。
+      window.dispatchEvent(new Event('beforeprint'));
+      await nextTick();
+      print.value?.click();
+    };
+
+    return { printOptions, print, trigger };
   },
 });
 </script>
