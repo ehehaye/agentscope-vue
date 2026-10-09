@@ -168,6 +168,15 @@ export default defineComponent({
   line-height: 1.8;
   color: @text-color;
 
+  // 还原列表样式
+  ul > li {
+    list-style-type: disc;
+  }
+
+  ol > li {
+    list-style-type: decimal;
+  }
+
   .md-h1,
   .md-h2,
   .md-h3,

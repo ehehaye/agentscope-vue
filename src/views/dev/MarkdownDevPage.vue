@@ -39,9 +39,7 @@
 
         <section class="tw-rounded-lg tw-border tw-border-border tw-bg-card tw-p-6">
           <h2 class="tw-mb-4 tw-text-sm tw-font-medium tw-text-muted-foreground">流式样例（remend 自愈，分块追加）</h2>
-          <MarkdownRenderer
-            :content="streamContent"
-          />
+          <MarkdownRenderer :content="streamContent" />
         </section>
 
         <section class="tw-rounded-lg tw-border tw-border-border tw-bg-card tw-p-6">
@@ -80,6 +78,7 @@ def fib(n: int) -> int:
     return n if n < 2 else fib(n - 1) + fib(n - 2)
 \`\`\`
 
+## 代码块自定义渲染
 \`\`\`echarts
 {"xAxis":{"type":"category","data":["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]},"yAxis":{"type":"value"},"series":[{"data":[150,230,224,218,135,147,260],"type":"line"}]}
 \`\`\`
