@@ -13,7 +13,7 @@
 | 路由 | react-router-dom v7（路径段 `/chat/:agentId/:sessionId`） | vue-router 3（Query 形式 `/chat?agentId=&sessionId=&memberId=`） |
 | 入口 | `src/main.tsx` → `App.tsx`（含 Sidebar Provider） | `src/main.js` → `App.vue`（`#as-app` 根节点 + `setupPlugins(Vue)`） |
 | i18n | i18next + react-i18next | 未使用（中文硬编码） |
-| Markdown | `@streamdown/*`（code/math/mermaid/cjk） | `marked` + 自渲染（`src/components/markdown/*` 未在本目录但由 `ASBlock` 等用） |
+| Markdown | `@streamdown/*`（code/math/mermaid/cjk） | `marked` + 自渲染（`src/components/md/*` 未在本目录但由 `ASBlock` 等用） |
 | Tour | `onborda`（`ChatTourController`） | 无对应实现 |
 
 ## 2. 目录级对照
@@ -25,7 +25,7 @@ api/                       # 各资源 fetch 封装
 assets/images/             # 图片资源
 components/
   badge/ chat/ dialog/ drawer/ error/ form/ hub/ knowledge/
-  layout/ markdown/ panel/ popover/ select/ tour/ ui/
+  layout/ md/ panel/ popover/ select/ tour/ ui/
 context/                   # AudioContext 等 Provider
 hooks/                     # useAgents/useSessions/useMessages/...
 i18n/                      # useI18n.ts
@@ -79,7 +79,7 @@ views/                     # 业务页（路由层）
 | `components/popover/*` | `components/popover/*` | `ModelParametersPopover` 等。 |
 | `components/layout/*` | `components/layout/*` | 入口壳 `AppLayout.vue` / `AppSidebar.vue`。 |
 | `components/ui/*`（shadcn 按钮/侧栏等） | `components/ui/*` + `components/md/*` | shadcn 风格 → Element UI + 自研 ui/md（图标入口为 `ui/Icon.js`）。 |
-| `components/markdown/*`（streamdown 包装） | `marked`（由 `ASBlock` 等使用） | 渲染管线不同。 |
+| `components/md/*`（streamdown 包装） | `marked`（由 `ASBlock` 等使用） | 渲染管线不同。 |
 | `components/badge/` `form/` `drawer/` `tour/` `error/` `hub/` `knowledge/` | `components/badge/` `form/` `drawer/` `knowledge/`（其余未引入） | `tour` 官方独有；`hub` 并入 `views/mcp/views/skill` 与 `useMCPHubs/useSkillHubs`。 |
 | `types/`（TS 类型） | 无（迁移期未引入 TS） | — |
 | `i18n/` | 无 | — |
