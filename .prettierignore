@@ -3,5 +3,7 @@ dist
 public
 docs
 pnpm-lock.yaml
+package-lock.json
+package.json
 *.min.js
 *.min.css

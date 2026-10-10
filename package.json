@@ -10,8 +10,8 @@
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "preview": "vue-cli-service serve --mode production",
-    "format": "prettier --write \"src/**/*.{js,vue,css,less}\" \"*.{js,json}\"",
-    "format:check": "prettier --check \"src/**/*.{js,vue,css,less}\" \"*.{js,json}\""
+    "format": "prettier --write \"./**/*.{js,vue,css,less}\" \"*.{js,json}\"",
+    "format:check": "prettier --check \"./**/*.{js,vue,css,less}\" \"*.{js,json}\""
   },
   "browserslist": [
     "> 1%",

@@ -18,14 +18,7 @@
 
 <script>
 import * as echarts from 'echarts';
-import {
-  defineComponent,
-  ref,
-  onMounted,
-  onBeforeUnmount,
-  watch,
-  getCurrentInstance,
-} from '@/composables/vue';
+import { defineComponent, ref, onMounted, onBeforeUnmount, watch, getCurrentInstance } from '@/composables/vue';
 import { usePrintEvents } from '@/composables/usePrintEvents';
 import { cn } from '@/lib/utils';
 

@@ -11,7 +11,10 @@
     </div>
     <DiffPreview :unified-diff="diff" />
   </div>
-  <DefaultRenderer v-else :pair="pair" />
+  <DefaultRenderer
+    v-else
+    :pair="pair"
+  />
 </template>
 
 <script>
@@ -32,9 +35,7 @@ export default defineComponent({
     // success 且后端附了 unified diff 才走文件预览；
     // 其余（running / error / interrupted / denied / success 无 diff）全部交给
     // DefaultRenderer 兜底。
-    const successBody = computed(
-      () => !!props.pair.result && props.pair.result.state === 'success' && !!diff.value,
-    );
+    const successBody = computed(() => !!props.pair.result && props.pair.result.state === 'success' && !!diff.value);
     return { filePath, diff, successBody };
   },
 });
