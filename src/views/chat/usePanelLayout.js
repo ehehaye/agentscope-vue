@@ -1,6 +1,6 @@
 import { ref, watch } from '@/composables/vue';
+import { AppStorageKeys } from '@/constants/app-state';
 
-const PANEL_LAYOUT_KEY = 'as-chat_panel_layout';
 const MAX_PANELS_PER_COLUMN = 2;
 
 export const PANEL_MENU = [
@@ -16,7 +16,7 @@ const KNOWN_PANELS = new Set(PANEL_MENU.map((i) => i.key));
 
 function loadLayout() {
   try {
-    const raw = JSON.parse(localStorage.getItem(PANEL_LAYOUT_KEY) || '[]');
+    const raw = JSON.parse(localStorage.getItem(AppStorageKeys.CHAT_PANEL_LAYOUT) || '[]');
     if (!Array.isArray(raw)) return [];
     return raw
       .map((column) => (Array.isArray(column) ? column.filter((k) => KNOWN_PANELS.has(k)) : []))
@@ -28,7 +28,7 @@ function loadLayout() {
 
 function saveLayout(layout) {
   try {
-    localStorage.setItem(PANEL_LAYOUT_KEY, JSON.stringify(layout));
+    localStorage.setItem(AppStorageKeys.CHAT_PANEL_LAYOUT, JSON.stringify(layout));
   } catch {
     // ignore
   }

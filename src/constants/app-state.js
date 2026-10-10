@@ -1,10 +1,32 @@
 /**
- * 本应用自定义的状态枚举（`App*` 前缀）。
+ * 本应用自定义的状态枚举与常量（`App*` 前缀）。
  *
  * 与 `./protocol.js` 的区别：那里的取值由 agentscope SDK 或后端约定，
  * 这里的枚举是前端为驱动 UI 自己维护的状态机，SDK 没有对应概念。
  * chat 模块的状态流转与使用方式见 docs/DATA-FLOW.md 第 6 节。
  */
+
+/**
+ * localStorage 持久化键（SSOT）。
+ *
+ * 所有 `localStorage.setItem / getItem` 都必须使用这里的常量，禁止散落字符串字面量。
+ * 唯一例外：`public/index.html` 的首帧脚本早于模块系统执行、无法 import，
+ * 以字符串字面量保持与 `THEME` 同值，修改时两边必须同步。
+ */
+export const AppStorageKeys = {
+  /** 主题：'dark' | 'light'；index.html 首帧脚本同源读取。 */
+  THEME: 'as-theme',
+  /** 后端 Base URL（direct 直连地址，或 proxy 含中转前缀的地址）。 */
+  SERVER_URL: 'as-server_url',
+  /** 用户名，同时作为 X-User-ID 请求头。 */
+  USERNAME: 'as-username',
+  /** API 接入模式：'direct'（默认）| 'proxy'，取值见 api/mapping.js 的 API_MODES。 */
+  API_MODE: 'api_mode',
+  /** 侧边栏收起状态：'true' | 'false'。 */
+  SIDEBAR_COLLAPSED: 'as-sidebarCollapsed',
+  /** 聊天页右侧面板停靠布局（JSON 序列化的二维数组）。 */
+  CHAT_PANEL_LAYOUT: 'as-chat_panel_layout',
+};
 
 /**
  * 回复相位。

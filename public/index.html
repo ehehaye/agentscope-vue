@@ -9,10 +9,12 @@
 	<title>AgentScope - Vue</title>
 	<script>
 		// 首帧前应用主题，避免深色闪烁。
-		// 优先级：localStorage('theme') > 系统偏好；与 Vuex app 模块同源。
+		// 优先级：localStorage 主题键 > 系统偏好；与 Vuex app 模块同源。
+		// 注意：此脚本早于模块系统执行，无法 import；'as-theme' 必须与
+		// src/constants/app-state.js 的 AppStorageKeys.THEME 保持同值。
 		(function () {
 			try {
-				var stored = localStorage.getItem('theme');
+				var stored = localStorage.getItem('as-theme');
 				var dark =
 					stored != null
 						? stored === 'dark'

@@ -64,7 +64,7 @@ store/modules/chat.send(contentBlocks)
 
 ### 2.1 路由门禁
 
-[src/router/index.js](../src/router/index.js) 通过 `beforeEach` 强制未配置 `server_url` / `username` 时重定向到 `/setup`。会话页路径 `/chat?agentId=X&sessionId=Y&memberId=Z`，所有 agent/session 状态以 URL Query 为单一真源；组件内 `agentId / sessionId / memberId` 均为 `route.query` 的 computed。
+[src/router/index.js](../src/router/index.js) 通过 `beforeEach` 强制未持久化服务器地址 / 用户名（`AppStorageKeys.SERVER_URL` / `AppStorageKeys.USERNAME`）时重定向到 `/setup`。会话页路径 `/chat?agentId=X&sessionId=Y&memberId=Z`，所有 agent/session 状态以 URL Query 为单一真源；组件内 `agentId / sessionId / memberId` 均为 `route.query` 的 computed。
 
 ### 2.2 视图层：[views/chat/index.vue](../src/views/chat/index.vue)
 
@@ -222,10 +222,11 @@ await chatApi.trigger({
 
 ### 2.10 HTTP 客户端：[src/api/client.js](../src/api/client.js)
 
-- 所有请求通过 `client.request(key, options)` → `resolveEndpoint(key)`（[src/api/mapping.js](../src/api/mapping.js#L300-L307)）取 `{ method, path }`。
-- `direct` 模式：`baseUrl = localStorage.server_url`（默认 `http://localhost:8000`，在 `/setup` 设置）。
-- `proxy` 模式：`baseUrl = localStorage.proxy_url`（Java 中转），仅 GET/POST，PATCH/DELETE 自动改写为 `POST {path}/update`、`POST {path}/delete`。
-- 请求头固定注入 `X-User-ID: localStorage.username`。
+- 所有请求通过 `client.request(key, options)` → `resolveEndpoint(key)`（[src/api/mapping.js](../src/api/mapping.js#L302-L309)）取 `{ method, path }`。
+- `baseUrl` 两种模式均取 `AppStorageKeys.SERVER_URL`（值 `as-server_url`，默认 `http://localhost:8000`，在 `/setup` 设置）；`proxy` 模式下该地址含中转前缀路径（如 `http://hostname/proxy/api/`）。
+- `proxy` 模式仅 GET/POST，PATCH/DELETE 自动改写为 `POST {path}/update`、`POST {path}/delete`。
+- 请求头固定注入 `X-User-ID`，取自 `AppStorageKeys.USERNAME`（值 `as-username`）。
+- localStorage 键的单一真源为 [src/constants/app-state.js](../src/constants/app-state.js) 的 `AppStorageKeys`。
 - `stream: true` 时返回原生 `Response`，由调用方处理（如 `streamEvents` 解析 SSE）。
 - 错误归一为 `ApiError(status, detail)`，FastAPI 422 detail 数组转 `\n` 拼接。
 - 代理模式下检查响应体 `{ success: false, code, message }` 并 toast 抛出。

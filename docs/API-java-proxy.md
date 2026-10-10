@@ -16,7 +16,7 @@
 
 ## 通用约定
 
-- **映射后 Base URL**：Java 中转服务地址（替代原 `localStorage.server_url` 直连 Python）。
+- **映射后 Base URL**：Java 中转服务地址（替代原 `AppStorageKeys.SERVER_URL` 值 `as-server_url` 所指的直连 Python 地址）。
 - **请求头**：所有请求携带 `X-User-ID`；含 Body 请求携带 `Content-Type: application/json`（multipart 接口除外）。
 - **路径参数** `{xxx}` 由调用方替换；标注 `encodeURIComponent` 的参数 Java 层转发时同样需 URL 编码。
 - **Query 参数**：映射后全部保留在 URL Query 上（含 DELETE 转出的 POST）。

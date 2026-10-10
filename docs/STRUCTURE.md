@@ -45,7 +45,7 @@ components/
   badge/ chat/ common/ dialog/ drawer/ form/
   knowledge/ layout/ panel/ popover/ select/ ui/
 composables/               # 桥接层 + 业务 composable（useAgents/useMessages/...）
-constants/                 # 常量来源集中地（app-state.js：App* 自定义枚举；protocol.js：Sdk*/Backend* 外部协议）
+constants/                 # 常量来源集中地（app-state.js：App* 自定义枚举 + AppStorageKeys 本地存储键；protocol.js：Sdk*/Backend* 外部协议）
 lib/                       # toast/utils
 plugins/                   # setupPlugins(Vue) 拆分的子 setup
   composition-api.js element.js fonts.js styles.js index.js
@@ -101,7 +101,7 @@ views/                     # 业务页（路由层）
 `src/api/mapping.js` 是 SSOT，所有请求通过 `client.request(key, ...)` 走 `ENDPOINTS` 查表：
 
 - 每个 key 同时声明 `direct`（直连 Python，默认 GET/POST/PATCH/DELETE）与 `proxy`（经 Java 中转，仅 GET/POST，PATCH → POST `{path}/update`，DELETE → POST `{path}/delete`）。
-- 模式由 `localStorage.api_mode` 控制（`direct` / `proxy`）。
+- 模式由 `AppStorageKeys.API_MODE`（`constants/app-state.js`，值为 `api_mode`）控制（`direct` / `proxy`）。
 - 路径参数写作 `{name}`，由 `resolveEndpoint` 插值并 `encodeURIComponent`。
 - 全量 endpoints 分类：`health / workspace / credential / model / channel / agent / schedule / knowledge_base / mcp / skill / hub / session / chat`。
 

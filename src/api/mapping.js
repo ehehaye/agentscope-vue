@@ -2,8 +2,8 @@
  * 端点映射表（SSOT）：src/api 下的每次请求都必须通过 key 从此表取 URL/Method。
  *
  * 两种模式（对应 docs/API.md 与 docs/API-java-proxy.md）：
- * - direct：前端直连 Python 后端（GET/POST/PATCH/DELETE），Base URL 为 localStorage.server_url；
- * - proxy ：经 Java 中转服务，仅开放 GET/POST，Base URL 为 localStorage.server_url
+ * - direct：前端直连 Python 后端（GET/POST/PATCH/DELETE），Base URL 为 localStorage 的 AppStorageKeys.SERVER_URL；
+ * - proxy ：经 Java 中转服务，仅开放 GET/POST，Base URL 同为 AppStorageKeys.SERVER_URL
  *   （含代理前缀路径，如 http://hostname/proxy/api/）。
  *   PATCH  -> POST {path}/update
  *   DELETE -> POST {path}/delete
@@ -11,18 +11,19 @@
  * 约定：
  * - 条目只写 direct；proxy 与 direct 完全相同（GET/POST 且路径不变）时省略 proxy。
  * - 路径参数统一写作 {name}，由 resolveEndpoint 插值并 encodeURIComponent。
- * - 模式由 localStorage.api_mode 控制：'direct'（默认）| 'proxy'。
+ * - 模式由 AppStorageKeys.API_MODE 控制：'direct'（默认）| 'proxy'。
+ * - localStorage 键统一在 constants/app-state.js 的 AppStorageKeys 管理。
  */
+
+import { AppStorageKeys } from '@/constants/app-state';
 
 export const API_MODES = {
   DIRECT: 'direct',
   PROXY: 'proxy',
 };
 
-export const MODE_STORAGE_KEY = 'api_mode';
-
 export function getApiMode() {
-  return localStorage.getItem(MODE_STORAGE_KEY) === API_MODES.PROXY ? API_MODES.PROXY : API_MODES.DIRECT;
+  return localStorage.getItem(AppStorageKeys.API_MODE) === API_MODES.PROXY ? API_MODES.PROXY : API_MODES.DIRECT;
 }
 
 /**

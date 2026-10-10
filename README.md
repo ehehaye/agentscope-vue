@@ -51,25 +51,31 @@ pnpm build
 pnpm preview
 ```
 
-默认端口 `5173`。前端支持两种后端接入方式（见下一节）：直连 Python（默认，setup 页填写 `localStorage.server_url`，如本机 `http://localhost:8000`）或经 Java 服务中转（`localStorage.proxy_url`）。
+默认端口 `5173`。前端支持两种后端接入方式（见下一节）：直连 Python（默认，setup 页填写后端地址，持久化于 `AppStorageKeys.SERVER_URL`，如本机 `http://localhost:8000`）或经 Java 服务中转（中转模式复用同一个键，值为含代理前缀的地址）。
 
 ## 接口与后端接入（直连 / Java 中转）
 
 所有请求统一由端点映射表驱动：业务代码只调用 `client.request(key, { pathParams, params, body, ... })`，不再硬编码 URL。
 
 - **映射表**：[src/api/mapping.js](src/api/mapping.js) 是唯一真源（SSOT），每个端点一个 key，分别声明 `direct` 与 `proxy` 两种 `{ method, path }`；路径参数写作 `{xxx}`，由 `resolveEndpoint` 插值并 URL 编码。
-- **模式切换**：由 `localStorage.api_mode` 控制（`direct` 默认 / `proxy`），可运行时调用 `setApiMode(API_MODES.PROXY)` 切换。
+- **模式切换**：由 `AppStorageKeys.API_MODE`（值 `api_mode`）控制（`direct` 默认 / `proxy`），在 setup 页选择并随连接配置一起持久化（经 Vuex `app/saveConfig`）。
 
-| 模式 | Base URL | Method | 说明 |
+| 模式 | Base URL（键：`AppStorageKeys.SERVER_URL`，值 `as-server_url`） | Method | 说明 |
 | --- | --- | --- | --- |
-| `direct`（默认） | `localStorage.server_url` | GET / POST / PATCH / DELETE | 直连 Python 后端 |
-| `proxy` | `localStorage.proxy_url`（未配置时回退 `server_url`） | 仅 GET / POST | 经 Java 中转：PATCH → `POST {path}/update`，DELETE → `POST {path}/delete` |
+| `direct`（默认） | 直连地址，如 `http://localhost:8000` | GET / POST / PATCH / DELETE | 直连 Python 后端 |
+| `proxy` | 含中转前缀的地址，如 `http://hostname/proxy/api/` | 仅 GET / POST | 经 Java 中转：PATCH → `POST {path}/update`，DELETE → `POST {path}/delete` |
 
 ```js
-import { setApiMode, API_MODES } from '@/api';
+import { API_MODES } from '@/api';
+import { AppStorageKeys } from '@/constants/app-state';
 
-setApiMode(API_MODES.PROXY); // 之后全部请求自动走中转地址与 GET/POST 映射
+// 绕过 setup 页直接切换时：同时改写模式与中转地址
+localStorage.setItem(AppStorageKeys.API_MODE, API_MODES.PROXY);
+localStorage.setItem(AppStorageKeys.SERVER_URL, 'http://hostname/proxy/api/');
+// 之后全部请求自动走中转地址与 GET/POST 映射
 ```
+
+> 所有 localStorage 键的单一真源为 [src/constants/app-state.js](src/constants/app-state.js) 的 `AppStorageKeys`。
 
 - **接口文档**：直连清单见 [docs/API.md](docs/API.md)，Java 中转映射版（含映射后 URL/Method、SSE/multipart/文件下载等特殊场景备注）见 [docs/API-java-proxy.md](docs/API-java-proxy.md)。
 - **特殊响应**：SSE 事件流（`stream: true` 拿原始 Response）、multipart 上传（XHR）、带 token 的文件下载同样从映射表取路径，中转层需按文档备注做流式/二进制透传，不能按普通 JSON 处理。
@@ -82,6 +88,7 @@ src/
 ├── assets           # 图片、字体等静态资源
 ├── components       # 业务组件（chat、panel、dialog、drawer、form、layout、ui、iconify 等）
 ├── composables      # 组合式逻辑
+├── constants        # 常量集中地（app-state.js：App* 枚举 + AppStorageKeys 本地存储键；protocol.js：外部协议）
 ├── lib              # 工具库/第三方适配
 ├── plugins          # 插件注册（composition-api、element、fonts、styles 各自独立的 setup 函数）
 ├── polyfills        # 旧浏览器能力补齐（AbortSignal 等）

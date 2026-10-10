@@ -75,7 +75,6 @@
 <script>
 import { defineComponent } from '@/composables/vue';
 import { healthApi, ApiError, TIMEOUT_STATUS, API_MODES, getUserId, getBaseUrl, getApiMode } from '@/api';
-import { MODE_STORAGE_KEY } from '@/api/mapping';
 import agentscopeLogo from '@/assets/imgs/agentscope.svg';
 
 export default defineComponent({

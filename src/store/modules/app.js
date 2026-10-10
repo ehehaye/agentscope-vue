@@ -1,14 +1,11 @@
 /**
  * Vuex app 模块。
  * 职责：深色模式、服务器连接配置（setup）。
- * localStorage 键：server_url / username；主题用 theme。
+ * localStorage 键统一由 constants/app-state.js 的 AppStorageKeys 管理。
  */
 
-import { API_MODES, MODE_STORAGE_KEY } from '@/api/mapping';
-
-const THEME_KEY = 'as-theme';
-const SERVER_URL_KEY = 'as-server_url';
-const USERNAME_KEY = 'as-username';
+import { API_MODES } from '@/api/mapping';
+import { AppStorageKeys } from '@/constants/app-state';
 
 function initialDark() {
   // index.html 首帧脚本已按相同规则设置过 class，这里取真值，避免二次闪烁。
@@ -20,9 +17,9 @@ export default {
 
   state: () => ({
     dark: initialDark(),
-    serverUrl: localStorage.getItem(SERVER_URL_KEY) ?? '',
-    username: localStorage.getItem(USERNAME_KEY) ?? '',
-    apiMode: localStorage.getItem(MODE_STORAGE_KEY) ?? API_MODES.DIRECT,
+    serverUrl: localStorage.getItem(AppStorageKeys.SERVER_URL) ?? '',
+    username: localStorage.getItem(AppStorageKeys.USERNAME) ?? '',
+    apiMode: localStorage.getItem(AppStorageKeys.API_MODE) ?? API_MODES.DIRECT,
   }),
 
   getters: {
@@ -35,7 +32,7 @@ export default {
       state.dark = dark;
       document.documentElement.classList.toggle('dark', dark);
       try {
-        localStorage.setItem(THEME_KEY, dark ? 'dark' : 'light');
+        localStorage.setItem(AppStorageKeys.THEME, dark ? 'dark' : 'light');
       } catch {
         /* 隐私模式等场景下降级为仅当前会话 */
       }
@@ -45,9 +42,9 @@ export default {
       state.username = username;
       state.apiMode = apiMode;
       try {
-        localStorage.setItem(SERVER_URL_KEY, serverUrl);
-        localStorage.setItem(USERNAME_KEY, username);
-        localStorage.setItem(MODE_STORAGE_KEY, apiMode);
+        localStorage.setItem(AppStorageKeys.SERVER_URL, serverUrl);
+        localStorage.setItem(AppStorageKeys.USERNAME, username);
+        localStorage.setItem(AppStorageKeys.API_MODE, apiMode);
       } catch {
         /* ignore */
       }

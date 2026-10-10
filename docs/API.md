@@ -5,10 +5,11 @@
 
 ## 通用约定
 
-- **Base URL**：运行时取 `localStorage.server_url`（见 `client.js` 的 `getBaseUrl()`）。
+- **Base URL**：运行时取 `AppStorageKeys.SERVER_URL`（值 `as-server_url`，见 `client.js` 的 `getBaseUrl()`）。
 - **请求头**：
-  - 所有请求自动携带 `X-User-ID`（取 `localStorage.username`）；
+  - 所有请求自动携带 `X-User-ID`（取 `AppStorageKeys.USERNAME`，值 `as-username`）；
   - 含 Body 的请求自动携带 `Content-Type: application/json`。
+- **localStorage 键**：统一在 `src/constants/app-state.js` 的 `AppStorageKeys` 管理，禁止散落字符串字面量。
 - **client 方法签名**（`src/api/client.js`）：
   - `client.request(key, options)` —— `key` 为 mapping.js 端点键；`options` 支持 `pathParams` / `params` / `body` / `silent` / `signal` / `timeoutMs` / `baseUrl` / `userId` / `mode`；`stream: true` 时只返回原始 `Response`，SSE 解析由上层处理
 - **参数位置**：`params` → URL Query（值会被 String 化）；`body` → JSON 请求体；`options` 仅为前端控制项（`silent` / `baseUrl` / `userId` / `timeoutMs` / `signal`），不发送到后端。
