@@ -22,7 +22,6 @@
 </template>
 
 <script>
-import Vue from 'vue';
 import print from 'vue-print-nb';
 import { defineComponent, watch, ref, nextTick } from '@/composables/vue';
 import { Icon } from '@/components/ui/Icon';
