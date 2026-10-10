@@ -29,6 +29,14 @@ export const AppStorageKeys = {
 };
 
 /**
+ * 连接配置未持久化时的兜底默认值（store 初始值与请求层共用）。
+ */
+export const AppDefaults = {
+  SERVER_URL: 'http://localhost:8000',
+  USERNAME: 'demo',
+};
+
+/**
  * 回复相位。
  *
  * SDK 没有「相位」概念：一轮回复的边界由 `EventType.REPLY_START / REPLY_END` 表达，

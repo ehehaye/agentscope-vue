@@ -74,20 +74,18 @@
 
 <script>
 import { defineComponent } from '@/composables/vue';
-import { healthApi, ApiError, TIMEOUT_STATUS, API_MODES, getUserId, getBaseUrl, getApiMode } from '@/api';
+import { healthApi, ApiError, TIMEOUT_STATUS, API_MODES } from '@/api';
 import agentscopeLogo from '@/assets/imgs/agentscope.svg';
 
 export default defineComponent({
   name: 'SetupPage',
   data() {
+    // 表单初值直接取 store（未持久化时 store 已带兜底默认值）。
+    const { serverUrl, username, apiMode } = this.$store.state.app;
     return {
       API_MODES,
       agentscopeLogo,
-      form: {
-        serverUrl: getBaseUrl(),
-        username: getUserId(),
-        apiMode: getApiMode(),
-      },
+      form: { serverUrl, username, apiMode },
       loading: false,
       errorMessage: '',
     };

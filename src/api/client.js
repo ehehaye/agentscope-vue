@@ -8,11 +8,11 @@
 import { toast } from '@/lib/toast';
 import { API_MODES, getApiMode, resolveEndpoint } from './mapping';
 import { isValidJsonStr } from '@/utils/common';
-import { AppStorageKeys } from '@/constants/app-state';
+import { AppStorageKeys, AppDefaults } from '@/constants/app-state';
 
-export const getBaseUrl = () => localStorage.getItem(AppStorageKeys.SERVER_URL) ?? 'http://localhost:8000';
+export const getBaseUrl = () => localStorage.getItem(AppStorageKeys.SERVER_URL) ?? AppDefaults.SERVER_URL;
 
-export const getUserId = () => localStorage.getItem(AppStorageKeys.USERNAME) ?? 'demo';
+export const getUserId = () => localStorage.getItem(AppStorageKeys.USERNAME) ?? AppDefaults.USERNAME;
 
 /** 非 2xx 响应的结构化错误；message 为可读 detail。 */
 export class ApiError extends Error {
