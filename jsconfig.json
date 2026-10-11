@@ -9,6 +9,6 @@
     "typeRoots": ["src/types"],
     "checkJs": false
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "tests/**/*"],
   "exclude": ["node_modules", "dist"]
 }
