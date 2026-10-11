@@ -14,7 +14,13 @@ import { extractCode } from '@/utils/ast';
 const CODE_BLOCK_COMPONENTS = new Map();
 const TAG_COMPONENTS = new Map();
 
+// 重复注册时覆盖首次注册项，仅提示，便于发现同一语言/标签被多处注册
+function warnDuplicate(kind, key) {
+  console.warn(`[md/registry] ${kind} "${key}" 已注册，本次注册将覆盖旧的注册项`);
+}
+
 export function registerCodeBlockComp(lang, { component, resolve }) {
+  if (CODE_BLOCK_COMPONENTS.has(lang)) warnDuplicate('代码块渲染器', lang);
   CODE_BLOCK_COMPONENTS.set(lang, {
     component,
     resolve,
@@ -26,6 +32,7 @@ export function registerCodeBlockComp(lang, { component, resolve }) {
 }
 
 export function registerTagComp(tag, { component, resolve, filter }) {
+  if (TAG_COMPONENTS.has(tag)) warnDuplicate('标签渲染器', tag);
   TAG_COMPONENTS.set(tag, { component, resolve, filter });
 }
 

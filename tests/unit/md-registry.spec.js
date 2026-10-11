@@ -69,12 +69,25 @@ describe('registerCodeBlockComp', () => {
   });
 
   it('重复注册同一 lang 覆盖旧配置', () => {
+    const warn = jest.spyOn(console, 'warn').mockImplementation(() => {});
     registerCodeBlockComp('test-override', { component: { name: 'First' }, resolve: () => ({ v: 1 }) });
     registerCodeBlockComp('test-override', { component: { name: 'Second' }, resolve: () => ({ v: 2 }) });
 
     const result = resolveRenderer(codeNode('test-override', 'code'));
     expect(result.component.name).toBe('Second');
     expect(result.props).toEqual({ v: 2 });
+    warn.mockRestore();
+  });
+
+  it('重复注册同一 lang 时输出 warning', () => {
+    const warn = jest.spyOn(console, 'warn').mockImplementation(() => {});
+    registerCodeBlockComp('test-warn-code', { component: { name: 'First' } });
+    expect(warn).not.toHaveBeenCalled();
+
+    registerCodeBlockComp('test-warn-code', { component: { name: 'Second' } });
+    expect(warn).toHaveBeenCalledTimes(1);
+    expect(warn.mock.calls[0][0]).toContain('test-warn-code');
+    warn.mockRestore();
   });
 });
 
@@ -114,6 +127,17 @@ describe('registerTagComp', () => {
       },
     });
     expect(resolveRenderer({ type: 'tag', tagName: 'filter-throw-tag', attribs: {} })).toBeNull();
+  });
+
+  it('重复注册同一 tag 时输出 warning', () => {
+    const warn = jest.spyOn(console, 'warn').mockImplementation(() => {});
+    registerTagComp('test-warn-tag', { component: { name: 'First' } });
+    expect(warn).not.toHaveBeenCalled();
+
+    registerTagComp('test-warn-tag', { component: { name: 'Second' } });
+    expect(warn).toHaveBeenCalledTimes(1);
+    expect(warn.mock.calls[0][0]).toContain('test-warn-tag');
+    warn.mockRestore();
   });
 
   it('代码块注册优先于同名标签注册', () => {
