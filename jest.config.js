@@ -15,8 +15,13 @@ module.exports = {
   // 与 vue.config.js 的 resolve.alias 对齐
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
+    // remend 是 ESM-only 包（exports 仅声明 import 条件），jest 默认解析不到，
+    // 显式指向产物并放开下方 transformIgnorePatterns 让其经 babel 转 CJS。
+    '^remend$': '<rootDir>/node_modules/remend/dist/index.js',
   },
   testMatch: ['<rootDir>/tests/unit/**/*.spec.js'],
-  transformIgnorePatterns: ['/node_modules/'],
+  // 默认忽略 node_modules，但 ESM-only 的 remend 需转译
+  // （pnpm 下真实路径形如 node_modules/.pnpm/remend@x/node_modules/remend/...）
+  transformIgnorePatterns: ['/node_modules/(?!(?:\\.pnpm/)?(?:remend|marked))'],
   clearMocks: true,
 };
