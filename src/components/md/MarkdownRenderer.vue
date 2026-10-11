@@ -143,7 +143,9 @@ export default defineComponent({
         }
         this.lastHtml = html;
         // 把 HTML 转成 vNode 树，让每次内容变化只触发 Vue diff 做增量更新。
-        this.astTree = html ? parseDocument(html).children : [];
+        // 冻结后 Vue 2 的 observe 会因对象不可扩展而跳过深度响应式转换，省掉每帧 O(树大小)
+        // 的递归遍历与闭包开销；代价是这棵树只能整体替换，不能再原地修改（严格模式下会抛错）。
+        this.astTree = Object.freeze(html ? parseDocument(html).children : []);
       });
     },
   },
