@@ -13,22 +13,9 @@ import { defineComponent } from '@/composables/vue';
 import { marked } from 'marked';
 import hljs from 'highlight.js/lib/common';
 import { parseDocument } from 'htmlparser2';
+import { escapeHtml } from '@/utils/html';
 import NodeRenderer from './NodeRenderer.vue';
 import diff from './diff';
-
-/** 属性级转义：token 内容拼入 HTML 属性前统一转义，不依赖最终 DOMPurify 兜底。 */
-const escapeHtml = (value) =>
-  String(value ?? '').replace(
-    /[&<>"']/g,
-    (ch) =>
-      ({
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#39;',
-      })[ch],
-  );
 
 const renderer = {
   blockquote(token) {
