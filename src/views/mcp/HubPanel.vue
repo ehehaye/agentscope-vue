@@ -163,9 +163,9 @@
           }}</pre>
         </div>
         <div
-          v-if="detailCard.readme"
+          v-if="sanitizedReadme"
           class="tw-prose tw-prose-sm tw-max-w-none"
-          v-html="detailCard.readme"
+          v-html="sanitizedReadme"
         />
       </div>
     </el-drawer>
@@ -173,6 +173,7 @@
 </template>
 
 <script>
+import DOMPurify from 'dompurify';
 import { defineComponent, ref, computed } from '@/composables/vue';
 import { Icon } from '@/components/ui/Icon';
 import Spinner from '@/components/ui/Spinner.vue';
@@ -200,6 +201,11 @@ export default defineComponent({
       detailOpen.value = true;
     }
 
+    // readme 来自 MCP 广场第三方卡片，属外部不可信内容，渲染前必须消毒
+    const sanitizedReadme = computed(() =>
+      detailCard.value?.readme ? DOMPurify.sanitize(detailCard.value.readme) : '',
+    );
+
     return {
       query,
       cards,
@@ -207,10 +213,11 @@ export default defineComponent({
       loadingMore,
       error,
       hasMore,
-      loadMore,
-      refetch,
       detailOpen,
       detailCard,
+      sanitizedReadme,
+      loadMore,
+      refetch,
       openDetail,
     };
   },
