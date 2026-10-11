@@ -45,7 +45,7 @@ const renderer = {
     // 未完全闭合的 code 可能混入反引号，完整性无法确认
     const lastLine = (raw || '').trimEnd().split('\n').pop().trim();
     const complete = /^(`{3,}|~{3,})/.test(lastLine);
-    return `<div class="md-code-wrapper" data-lang="${lang || language}" data-complete="${~~complete}">${langTag}<div class="md-code-scroll"><div class="md-code-lines">${lineNumbers}</div><pre class="md-pre"><code class="md-code hljs language-${language}">${highlighted}</code></pre></div></div>`;
+    return `<div class="md-code-wrapper" data-lang="${escapeHtml(lang || language)}" data-complete="${~~complete}">${langTag}<div class="md-code-scroll"><div class="md-code-lines">${lineNumbers}</div><pre class="md-pre"><code class="md-code hljs language-${language}">${highlighted}</code></pre></div></div>`;
   },
 
   codespan({ text }) {
