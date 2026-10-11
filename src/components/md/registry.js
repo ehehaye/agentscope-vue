@@ -37,7 +37,12 @@ export function resolveRenderer(node) {
   const entry = codeEntry || TAG_COMPONENTS.get(node.tagName);
   if (!entry) return null;
   const ctx = codeEntry ? { node, attribs, lang, code: extractCode(node) } : { node, attribs };
-  if (entry.filter && !entry.filter(ctx)) return null;
-  const props = entry.resolve ? entry.resolve(ctx) : attribs;
-  return props == null ? null : { component: entry.component, props };
+  // filter/resolve 由各注册方提供，出错时回退原生渲染，避免打断整棵渲染树
+  try {
+    if (entry.filter && !entry.filter(ctx)) return null;
+    const props = entry.resolve ? entry.resolve(ctx) : attribs;
+    return props == null ? null : { component: entry.component, props };
+  } catch (err) {
+    return null;
+  }
 }
