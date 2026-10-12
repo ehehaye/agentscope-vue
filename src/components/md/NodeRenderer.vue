@@ -36,6 +36,9 @@ export default defineComponent({
   },
   computed: {
     resolved() {
+      if (this.node.type === 'text') {
+        return { component: TextNodeRenderer, props: { data: this.node.data } };
+      }
       return (
         resolveRenderer(this.node) || {
           component: this.node.tagName,
