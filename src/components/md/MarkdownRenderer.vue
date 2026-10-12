@@ -291,7 +291,7 @@ export default defineComponent({
   }
 
   .md-link {
-    color: @primary-color;
+    color: #409eff;
     text-decoration: none;
 
     &:hover {
