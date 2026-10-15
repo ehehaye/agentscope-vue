@@ -16,6 +16,16 @@
         :class="['tw-text-sm tw-font-semibold tw-text-foreground', collapsed ? 'tw-hidden' : 'tw-hidden md:tw-inline']"
         >AgentScope</span
       >
+      <a
+        :class="[
+          'tw-text-xs tw-text-muted-foreground hover:tw-underline',
+          collapsed ? 'tw-hidden' : 'tw-hidden md:tw-inline',
+        ]"
+        :href="`https://docs.agentscope.io/zh/versions/${version}`"
+        target="_blank"
+        rel="noopener noreferrer"
+        >v{{ version }}</a
+      >
     </div>
 
     <!-- 导航 -->
@@ -121,6 +131,7 @@ import { defineComponent } from '@/composables/vue';
 import { Icon } from '@/components/ui/Icon';
 import agentscopeLogo from '@/assets/imgs/agentscope.svg';
 import { AppStorageKeys } from '@/constants/app-state';
+import { version } from '@/../package.json';
 
 export default defineComponent({
   name: 'AppSidebar',
@@ -128,6 +139,7 @@ export default defineComponent({
   data() {
     return {
       agentscopeLogo,
+      version,
       collapsed: false,
       navItems: [
         { to: { name: 'chat' }, icon: 'lucide:message-square', label: '聊天' },

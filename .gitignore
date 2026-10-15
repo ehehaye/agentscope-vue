@@ -30,3 +30,6 @@ dist.zip
 # Environment variables
 .env.local
 .env.*.local
+
+# AI
+.claude/
