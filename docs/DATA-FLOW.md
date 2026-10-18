@@ -78,7 +78,7 @@ store/modules/chat.send(contentBlocks)
 | `useKnowledgeBases()` | 知识库列表 |
 | `useWorkspaceStatus(effectiveAgentId, effectiveSessionId, cwd)` | 工作区 git/cwd 状态 |
 | `useWorkspace(effectiveAgentId, effectiveSessionId)` | MCP/Skill 增删 |
-| `useMessages(effectiveAgentId, effectiveSessionId, options)` | **消息 + SSE 主入口**，见下文 |
+| `useMessages(effectiveAgentId, effectiveSessionId, callbacks)` | **消息 + SSE 主入口**，见下文 |
 | `provideAudioCenter()` + `useAudioCenter()` | 音频播放中心（provide/inject L2） |
 
 模板结构：
@@ -137,12 +137,15 @@ watch(key, (newKey, oldKey) => {
   store.dispatch('chat/openConversation', {
     agentId, sessionId,
     callbacks: { onTeamUpdated, onStateUpdated, onSessionUpdated,
-                 onAudioStart/Append/End, onAudioStopAll },
+                 onAudioStart/Append/End, onAudioStopAll,
+                 tools: { Bash: (tool) => {}, '*': (tool) => {} } },
   });
 }, { immediate: true });
 ```
 
 它把响应式状态 `msgs / connection / loading / phase / subagentHitl` 从 Vuex 透出：`msgs` 的元素是 SDK 的 `Msg`，而 `connection`（AppConnectionState）与 `phase`（AppReplyPhase）是本应用自定义状态。方法 `send / onUserConfirm / onSubagentConfirm / onAskUserSubmit / onSubagentAskUserSubmit / interrupt / abort / discardPendingInput` 全部转发到 `store.dispatch`。
+
+`callbacks.tools` 是 TOOL_RESULT_END 的监听表：键为工具名（`'*'` 为兜底），值为 `(tool) => void`，`tool = { name, input, output }`；分发逻辑见 2.8。
 
 ### 2.6 SSE 主循环：[store/modules/chat.js#openConversation](../src/store/modules/chat.js#L171-L236)
 
@@ -202,6 +205,8 @@ else {
   }
 }
 // 音频 DataBlock 路由到 audioManager（provide/inject）
+// TOOL_RESULT_END：用 findToolBlocks 反查 { name, input, output }
+//                   → callbacks.tools[name] ?? callbacks.tools['*']，以 (tool) 调用
 ```
 
 `appendEvent / AssistantMsg / UserMsg / getContentBlocks` 等工具来自 `@agentscope-ai/agentscope/message`（同一份 SDK 在官方 React 示例也直接用）。
@@ -391,6 +396,7 @@ dispatch('chat/processEvent', { event, callbacks })                  store/modul
 | `DATA_BLOCK_DELTA`（`audio/*`） | `processEvent` | `callbacks.onAudioAppend(block_id, data)` | [chat.js#L351-L354](../src/store/modules/chat.js#L351-L354) |
 | `DATA_BLOCK_END` | `processEvent` | `callbacks.onAudioEnd(block_id)` | [chat.js#L355-L356](../src/store/modules/chat.js#L355-L356) |
 | `REPLY_START`（新一轮） | `processEvent` | `callbacks.onAudioStopAll?.()` 停掉上一轮实时音频 | [chat.js#L320-L321](../src/store/modules/chat.js#L320-L321) |
+| `TOOL_RESULT_END` | `processEvent` | `findToolBlocks` 反查 `{ name, input, output }` → 调用 `callbacks.tools[name] ?? callbacks.tools['*']` | [chat.js#L323-L330](../src/store/modules/chat.js#L323-L330) |
 
 ### 3.6 HITL 出向事件（前端 → 后端）
 
@@ -432,7 +438,7 @@ dispatch('chat/processEvent', { event, callbacks })                  store/modul
 4. **`AppConnectionState`（本应用自定义）**：`idle → creating → loading → connecting → ready`，是「会话是否可用」的唯一真源，同时驱动输入框加载态与顶栏状态灯（`ConnectionStatus.vue`）。首条消息必须在 `ready` 之后才 trigger，否则回复事件没有接收方。
 5. **`interruptTimer`（10s）**：超时兜底，避免后端没回 `REPLY_END` 时界面卡在 `interrupting`。
 6. **音频 DataBlock** 不进 Vuex 消息流主路径，而是双写（`appendEvent` 持久化 + callbacks 实时播放）；`MessageBubble` 通过 `useAudioBlock` 订阅播放进度。
-7. **副作用回调**（`onTeamUpdated / onStateUpdated / onSessionUpdated`）在 `useMessages` 的 options 注入，分别触发 `useSessions / useWorkspace / useWorkspaceStatus` 的 refetch 与面板自动展开。
+7. **副作用回调**（`onTeamUpdated / onStateUpdated / onSessionUpdated`）在 `useMessages` 的 callbacks 注入，分别触发 `useSessions / useWorkspace / useWorkspaceStatus` 的 refetch 与面板自动展开；`tools` 同处注入，按工具名接收 TOOL_RESULT_END 的 `{ name, input, output }`。
 8. **`reply_id` 一致性**：所有入向事件通过 `appendEvent` 的 `reply_id === msg.id` 校验；所有 HITL 出向事件通过 `currentReplyId` / 入参 `replyId` / `entry.reply_id` 三条路径落到对应 message。
 9. **事件类型前向兼容**：SDK 联合类型新增枚举时，本仓库的 `processEvent` 走 `appendEvent` 分支（无 case 时不报错，仅当数据落到 `content` 时才需扩展 UI），新增 `CUSTOM.name` 才需要改 store。
 

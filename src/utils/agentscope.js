@@ -31,6 +31,26 @@ export function appendEventReactive(msg, event) {
   return msg;
 }
 
+/**
+ * 按 tool_call_id 从消息块反查工具名与调用/结果块。
+ * TOOL_RESULT_END 事件本身不带 `tool_call_name`，input / output 也只存在于消息块上。
+ * @param {object[]} messages 当前会话的 `Msg[]`
+ * @param {string} replyId 事件里的 `reply_id`，用于定位消息
+ * @param {string} toolCallId 事件里的 `tool_call_id`
+ * @returns {{ name: string|null, input: string|null, output: object[]|string|null }}
+ */
+export function findToolBlocks(messages, replyId, toolCallId) {
+  const reply = messages.find((m) => m.id === replyId);
+  if (!reply) return { name: null, input: null, output: null };
+  const call = reply.content.find((b) => b.type === SdkBlockType.TOOL_CALL && b.id === toolCallId);
+  const result = reply.content.find((b) => b.type === SdkBlockType.TOOL_RESULT && b.id === toolCallId);
+  return {
+    name: call?.name ?? result?.name ?? null,
+    input: call?.input ?? null,
+    output: result?.output ?? null,
+  };
+}
+
 /** 末尾消息是否停在待用户处理的工具调用上（取值均为 SDK 定义的块类型 / 工具状态）。 */
 export function hasPendingToolCall(msg) {
   if (!msg || msg.role !== SdkMessageRole.ASSISTANT) return false;

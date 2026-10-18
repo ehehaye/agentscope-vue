@@ -1,15 +1,28 @@
+import { computed, watch, unref } from '@/composables/vue';
+import { AppConnectionState, AppReplyPhase } from '@/constants/app-state';
+import store from '@/store';
+
 /**
  * useMessages composable：对 Vuex chat 模块的薄封装。
  * 向组件层暴露消息列表/发送/HITL 确认/中断/关闭等 API。
  *
  * 注意区分：`msgs` 的元素是 SDK 的 `Msg`，`phase` / `connection` 则是本应用自定义状态
  * （AppReplyPhase / AppConnectionState），SDK 没有这两个概念。
+ *
+ * `callbacks` 为 SSE 事件回调表，原样透传给 chat/processEvent，类型复用
+ * `store/modules/chat.js` 的 `ChatEventCallbacks`：
+ * - `tools`：按工具名监听 TOOL_RESULT_END，handler 签名为 `(tool) => {}`，
+ *   如 `{ Bash: handler, '*': fallback }`；未命中具体工具时回落到 `'*'`。
+ *   `tool` 为 `{ name, input, output }`（input 是流式累积的 JSON 字符串，output 是结果块数组）；
+ * - 另有 `onTeamUpdated` / `onStateUpdated` / `onSessionUpdated` / `onAudio*`。
+ *
+ * @param {string|object} agentId Agent ID（字符串或 ref）
+ * @param {string|object} sessionId Session ID（字符串或 ref）
+ * @param {import('@/store/modules/chat').ChatEventCallbacks} [callbacks={}] SSE 事件回调表
+ * @returns {object} `{ msgs, connection, loading, phase, error, subagentHitl, send, onUserConfirm,
+ *   onSubagentConfirm, onAskUserSubmit, onSubagentAskUserSubmit, interrupt, abort, discardPendingInput }`
  */
-import { computed, watch, unref } from '@/composables/vue';
-import { AppConnectionState, AppReplyPhase } from '@/constants/app-state';
-import store from '@/store';
-
-export function useMessages(agentId, sessionId, options = {}) {
+export function useMessages(agentId, sessionId, callbacks = {}) {
   const key = computed(() => {
     const aid = unref(agentId);
     const sid = unref(sessionId);
@@ -38,7 +51,7 @@ export function useMessages(agentId, sessionId, options = {}) {
       store.dispatch('chat/openConversation', {
         agentId: unref(agentId),
         sessionId: unref(sessionId),
-        callbacks: options,
+        callbacks,
       });
     },
     { immediate: true },

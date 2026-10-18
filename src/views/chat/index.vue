@@ -339,6 +339,15 @@ export default defineComponent({
       onAudioAppend: (blockId, data) => audioManager?.append(blockId, data),
       onAudioEnd: (blockId) => audioManager?.end(blockId),
       onAudioStopAll: () => audioManager?.stopAllPlayback(),
+      // 示例：按工具名监听 TOOL_RESULT_END，可同时声明多个工具
+      tools: {
+        '*': (tool) => {
+          console.log(`[tool] ${tool.name} 执行结束`, {
+            input: tool.input,
+            output: tool.output,
+          });
+        },
+      },
     });
 
     watch(phase, (next, prev) => {

@@ -44,6 +44,7 @@ pnpm format:check
 - localStorage 键一律用 `AppStorageKeys`（唯一例外：`public/index.html` 首帧脚本里与 `THEME` 同值的字面量，改动需两边同步）。
 - 样式：Tailwind 类加 `tw-`，设计令牌用 `--as-` 变量（定义在 `src/styles/index.css`）。
 - `webpack 4` 限制在 `vue.config.js` 里以 alias / `transpileDependencies` 绕过（`@agentscope-ai/agentscope/event|message`、`htmlparser2`、`remend`）；新增 ESM-only 依赖需同步处理 alias 与 `jest.config.js` 的 `moduleNameMapper`/`transformIgnorePatterns`。
+- 工具结果监听：`useMessages(..., { tools: { [toolName]: (tool) => {}, '*': fallback } })`，在 `TOOL_RESULT_END` 后按工具名分发；`tool = { name, input, output }` 由 `src/utils/agentscope.js#findToolBlocks` 反查，分发逻辑在 `store/modules/chat.js#processEvent`。
 
 ## Docs
 

@@ -106,6 +106,26 @@ src/
 - [STRUCTURE.md](docs/STRUCTURE.md)：项目文件结构对照（当前 Vue 项目 ↔ 官方 React 项目）。
 - [DATA-FLOW.md](docs/DATA-FLOW.md)：数据流向（以 `src/views/chat/index.vue` 发起会话为例的端到端追踪）。
 
+## 扩展：监听工具执行结果
+
+聊天 SSE 事件由 [src/store/modules/chat.js](src/store/modules/chat.js) 的 `processEvent` 统一分发。如需在工具（如 `Bash`）执行完成后做业务处理，向 `useMessages` 的 `callbacks` 传入 `tools` 监听表即可：
+
+```js
+useMessages(effectiveAgentId, effectiveSessionId, {
+  tools: {
+    Bash: (tool) => {
+      // tool = { name, input, output }
+      // input：工具调用参数的 JSON 字符串（流式累积后的完整值）
+      // output：ToolResultBlock 的结果块数组
+    },
+    'mcp__github__create_issue': (tool) => {},
+    '*': (tool) => {}, // 未命中具体工具时的兜底
+  },
+});
+```
+
+监听时机为 `TOOL_RESULT_END`，且消息状态已更新完成，因此回调拿到的 `input` / `output` 是该次调用的完整数据；`findToolBlocks`（[src/utils/agentscope.js](src/utils/agentscope.js)）负责从消息块中反查对应内容。
+
 ## 向后兼容 / 升级到 Vue 3
 
 本仓库提供两种接入思路：

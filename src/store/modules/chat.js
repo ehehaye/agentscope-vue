@@ -14,9 +14,30 @@ import { EventType } from '@agentscope-ai/agentscope/event';
 import { appendEvent, AssistantMsg, UserMsg } from '@agentscope-ai/agentscope/message';
 import { AppConnectionState, AppReplyPhase } from '@/constants/app-state';
 import { BackendCustomEventName, SdkBlockType, SdkToolResultState } from '@/constants/protocol';
-import { appendEventReactive, hasPendingToolCall, hitlKey, replaceMessage } from '@/utils/agentscope';
+import { appendEventReactive, findToolBlocks, hasPendingToolCall, hitlKey, replaceMessage } from '@/utils/agentscope';
 
 const INTERRUPT_TIMEOUT_MS = 10000;
+
+/**
+ * TOOL_RESULT_END 回调收到的工具结果摘要。
+ * @typedef {object} ToolResultSummary
+ * @property {string|null} name 工具名（事件本身不携带，由消息块反查）
+ * @property {string|null} input 工具调用参数（流式累积的 JSON 字符串）
+ * @property {object[]|string|null} output 工具结果块数组
+ */
+
+/**
+ * SSE 事件回调表，由 useMessages 的 callbacks 参数透传到 processEvent。
+ * @typedef {object} ChatEventCallbacks
+ * @property {Record<string, (tool: ToolResultSummary) => void>} [tools] 按工具名监听 TOOL_RESULT_END，`'*'` 为兜底
+ * @property {() => void} [onTeamUpdated] 后端 team_updated 事件
+ * @property {(value: object) => void} [onStateUpdated] 后端 state_updated 事件
+ * @property {() => void} [onSessionUpdated] 后端 session_updated 事件
+ * @property {(blockId: string, mediaType: string) => void} [onAudioStart] 音频 DataBlock 开始
+ * @property {(blockId: string, data: string) => void} [onAudioAppend] 音频 DataBlock 增量
+ * @property {(blockId: string) => void} [onAudioEnd] 音频 DataBlock 结束
+ * @property {() => void} [onAudioStopAll] 停止上一轮音频播放
+ */
 
 export default {
   namespaced: true,
@@ -109,7 +130,7 @@ export default {
     /**
      * 初始化并打开一个会话：拉历史、开 SSE、处理事件。
      * @param {object} ctx
-     * @param {{ agentId: string|null, sessionId: string|null, callbacks?: object }} payload
+     * @param {{ agentId: string|null, sessionId: string|null, callbacks?: ChatEventCallbacks }} payload
      */
     async openConversation({ commit, state, dispatch }, { agentId, sessionId, callbacks = {} }) {
       const key = agentId && sessionId ? `${agentId}:${sessionId}` : null;
@@ -228,13 +249,9 @@ export default {
     },
 
     /**
-     * 处理单个 AgentEvent。
-     *
-     * 分发规则：`EventType` 取值来自 SDK；`EventType.CUSTOM` 下的 `name` 是后端约定
-     * （见 BackendCustomEventName），SDK 只负责把它作为 CustomEvent 传过来。
-     *
+     * 处理单个 AgentEvent
      * @param {object} ctx
-     * @param {{ event: import('@agentscope-ai/agentscope/event').AgentEvent, callbacks?: object }} payload
+     * @param {{ event: import('@agentscope-ai/agentscope/event').AgentEvent, callbacks?: ChatEventCallbacks }} payload
      */
     processEvent({ commit, state }, { event, callbacks = {} }) {
       if (event.type === EventType.CUSTOM) {
@@ -300,6 +317,15 @@ export default {
         }
       } else if (event.type === EventType.DATA_BLOCK_END) {
         callbacks.onAudioEnd?.(event.block_id);
+      }
+
+      // 工具结果结束事件：按工具名分发给 `callbacks.tools` 里对应的处理器，未命中时回落到 `'*'`。
+      // 放在消息状态更新之后，回调里可直接读取到对应的 tool_result 块。
+      if (event.type === EventType.TOOL_RESULT_END) {
+        const tool = findToolBlocks(state.messages, event.reply_id, event.tool_call_id);
+        const handlers = callbacks.tools;
+        const onEnd = handlers && ((tool.name && handlers[tool.name]) || handlers['*']);
+        onEnd?.(tool);
       }
     },
 
