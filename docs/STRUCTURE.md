@@ -55,22 +55,22 @@ store/modules/             # app/workspace/chat/upload
 styles/                    # index.css / base.css / atomic.css / element-overrides.less
 utils/                     # 通用工具
 views/                     # 业务页（路由层）
-  channel/ chat/ credential/ dev/ knowledge/ mcp/ schedule/ setup/ skill/
+  channel/ chat/ credential/ dev/ knowledge/ mcp/ schedule/ setup/ skill/ sop/
 ```
 
 ## 3. 一对一对应
 
 | 官方（React） | 本仓库（Vue 2） | 说明 |
 | --- | --- | --- |
-| `pages/<name>/index.tsx` | `views/<name>/index.vue` | 路由层组件。`name ∈ {chat, channel, credential, knowledge, mcp, schedule, setup, skill}` 两侧一一对应。 |
+| `pages/<name>/index.tsx` | `views/<name>/index.vue` | 路由层组件。`name ∈ {chat, channel, credential, knowledge, mcp, schedule, setup, skill, sop}` 两侧一一对应。 |
 | `pages/chat/ChatViewport.tsx` | `components/chat/ChatContent.vue` | 聊天主视口：消息列表 + 输入框 + HITL。官方在 `pages/chat/`，本仓库放在 `components/chat/`。 |
 | `pages/chat/index.tsx` | `views/chat/index.vue` | 聊天外壳：侧栏选 agent/session + 路由 + 面板。 |
-| `hooks/use*` | `composables/use*` | 业务 composable：API 请求封装 + 响应式状态。两端 use 名一致：`useAgents / useSessions / useMessages / useChat / useWorkspace / useWorkspaceStatus / useCredentials / useAvailableModels / useAvailableTTSModels / useKbEmbeddingModels / useChunkers / useKnowledgeBaseMiddlewareSchema / useKnowledgeSupportedContentTypes / useKnowledgeBases / useKnowledgeDocuments / useMCPs / useMCPHubs / useMCPHubCards / useSkills / useSkillHubs / useSkillHubCards / useChannels / useSchedules / useDocumentStatusPolling`。 |
+| `hooks/use*` | `composables/use*` | 业务 composable：API 请求封装 + 响应式状态。两端 use 名一致：`useAgents / useSessions / useMessages / useChat / useWorkspace / useWorkspaceStatus / useCredentials / useAvailableModels / useAvailableTTSModels / useKbEmbeddingModels / useChunkers / useKnowledgeBaseMiddlewareSchema / useKnowledgeSupportedContentTypes / useKnowledgeBases / useKnowledgeDocuments / useMCPs / useMCPHubs / useMCPHubCards / useSkills / useSkillHubs / useSkillHubCards / useChannels / useSchedules / useSops / useSopRuns / useDocumentStatusPolling`。 |
 | `hooks/useChat` | `store/modules/chat` + `composables/useMessages` | 官方版纯 hook + Query；本仓库把消息/SSE/阶段拆到 Vuex 模块，组件通过 `useMessages` 暴露响应式状态。 |
 | `hooks/useModels` | （合并到 `useAvailableModels` + `useAvailableTTSModels`） | 拆分粒度不同。 |
 | `hooks/useResourceDrawer` | 无 | 官方用统一 Drawer；本仓库每个面板独立组件。 |
 | `context/AudioContext.tsx`（`AudioProvider`） | `composables/useAudioCenter.js`（`provideAudioCenter` + `useAudioCenter`） | 同样的 provide/inject 音频中心。 |
-| `api/*.ts`（13 个） | `api/*.js`（14 个，文件名一致 + `mapping.js` 端点表） | 文件命名 1:1：`agent / channel / chat / client / credential / health / hub / knowledgeBase / mcp / model / schedule / session / skill / workspace`。 |
+| `api/*.ts`（13 个） | `api/*.js`（15 个，文件名一致 + `mapping.js` 端点表 + `sop.js`） | 文件命名 1:1：`agent / channel / chat / client / credential / health / hub / knowledgeBase / mcp / model / schedule / session / skill / workspace`；另有 `sop` 为本仓库新增。 |
 | `components/chat/*`（消息/工具调用渲染） | `components/chat/*` | 一一对齐：`ASBlock / ASMessageBubble / AskUserCard / ChatContent / ConfirmCard / DataBlockView / FlipCard / MessageScroller / SessionList / SessionListItem / SubagentHitlCard / TextInput / TimeMarker / ToolCallGroup / ToolCallRow / ToolStateIcon`。 |
 | `components/chat/tool-renderers/*`（官方为对应目录） | `components/chat/tool-renderers/*` | `Bash / Default / DiffPreview / Edit / Glob / Grep / Read / TaskCreate / Write` 一致。 |
 | `components/dialog/*` | `components/dialog/*` | `AddMCP / AddSkill / Agent / CreateCredential / CreateKnowledgeBase / EditAgent / EditCredential / EditKnowledgeBase / InstallMCP / MCPConfigForm / RenameSession / WorkingDirectory`。 |

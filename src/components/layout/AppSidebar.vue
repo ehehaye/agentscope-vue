@@ -146,6 +146,7 @@ export default defineComponent({
         { to: { name: 'credential' }, icon: 'lucide:key-round', label: '凭证' },
         { to: { name: 'channel' }, icon: 'lucide:cable', label: '频道' },
         { to: { name: 'schedule' }, icon: 'lucide:calendar-clock', label: '日程' },
+        { to: { name: 'sop' }, icon: 'lucide:list-checks', label: 'SOP' },
         { to: { name: 'knowledge' }, icon: 'lucide:library', label: '知识库' },
         { to: { name: 'mcp' }, icon: 'lucide:plug', label: 'MCP' },
         { to: { name: 'skill' }, icon: 'lucide:blocks', label: '技能' },

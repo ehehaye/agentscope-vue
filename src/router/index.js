@@ -42,6 +42,18 @@ const routes = [
         meta: { title: '日程' },
       },
       {
+        path: 'sop',
+        name: 'sop',
+        component: () => import('@/views/sop/index.vue'),
+        meta: { title: 'SOP' },
+      },
+      {
+        path: 'sop/:sopId',
+        name: 'sop-detail',
+        component: () => import('@/views/sop/index.vue'),
+        meta: { title: 'SOP' },
+      },
+      {
         path: 'knowledge',
         name: 'knowledge',
         component: () => import('@/views/knowledge/index.vue'),

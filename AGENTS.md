@@ -32,7 +32,7 @@ pnpm format:check
 - `src/composables/` — 组合式逻辑。`vue.js` 是统一桥接层，所有 API 导入必须走它；`vue-router.js` 同理。`useMessages/useSessions/useChat*` 等封装各业务。
 - `src/store/` — Vuex `modules/{app,workspace,chat,upload}`，由 `index.js` 组装；`app/setupComplete` 驱动 `/setup` 路由门禁。
 - `src/constants/` — `app-state.js`：`AppStorageKeys`（localStorage 键 SSOT，禁止散落字面量）+ `AppDefaults` + `App*` 前端状态机枚举；`protocol.js`：SDK/后端协议枚举。
-- `src/router/index.js` — history 模式；`/setup` 公开页，其余挂在 `components/layout/AppLayout.vue` 下（chat/credential/channel/schedule/knowledge/mcp/skill/dev）。
+- `src/router/index.js` — history 模式；`/setup` 公开页，其余挂在 `components/layout/AppLayout.vue` 下（chat/credential/channel/schedule/sop/knowledge/mcp/skill/dev）。
 - `src/components/` — 业务组件（`chat/panel/dialog/drawer/form/md/...`）；`src/views/` — 页面；`src/lib/` — `toast`、工具；`src/utils/` — 纯函数（`ast/html/common/agentscope/streamingAudio`）。
 - `src/components/md/` — Markdown 渲染层：`MarkdownRenderer.vue`（`marked` + `highlight.js` + `remend` + `htmlparser2` 生成 AST）→ `NodeRenderer.vue` / `TextNodeRenderer.vue` 递归渲染；`registry.js` 注册代码块/标签自定义组件（`registerCodeBlockComp` / `registerTagComp`）；`diff.js` 做块级增量解析（流式从 O(n²) 降到 O(n)）。内部验证页 `src/views/dev/MarkdownDevPage.vue`（`/dev/markdown`）。
 - `src/polyfills/` — 旧浏览器补齐 `AbortSignal` 等，`main.js` 首行引入。

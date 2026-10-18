@@ -14,5 +14,6 @@ export { knowledgeBaseApi } from './knowledgeBase';
 export { mcpApi } from './mcp';
 export { skillApi } from './skill';
 export { hubApi } from './hub';
+export { sopApi } from './sop';
 export { sessionApi, takeFreshlyCreated, markFreshlyCreated } from './session';
 export { chatApi } from './chat';

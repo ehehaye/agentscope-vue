@@ -29,6 +29,26 @@
     />
     <span>已失败</span>
   </span>
+  <span
+    v-else-if="status === 'awaiting'"
+    class="tw-inline-flex tw-items-center tw-gap-1 tw-rounded-md tw-border tw-border-transparent tw-bg-yellow-50 tw-px-2 tw-py-0.5 tw-text-xs tw-font-medium tw-text-yellow-700 dark:tw-bg-yellow-900 dark:tw-text-yellow-100"
+  >
+    <Icon
+      icon="lucide:clock"
+      class="tw-h-3.5 tw-w-3.5"
+    />
+    <span>待处理</span>
+  </span>
+  <span
+    v-else-if="status === 'pending'"
+    class="tw-inline-flex tw-items-center tw-gap-1 tw-rounded-md tw-border tw-border-transparent tw-bg-muted tw-px-2 tw-py-0.5 tw-text-xs tw-font-medium tw-text-muted-foreground"
+  >
+    <Icon
+      icon="lucide:circle-dashed"
+      class="tw-h-3.5 tw-w-3.5"
+    />
+    <span>等待开始</span>
+  </span>
 </template>
 
 <script>

@@ -1,12 +1,12 @@
 # Java 中转层 API 接口文档（GET / POST 映射版）
 
 > 本文档基于 `API.md`（真源：`src/api/*.js`），面向 **Java 中转服务 → Python 后端** 的转发场景。
-> Java 层仅开放 **GET、POST** 两类接口，共 **83** 个接口（80 个 `client.` 封装接口 + 3 个 XHR/直构 URL 接口）。
+> Java 层仅开放 **GET、POST** 两类接口，共 **93** 个接口（90 个 `client.` 封装接口 + 3 个 XHR/直构 URL 接口）。
 
 ## 映射规则
 
 | 原始 Method | 映射后 Method | 映射后 URL | 说明 |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | GET | GET | 不变 | 参数位置不变（Query） |
 | POST | POST | 不变 | Body / Query 不变 |
 | PATCH | POST | `{原URL}/update` | 追加 `/update` 动作后缀，避免与同路径 DELETE 转 POST 冲突 |
@@ -38,7 +38,7 @@
 `src/api/workspace.js`
 
 | 前端方法 | 原始 URL | 原始 Method | 映射后 URL | 映射后 Method | 请求体（参数） | 备注 |
-|---|---|---|---|---|---|---|
+| --- | --- | --- | --- | --- | --- | --- |
 | workspaceApi.directories | `/workspace/directories` | GET | `/workspace/directories` | GET | Query：`agent_id`、`session_id`、`path`（可空） | 标准 JSON |
 | workspaceApi.status | `/workspace/status` | GET | `/workspace/status` | GET | Query：`agent_id`、`session_id` | 标准 JSON；前端 silent（git 不可用属正常响应，勿报错） |
 | workspaceApi.mcp.list | `/workspace/mcp` | GET | `/workspace/mcp` | GET | Query：`agent_id`、`session_id` | 标准 JSON |
@@ -55,7 +55,7 @@
 `src/api/credential.js`
 
 | 前端方法 | 原始 URL | 原始 Method | 映射后 URL | 映射后 Method | 请求体（参数） | 备注 |
-|---|---|---|---|---|---|---|
+| --- | --- | --- | --- | --- | --- | --- |
 | credentialApi.list | `/credential/` | GET | `/credential/` | GET | 无 | 标准 JSON |
 | credentialApi.schemas | `/credential/schemas` | GET | `/credential/schemas` | GET | 无 | 标准 JSON |
 | credentialApi.create | `/credential/` | POST | `/credential/` | POST | Body：凭据对象（透传） | 标准 JSON |
@@ -67,7 +67,7 @@
 `src/api/model.js`
 
 | 前端方法 | 原始 URL | 原始 Method | 映射后 URL | 映射后 Method | 请求体（参数） | 备注 |
-|---|---|---|---|---|---|---|
+| --- | --- | --- | --- | --- | --- | --- |
 | modelApi.list | `/model/` | GET | `/model/` | GET | Query：`provider` | 标准 JSON |
 | ttsModelApi.list | `/tts-model/` | GET | `/tts-model/` | GET | Query：`provider` | 标准 JSON |
 | embeddingModelApi.list | `/embedding-model/` | GET | `/embedding-model/` | GET | Query：`provider` | 标准 JSON |
@@ -77,7 +77,7 @@
 `src/api/channel.js`
 
 | 前端方法 | 原始 URL | 原始 Method | 映射后 URL | 映射后 Method | 请求体（参数） | 备注 |
-|---|---|---|---|---|---|---|
+| --- | --- | --- | --- | --- | --- | --- |
 | channelApi.listTypes | `/channels/types` | GET | `/channels/types` | GET | 无 | 标准 JSON |
 | channelApi.list | `/channels/` | GET | `/channels/` | GET | 无 | 标准 JSON |
 | channelApi.get | `/channels/{channelId}` | GET | `/channels/{channelId}` | GET | 无 | 标准 JSON |
@@ -98,7 +98,7 @@
 `src/api/agent.js`
 
 | 前端方法 | 原始 URL | 原始 Method | 映射后 URL | 映射后 Method | 请求体（参数） | 备注 |
-|---|---|---|---|---|---|---|
+| --- | --- | --- | --- | --- | --- | --- |
 | agentApi.list | `/agent/` | GET | `/agent/` | GET | 无 | 标准 JSON |
 | agentApi.getSchema | `/agent/schema/v2` | GET | `/agent/schema/v2` | GET | 无 | 标准 JSON |
 | agentApi.create | `/agent/` | POST | `/agent/` | POST | Body：Agent 创建配置（透传） | 标准 JSON；前端支持 silent |
@@ -110,7 +110,7 @@
 `src/api/schedule.js`
 
 | 前端方法 | 原始 URL | 原始 Method | 映射后 URL | 映射后 Method | 请求体（参数） | 备注 |
-|---|---|---|---|---|---|---|
+| --- | --- | --- | --- | --- | --- | --- |
 | scheduleApi.list | `/schedule/` | GET | `/schedule/` | GET | 无 | 标准 JSON |
 | scheduleApi.create | `/schedule/` | POST | `/schedule/` | POST | Body：定时任务对象（透传） | 标准 JSON |
 | scheduleApi.update | `/schedule/{scheduleId}` | PATCH | `/schedule/{scheduleId}/update` | POST | Body：定时任务更新字段（透传） | 标准 JSON |
@@ -122,7 +122,7 @@
 `src/api/knowledgeBase.js`。分页 `page_size` Python 端上限 128；`listAll` / `listAllDocuments` 为前端自动翻页封装，不对应独立端点。
 
 | 前端方法 | 原始 URL | 原始 Method | 映射后 URL | 映射后 Method | 请求体（参数） | 备注 |
-|---|---|---|---|---|---|---|
+| --- | --- | --- | --- | --- | --- | --- |
 | knowledgeBaseApi.list | `/knowledge_bases/` | GET | `/knowledge_bases/` | GET | Query：透传筛选参数；分页 `page`、`page_size`（≤128） | 标准 JSON |
 | knowledgeBaseApi.listEmbeddingModels | `/knowledge_bases/embedding_models` | GET | `/knowledge_bases/embedding_models` | GET | 无 | 标准 JSON |
 | knowledgeBaseApi.listChunkers | `/knowledge_bases/chunkers` | GET | `/knowledge_bases/chunkers` | GET | 无 | 标准 JSON |
@@ -144,7 +144,7 @@
 `src/api/mcp.js`，`mcpId` 经 `encodeURIComponent`。
 
 | 前端方法 | 原始 URL | 原始 Method | 映射后 URL | 映射后 Method | 请求体（参数） | 备注 |
-|---|---|---|---|---|---|---|
+| --- | --- | --- | --- | --- | --- | --- |
 | mcpApi.list | `/mcp` | GET | `/mcp` | GET | 无 | 标准 JSON |
 | mcpApi.update | `/mcp/{mcpId}` | PATCH | `/mcp/{mcpId}/update` | POST | Body：MCP 更新字段（透传） | 标准 JSON；路径参数需 URL 编码 |
 | mcpApi.remove | `/mcp/{mcpId}` | DELETE | `/mcp/{mcpId}/delete` | POST | 无 Body | 标准 JSON；路径参数需 URL 编码 |
@@ -154,7 +154,7 @@
 `src/api/skill.js`，`skillId` 经 `encodeURIComponent`。注意与 workspace 中的会话级技能区分。
 
 | 前端方法 | 原始 URL | 原始 Method | 映射后 URL | 映射后 Method | 请求体（参数） | 备注 |
-|---|---|---|---|---|---|---|
+| --- | --- | --- | --- | --- | --- | --- |
 | skillApi.list | `/skill` | GET | `/skill` | GET | 无 | 标准 JSON |
 | skillApi.get | `/skill/{skillId}` | GET | `/skill/{skillId}` | GET | 无 | 标准 JSON；响应含 SKILL.md 正文；路径参数需 URL 编码 |
 | skillApi.remove | `/skill/{skillId}` | DELETE | `/skill/{skillId}/delete` | POST | 无 Body | 标准 JSON；已放入工作区的技能保留副本；路径参数需 URL 编码 |
@@ -164,7 +164,7 @@
 `src/api/hub.js`，`hubId` / `cardId` 经 `encodeURIComponent`。
 
 | 前端方法 | 原始 URL | 原始 Method | 映射后 URL | 映射后 Method | 请求体（参数） | 备注 |
-|---|---|---|---|---|---|---|
+| --- | --- | --- | --- | --- | --- | --- |
 | hubApi.mcp.listHubs | `/hub/mcp` | GET | `/hub/mcp` | GET | 无 | 标准 JSON |
 | hubApi.mcp.listCards | `/hub/mcp/{hubId}/cards` | GET | `/hub/mcp/{hubId}/cards` | GET | Query（均可选）：`q`、`cursor`、`limit` | 标准 JSON；游标分页 |
 | hubApi.mcp.getCard | `/hub/mcp/{hubId}/cards/{cardId}` | GET | `/hub/mcp/{hubId}/cards/{cardId}` | GET | 无 | 标准 JSON |
@@ -179,7 +179,7 @@
 `src/api/session.js`
 
 | 前端方法 | 原始 URL | 原始 Method | 映射后 URL | 映射后 Method | 请求体（参数） | 备注 |
-|---|---|---|---|---|---|---|
+| --- | --- | --- | --- | --- | --- | --- |
 | sessionApi.list | `/sessions/` | GET | `/sessions/` | GET | Query：`agent_id` | 标准 JSON |
 | sessionApi.create | `/sessions/` | POST | `/sessions/` | POST | Body：会话创建对象（透传） | 标准 JSON；前端依据返回体 `session_id` 做新会话标记 |
 | sessionApi.update | `/sessions/{sessionId}` | PATCH | `/sessions/{sessionId}/update` | POST | Query：`agent_id`；Body：会话更新字段（透传） | 标准 JSON；前端支持 silent |
@@ -196,12 +196,29 @@
 |---|---|---|---|---|---|---|
 | chatApi.trigger | `/chat/` | POST | `/chat/` | POST | Body：对话触发请求对象（透传） | POST 响应本身为标准 JSON；**生成内容不在响应体中**，而是经 `/sessions/{sessionId}/stream` 的 SSE 流推送（见 12）；前端支持 silent |
 
+## 14. sop（SOP 流程与运行）
+
+`src/api/sop.js`。Java 中转层需新增 `/sop` 相关转发；`PATCH` / `DELETE` 按通用规则追加 `/update`、`/delete` 动作后缀。
+
+| 前端方法 | 原始 URL | 原始 Method | 映射后 URL | 映射后 Method | 请求体（参数） | 备注 |
+| --- | --- | --- | --- | --- | --- | --- |
+| sopApi.list | `/sop/` | GET | `/sop/` | GET | 无 | 标准 JSON |
+| sopApi.get | `/sop/{sopId}` | GET | `/sop/{sopId}` | GET | 无 | 标准 JSON |
+| sopApi.create | `/sop/` | POST | `/sop/` | POST | Body：`{ data: SOPData }` | 标准 JSON；响应 `{ sop_id }` |
+| sopApi.update | `/sop/{sopId}` | PATCH | `/sop/{sopId}/update` | POST | Body：`{ data: SOPData }` | 标准 JSON；整体替换流程内容 |
+| sopApi.remove | `/sop/{sopId}` | DELETE | `/sop/{sopId}/delete` | POST | 无 Body | 标准 JSON；级联删除其全部运行 |
+| sopApi.startRun | `/sop/{sopId}/runs` | POST | `/sop/{sopId}/runs` | POST | Body：`{ inputs: Msg[] }` | 标准 JSON；请求立即返回，运行在后台推进 |
+| sopApi.listRuns | `/sop/runs` | GET | `/sop/runs` | GET | Query：`sop_id`（可选）、`phase`（可选） | 标准 JSON |
+| sopApi.getRun | `/sop/runs/{sopRunId}` | GET | `/sop/runs/{sopRunId}` | GET | 无 | 标准 JSON；用于轮询运行进度 |
+| sopApi.removeRun | `/sop/runs/{sopRunId}` | DELETE | `/sop/runs/{sopRunId}/delete` | POST | 无 Body | 标准 JSON；级联删除运行创建的会话与工作区 |
+| sopApi.submitVerdict | `/sop/runs/{sopRunId}/verdict` | POST | `/sop/runs/{sopRunId}/verdict` | POST | Body：`{ step_index, passed, message }` | 标准 JSON；仅人工验收等待时可提交 |
+
 ---
 
 ## 附录：未走 `client.` 封装的接口（XHR / 直构 URL）
 
 | 前端方法（源位置） | 原始 URL | 原始 Method | 映射后 URL | 映射后 Method | 请求体（参数） | 备注 |
-|---|---|---|---|---|---|---|
+| --- | --- | --- | --- | --- | --- | --- |
 | knowledgeBaseApi.uploadDocument（`knowledgeBase.js`） | `/knowledge_bases/{knowledgeBaseId}/documents` | POST（XHR） | `/knowledge_bases/{knowledgeBaseId}/documents` | POST | `multipart/form-data`：字段 `file` | **非 JSON（multipart 文件上传）**：Java 层需用 multipart 透传文件，勿包装成 JSON；需支持上传进度与中止 |
 | knowledgeBaseApi.documentContentUrl（`knowledgeBase.js`，仅构造 URL） | `/knowledge_bases/{knowledgeBaseId}/documents/{documentId}` | GET（直构 URL） | `/knowledge_bases/{knowledgeBaseId}/documents/{documentId}` | GET | Query：`token`（必填）、`download=true`（可选） | **文件下载/原文响应，非 JSON**：token 由 `download_token` 接口换取；Java 层需透传二进制流与 Content-Disposition |
 | workspaceApi.skill.upload（`workspace.js`） | `/workspace/skill/upload` | POST（XHR） | `/workspace/skill/upload` | POST | Query：`agent_id`、`session_id`；`multipart/form-data`：字段 `manifest`（JSON 字符串 `{ "entries": [{ "path": string, "size": number }] }`）+ 多个 `files` | **非 JSON（multipart 文件夹上传）**：`manifest` 为普通表单字段（JSON 字符串），`files` 为多文件；需透传上传进度与中止 |
@@ -210,8 +227,8 @@
 
 ## 映射统计
 
-- 保持 **GET**：43 个（含 1 个 SSE 流、1 个原始文本流、1 个文件下载，均非标准 JSON）
-- 保持 **POST**：22 个（含 2 个 multipart XHR 上传）
-- PATCH → **POST `/update`**：7 个
-- DELETE → **POST `/delete`**：11 个
-- 合计：83 个（80 个封装接口 + 3 个 XHR/直构 URL 接口）
+- 保持 **GET**：47 个（含 1 个 SSE 流、1 个原始文本流、1 个文件下载，均非标准 JSON）
+- 保持 **POST**：25 个（含 2 个 multipart XHR 上传）
+- PATCH → **POST `/update`**：8 个
+- DELETE → **POST `/delete`**：13 个
+- 合计：93 个（90 个封装接口 + 3 个 XHR/直构 URL 接口）

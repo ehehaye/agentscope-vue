@@ -233,6 +233,27 @@ export const ENDPOINTS = {
     proxy: { method: 'POST', path: '/skill/{skillId}/delete' },
   },
 
+  // ---------- sop（标准作业流程与运行） ----------
+  'sop.list': { direct: { method: 'GET', path: '/sop/' } },
+  'sop.create': { direct: { method: 'POST', path: '/sop/' } },
+  'sop.get': { direct: { method: 'GET', path: '/sop/{sopId}' } },
+  'sop.update': {
+    direct: { method: 'PATCH', path: '/sop/{sopId}' },
+    proxy: { method: 'POST', path: '/sop/{sopId}/update' },
+  },
+  'sop.remove': {
+    direct: { method: 'DELETE', path: '/sop/{sopId}' },
+    proxy: { method: 'POST', path: '/sop/{sopId}/delete' },
+  },
+  'sop.startRun': { direct: { method: 'POST', path: '/sop/{sopId}/runs' } },
+  'sop.listRuns': { direct: { method: 'GET', path: '/sop/runs' } },
+  'sop.getRun': { direct: { method: 'GET', path: '/sop/runs/{sopRunId}' } },
+  'sop.removeRun': {
+    direct: { method: 'DELETE', path: '/sop/runs/{sopRunId}' },
+    proxy: { method: 'POST', path: '/sop/runs/{sopRunId}/delete' },
+  },
+  'sop.submitVerdict': { direct: { method: 'POST', path: '/sop/runs/{sopRunId}/verdict' } },
+
   // ---------- hub：MCP 广场 ----------
   'hub.mcp.listHubs': { direct: { method: 'GET', path: '/hub/mcp' } },
   'hub.mcp.listCards': {
