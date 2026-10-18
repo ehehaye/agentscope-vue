@@ -211,6 +211,7 @@ export default defineComponent({
     border-radius: @border-radius-sm;
     font-family: 'Courier New', monospace;
     font-size: 0.9em;
+    line-break: anywhere;
   }
 
   .md-code-wrapper {
