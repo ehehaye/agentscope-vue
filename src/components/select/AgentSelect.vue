@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { defineComponent, computed, watch } from '@/composables/vue';
+import { defineComponent, computed, useActiveWatch } from '@/composables/vue';
 
 export default defineComponent({
   name: 'AgentSelect',
@@ -65,7 +65,7 @@ export default defineComponent({
       emit('change', id);
     }
 
-    watch(
+    useActiveWatch(
       () => [props.value, props.agents],
       ([value, agents]) => {
         if (!value && agents.length > 0) {
