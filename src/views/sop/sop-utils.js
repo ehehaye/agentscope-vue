@@ -370,20 +370,6 @@ export function parseRunListQuery(query = {}) {
   };
 }
 
-/** 把运行记录的查询状态序列化为路由 query，默认值不写入。 */
-export function buildRunListQuery({ filters = {}, sort = {}, page = 1, pageSize = 10 } = {}) {
-  const query = {};
-  const title = (filters.title || '').trim();
-  if (title) query.title = title;
-  if (filters.status) query.status = filters.status;
-  if (filters.date) query.date = filters.date;
-  if (sort.prop === 'phase') query.sort = 'phase';
-  if (sort.order === 'ascending') query.order = 'ascending';
-  if (page > 1) query.page = String(page);
-  if (pageSize !== 10) query.page_size = String(pageSize);
-  return query;
-}
-
 /** 运行记录真实的 SOP ID；路由 SOP ID 与运行不匹配时返回运行所属的 SOP。 */
 export function resolveRunSopId(run, routeSopId = '') {
   const actual = run?.sop_id || '';

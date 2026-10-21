@@ -100,19 +100,15 @@ describe('useSopRunQuery', () => {
     wrapper.destroy();
   });
 
-  it('applyState 整体覆盖条件与排序', async () => {
+  it('外部还原 queryState 后重新筛选并同步草稿条件', async () => {
     const wrapper = mountQuery(ref(makeRuns(12)));
 
-    wrapper.vm.applyState({
-      filters: { title: '', status: 'completed', date: '' },
-      sort: { prop: 'phase', order: 'ascending' },
-      page: 1,
-      pageSize: 25,
-    });
+    wrapper.vm.queryState.status = 'completed';
+    wrapper.vm.queryState.page_size = 25;
     await Vue.nextTick();
 
     expect(wrapper.vm.filters.status).toBe('completed');
-    expect(wrapper.vm.sort.prop).toBe('phase');
+    expect(wrapper.vm.pageSize).toBe(25);
     expect(wrapper.vm.total).toBe(2);
     expect(wrapper.vm.rows.every((run) => run.state.phase === 'completed')).toBe(true);
     wrapper.destroy();

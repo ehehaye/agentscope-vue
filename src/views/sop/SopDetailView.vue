@@ -349,14 +349,13 @@ import { sopApi } from '@/api';
 import { confirmDialog } from '@/utils/common';
 import { useAgents } from '@/composables/useAgents';
 import { useSopRuns } from '@/composables/useSopRuns';
-import { useSopRunQuery } from '@/composables/useSopRunQuery';
+import { useRouteQueryState } from '@/composables/useRouteQueryState';
 import SopEditorDialog from './SopEditorDialog.vue';
 import StartRunDialog from './StartRunDialog.vue';
 import {
   SOP_PHASE_LABELS,
   SOP_WORKSPACE_GRAIN_LABELS,
   agentDisplayName,
-  buildRunListQuery,
   getCurrentStepIndex,
   parseRunListQuery,
   runInputText,
@@ -364,6 +363,17 @@ import {
 } from './sop-utils';
 
 const RUN_PAGE_SIZE = 10;
+
+// 查询条件同步到 URL 时的默认值：等于默认值的字段不写入 query。
+const RUN_QUERY_DEFAULTS = {
+  title: '',
+  status: '',
+  date: '',
+  sort: 'created_at',
+  order: 'descending',
+  page: 1,
+  page_size: RUN_PAGE_SIZE,
+};
 
 export default defineComponent({
   name: 'SopDetailView',
@@ -379,7 +389,26 @@ export default defineComponent({
     let requestSeq = 0;
 
     const { agents } = useAgents();
-    const { runs, loading: runsLoading, refetch: refetchRuns, remove: removeRun } = useSopRuns(sopId);
+    const initialQuery = parseRunListQuery(route.query);
+
+    const {
+      runs,
+      rows,
+      total,
+      page,
+      pageSize,
+      filters,
+      sort,
+      queryState,
+      loading: runsLoading,
+      refetch: refetchRuns,
+      remove: removeRun,
+      query,
+      resetFilters,
+      setPage,
+      setPageSize,
+      setSort,
+    } = useSopRuns(sopId, initialQuery);
 
     const editorVisible = ref(false);
     const startVisible = ref(false);
@@ -389,64 +418,23 @@ export default defineComponent({
       () => SOP_WORKSPACE_GRAIN_LABELS[sop.value?.data?.workspace_grain] || '整个运行共用一个工作区',
     );
 
-    const initialQuery = parseRunListQuery(route.query);
-
-    const {
-      rows,
-      total,
-      page,
-      pageSize,
-      filters,
-      appliedFilters,
-      sort,
-      query,
-      resetFilters,
-      setPage,
-      setPageSize,
-      setSort,
-      applyState,
-    } = useSopRunQuery(runs, {
-      pageSize: initialQuery.pageSize || RUN_PAGE_SIZE,
-      initialPage: initialQuery.page,
-      initialFilters: initialQuery.filters,
-      initialSort: initialQuery.sort,
-    });
-
     const statusOptions = Object.entries(SOP_PHASE_LABELS).map(([value, label]) => ({ value, label }));
-    const defaultSort = computed(() => ({ prop: sort.prop, order: sort.order }));
+    const defaultSort = computed(() => ({ prop: sort.value.prop, order: sort.value.order }));
 
-    function listQuery() {
-      return buildRunListQuery({
-        filters: appliedFilters,
-        sort,
-        page: page.value,
-        pageSize: pageSize.value,
-      });
-    }
-
-    function sameQuery(left, right) {
-      const keys = Object.keys(left);
-      if (keys.length !== Object.keys(right).length) return false;
-      return keys.every((key) => String(left[key]) === String(right[key]));
-    }
-
-    // 已生效的筛选、排序、页码与每页条数都写入 query，返回本页时原样恢复。
-    watch(
-      () => [
-        appliedFilters.title,
-        appliedFilters.status,
-        appliedFilters.date,
-        sort.prop,
-        sort.order,
-        page.value,
-        pageSize.value,
-      ],
-      () => {
-        const next = listQuery();
-        if (sameQuery(route.query, next)) return;
-        router.replace({ query: next });
+    // 已生效的条件与路由 query 双向同步，返回或刷新本页时原样恢复。
+    useRouteQueryState(queryState, {
+      defaults: RUN_QUERY_DEFAULTS,
+      parse: (raw) => {
+        const parsed = parseRunListQuery(raw);
+        return {
+          ...parsed.filters,
+          sort: parsed.sort.prop,
+          order: parsed.sort.order,
+          page: parsed.page,
+          page_size: parsed.pageSize,
+        };
       },
-    );
+    });
 
     async function loadSop() {
       const currentId = sopId.value;
@@ -469,7 +457,6 @@ export default defineComponent({
       sopId,
       (value) => {
         sop.value = null;
-        applyState(parseRunListQuery(route.query));
         if (value) loadSop();
       },
       { immediate: true },

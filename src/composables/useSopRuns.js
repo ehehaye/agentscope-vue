@@ -1,16 +1,39 @@
 import { ref, watch, unref } from '@/composables/vue';
 import { sopApi } from '@/api';
+import { useSopRunQuery } from '@/composables/useSopRunQuery';
 
 /**
- * 某个 SOP 流程下的运行列表。
+ * 某个 SOP 流程下的运行列表：内部拉取全部运行，并按查询条件完成过滤、排序与分页，
+ * 对 UI 暴露的接口与服务端分页一致（条件 + 页码 → 当前页数据 + 总数）。
  * @param {import('vue').Ref<string|null>|string|null} sopId
- * @returns {{ runs: import('vue').Ref<any[]>, loading: import('vue').Ref<boolean>, error: import('vue').Ref<Error|null>, refetch: () => Promise<any[]>, start: (inputs: any[]) => Promise<any>, remove: (runId: string) => Promise<void> }}
+ * @param {{ filters?: object, sort?: object, page?: number, pageSize?: number }} [initialQuery]
  */
-export function useSopRuns(sopId) {
+export function useSopRuns(sopId, initialQuery = {}) {
   const runs = ref([]);
   const loading = ref(false);
   const error = ref(null);
   let reqId = 0;
+
+  const {
+    rows,
+    total,
+    page,
+    pageSize,
+    pageCount,
+    filters,
+    sort,
+    queryState,
+    query,
+    resetFilters,
+    setPage,
+    setPageSize,
+    setSort,
+  } = useSopRunQuery(runs, {
+    pageSize: initialQuery.pageSize,
+    initialPage: initialQuery.page,
+    initialFilters: initialQuery.filters,
+    initialSort: initialQuery.sort,
+  });
 
   async function refetch() {
     const id = ++reqId;
@@ -51,5 +74,25 @@ export function useSopRuns(sopId) {
     await refetch();
   }
 
-  return { runs, loading, error, refetch, start, remove };
+  return {
+    runs,
+    rows,
+    total,
+    page,
+    pageSize,
+    pageCount,
+    filters,
+    sort,
+    queryState,
+    loading,
+    error,
+    refetch,
+    query,
+    resetFilters,
+    setPage,
+    setPageSize,
+    setSort,
+    start,
+    remove,
+  };
 }

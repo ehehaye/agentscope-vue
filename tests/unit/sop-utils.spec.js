@@ -19,7 +19,6 @@ import {
   runInputText,
   sortRuns,
   parseRunListQuery,
-  buildRunListQuery,
   resolveRunSopId,
 } from '@/views/sop/sop-utils';
 
@@ -402,47 +401,6 @@ describe('运行记录查询参数', () => {
       page: 1,
       pageSize: 10,
     });
-  });
-
-  it('序列化时省略默认值', () => {
-    expect(
-      buildRunListQuery({
-        filters: { title: '', status: '', date: '' },
-        sort: { prop: 'created_at', order: 'descending' },
-        page: 1,
-        pageSize: 10,
-      }),
-    ).toEqual({});
-
-    expect(
-      buildRunListQuery({
-        filters: { title: ' 周报 ', status: 'completed', date: '2026-10-20' },
-        sort: { prop: 'phase', order: 'ascending' },
-        page: 2,
-        pageSize: 50,
-      }),
-    ).toEqual({
-      title: '周报',
-      status: 'completed',
-      date: '2026-10-20',
-      sort: 'phase',
-      order: 'ascending',
-      page: '2',
-      page_size: '50',
-    });
-  });
-
-  it('解析后可以原样序列化', () => {
-    const query = {
-      title: '周报',
-      status: 'failed',
-      date: '2026-10-21',
-      sort: 'phase',
-      order: 'ascending',
-      page: '2',
-      page_size: '25',
-    };
-    expect(buildRunListQuery(parseRunListQuery(query))).toEqual(query);
   });
 });
 
