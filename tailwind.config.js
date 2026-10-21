@@ -86,5 +86,19 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    // Tailwind 2 未内置 line-clamp，补上常用的 1–6 行截断（类名同样带 tw- 前缀）
+    function ({ addUtilities }) {
+      const utilities = {};
+      for (let lines = 1; lines <= 6; lines++) {
+        utilities[`.line-clamp-${lines}`] = {
+          display: '-webkit-box',
+          '-webkit-box-orient': 'vertical',
+          '-webkit-line-clamp': String(lines),
+          overflow: 'hidden',
+        };
+      }
+      addUtilities(utilities);
+    },
+  ],
 };
