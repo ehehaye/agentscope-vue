@@ -50,6 +50,7 @@ body {
   --as-border: #e5e5e5;
   --as-code-bg: #f4f3ec;
   --as-accent: rgba(24, 25, 28, 0.05);
+  --as-accent-solid: #aa3bff;
   --as-accent-bg: rgba(170, 59, 255, 0.1);
   --as-accent-border: rgba(170, 59, 255, 0.5);
   --as-social-bg: rgba(244, 243, 236, 0.5);

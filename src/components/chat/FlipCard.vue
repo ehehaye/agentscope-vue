@@ -186,23 +186,9 @@ export default defineComponent({
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: #aa3bff;
-    box-shadow: 0 0 0 0 rgba(170, 59, 255, 0.6);
-    animation: flip-card-pulse 1.6s ease-in-out infinite;
-  }
-
-  @keyframes flip-card-pulse {
-    0%,
-    100% {
-      opacity: 1;
-      transform: scale(1);
-      box-shadow: 0 0 0 0 rgba(170, 59, 255, 0.5);
-    }
-    50% {
-      opacity: 0.7;
-      transform: scale(0.85);
-      box-shadow: 0 0 0 6px rgba(170, 59, 255, 0);
-    }
+    background: var(--as-accent-solid);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--as-accent-solid) 60%, transparent);
+    animation: as-pulse 1.6s ease-in-out infinite;
   }
 
   &-collapsed-label {

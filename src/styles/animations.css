@@ -1,0 +1,45 @@
+/* —— 共享提示动效 ——
+ * 提示类动效统一在此定义：同一基色（--as-accent-solid）、
+ * 同一时长（1.6s）与缓动（ease-in-out），供各组件复用。 */
+
+/* 脉冲圆点：翻转卡片的折叠态提示，也可用于其它“有新提示”的场景。 */
+@keyframes as-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--as-accent-solid) 50%, transparent);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform: scale(0.85);
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--as-accent-solid) 0%, transparent);
+  }
+}
+
+/* 定位高亮：消息滚动定位后短暂呼吸，与 as-pulse 保持同一节奏。 */
+@keyframes as-flash {
+  0%,
+  100% {
+    background-color: transparent;
+  }
+
+  22%,
+  55% {
+    background-color: color-mix(in srgb, var(--as-accent-solid) 16%, transparent);
+  }
+}
+
+/* SOP 会话：切换到某步骤后高亮定位到的消息。 */
+[data-sop-flash] {
+  border-radius: 12px;
+  animation: as-flash 1.6s ease-in-out;
+}
+
+@media print {
+  [data-sop-flash] {
+    background-color: transparent !important;
+    animation: none !important;
+  }
+}

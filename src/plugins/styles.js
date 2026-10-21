@@ -3,7 +3,9 @@
 // 2. Element 组件样式
 // 3. element-overrides（把 Element 表面色映射到 CSS 变量，含深色兜底）
 // 4. atomic（as- 前缀：抽离自 Tailwind 任意值 [xxx] 的原子类）
+// 5. animations（共享提示动效：as-pulse / as-flash）
 import '../styles/index.css';
 import 'element-ui/lib/theme-chalk/index.css';
 import '../styles/element-overrides.less';
 import '../styles/atomic.css';
+import '../styles/animations.css';

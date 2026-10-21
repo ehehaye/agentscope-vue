@@ -255,34 +255,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style lang="less">
-@keyframes sop-message-flash {
-  0%,
-  100% {
-    background-color: transparent;
-  }
-
-  15%,
-  55% {
-    background-color: rgba(170, 59, 255, 0.16);
-  }
-
-  35%,
-  75% {
-    background-color: transparent;
-  }
-}
-
-[data-sop-flash] {
-  border-radius: 12px;
-  animation: sop-message-flash 1.4s ease-out;
-}
-
-@media print {
-  [data-sop-flash] {
-    background-color: transparent !important;
-    animation: none !important;
-  }
-}
-</style>
