@@ -14,13 +14,13 @@ import store from '@/store';
  * - `tools`：按工具名监听 TOOL_RESULT_END，handler 签名为 `(tool) => {}`，
  *   如 `{ Bash: handler, '*': fallback }`；未命中具体工具时回落到 `'*'`。
  *   `tool` 为 `{ name, input, output }`（input 是流式累积的 JSON 字符串，output 是结果块数组）；
- * - 另有 `onTeamUpdated` / `onStateUpdated` / `onSessionUpdated` / `onAudio*`。
+ * - 另有 `onTeamUpdated` / `onStateUpdated` / `onSessionUpdated` / `onReplyStart` / `onAudio*`。
  *
  * @param {string|object} agentId Agent ID（字符串或 ref）
  * @param {string|object} sessionId Session ID（字符串或 ref）
  * @param {import('@/store/modules/chat').ChatEventCallbacks} [callbacks={}] SSE 事件回调表
  * @returns {object} `{ msgs, connection, loading, phase, error, subagentHitl, send, onUserConfirm,
- *   onSubagentConfirm, onAskUserSubmit, onSubagentAskUserSubmit, interrupt, abort, discardPendingInput }`
+ *   onSubagentConfirm, onAskUserSubmit, onSubagentAskUserSubmit, interrupt, abort, discardPendingInput, reload }`
  */
 export function useMessages(agentId, sessionId, callbacks = {}) {
   const key = computed(() => {
@@ -89,8 +89,16 @@ export function useMessages(agentId, sessionId, callbacks = {}) {
    * 丢弃新建会话暂存的首条消息（跳转失败时调用）。
    * @returns {Promise<boolean>} 是否确实丢弃了暂存消息。
    */
-  function discardPendingInput() {
+  async function discardPendingInput() {
     return store.dispatch('chat/discardPendingInput');
+  }
+
+  /**
+   * 同步会话最新消息，补齐只存在于服务端的用户消息。
+   * @param {{ replyId?: string, limit?: number }} [payload] 透传给 chat/reloadMessages
+   */
+  async function reload(payload) {
+    return store.dispatch('chat/reloadMessages', payload);
   }
 
   return {
@@ -108,5 +116,6 @@ export function useMessages(agentId, sessionId, callbacks = {}) {
     interrupt,
     abort,
     discardPendingInput,
+    reload,
   };
 }

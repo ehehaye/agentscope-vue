@@ -13,10 +13,12 @@
 import { EventType } from '@agentscope-ai/agentscope/event';
 import { appendEvent, AssistantMsg, UserMsg } from '@agentscope-ai/agentscope/message';
 import { AppConnectionState, AppReplyPhase } from '@/constants/app-state';
-import { BackendCustomEventName, SdkBlockType, SdkToolResultState } from '@/constants/protocol';
+import { BackendCustomEventName, SdkBlockType, SdkMessageRole, SdkToolResultState } from '@/constants/protocol';
 import { appendEventReactive, findToolBlocks, hasPendingToolCall, hitlKey, replaceMessage } from '@/utils/agentscope';
 
 const INTERRUPT_TIMEOUT_MS = 10000;
+/** 补拉条数：覆盖一次回复前服务端追加的消息，远小于接口默认的一页 50 条。 */
+const TAIL_SYNC_LIMIT = 10;
 
 /**
  * TOOL_RESULT_END 回调收到的工具结果摘要。
@@ -37,6 +39,7 @@ const INTERRUPT_TIMEOUT_MS = 10000;
  * @property {(blockId: string, data: string) => void} [onAudioAppend] 音频 DataBlock 增量
  * @property {(blockId: string) => void} [onAudioEnd] 音频 DataBlock 结束
  * @property {() => void} [onAudioStopAll] 停止上一轮音频播放
+ * @property {(event: object) => void} [onReplyStart] 新一轮回复开始（服务端可能刚追加过用户消息）
  */
 
 export default {
@@ -276,6 +279,8 @@ export default {
       }
 
       if (event.type === EventType.REPLY_START) {
+        // 在追加占位消息前通知，回调可据此判断本轮输入是否已在本地。
+        callbacks.onReplyStart?.(event);
         const existing = state.messages.find((m) => m.id === event.reply_id);
         if (existing) {
           commit('SET_CURRENT_REPLY_ID', event.reply_id);
@@ -326,6 +331,45 @@ export default {
         const handlers = callbacks.tools;
         const onEnd = handlers && ((tool.name && handlers[tool.name]) || handlers['*']);
         onEnd?.(tool);
+      }
+    },
+
+    /**
+     * 把会话最新一页里本地还没有的消息补进当前列表。
+     *
+     * 用于「本轮输入由服务端写入」的场景：这类消息不会出现在 SSE 事件流里，
+     * 只存在于历史接口。适合在新回复开始时调用，此时输入一定已落库。
+     * 以下情况直接跳过：回复已在本地（SSE 重放）、本轮输入已在本地。
+     *
+     * @param {{ replyId?: string, limit?: number }} [payload]
+     *   replyId：刚开始的回复 ID，用于判断重放，并决定补到的消息插在哪里；
+     *   limit：拉取条数，默认 `TAIL_SYNC_LIMIT`。接口自身默认 50 条/页，
+     *   不会返回全量，但按需传更小的值可以减少传输。
+     */
+    async reloadMessages({ commit, state }, { replyId, limit = TAIL_SYNC_LIMIT } = {}) {
+      const key = state.currentKey;
+      const [agentId, sessionId] = (key || '').split(':');
+      if (!agentId || !sessionId) return;
+
+      if (state.messages.some((m) => m.id === replyId)) return;
+      const last = state.messages[state.messages.length - 1];
+      if (last?.role === SdkMessageRole.USER) return;
+
+      try {
+        const { sessionApi } = await import('@/api');
+        const { messages: tail } = await sessionApi.messages(sessionId, agentId, { limit });
+        if (state.currentKey !== key) return;
+
+        const known = new Set(state.messages.map((m) => m.id));
+        const fresh = (tail || []).filter((m) => !known.has(m.id));
+        if (fresh.length === 0) return;
+
+        // 这些消息先于这条回复写入服务端，所以插在它前面。
+        const index = state.messages.findIndex((m) => m.id === replyId);
+        const at = index < 0 ? state.messages.length : index;
+        commit('SET_MESSAGES', [...state.messages.slice(0, at), ...fresh, ...state.messages.slice(at)]);
+      } catch {
+        // 拉取失败保留当前消息，下一次回复开始时还会再试。
       }
     },
 

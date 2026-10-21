@@ -153,7 +153,15 @@ export default defineComponent({
       onSubagentAskUserSubmit,
       interrupt,
       abort,
+      reload,
     } = useMessages(agentId, sessionId, {
+      // SOP 的回合由服务端发起：先追加一条用户消息（如驳回原因）再开始回复，
+      // 而 SSE 只推助手事件，这条消息要靠补拉历史才能上屏。
+      // 放在回复开始时而不是「通过/驳回」回调里：验收回调返回时后台下一轮还没启动，
+      // 消息尚未写入，拉取会扑空；此时则一定已落库。只拉尾部一页，避免全量。
+      // 传 reply_id：已在本地说明是重放，store 会跳过；补到的消息也插在它前面。
+      // limit 不传：用默认的尾部 10 条即可覆盖本场景。
+      onReplyStart: (event) => reload({ replyId: event.reply_id }),
       onAudioStart: (blockId, mediaType) => audioManager?.start(blockId, mediaType),
       onAudioAppend: (blockId, data) => audioManager?.append(blockId, data),
       onAudioEnd: (blockId) => audioManager?.end(blockId),
