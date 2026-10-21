@@ -128,7 +128,7 @@
                 <div class="tw-flex tw-min-w-0 tw-flex-1 tw-flex-col tw-gap-1">
                   <div class="tw-text-sm tw-font-medium">{{ step.subject }}</div>
                   <div
-                    class="tw-line-clamp-3 tw-text-xs tw-text-muted-foreground"
+                    class="tw-line-clamp-3 tw-whitespace-pre-line tw-text-xs tw-text-muted-foreground"
                     :title="step.description"
                   >
                     {{ step.description }}

@@ -15,7 +15,9 @@
         <span class="tw-text-base tw-font-medium">第 {{ step.index + 1 }} 步 · {{ step.definition.subject }}</span>
         <StatusBadge :status="step.state.phase || 'pending'" />
       </div>
-      <p class="tw-mt-1 tw-text-sm tw-text-muted-foreground">{{ step.definition.description }}</p>
+      <p class="tw-mt-1 tw-whitespace-pre-line tw-text-sm tw-text-muted-foreground">
+        {{ step.definition.description }}
+      </p>
       <div class="tw-mt-2 tw-flex tw-flex-wrap tw-gap-x-4 tw-gap-y-1 tw-text-xs tw-text-muted-foreground">
         <span>执行者：{{ agentDisplayName(agents, step.definition.executor?.agent_id) }}</span>
         <span>验证者：{{ verifierLabel(agents, step.definition) }}</span>
