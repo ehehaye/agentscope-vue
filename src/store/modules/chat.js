@@ -17,6 +17,8 @@ import { BackendCustomEventName, SdkBlockType, SdkMessageRole, SdkToolResultStat
 import { appendEventReactive, findToolBlocks, hasPendingToolCall, hitlKey, replaceMessage } from '@/utils/agentscope';
 
 const INTERRUPT_TIMEOUT_MS = 10000;
+/** 打开会话时一次加载的历史条数，取接口单页上限 200；更早的消息暂不加载（见 README TODO）。 */
+const HISTORY_PAGE_LIMIT = 200;
 /** 补拉条数：覆盖一次回复前服务端追加的消息，远小于接口默认的一页 50 条。 */
 const TAIL_SYNC_LIMIT = 10;
 
@@ -158,7 +160,9 @@ export default {
           commit('SET_CONNECTION', AppConnectionState.CONNECTING);
         } else {
           try {
-            const { messages, is_running: isRunning } = await sessionApi.messages(sessionId, agentId);
+            const { messages, is_running: isRunning } = await sessionApi.messages(sessionId, agentId, {
+              limit: HISTORY_PAGE_LIMIT,
+            });
             if (state.currentKey !== key) return;
             commit('SET_MESSAGES', messages || []);
             const tail = messages && messages.length > 0 ? messages[messages.length - 1] : null;

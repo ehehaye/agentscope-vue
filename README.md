@@ -133,6 +133,10 @@ useMessages(effectiveAgentId, effectiveSessionId, {
 1. **直接兼容老项目**：将 `src/` 源码迁移到 Vue 2.6.14 + vue-cli 4 工程中。Element UI 2.x、vue-router 3.x、vuex 3.x 均无需升级，改动成本最低。全局依赖（`@vue/composition-api`、Element UI、字体、样式）已拆分为 `src/plugins` 下各自独立的 setup 函数，入口只需调用 `setupPlugins(Vue)`；对旧版浏览器则通过 `src/polyfills` 补齐 `AbortSignal` 等能力。
 2. **低成本升级至 Vue 3**：当前代码已统一使用 Composition API 风格（通过 `src/composables` 桥接层导入），升级时替换桥接层与 `src/plugins` 中的注册逻辑为 Vue 3 内置 API 即可；Element UI 可替换为 Element Plus，vue-router / vuex 升级至 4.x，整体迁移量可控。
 
+## TODO
+
+- **会话消息分页**：`openConversation` 目前一次加载最新 200 条（接口单页上限），超过 200 条的会话看不到更早的消息。后续可用响应里的 `has_more` + 当前页最早一条的 `id`（作为 `before`）循环补齐；接口是游标分页、不返回总数，只能加载完再累计。
+
 ## 相关链接
 
 - [AgentScope 官方仓库](https://github.com/agentscope-ai/agentscope)
