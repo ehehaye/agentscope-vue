@@ -114,34 +114,65 @@
           </button>
         </div>
 
-        <Scrollbar
-          ref="deliveryRef"
-          v-show="activeTab === 'delivery'"
-          class="tw-min-h-0 tw-flex-1 tw-overflow-x-hidden"
-          wrap-class="tw-overflow-x-hidden tw-p-4"
-        >
-          <SopStepDelivery
-            :step="activeStep"
-            :agents="agents"
-            :awaiting-human="awaitingHumanIndex === activeStepIndex"
-          />
+        <div class="tw-flex tw-min-h-0 tw-flex-1 tw-flex-col">
+          <Scrollbar
+            ref="deliveryRef"
+            v-show="activeTab === 'delivery'"
+            class="tw-min-h-0 tw-flex-1 tw-overflow-x-hidden"
+            wrap-class="tw-overflow-x-hidden tw-p-4"
+          >
+            <SopStepDelivery
+              :step="activeStep"
+              :agents="agents"
+              :awaiting-human="awaitingHumanIndex === activeStepIndex"
+            />
+
+            <p
+              v-if="error"
+              class="tw-mt-4 tw-whitespace-pre-wrap tw-text-xs tw-text-destructive"
+            >
+              {{ error }}
+            </p>
+          </Scrollbar>
 
           <div
-            v-if="awaitingHumanIndex === activeStepIndex"
-            class="tw-mt-5 tw-rounded-lg tw-border tw-border-yellow-200 tw-bg-yellow-50 tw-p-3"
+            v-show="activeTab === 'session'"
+            class="tw-min-h-0 tw-flex-1 tw-p-1"
           >
-            <div class="tw-text-sm tw-font-medium">人工验收</div>
-            <p class="tw-mt-0.5 tw-text-xs tw-text-muted-foreground">
+            <SopSessionViewer
+              class="tw-min-h-0 tw-h-full"
+              :entries="sessionEntries"
+              :agents="agents"
+              :run-id="run.id"
+              :session-key="activeSessionKey"
+              :focus-request="focusRequest"
+            />
+          </div>
+        </div>
+
+        <div
+          v-show="showVerdictBar"
+          class="tw-shrink-0 tw-border-t tw-border-yellow-200 tw-bg-yellow-50 tw-px-4 tw-py-2"
+        >
+          <div class="tw-flex tw-min-w-0 tw-items-baseline tw-gap-2">
+            <span class="tw-shrink-0 tw-text-sm tw-font-medium">人工验收</span>
+            <span
+              class="tw-min-w-0 tw-truncate tw-text-xs tw-text-muted-foreground"
+              :title="activeStep?.definition.verifier?.question"
+            >
               {{ activeStep?.definition.verifier?.question }}
-            </p>
+            </span>
+          </div>
+          <div class="tw-mt-1.5 tw-flex tw-items-start tw-gap-2">
             <el-input
               v-model="verdictMessage"
               type="textarea"
-              :rows="2"
+              :autosize="{ minRows: 1, maxRows: 3 }"
+              resize="none"
               placeholder="驳回原因（通过时可留空）"
-              class="tw-mt-2"
+              class="tw-min-w-0 tw-flex-1"
             />
-            <div class="tw-mt-2 tw-flex tw-gap-2">
+            <div class="tw-flex tw-shrink-0 tw-gap-2">
               <el-button
                 size="mini"
                 type="primary"
@@ -159,34 +190,13 @@
                 驳回
               </el-button>
             </div>
-            <p
-              v-if="verdictError"
-              class="tw-mt-1 tw-text-xs tw-text-destructive"
-            >
-              {{ verdictError }}
-            </p>
           </div>
-
           <p
-            v-if="error"
-            class="tw-mt-4 tw-whitespace-pre-wrap tw-text-xs tw-text-destructive"
+            v-if="verdictError"
+            class="tw-mt-1 tw-text-xs tw-text-destructive"
           >
-            {{ error }}
+            {{ verdictError }}
           </p>
-        </Scrollbar>
-
-        <div
-          v-show="activeTab === 'session'"
-          class="tw-min-h-0 tw-flex-1 tw-p-1"
-        >
-          <SopSessionViewer
-            class="tw-min-h-0 tw-h-full"
-            :entries="sessionEntries"
-            :agents="agents"
-            :run-id="run.id"
-            :session-key="activeSessionKey"
-            :focus-request="focusRequest"
-          />
         </div>
       </template>
     </main>
@@ -291,6 +301,9 @@ export default defineComponent({
     const sessionEntries = computed(() => collectRunSessions(run.value));
     const canRefresh = computed(() => ['pending', 'running', 'awaiting'].includes(run.value?.state?.phase));
     const followingIndex = computed(() => getFollowingStepIndex(stepPhases.value));
+    const showVerdictBar = computed(
+      () => activeTab.value === 'delivery' && awaitingHumanIndex.value === activeStepIndex.value,
+    );
 
     const inputsText = computed(() => {
       const inputs = run.value?.state?.inputs ?? [];
@@ -492,6 +505,7 @@ export default defineComponent({
       sessionEntries,
       stepItems,
       canRefresh,
+      showVerdictBar,
       focusRequest,
       deliveryRef,
       awaitingHumanIndex,
