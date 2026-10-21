@@ -218,9 +218,16 @@ import {
 
 const POLL_INTERVAL_MS = 2500;
 
+// 进入运行详情前的路由：从流程详情进来时，返回直接回退历史，让列表按原 URL（含分页）恢复。
+let entryFrom = null;
+
 export default defineComponent({
   name: 'SopRunView',
   components: { Icon, Spinner, StatusBadge, Scrollbar, SopStepStrip, SopStepDelivery, SopSessionViewer },
+  beforeRouteEnter(to, from, next) {
+    entryFrom = from?.name ? { name: from.name, params: { ...from.params } } : null;
+    next();
+  },
   setup() {
     const route = useRoute();
     const router = useRouter();
@@ -453,8 +460,12 @@ export default defineComponent({
     }
 
     function goBack() {
-      // 原样带回运行列表的筛选、排序与分页状态。
-      router.push({ name: 'sop-detail', params: { sopId: sopId.value }, query: { ...route.query } });
+      // 从同一个流程的详情页进来时回退历史，列表的筛选、排序、页码由原 URL 恢复。
+      if (entryFrom?.name === 'sop-detail' && entryFrom.params?.sopId === sopId.value) {
+        router.back();
+        return;
+      }
+      router.push({ name: 'sop-detail', params: { sopId: sopId.value } });
     }
 
     async function handleDelete() {

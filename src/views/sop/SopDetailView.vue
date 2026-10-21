@@ -480,11 +480,8 @@ export default defineComponent({
     }
 
     function openRun(run) {
-      router.push({
-        name: 'sop-run',
-        params: { sopId: sopId.value, runId: run.id },
-        query: listQuery(),
-      });
+      // 列表的筛选、排序、页码只留在本页 URL 上，返回时由历史后退原样恢复。
+      router.push({ name: 'sop-run', params: { sopId: sopId.value, runId: run.id } });
     }
 
     function handleSortChange({ prop, order }) {
