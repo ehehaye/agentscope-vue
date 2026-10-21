@@ -37,6 +37,7 @@
           <div class="tw-flex tw-shrink-0 tw-items-center tw-gap-1">
             <LlmSelect
               :value="selectedModel"
+              extendable
               placeholder="选择模型"
               @change="handleLlmChange"
               @add-credential="credentialDialogVisible = true"

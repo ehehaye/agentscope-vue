@@ -20,6 +20,13 @@
       <template v-if="!loading && groupEntries.length === 0">
         <el-dropdown-item disabled>暂无可用模型</el-dropdown-item>
         <el-dropdown-item
+          v-if="clearable"
+          command="CLEAR"
+        >
+          暂不设置
+        </el-dropdown-item>
+        <el-dropdown-item
+          v-if="extendable"
           command="NEW_CREDENTIAL"
           class="tw-text-xs"
         >
@@ -93,6 +100,14 @@
           </template>
         </template>
         <el-dropdown-item
+          v-if="clearable"
+          divided
+          command="CLEAR"
+        >
+          暂不设置
+        </el-dropdown-item>
+        <el-dropdown-item
+          v-if="extendable"
           divided
           command="NEW_CREDENTIAL"
         >
@@ -121,6 +136,8 @@ export default defineComponent({
   props: {
     value: { type: Object, default: null },
     placeholder: { type: String, default: '选择模型' },
+    clearable: { type: Boolean, default: false },
+    extendable: { type: Boolean, default: false },
   },
   setup(props, { emit }) {
     const { groups, loading } = useAvailableModels();
@@ -143,6 +160,10 @@ export default defineComponent({
 
     function handleCommand(cmd) {
       if (!cmd) return;
+      if (cmd === 'CLEAR') {
+        emit('change', null);
+        return;
+      }
       if (cmd === 'NEW_CREDENTIAL') {
         emit('add-credential');
         return;

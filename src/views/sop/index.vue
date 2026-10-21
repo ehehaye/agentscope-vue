@@ -104,7 +104,7 @@ import { useRouter } from '@/composables/vue-router';
 import { Icon } from '@/components/ui/Icon';
 import Spinner from '@/components/ui/Spinner.vue';
 import PanelEmpty from '@/components/panel/PanelEmpty.vue';
-import SopEditorDialog from './SopEditorDialog.vue';
+import SopEditorDialog from '@/components/dialog/SopEditorDialog.vue';
 import { useSops } from '@/composables/useSops';
 import { useAgents } from '@/composables/useAgents';
 import { SOP_WORKSPACE_GRAIN_LABELS } from './sop-utils';

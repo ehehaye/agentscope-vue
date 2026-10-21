@@ -355,8 +355,8 @@ import { confirmDialog } from '@/utils/common';
 import { useAgents } from '@/composables/useAgents';
 import { useSopRuns } from '@/composables/useSopRuns';
 import { useRouteQueryState } from '@/composables/useRouteQueryState';
-import SopEditorDialog from './SopEditorDialog.vue';
-import StartRunDialog from './StartRunDialog.vue';
+import SopEditorDialog from '@/components/dialog/SopEditorDialog.vue';
+import StartRunDialog from '@/components/dialog/StartRunDialog.vue';
 import {
   SOP_PHASE_LABELS,
   SOP_WORKSPACE_GRAIN_LABELS,

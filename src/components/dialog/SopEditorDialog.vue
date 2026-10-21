@@ -197,19 +197,15 @@
             </div>
             <div class="tw-grid tw-grid-cols-3 tw-gap-3">
               <el-form-item label="主模型">
-                <SopModelSelect
+                <LlmSelect
                   :value="settingsFor(ref.key).chat_model_config"
-                  :groups="modelGroups"
-                  :loading="modelsLoading"
                   placeholder="选择主模型"
                   @change="(value) => (settingsFor(ref.key).chat_model_config = value)"
                 />
               </el-form-item>
               <el-form-item label="备用模型">
-                <SopModelSelect
+                <LlmSelect
                   :value="settingsFor(ref.key).fallback_chat_model_config"
-                  :groups="modelGroups"
-                  :loading="modelsLoading"
                   placeholder="可选"
                   clearable
                   @change="(value) => (settingsFor(ref.key).fallback_chat_model_config = value)"
@@ -261,8 +257,7 @@ import { defineComponent, ref, computed, watch, set } from '@/composables/vue';
 import { Icon } from '@/components/ui/Icon';
 import AgentSelect from '@/components/select/AgentSelect.vue';
 import PermissionModeSelect from '@/components/select/PermissionModeSelect.vue';
-import SopModelSelect from './SopModelSelect.vue';
-import { useAvailableModels } from '@/composables/useAvailableModels';
+import LlmSelect from '@/components/select/LlmSelect.vue';
 import { sopApi } from '@/api';
 import {
   SOP_WORKSPACE_GRAIN_LABELS,
@@ -272,7 +267,7 @@ import {
   createEmptyStep,
   formFromData,
   validateSopForm,
-} from './sop-utils';
+} from '@/views/sop/sop-utils';
 
 function ensureSessionSettings(model) {
   const keys = [...new Set(collectSessionRefs(model).map((ref) => ref.session_key))];
@@ -289,7 +284,7 @@ function ensureSessionSettings(model) {
 
 export default defineComponent({
   name: 'SopEditorDialog',
-  components: { Icon, AgentSelect, PermissionModeSelect, SopModelSelect },
+  components: { Icon, AgentSelect, PermissionModeSelect, LlmSelect },
   props: {
     visible: { type: Boolean, default: false },
     sop: { type: Object, default: null },
@@ -299,7 +294,6 @@ export default defineComponent({
     const form = ref(createEmptyForm());
     const saving = ref(false);
     const error = ref('');
-    const { groups: modelGroups, loading: modelsLoading } = useAvailableModels();
 
     const workspaceGrainLabels = SOP_WORKSPACE_GRAIN_LABELS;
 
@@ -406,8 +400,6 @@ export default defineComponent({
       form,
       saving,
       error,
-      modelGroups,
-      modelsLoading,
       workspaceGrainLabels,
       sessionKeys,
       dialogVisible,
