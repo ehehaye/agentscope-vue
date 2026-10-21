@@ -2,23 +2,9 @@ import { mount } from '@vue/test-utils';
 import MarkdownRenderer from '@/components/md/MarkdownRenderer.vue';
 
 /**
- * 组件通过 requestAnimationFrame 节流解析。测试里把 rAF 替换为同步执行，
- * 于是 watch → updateAstTree → getHtml 在同一个 tick 内完成，便于断言。
+ * 首次渲染同步执行，之后按渲染间隔合并解析；
+ * 内容更新相关用例用假定时器推进到下一次解析。
  */
-let cancelSpy;
-
-beforeEach(() => {
-  jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
-    cb(0);
-    return 1;
-  });
-  cancelSpy = jest.spyOn(window, 'cancelAnimationFrame').mockImplementation(() => {});
-});
-
-afterEach(() => {
-  jest.restoreAllMocks();
-});
-
 const render = (content) => mount(MarkdownRenderer, { propsData: { content } });
 
 describe('MarkdownRenderer 基础结构', () => {
@@ -106,21 +92,33 @@ describe('MarkdownRenderer 安全与更新', () => {
     expect(wrapper.text()).toContain('safe');
   });
 
-  it('content 变化后重新解析并渲染', async () => {
+  it('content 变化后按渲染间隔重新解析并渲染', async () => {
+    jest.useFakeTimers();
     const wrapper = render('first');
     expect(wrapper.text()).toContain('first');
 
-    wrapper.setProps({ content: 'second **bold**' });
+    await wrapper.setProps({ content: 'second **bold**' });
+    // 间隔未到，仍显示旧内容
+    expect(wrapper.text()).toContain('first');
+
+    jest.advanceTimersByTime(200);
     await wrapper.vm.$nextTick();
     await wrapper.vm.$nextTick();
 
     expect(wrapper.text()).toContain('second');
     expect(wrapper.find('strong').text()).toBe('bold');
+    jest.useRealTimers();
   });
 
-  it('销毁时取消未执行的 rAF 回调', () => {
+  it('销毁时清理未执行的渲染定时器', async () => {
+    jest.useFakeTimers();
     const wrapper = render('text');
+
+    await wrapper.setProps({ content: 'text more' });
+    expect(jest.getTimerCount()).toBeGreaterThan(0);
+
     wrapper.destroy();
-    expect(cancelSpy).toHaveBeenCalled();
+    expect(jest.getTimerCount()).toBe(0);
+    jest.useRealTimers();
   });
 });

@@ -99,6 +99,9 @@ const renderer = {
 marked.use({ renderer });
 marked.setOptions({ breaks: true, gfm: true });
 
+// 流式输出时最快每 120ms 重新解析一次，避免每来一小段就整篇重排
+const RENDER_INTERVAL_MS = 120;
+
 export default defineComponent({
   name: 'MarkdownRenderer',
   mixins: [diff],
@@ -113,7 +116,7 @@ export default defineComponent({
   },
   data() {
     return {
-      htmlRafId: null,
+      renderTimer: null,
       astTree: [],
     };
   },
@@ -126,27 +129,40 @@ export default defineComponent({
     },
   },
   beforeDestroy() {
-    if (this.htmlRafId) {
-      cancelAnimationFrame(this.htmlRafId);
+    if (this.renderTimer) {
+      clearTimeout(this.renderTimer);
+      this.renderTimer = null;
     }
   },
   methods: {
     updateAstTree() {
-      if (this.htmlRafId) {
-        cancelAnimationFrame(this.htmlRafId);
-      }
-      this.htmlRafId = requestAnimationFrame(() => {
-        this.htmlRafId = null;
-        const html = this.getHtml();
-        if (this.lastHtml === html) {
-          return;
+      // 首次渲染立即执行；此后把间隔内的多次变化合并成一次解析。
+      const wait = this.lastRenderAt ? RENDER_INTERVAL_MS - (performance.now() - this.lastRenderAt) : 0;
+      if (wait <= 0) {
+        if (this.renderTimer) {
+          clearTimeout(this.renderTimer);
+          this.renderTimer = null;
         }
-        this.lastHtml = html;
-        // 把 HTML 转成 vNode 树，让每次内容变化只触发 Vue diff 做增量更新。
-        // 冻结后 Vue 2 的 observe 会因对象不可扩展而跳过深度响应式转换，省掉每帧 O(树大小)
-        // 的递归遍历与闭包开销；代价是这棵树只能整体替换，不能再原地修改（严格模式下会抛错）。
-        this.astTree = Object.freeze(html ? parseDocument(html).children : []);
-      });
+        this.renderAstTree();
+        return;
+      }
+      if (this.renderTimer) clearTimeout(this.renderTimer);
+      this.renderTimer = setTimeout(() => {
+        this.renderTimer = null;
+        this.renderAstTree();
+      }, wait);
+    },
+    renderAstTree() {
+      this.lastRenderAt = performance.now();
+      const html = this.getHtml();
+      if (this.lastHtml === html) {
+        return;
+      }
+      this.lastHtml = html;
+      // 把 HTML 转成 vNode 树，让每次内容变化只触发 Vue diff 做增量更新。
+      // 冻结后 Vue 2 的 observe 会因对象不可扩展而跳过深度响应式转换，省掉每帧 O(树大小)
+      // 的递归遍历与闭包开销；代价是这棵树只能整体替换，不能再原地修改（严格模式下会抛错）。
+      this.astTree = Object.freeze(html ? parseDocument(html).children : []);
     },
   },
 });
