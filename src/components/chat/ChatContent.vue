@@ -14,7 +14,7 @@
       class="tw-flex tw-flex-1 tw-items-center tw-justify-center"
     >
       <div class="tw-text-center tw-text-4xl tw-font-light tw-tracking-tight tw-text-foreground">
-        有什么可以帮你的？
+        {{ emptyText }}
       </div>
     </div>
     <MessageScroller
@@ -29,6 +29,7 @@
         <div
           v-for="(message, index) in msgs"
           :key="message.id"
+          :data-msg-id="message.id"
           class="tw-flex tw-flex-col tw-gap-2"
         >
           <TimeMarker
@@ -62,6 +63,12 @@
     </MessageScroller>
 
     <div class="tw-relative tw-w-full tw-p-4">
+      <div
+        v-if="hideInput && msgs.length > 0 && !showFlipCard"
+        class="tw-absolute tw-bottom-1 tw-right-3"
+      >
+        <PrintHistoryButton target="#as-chat-history" />
+      </div>
       <FlipCard
         :visible="showFlipCard"
         class="tw-w-full"
@@ -88,6 +95,7 @@
         />
       </FlipCard>
       <TextInput
+        v-if="!hideInput"
         class="tw-mt-2 tw-w-full tw-rounded-32px tw-bg-muted tw-p-1"
         :disabled="disabled"
         :phase="inputPhase"
@@ -159,6 +167,9 @@ export default defineComponent({
     phase: { type: String, default: AppReplyPhase.IDLE },
     error: { type: [Object, String, Error], default: null },
     disabled: { type: Boolean, default: false },
+    /** 只读内嵌场景（如 SOP 运行查看）：隐藏输入框，保留上方 HITL 卡片 */
+    hideInput: { type: Boolean, default: false },
+    emptyText: { type: String, default: '有什么可以帮你的？' },
     allowedInputTypes: { type: Array, default: () => [] },
     subagentHitl: { type: Array, default: () => [] },
     agentId: { type: String, default: null },

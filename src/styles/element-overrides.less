@@ -104,6 +104,17 @@ body > .el-dropdown-menu {
   color: var(--as-secondary-foreground);
 }
 
+// ── 危险操作图标按钮 ──
+// Element 的 .el-button--text 颜色优先级高于 Tailwind 工具类，这里统一用更高优先级覆盖。
+@{as-scope} .el-button.run-delete-btn {
+  color: var(--as-destructive);
+}
+@{as-scope} .el-button.run-delete-btn:hover,
+@{as-scope} .el-button.run-delete-btn:focus {
+  color: var(--as-destructive);
+  filter: brightness(0.85);
+}
+
 // ── 分割线 ──
 @{as-scope} .el-divider {
   background-color: var(--as-border);
@@ -135,5 +146,49 @@ body > .el-dropdown-menu {
   .el-dialog__body {
     flex: 1 1 auto;
     overflow-y: auto;
+  }
+}
+
+// ── SOP 运行记录：保留 el-table 的排序交互，但外观接近列表 ──
+@{as-scope} .sop-run-filters .el-form-item {
+  margin-bottom: 0;
+  margin-right: 0;
+}
+
+// el-pagination--small 只缩小了页码按钮，未缩小每页条数下拉框（28px），
+// 导致页码与下拉框顶部对齐、视觉上偏上。
+@{as-scope} .el-pagination--small .el-pagination__sizes .el-input .el-input__inner {
+  height: 22px;
+  line-height: 22px;
+}
+
+@{as-scope} .sop-run-table {
+  background-color: transparent;
+
+  // 去掉表格底部的 1px 分隔线
+  &::before {
+    display: none;
+  }
+
+  .el-table__header-wrapper th.el-table__cell {
+    background-color: transparent;
+    border-bottom: 1px solid var(--as-border);
+    color: var(--as-muted-foreground);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 0;
+  }
+
+  td.el-table__cell {
+    border-bottom: none;
+    padding: 8px 0;
+  }
+
+  .el-table__row {
+    cursor: pointer;
+  }
+
+  .el-table__body tr:hover > td.el-table__cell {
+    background-color: var(--as-muted);
   }
 }

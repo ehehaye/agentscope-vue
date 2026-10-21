@@ -50,8 +50,14 @@ const routes = [
       {
         path: 'sop/:sopId',
         name: 'sop-detail',
-        component: () => import('@/views/sop/index.vue'),
+        component: () => import('@/views/sop/SopDetailView.vue'),
         meta: { title: 'SOP' },
+      },
+      {
+        path: 'sop/:sopId/runs/:runId',
+        name: 'sop-run',
+        component: () => import('@/views/sop/SopRunView.vue'),
+        meta: { title: 'SOP 运行' },
       },
       {
         path: 'knowledge',

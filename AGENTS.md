@@ -23,7 +23,7 @@ pnpm format           # prettier --write
 pnpm format:check
 ```
 
-- 单测：jest 29 + `@vue/vue2-jest`（不走 `@vue/cli-plugin-unit-jest`），配置见 `jest.config.js`；已有 9 个 suite / 94 个用例。
+- 单测：jest 29 + `@vue/vue2-jest`（不走 `@vue/cli-plugin-unit-jest`），配置见 `jest.config.js`；模板编译使用 `vue-template-babel-compiler` 以支持 `?.`，与构建保持一致。当前 13 个 suite / 150 个用例（`md-markdown-renderer` / `md-node-renderer` 两个套件为既有失败）。
 - Prettier：`printWidth 120`、单引号、`singleAttributePerLine`，改完代码跑 `pnpm format:check`。
 
 ## Architecture

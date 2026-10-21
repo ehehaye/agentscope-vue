@@ -25,6 +25,10 @@
 }
 
 /* ── w-[xxx] / max-w-[xxx] ────────────────────────────── */
+.tw-size-full {
+  width: 100%;
+  height: 100%;
+}
 .tw-w-22rem {
   width: 22rem;
 }

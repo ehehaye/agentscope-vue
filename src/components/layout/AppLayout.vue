@@ -1,7 +1,7 @@
 <template>
   <div class="tw-app-layout tw-flex tw-h-full tw-w-full tw-overflow-hidden">
     <AppSidebar />
-    <div class="tw-flex-1 tw-overflow-hidden">
+    <div class="tw-flex-1 tw-h-full tw-overflow-hidden">
       <transition
         name="fade"
         mode="out-in"

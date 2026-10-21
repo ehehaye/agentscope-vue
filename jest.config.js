@@ -20,6 +20,14 @@ module.exports = {
     '^remend$': '<rootDir>/node_modules/remend/dist/index.js',
   },
   testMatch: ['<rootDir>/tests/unit/**/*.spec.js'],
+  // 与 vue.config.js 保持一致：用 babel 编译模板，支持 ?. 等新语法
+  globals: {
+    'vue-jest': {
+      templateCompiler: {
+        compiler: require('vue-template-babel-compiler'),
+      },
+    },
+  },
   // 默认忽略 node_modules，但 ESM-only 的 remend 需转译
   // （pnpm 下真实路径形如 node_modules/.pnpm/remend@x/node_modules/remend/...）
   transformIgnorePatterns: ['/node_modules/(?!(?:\\.pnpm/)?(?:remend|marked))'],

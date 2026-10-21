@@ -1,5 +1,7 @@
 # SOP 功能集成计划
 
+> **状态：已完成（2026-10-21）** — SOP 流程集成（`778c436`）与 2026-10-21 的信息架构重构均已落地；重构后的页面、交互与深链校正在本地浏览器验证通过，单测 / 格式 / 构建通过。变更内容见文末记录。
+
 ## 摘要
 
 参照 AgentScope 2.0.9 官方文档 [SOP 服务](https://docs.agentscope.io/zh/versions/2.0.9/deploy/sop)，在现有 Vue 2 项目中新增一个独立的 **SOP 页面**，覆盖：
@@ -7,11 +9,11 @@
 1. 流程（Procedure）的增删改查；
 2. 发起运行（Run）、查看运行列表与步骤进度；
 3. 人工验收（Human Verifier）结论提交；
-4. 运行创建出的会话跳转到现有 `/chat` 页面实时观看（复用 SSE 与工具授权 HITL）。
+4. 运行创建出的会话在 **SOP 页内嵌查看器**中实时观看（复用现有 SSE 与工具授权 HITL），不跳转聊天页。
 
 已与用户确认的两个关键决策：
 
-- 运行实时观看：**跳转现有聊天页**，不在 SOP 页内嵌会话流。
+- 运行实时观看：**SOP 页内嵌只读会话查看器**（用户 2026-10-20 调整），不跳转聊天页；查看器复用 `useMessages` + `ChatContent`，保留工具授权 / AskUser / 子代理 HITL，隐藏自由输入。
 - 流程编辑表单：**手写动态表单**，不基于 `GET /sop/schema` 做通用渲染（因此本期不接入 schema 端点）。
 
 ## 当前状态分析
@@ -21,8 +23,9 @@
 - 资源 API 采用「一个资源一个文件 + index.js 统一导出」模式，参见 [skill.js](file:///Users/tang/workspace/projects/agentscope-vue/src/api/skill.js)、[schedule.js](file:///Users/tang/workspace/projects/agentscope-vue/src/api/schedule.js)。
 - 列表型功能采用 composable 封装请求，参见 [useSchedules.js](file:///Users/tang/workspace/projects/agentscope-vue/src/composables/useSchedules.js)、[useSkills.js](file:///Users/tang/workspace/projects/agentscope-vue/src/composables/useSkills.js)。
 - 页面结构可参考 [knowledge/index.vue](file:///Users/tang/workspace/projects/agentscope-vue/src/views/knowledge/index.vue)：左侧资源列表 + 右侧详情面板，并用路由参数保持选中项。
-- 运行会话跳转可复用聊天页已有 Query 路由：`/chat?agentId=<agentId>&sessionId=<sessionId>`，见 [router/index.js](file:///Users/tang/workspace/projects/agentscope-vue/src/router/index.js#L45-L75) 与 [views/chat/index.vue](file:///Users/tang/workspace/projects/agentscope-vue/src/views/chat/index.vue#L206-L208)。
-- 会话列表按 agent 拉取（`GET /sessions/?agent_id=`），SOP 运行创建的会话会出现在对应 agent 下，因此聊天页可直接打开。
+- 会话流可整体复用聊天内核：`useMessages(agentId, sessionId)` 负责拉历史与 SSE，[ChatContent](file:///Users/tang/workspace/projects/agentscope-vue/src/components/chat/ChatContent.vue) 负责消息与 HITL 卡片渲染。
+- Vuex chat 模块是单会话单例（`currentKey`），同一时刻只能订阅一个会话；查看器按 `session_key` 切换 tab 时，key 变化会触发自动换流。
+- 查看器卸载时必须调用 `abort()`，否则离开 SOP 页后 SSE 会残留；聊天页在 [views/chat/index.vue](file:///Users/tang/workspace/projects/agentscope-vue/src/views/chat/index.vue#L553-L556) 已有同样处理。
 - 消息输入体可复用 SDK 的 `UserMsg`，参见 [store/modules/chat.js](file:///Users/tang/workspace/projects/agentscope-vue/src/store/modules/chat.js#L340-L355)。
 - 当前本地 `http://localhost:8000` 对 `/sop/schema` 返回 404，说明本地后端版本尚未包含 SOP 服务；功能需在 2.0.9+ 后端上做端到端验证。
 
@@ -213,47 +216,63 @@ export const sopApi = {
 - 调用 `sopApi.startRun(sop.id, inputs)`，成功后 emit `started(run)`。
 - 弹窗内展示请求错误与 loading。
 
-#### 新增 `src/views/sop/SopDetailPanel.vue`
+#### 新增 `src/views/sop/SopDetailView.vue`
 
-- Props：`sop`、`runs`、`runsLoading`、`agents`。
-- Emits：`start`、`edit`、`remove`、`open-run`、`delete-run`、`refresh-runs`。
-- 顶部：流程名称、描述、工作区粒度、操作按钮（运行 / 编辑 / 删除）。
-- 中部：步骤定义列表（序号、subject、执行者、验证者、max_attempts）。
-- 底部：运行记录列表：
-  - 空态「暂无运行」；
-  - 每行展示创建时间、`StatusBadge`、当前步骤名（`getCurrentStepIndex`）、打开 / 删除按钮；
-  - 提供手动刷新按钮。
+- 路由页 `/sop/:sopId`，通过 `sopApi.get` 拉取流程。
+- 顶部：返回列表、流程名称 / 描述 / 工作区粒度，右侧发起运行 / 编辑 / 删除（纯图标）。
+- 左侧固定宽度展示步骤定义（独立滚动）。
+- 右侧运行记录（独立滚动）：
+  - 使用无边框 `el-table` 呈现，保留表头排序交互但外观接近列表；按「日期」「状态」排序由前端查询层完成。
+  - 支持标题模糊搜索、状态完全匹配、日期（到日）筛选；条件为草稿，放在 `el-form` 中，点击「查询」或回车才生效，「重置」清空条件并重新查询。
+  - 每页条数可选 10 / 25 / 50，页码与每页条数均在前端处理；总条数展示在标题右上角。
+  - 筛选条件、排序、页码与每页条数都写入 query；从运行详情返回时原样恢复，删除导致页数减少时自动回退。
+- 点击运行跳转 `/sop/:sopId/runs/:runId`；发起运行后直接进入运行详情。
 
-#### 新增 `src/views/sop/SopRunDetailDrawer.vue`
+#### 新增 `src/views/sop/SopStepStrip.vue`
 
-- Props：`visible`、`sopRunId`。
-- Emits：`update:visible`、`changed`。
-- 打开 / 切换 `sopRunId` 时拉取 `sopApi.getRun`。
-- 轮询：当 `state.phase` 为 `pending` / `running` / `awaiting` 时，每 2500ms 递归 `setTimeout` 重新拉取；关闭或组件卸载时清除定时器，避免请求堆积。
-- 内容：
-  - 顶部：运行状态、流程名、创建时间、删除运行按钮（确认后 `sopApi.removeRun`）。
-  - 起步输入：`state.inputs` 的文本。
-  - 步骤时间线：每步展示定义信息、步骤 `phase`、`submission` 文本、`verifications` 列表。
-  - 人工验收：当 `getAwaitingHumanStepIndex(run)` 命中时，在该步骤内展示「通过 / 驳回」+ 驳回原因输入；提交调用 `sopApi.submitVerdict`，成功后用返回的运行记录刷新并 emit `changed`。
-  - 工具授权等待：步骤 `phase === 'awaiting'` 且验证者不是人工时，提示「等待工具授权，请打开会话处理」。
-  - 会话列表：`collectRunSessions(run)` 生成每行 `session_key`、agent 名、会话 ID，点击「打开会话」执行 `router.push({ name: 'chat', query: { agentId, sessionId } })`。
+- 横向步骤条：序号、标题（截断）、`StatusBadge`，只保留必要信息；未开始（`pending`）的步骤禁用点击并显示禁止光标。
+- 激活项使用主色边框；激活步骤变化时横向滚动到可视区域。
 
-#### 新增 `src/views/sop/index.vue`
+#### 新增 `src/views/sop/SopStepDelivery.vue`
 
-- 布局参照知识库页：左侧 `w-64` 流程列表，右侧详情。
-- 使用 `useSops()`、`useSopRuns(selectedSopId)`、`useAgents()`。
-- 路由参数 `sopId` 与选中项双向同步：
-  - 监听 `route.params.sopId`；
-  - 列表加载后若当前选中不存在，选中第一项并 `router.replace('/sop/<id>')`；
-  - 无流程时 `router.replace('/sop')`。
-- 左侧：标题「SOP」+ 新建按钮 + 流程列表（名称、描述截断、选中高亮）。
-- 右侧：`SopDetailPanel`；未选中时展示选择提示。
-- 弹窗 / 抽屉：
-  - `SopEditorDialog`（创建 / 编辑，`@saved` 后刷新并选中）；
-  - `StartRunDialog`（`@started` 后刷新运行列表、打开运行详情抽屉）；
-  - `SopRunDetailDrawer`；
-  - 删除流程 / 删除运行统一使用 `confirmDialog`。
-- 接口不可用（如旧后端 404）时，右侧展示错误提示与重试按钮，不白屏。
+- 当前步骤的说明、执行者 / 验证者 / 最大尝试次数。
+- 交付物按内容块渲染：文本块经 `ASBlock` 使用 `MarkdownRenderer` 输出 Markdown；`data` / `tool_call_group` 等沿用既有渲染。
+- 交付内容右上角提供打印按钮（复用 `PrintHistoryButton`，打印目标为交付物本身）。
+- 验证记录；步骤 `awaiting` 且不是人工验收时，提示到「会话」标签页处理工具授权。
+
+#### 新增 `src/views/sop/SopRunView.vue`
+
+- 路由页 `/sop/:sopId/runs/:runId`；轮询规则与原运行详情一致（`pending` / `running` / `awaiting` 时每 2500ms 拉取）。
+- 深链中的 `sopId` 与运行记录不一致时，以运行的 `sop_id` 为准 `router.replace` 纠正路由，返回按钮随之回到正确的流程。
+- 顶部：返回流程、运行名、状态、创建时间 + 起步输入、刷新 / 删除（红色）。
+- 主体：横向步骤条 + 下方「交付 / 会话」两个 Tab；Tab 状态按步骤独立记忆，切换步骤只影响该步骤自己的 Tab。
+- `activeStepIndex` 是唯一状态源：
+  - 初始用 `getInitialStepIndex` 选中：全部结束取第一步，否则取最新开始步骤；
+  - `getFollowingStepIndex` 发现新步骤进入 `running` / `awaiting` 时自动切换；
+  - 用户手动点击步骤后保持，直到下一次新步骤开始。
+- 在「会话」Tab 下切换步骤时，用 `collectStepAnchorIds` / `findStepMessageIndex` 定位该步骤在会话中的起点（同一会话被多个步骤复用时同样生效）。
+- 人工验收表单在「交付」Tab 内展示，提交 `sopApi.submitVerdict`。
+- 删除运行后返回流程详情，并保留分页 query。
+
+#### 修改 `src/views/sop/SopSessionViewer.vue`
+
+- 改为受控组件：Props `entries`、`agents`、`runId`、`sessionKey`、`focusRequest`；不再自行决定默认会话或跟随步骤。
+- 不再展示会话切换 tab：本期人工验收模式下每个步骤只有一个执行者会话，顶部只显示当前会话键与连接状态。
+- 保留 `ConnectionStatus`、消息定位、`abort()` 与音频清理。
+- 本期只支持人工验收模式；智能体验收的验证者会话查看暂不单独支持，后续再补。
+
+#### 修改 `src/components/chat/ChatContent.vue`
+
+- 新增 `hideInput`：隐藏输入框与 cwd 入口，保留上方 HITL 卡片；底部容器保持挂载，避免 HITL 卡片收起时过渡被打断。
+- 只读模式下在右下角悬浮渲染 `PrintHistoryButton`（有消息且无 HITL 待办时显示），绝对定位不占用消息区高度。
+- 新增 `emptyText`：允许内嵌场景自定义空态文案。
+
+#### 修改 `src/views/sop/index.vue`
+
+- 改为流程列表页（`/sop`）：全宽卡片网格，展示名称、描述、步骤数、工作区粒度。
+- 新建流程复用 `SopEditorDialog`，保存后跳转详情页。
+- 列表、详情、运行详情拆成三个路由页，不再在单页内用 `activeRunId` 切换。
+- 接口不可用（如旧后端 404）时展示错误提示与重试按钮，不白屏。
 
 ### 4. 路由与导航
 
@@ -271,8 +290,14 @@ export const sopApi = {
 {
   path: 'sop/:sopId',
   name: 'sop-detail',
-  component: () => import('@/views/sop/index.vue'),
+  component: () => import('@/views/sop/SopDetailView.vue'),
   meta: { title: 'SOP' },
+},
+{
+  path: 'sop/:sopId/runs/:runId',
+  name: 'sop-run',
+  component: () => import('@/views/sop/SopRunView.vue'),
+  meta: { title: 'SOP 运行' },
 },
 ```
 
@@ -313,25 +338,69 @@ export const sopApi = {
 
 ## 假设与决策
 
-1. **运行监控采用跳转聊天页**（用户已确认），SOP 页自身轮询运行记录展示进度，不嵌入 SSE。
+1. **运行监控采用页内会话查看器**（用户 2026-10-20 确认），SOP 页自身轮询运行记录，同时由内嵌查看器订阅 SSE，不跳转聊天页。
 2. **流程编辑采用手写动态表单**（用户已确认），本期不接入 `GET /sop/schema`。
 3. `run.sessions` 按文档理解为 `{ [session_key]: session_id }`；若后端返回对象结构，`collectRunSessions` 会做兼容取值（`typeof v === 'string' ? v : v?.id`）。
 4. 人工验收只允许在「验证者为 `human` 且该步骤 `phase === 'awaiting'`」时提交，避免与工具授权等待混淆。
-5. 运行详情只读展示 `state.steps` 中已持久化的 `given / submission / verifications`，不额外请求会话消息。
+5. 运行详情按步骤组织：「交付」Tab 只读展示 `state.steps` 中已持久化的 `given / submission / verifications`，交付物按 Markdown 渲染；「会话」Tab 由受控查看器单独拉取与订阅，两者互不依赖。
 6. 流程删除、运行删除均为级联操作，统一使用现有 `confirmDialog` 二次确认。
 7. Java 中转模式仅补齐 mapping 的 `/update`、`/delete` 覆盖；实际可用性取决于 Java 中转层是否实现 SOP 转发，文档中明确标注。
+8. 运行记录分页只做前端：后端 `GET /sop/runs` 不支持分页参数，前端一次性取回后按每页 10 条切片。
+9. 本期只支持人工验收模式；运行详情固定展示当前步骤的执行者会话，不提供会话切换。智能体验收的验证者会话查看暂不单独支持。
 
 ## 验证步骤
 
+> 1–4 项已在本地执行通过；第 5 项中的页面跳转、查询 / 排序 / 分页、步骤联动、会话定位、深链纠正与打印入口已在本地浏览器验证。人工验收提交、工具授权与 SSE 推进仍需在 AgentScope 2.0.9+ 后端上按真实运行确认。
+
 1. `pnpm format:check` 通过。
-2. `pnpm test:unit` 全部通过（含新增 `sop-utils.spec.js`）。
+2. `pnpm test:unit` 通过（SOP 相关 56 个用例；`md-markdown-renderer` / `md-node-renderer` 为既有失败，与本功能无关）。
 3. `pnpm build` 通过（验证 Webpack 4 编译与新页面动态导入）。
 4. 启动 `pnpm dev`，打开 `/sop`：
    - 页面渲染、侧边栏入口、空态 / 错误态正常；
    - 旧后端（无 SOP 接口）下展示可读错误与重试，不白屏。
 5. 在 AgentScope 2.0.9+ 后端上做端到端验证：
+   - 流程列表 → 流程详情 → 运行详情三级路由跳转正常，侧边栏 SOP 保持高亮；
    - 创建流程 → 列表出现 → 编辑 → 删除；
-   - 发起运行 → 运行列表出现 → 详情抽屉轮询进度；
-   - 人工验收通过 / 驳回 → 运行继续；
-   - 从运行详情打开会话，聊天页能看到该会话的 SSE 事件与工具授权卡片；
-   - 删除运行后，相关会话在聊天页消失。
+   - 发起运行 → 运行记录出现 → 点击进入运行详情；
+   - 运行详情顶部步骤条随新步骤开始自动切换，点击步骤会更新「交付」Tab 与「会话」Tab 的定位；
+   - 交付物以 Markdown 渲染，验证记录与人工验收正常；
+   - 「会话」Tab 能看到 SSE 事件与工具授权卡片，确认操作可推进步骤；
+   - 返回流程详情时保留运行记录分页页码；
+   - 删除运行后返回流程详情，运行列表刷新。
+
+## 变更记录
+
+### 2026-10-21 · UI 信息架构重构
+
+- 列表 / 流程详情 / 运行详情拆成三个路由页：`/sop`、`/sop/:sopId`、`/sop/:sopId/runs/:runId`；删除 `SopDetailPanel.vue`、`SopRunDetailView.vue`。
+- 流程详情：左侧步骤定义、右侧运行记录；运行记录改为无边框 `el-table`，支持按日期 / 状态排序，标题模糊、状态精确、日期到日搜索（`el-form` 查询 / 回车提交、「重置」），每页 10 / 25 / 50 条前端分页，总数放在标题右上角。
+- 运行详情：顶部横向步骤条（序号 / 标题 / 状态），未开始步骤禁用点击；下方「交付 / 会话」Tab，每个步骤独立记忆自己的 Tab。步骤状态变化时自动跟随，点击步骤联动下方内容。
+- 交付物改用 `ASBlock` + `MarkdownRenderer` 按内容块渲染，不再输出纯文本；交付内容支持打印（复用 `PrintHistoryButton`）。
+- 查询逻辑收敛到 `useSopRunQuery` composable：过滤、排序、分页均在前端完成，UI 只传条件、拿结果，便于日后切换服务端查询。
+- `SopSessionViewer` 改为受控且不再提供会话切换：人工验收模式下每个步骤只有一个执行者会话，只展示当前会话。
+- 修正分页细节：`el-pagination--small` 的每页条数下拉框默认仍为 28px，统一压到 22px 与页码对齐；表格末尾增加 12px 占位列，避免 macOS 覆盖式纵向滚动条压住操作列。
+- 运行列表的筛选、排序、页码与每页条数写入路由 query，从运行详情返回时原样恢复；运行详情深链的 `sopId` 与实际归属不一致时自动纠正。
+- 新增组件测试：步骤条禁用/点击、`useSopRunQuery` 查询行为、运行详情自动跟随、按步骤 Tab 记忆、深链归属校正；Jest 模板编译切换到 `vue-template-babel-compiler` 以支持模板中的 `?.`。
+- 定位到步骤消息后，消息节点短暂闪烁背景（`data-sop-flash` + CSS 动画，1.4s 两次脉冲），用属性而非 class 以避开 Vue 重新渲染时的 class 覆盖。
+- 以上改动整理为基于 `c469be8` 的单个提交。
+- 本期验证者会话按人工验收场景支持，智能体验收会话暂不单独展示。
+- `sop-utils` 以 `getInitialStepIndex` / `getFollowingStepIndex` 取代会话键选择函数，新增运行筛选 / 排序 / 分页与展示辅助函数，补充对应单测。
+
+### 2026-10-20 · 运行会话改为页内查看
+
+- 移除跳转聊天页方案：不再从运行详情 `router.push` 到 `/chat`。
+- 运行详情从右侧抽屉改为页内分栏视图（`SopRunDetailView.vue`）：左栏步骤 / 人工验收，右栏会话。
+- 新增 `SopSessionViewer.vue`：复用 `useMessages` + `ChatContent`，按 `session_key` 切换会话 tab，只读 + HITL。
+- `ChatContent.vue` 新增 `hideInput` / `emptyText`，供内嵌只读场景使用。
+- 删除 `SopRunDetailDrawer.vue`；`index.vue` 用 `activeRunId` 在流程详情与运行详情之间切换。
+- API 与 `sop-utils` 无变更。
+
+### 2026-10-20 · 布局与交互打磨
+
+- **页面高度溢出修复**：项目使用的 Tailwind v2 不生成 v3 的 `size-*` 工具类，`tw-size-full` 一直没有 CSS，导致页面根节点高度为 `auto`。在 `src/styles/atomic.css` 补上 `.tw-size-full { width/height: 100% }`（同时修复 schedule / knowledge / mcp / skill 页的同源隐患），并给 `AppLayout` 路由容器补 `tw-h-full`，确保子页面百分比高度可解析。
+- **运行详情布局**：顶部压缩为 48px 单行（状态 / 时间在右，标题 `flex-1` 撑满并截断）；移除重复的「会话」标题行，标签并入 tab 栏；`el-divider` 的 24px 外边距覆盖 `tw-m-0`，统一替换为 1px 分隔条；左栏宽度 `w-80`、`xl` 起 `w-96`；已完成 / 失败运行隐藏刷新按钮。
+- **刷新抖动修复**：`el-button` 的 `:loading` 会插入额外图标撑高按钮，导致头部和内容区位移。运行详情与运行记录的刷新按钮改为 `:disabled` + 图标 `tw-animate-spin`，尺寸全程不变。
+- **只读会话**：`ChatContent` 在 `hideInput` 下保留右下角打印按钮；HITL 确认 / AskUser 仍可用。
+- **运行记录标题**：以 `state.inputs` 的首段文本作为标题，单行截断并提供 `title` 提示；副行显示时间与当前步骤。
+- **图标与配色**：流程详情头部操作改为纯图标、无背景按钮，头部高度收紧；统一删除图标样式 `.run-delete-btn`（`--as-destructive`，悬停 `brightness(0.85)`），规则放入 `src/styles/element-overrides.less` 以便流程详情与运行详情共用。
+- **验证**：`pnpm build`、Prettier 通过；浏览器实测页面高度收敛、刷新无位移、运行标题截断正常。仓库内 `tests/unit` 的 `md-markdown-renderer` / `md-node-renderer` 两个套件存在与本功能无关的既有失败，SOP 相关测试全部通过。

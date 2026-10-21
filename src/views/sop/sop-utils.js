@@ -307,6 +307,202 @@ export function getCurrentStepIndex(run) {
   return steps.length > 0 ? steps.length - 1 : -1;
 }
 
+/** 最后一个已开始的步骤下标；没有步骤开始时返回 0。 */
+export function getLatestStartedStepIndex(stepPhases = []) {
+  for (let i = stepPhases.length - 1; i >= 0; i--) {
+    if (stepPhases[i] && stepPhases[i] !== 'pending') return i;
+  }
+  return 0;
+}
+
+/**
+ * 运行详情的默认步骤：
+ * - 全部步骤已结束（completed / failed）→ 第一步；
+ * - 否则 → 最新开始步骤。
+ */
+export function getInitialStepIndex(stepPhases = []) {
+  if (stepPhases.length === 0) return 0;
+  const allDone = stepPhases.every((phase) => phase === 'completed' || phase === 'failed');
+  return allDone ? 0 : getLatestStartedStepIndex(stepPhases);
+}
+
+/** 当前处于 running / awaiting 的最后一个步骤下标；用于跟随新开始的步骤。 */
+export function getFollowingStepIndex(stepPhases = []) {
+  for (let i = stepPhases.length - 1; i >= 0; i--) {
+    if (stepPhases[i] === 'running' || stepPhases[i] === 'awaiting') return i;
+  }
+  return -1;
+}
+
+/** 分页总页数，空列表也算 1 页。 */
+export function getPageCount(total = 0, pageSize = 10) {
+  return Math.max(1, Math.ceil(total / pageSize));
+}
+
+/** 取分页切片。 */
+export function slicePage(items = [], page = 1, pageSize = 10) {
+  const start = (Math.max(1, page) - 1) * pageSize;
+  return items.slice(start, start + pageSize);
+}
+
+export const SOP_RUN_PAGE_SIZES = [10, 25, 50];
+
+function toPositiveInt(value, fallback) {
+  const number = Number(value);
+  return Number.isInteger(number) && number > 0 ? number : fallback;
+}
+
+/** 从路由 query 还原运行记录的筛选、排序与分页状态。 */
+export function parseRunListQuery(query = {}) {
+  const raw = query || {};
+  return {
+    filters: {
+      title: typeof raw.title === 'string' ? raw.title : '',
+      status: typeof raw.status === 'string' && SOP_PHASE_LABELS[raw.status] ? raw.status : '',
+      date: typeof raw.date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(raw.date) ? raw.date : '',
+    },
+    sort: {
+      prop: raw.sort === 'phase' ? 'phase' : 'created_at',
+      order: raw.order === 'ascending' ? 'ascending' : 'descending',
+    },
+    page: toPositiveInt(raw.page, 1),
+    pageSize: SOP_RUN_PAGE_SIZES.includes(Number(raw.page_size)) ? Number(raw.page_size) : 10,
+  };
+}
+
+/** 把运行记录的查询状态序列化为路由 query，默认值不写入。 */
+export function buildRunListQuery({ filters = {}, sort = {}, page = 1, pageSize = 10 } = {}) {
+  const query = {};
+  const title = (filters.title || '').trim();
+  if (title) query.title = title;
+  if (filters.status) query.status = filters.status;
+  if (filters.date) query.date = filters.date;
+  if (sort.prop === 'phase') query.sort = 'phase';
+  if (sort.order === 'ascending') query.order = 'ascending';
+  if (page > 1) query.page = String(page);
+  if (pageSize !== 10) query.page_size = String(pageSize);
+  return query;
+}
+
+/** 运行记录真实的 SOP ID；路由 SOP ID 与运行不匹配时返回运行所属的 SOP。 */
+export function resolveRunSopId(run, routeSopId = '') {
+  const actual = run?.sop_id || '';
+  if (actual && routeSopId && actual !== routeSopId) return actual;
+  return routeSopId || actual;
+}
+
+/** 运行记录的标题：起步输入的文本内容。 */
+export function runInputText(run) {
+  const inputs = run?.state?.inputs ?? [];
+  return inputs
+    .map((msg) => flattenTextBlocks(msg.content))
+    .filter(Boolean)
+    .join(' ')
+    .trim();
+}
+
+/** 把时间转成本地日期键（YYYY-MM-DD），用于按日筛选。 */
+export function formatDateKey(value) {
+  if (!value) return '';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '';
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${date.getFullYear()}-${month}-${day}`;
+}
+
+/**
+ * 前端运行记录查询：按状态（完全匹配）、日期（到日）、标题（模糊匹配）过滤。
+ * 与 `useSopRunQuery` 一起模拟后端查询，UI 层只关心结果。
+ */
+export function filterRuns(runs = [], filters = {}) {
+  const title = (filters.title || '').trim().toLowerCase();
+  const status = filters.status || '';
+  const date = filters.date || '';
+  return runs.filter((run) => {
+    const phase = run?.state?.phase || 'pending';
+    if (status && phase !== status) return false;
+    if (date && formatDateKey(run?.created_at) !== date) return false;
+    if (title && !runInputText(run).toLowerCase().includes(title)) return false;
+    return true;
+  });
+}
+
+const RUN_STATUS_ORDER = {
+  pending: 0,
+  running: 1,
+  awaiting: 2,
+  completed: 3,
+  failed: 4,
+};
+
+/** 前端运行记录排序：支持按创建时间与状态排序。 */
+export function sortRuns(runs = [], { prop = 'created_at', order = 'descending' } = {}) {
+  const direction = order === 'ascending' ? 1 : -1;
+  const list = [...runs];
+  list.sort((a, b) => {
+    if (prop === 'phase') {
+      const left = RUN_STATUS_ORDER[a?.state?.phase || 'pending'] ?? 99;
+      const right = RUN_STATUS_ORDER[b?.state?.phase || 'pending'] ?? 99;
+      return (left - right) * direction;
+    }
+    const left = new Date(a?.created_at || 0).getTime() || 0;
+    const right = new Date(b?.created_at || 0).getTime() || 0;
+    return (left - right) * direction;
+  });
+  return list;
+}
+
+/** 智能体展示名。 */
+export function agentDisplayName(agents = [], agentId) {
+  const agent = (agents || []).find((item) => item.id === agentId);
+  return agent?.data?.name || agentId || '—';
+}
+
+/** 验证者展示文案。 */
+export function verifierLabel(agents = [], definition = {}) {
+  const verifier = definition?.verifier;
+  if (!verifier) return '无需验收';
+  if (verifier.type === 'human') return '人工验收';
+  return `智能体验收 · ${agentDisplayName(agents, verifier.agent?.agent_id)}`;
+}
+
+/**
+ * 收集某一步骤在会话中的锚点 ID：`state.steps[i].given` 的消息 ID 与内容块 ID。
+ * 后端会把 given 消息原样写入会话（后续步骤的 handover 内容块也会复用上一步提交块的 ID），
+ * 因此这些 ID 可以在会话历史中精确定位该步骤的起点。
+ */
+export function collectStepAnchorIds(run, stepIndex) {
+  const given = run?.state?.steps?.[stepIndex]?.given ?? [];
+  const ids = [];
+  given.forEach((msg) => {
+    if (msg?.id) ids.push(msg.id);
+    (msg?.content ?? []).forEach((block) => {
+      if (block?.id) ids.push(block.id);
+    });
+  });
+  return [...new Set(ids)];
+}
+
+/**
+ * 在会话消息中找到步骤起点：
+ * 1. 优先按锚点 ID（消息 ID / 内容块 ID）精确匹配；
+ * 2. 找不到时回退到 SOP 系统提示中的 `## <步骤标题>` 文本标记。
+ * @returns {number} 消息下标，未找到返回 -1。
+ */
+export function findStepMessageIndex(messages = [], { ids = [], subject = '' } = {}) {
+  const anchorIds = new Set((ids || []).filter(Boolean));
+  if (anchorIds.size > 0) {
+    const index = messages.findIndex(
+      (msg) => anchorIds.has(msg?.id) || (msg?.content ?? []).some((block) => block?.id && anchorIds.has(block.id)),
+    );
+    if (index >= 0) return index;
+  }
+  if (!subject) return -1;
+  const marker = `## ${subject}`;
+  return messages.findIndex((msg) => flattenTextBlocks(msg?.content).includes(marker));
+}
+
 /** 拼接消息内容 / 提交物中的文本块，忽略非文本块。 */
 export function flattenTextBlocks(blocks) {
   if (typeof blocks === 'string') return blocks;
