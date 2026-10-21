@@ -10,11 +10,10 @@
     v-else
     class="tw-flex tw-flex-col tw-gap-5"
   >
-    <section>
-      <div class="tw-flex tw-flex-wrap tw-items-center tw-gap-2">
-        <span class="tw-text-base tw-font-medium">第 {{ step.index + 1 }} 步 · {{ step.definition.subject }}</span>
-        <StatusBadge :status="step.state.phase || 'pending'" />
-      </div>
+    <Collapsible>
+      <template #trigger>
+        <span class="tw-text-sm tw-font-medium">{{ step.definition.subject }}</span>
+      </template>
       <p class="tw-mt-1 tw-whitespace-pre-line tw-text-sm tw-text-muted-foreground">
         {{ step.definition.description }}
       </p>
@@ -23,7 +22,7 @@
         <span>验证者：{{ verifierLabel(agents, step.definition) }}</span>
         <span v-if="step.definition.verifier">最多尝试：{{ step.definition.max_attempts }} 次</span>
       </div>
-    </section>
+    </Collapsible>
 
     <section>
       <div class="tw-mb-2 tw-flex tw-items-center tw-justify-between tw-gap-2">
@@ -88,14 +87,14 @@
 
 <script>
 import { defineComponent, computed } from '@/composables/vue';
-import StatusBadge from '@/components/badge/StatusBadge.vue';
+import Collapsible from '@/components/ui/Collapsible.vue';
 import ASBlock from '@/components/chat/ASBlock.vue';
 import PrintHistoryButton from '@/components/chat/PrintHistoryButton.vue';
 import { agentDisplayName, verifierLabel } from './sop-utils';
 
 export default defineComponent({
   name: 'SopStepDelivery',
-  components: { StatusBadge, ASBlock, PrintHistoryButton },
+  components: { Collapsible, ASBlock, PrintHistoryButton },
   props: {
     step: { type: Object, default: null },
     agents: { type: Array, default: () => [] },

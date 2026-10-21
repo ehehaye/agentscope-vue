@@ -89,30 +89,24 @@
       </div>
 
       <template v-else-if="run">
-        <SopStepStrip
-          :steps="stepItems"
-          :active-index="activeStepIndex"
-          @select="selectStep"
-        />
+        <div class="tw-flex tw-items-center">
+          <div class="tw-min-w-0 tw-flex-1">
+            <SopStepStrip
+              :steps="stepItems"
+              :active-index="activeStepIndex"
+              @select="selectStep"
+            />
+          </div>
+          <div class="tw-ml-2 tw-h-5 tw-w-px tw-shrink-0 tw-bg-border"></div>
+          <SegmentedControl
+            class="tw-ml-2 tw-mr-4 tw-shrink-0"
+            :value="activeTab"
+            :options="tabs"
+            @input="setTab"
+          />
+        </div>
 
         <div class="tw-h-px tw-shrink-0 tw-bg-border"></div>
-
-        <div class="tw-flex tw-shrink-0 tw-items-center tw-gap-1 tw-border-b tw-border-border tw-px-4 tw-pt-2">
-          <button
-            v-for="tab in tabs"
-            :key="tab.value"
-            type="button"
-            class="tw-border-b-2 tw-px-3 tw-py-1.5 tw-text-sm tw-transition-colors"
-            :class="
-              activeTab === tab.value
-                ? 'tw-border-primary tw-font-medium'
-                : 'tw-border-transparent tw-text-muted-foreground hover:tw-text-foreground'
-            "
-            @click="setTab(tab.value)"
-          >
-            {{ tab.label }}
-          </button>
-        </div>
 
         <div class="tw-flex tw-min-h-0 tw-flex-1 tw-flex-col">
           <Scrollbar
@@ -210,6 +204,7 @@ import { Icon } from '@/components/ui/Icon';
 import Spinner from '@/components/ui/Spinner.vue';
 import Scrollbar from '@/components/ui/Scrollbar.vue';
 import StatusBadge from '@/components/badge/StatusBadge.vue';
+import SegmentedControl from '@/components/ui/SegmentedControl.vue';
 import { sopApi } from '@/api';
 import { confirmDialog } from '@/utils/common';
 import { useAgents } from '@/composables/useAgents';
@@ -233,7 +228,16 @@ let entryFrom = null;
 
 export default defineComponent({
   name: 'SopRunView',
-  components: { Icon, Spinner, StatusBadge, Scrollbar, SopStepStrip, SopStepDelivery, SopSessionViewer },
+  components: {
+    Icon,
+    Spinner,
+    StatusBadge,
+    Scrollbar,
+    SegmentedControl,
+    SopStepStrip,
+    SopStepDelivery,
+    SopSessionViewer,
+  },
   beforeRouteEnter(to, from, next) {
     entryFrom = from?.name ? { name: from.name, params: { ...from.params } } : null;
     next();

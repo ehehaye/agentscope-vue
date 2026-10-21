@@ -1,9 +1,13 @@
 import Vue from 'vue';
 import CompositionApi from '@vue/composition-api';
 import { mount } from '@vue/test-utils';
+import ElTabs from 'element-ui/lib/tabs';
+import ElTabPane from 'element-ui/lib/tab-pane';
 import SopStepStrip from '@/views/sop/SopStepStrip.vue';
 
 Vue.use(CompositionApi);
+Vue.component(ElTabs.name, ElTabs);
+Vue.component(ElTabPane.name, ElTabPane);
 
 function makeSteps() {
   return [
@@ -13,48 +17,55 @@ function makeSteps() {
   ];
 }
 
-function mountStrip(propsData = {}) {
-  return mount(SopStepStrip, {
+async function mountStrip(propsData = {}) {
+  const wrapper = mount(SopStepStrip, {
     propsData: { steps: makeSteps(), activeIndex: 0, ...propsData },
     stubs: { StatusBadge: true },
   });
+  // el-tabs 在 mounted 后才收集 pane，等一次渲染再断言。
+  await Vue.nextTick();
+  return wrapper;
+}
+
+// el-tabs 在 currentName 变化后会排两次 nextTick 滚动到激活项，
+// 等它们执行完再销毁，避免 $refs 已清空时回调报错。
+async function destroyStrip(wrapper) {
+  await Vue.nextTick();
+  await Vue.nextTick();
+  wrapper.destroy();
 }
 
 describe('SopStepStrip', () => {
-  beforeAll(() => {
-    Element.prototype.scrollIntoView = jest.fn();
-  });
-
   it('未开始的步骤禁用点击并显示禁止光标', async () => {
-    const wrapper = mountStrip();
-    const pending = wrapper.findAll('button').at(1);
+    const wrapper = await mountStrip();
+    const pending = wrapper.findAll('.el-tabs__item').at(1);
 
-    expect(pending.attributes('disabled')).toBe('disabled');
-    expect(pending.classes()).toContain('tw-cursor-not-allowed');
+    expect(pending.classes()).toContain('is-disabled');
+    expect(pending.find('[data-step-index]').classes()).toContain('tw-cursor-not-allowed');
 
     await pending.trigger('click');
     expect(wrapper.emitted('select')).toBeFalsy();
-    wrapper.destroy();
+    await destroyStrip(wrapper);
   });
 
   it('点击已开始的步骤时抛出下标', async () => {
-    const wrapper = mountStrip();
-    const buttons = wrapper.findAll('button');
+    const wrapper = await mountStrip({ activeIndex: 2 });
+    const items = wrapper.findAll('.el-tabs__item');
 
-    await buttons.at(2).trigger('click');
-    expect(wrapper.emitted('select')[0]).toEqual([2]);
+    await items.at(0).trigger('click');
+    expect(wrapper.emitted('select')[0]).toEqual([0]);
 
-    await buttons.at(0).trigger('click');
-    expect(wrapper.emitted('select')[1]).toEqual([0]);
-    wrapper.destroy();
+    await items.at(2).trigger('click');
+    expect(wrapper.emitted('select')).toHaveLength(1);
+    await destroyStrip(wrapper);
   });
 
-  it('激活项使用主色边框', () => {
-    const wrapper = mountStrip({ activeIndex: 2 });
-    const buttons = wrapper.findAll('button');
+  it('激活项使用主色边框', async () => {
+    const wrapper = await mountStrip({ activeIndex: 2 });
+    const cards = wrapper.findAll('[data-step-index]');
 
-    expect(buttons.at(2).classes()).toContain('tw-border-primary');
-    expect(buttons.at(0).classes()).not.toContain('tw-border-primary');
-    wrapper.destroy();
+    expect(cards.at(2).classes()).toContain('tw-border-primary');
+    expect(cards.at(0).classes()).not.toContain('tw-border-primary');
+    await destroyStrip(wrapper);
   });
 });
