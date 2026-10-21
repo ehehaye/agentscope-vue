@@ -104,6 +104,13 @@ body > .el-dropdown-menu {
   color: var(--as-secondary-foreground);
 }
 
+// Icon 包装层固定追加 tw-cursor-pointer，禁用按钮内的图标统一改回不可点击光标并降低亮度。
+// 放在这里而不是各组件里，避免每个带图标的禁用按钮重复写 ::v-deep svg。
+@{as-scope} .el-button.is-disabled svg {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
 // ── 危险操作图标按钮 ──
 // Element 的 .el-button--text 颜色优先级高于 Tailwind 工具类，这里统一用更高优先级覆盖。
 @{as-scope} .el-button.run-delete-btn {

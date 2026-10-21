@@ -82,6 +82,7 @@
             type="text"
             size="small"
             circle
+            title="上传附件"
             :disabled="attachDisabled"
             @click="openFilePicker"
           >
@@ -129,6 +130,8 @@ export default defineComponent({
   components: { Icon, DotSpinner, Scrollbar },
   props: {
     disabled: { type: Boolean, default: false },
+    /** disabled 为 true 时的占位文案，为空则使用默认提示 */
+    disabledPlaceholder: { type: String, default: '' },
     /**
      * 输入框相位。取值来自两处，都是本应用自定义（SDK 没有相位概念）：
      * - AppReplyPhase：`idle / streaming / interrupting`，由 chat store 维护；
@@ -159,7 +162,7 @@ export default defineComponent({
     // 占位符与发送按钮状态保持一致，提示当前不可发送的原因
     const placeholder = computed(() => {
       if (props.phase === AppReplyPhase.INTERRUPTING) return '正在中断回复...';
-      if (props.disabled) return '请先选择助手与模型';
+      if (props.disabled) return props.disabledPlaceholder || '请先选择助手与模型';
       return '输入消息...';
     });
 
@@ -236,6 +239,7 @@ export default defineComponent({
     }
 
     function openFilePicker() {
+      if (attachDisabled.value) return;
       fileInputRef.value?.click();
     }
 

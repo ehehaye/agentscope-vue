@@ -128,8 +128,9 @@
       type="text"
       size="small"
       circle
-      :disabled="disabled || !agentId || !sessionId"
-      @click="dialogOpen = true"
+      title="工作目录"
+      :disabled="triggerDisabled"
+      @click="openDialog"
     >
       <Icon
         icon="lucide:folder"
@@ -140,7 +141,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, watch } from '@/composables/vue';
+import { defineComponent, ref, computed, watch } from '@/composables/vue';
 import { Icon } from '@/components/ui/Icon';
 import Spinner from '@/components/ui/Spinner.vue';
 import { workspaceApi } from '@/api';
@@ -165,6 +166,13 @@ export default defineComponent({
     const error = ref(null);
     const saving = ref(false);
     let reqId = 0;
+
+    const triggerDisabled = computed(() => props.disabled || !props.agentId || !props.sessionId);
+
+    function openDialog() {
+      if (triggerDisabled.value) return;
+      dialogOpen.value = true;
+    }
 
     async function load(target) {
       const id = ++reqId;
@@ -227,8 +235,10 @@ export default defineComponent({
       loading,
       error,
       saving,
+      triggerDisabled,
       load,
       onOpen,
+      openDialog,
       onConfirm,
     };
   },

@@ -97,7 +97,8 @@
       <TextInput
         v-if="!hideInput"
         class="tw-mt-2 tw-w-full tw-rounded-32px tw-bg-muted tw-p-1"
-        :disabled="disabled"
+        :disabled="inputDisabled"
+        :disabled-placeholder="turnLimitReached ? '已达到对话轮次上限' : ''"
         :phase="inputPhase"
         :error="error"
         :allowed-input-types="allowedInputTypes"
@@ -114,6 +115,7 @@
             :agent-id="agentId"
             :session-id="sessionId"
             :value="cwd"
+            :disabled="inputDisabled"
             :on-change="onCwdChange"
           />
         </template>
@@ -127,7 +129,7 @@ import { defineComponent, computed, ref, watch, onUnmounted } from '@/composable
 import { Icon } from '@/components/ui/Icon';
 import { getContentBlocks } from '@agentscope-ai/agentscope/message';
 import { ReplyFinishedReason } from '@agentscope-ai/agentscope/event';
-import { SdkBlockType, SdkToolCallState } from '@/constants/protocol';
+import { SdkBlockType, SdkMessageRole, SdkToolCallState } from '@/constants/protocol';
 import { AppConnectionState, AppReplyPhase } from '@/constants/app-state';
 import { hitlKey } from '@/utils/agentscope';
 import Spinner from '@/components/ui/Spinner.vue';
@@ -171,6 +173,8 @@ export default defineComponent({
     hideInput: { type: Boolean, default: false },
     emptyText: { type: String, default: '有什么可以帮你的？' },
     allowedInputTypes: { type: Array, default: () => [] },
+    /** 用户消息轮次上限；<= 0 表示不限。HITL 等消息内交互不产生用户消息，因此不计入。 */
+    maxUserTurns: { type: Number, default: 0 },
     subagentHitl: { type: Array, default: () => [] },
     agentId: { type: String, default: null },
     sessionId: { type: String, default: null },
@@ -182,6 +186,22 @@ export default defineComponent({
   emits: ['send', 'user-confirm', 'subagent-confirm', 'interrupt'],
   setup(props, { emit }) {
     const isEmpty = computed(() => !props.loading && props.msgs.length === 0);
+
+    // 轮次按「连续的用户消息段」计数：附件与文本同属一条消息的内容块，正常只产生
+    // 一条用户消息；若后端把一次发送拆成多条相邻用户消息，也只算一轮。
+    // 发送失败的消息仍留在列表里，不应占用轮次。
+    const userTurnCount = computed(() => {
+      let count = 0;
+      let inUserTurn = false;
+      for (const msg of props.msgs) {
+        const isUser = msg.role === SdkMessageRole.USER && !msg.error;
+        if (isUser && !inUserTurn) count += 1;
+        inUserTurn = isUser;
+      }
+      return count;
+    });
+    const turnLimitReached = computed(() => props.maxUserTurns > 0 && userTurnCount.value >= props.maxUserTurns);
+    const inputDisabled = computed(() => props.disabled || turnLimitReached.value);
 
     // 输入框相位：会同时出现两套本应用自定义取值——AppReplyPhase（回复相位）与
     // AppConnectionState.LOADING（会话未就绪），后者用于在历史/建连期间禁用发送。
@@ -268,6 +288,7 @@ export default defineComponent({
     }
 
     function onSend(blocks) {
+      if (turnLimitReached.value) return;
       emit('send', blocks);
     }
 
@@ -298,6 +319,8 @@ export default defineComponent({
     return {
       isEmpty,
       inputPhase,
+      inputDisabled,
+      turnLimitReached,
       showSpinner,
       pendingToolCall,
       pendingAskUser,
