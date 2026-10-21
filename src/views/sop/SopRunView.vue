@@ -114,10 +114,11 @@
           </button>
         </div>
 
-        <div
+        <Scrollbar
           ref="deliveryRef"
           v-show="activeTab === 'delivery'"
-          class="tw-min-h-0 tw-flex-1 tw-overflow-y-auto tw-p-4"
+          class="tw-min-h-0 tw-flex-1 tw-overflow-x-hidden"
+          wrap-class="tw-overflow-x-hidden tw-p-4"
         >
           <SopStepDelivery
             :step="activeStep"
@@ -172,7 +173,7 @@
           >
             {{ error }}
           </p>
-        </div>
+        </Scrollbar>
 
         <div
           v-show="activeTab === 'session'"
@@ -197,6 +198,7 @@ import { defineComponent, ref, computed, watch, onUnmounted, nextTick } from '@/
 import { useRoute, useRouter } from '@/composables/vue-router';
 import { Icon } from '@/components/ui/Icon';
 import Spinner from '@/components/ui/Spinner.vue';
+import Scrollbar from '@/components/ui/Scrollbar.vue';
 import StatusBadge from '@/components/badge/StatusBadge.vue';
 import { sopApi } from '@/api';
 import { confirmDialog } from '@/utils/common';
@@ -218,7 +220,7 @@ const POLL_INTERVAL_MS = 2500;
 
 export default defineComponent({
   name: 'SopRunView',
-  components: { Icon, Spinner, StatusBadge, SopStepStrip, SopStepDelivery, SopSessionViewer },
+  components: { Icon, Spinner, StatusBadge, Scrollbar, SopStepStrip, SopStepDelivery, SopSessionViewer },
   setup() {
     const route = useRoute();
     const router = useRouter();
@@ -326,7 +328,10 @@ export default defineComponent({
     // 切换步骤时交付区回到顶部，避免停留在上一步的滚动位置。
     watch(activeStepIndex, () => {
       nextTick(() => {
-        if (deliveryRef.value) deliveryRef.value.scrollTop = 0;
+        // Scrollbar 的内部滚动容器是 wrap，重置后同步重算滚动条尺寸。
+        const wrap = deliveryRef.value?.$refs?.wrap;
+        if (wrap) wrap.scrollTop = 0;
+        deliveryRef.value?.update?.();
       });
     });
 
