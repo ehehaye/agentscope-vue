@@ -127,11 +127,16 @@
                 </div>
                 <div class="tw-flex tw-min-w-0 tw-flex-1 tw-flex-col tw-gap-1">
                   <div class="tw-text-sm tw-font-medium">{{ step.subject }}</div>
-                  <div class="tw-text-xs tw-text-muted-foreground">{{ step.description }}</div>
+                  <div
+                    class="tw-line-clamp-3 tw-text-xs tw-text-muted-foreground"
+                    :title="step.description"
+                  >
+                    {{ step.description }}
+                  </div>
                   <div class="tw-mt-1 tw-flex tw-flex-wrap tw-gap-x-4 tw-gap-y-1 tw-text-xs tw-text-muted-foreground">
                     <span>执行者：{{ agentDisplayName(agents, step.executor?.agent_id) }}</span>
                     <span>验证者：{{ verifierLabel(agents, step) }}</span>
-                    <span>最多尝试：{{ step.max_attempts }} 次</span>
+                    <span v-if="step.verifier">最多尝试：{{ step.max_attempts }} 次</span>
                   </div>
                 </div>
               </div>

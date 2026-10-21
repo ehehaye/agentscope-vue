@@ -19,7 +19,7 @@
       <div class="tw-mt-2 tw-flex tw-flex-wrap tw-gap-x-4 tw-gap-y-1 tw-text-xs tw-text-muted-foreground">
         <span>执行者：{{ agentDisplayName(agents, step.definition.executor?.agent_id) }}</span>
         <span>验证者：{{ verifierLabel(agents, step.definition) }}</span>
-        <span>最多尝试：{{ step.definition.max_attempts }} 次</span>
+        <span v-if="step.definition.verifier">最多尝试：{{ step.definition.max_attempts }} 次</span>
       </div>
     </section>
 
