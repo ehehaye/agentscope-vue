@@ -1,5 +1,5 @@
 <template>
-  <div class="tw-flex tw-shrink-0 tw-items-center tw-py-3">
+  <div class="tw-flex tw-shrink-0 tw-items-center tw-py-3 tw-ml-2">
     <el-tabs
       :value="String(activeIndex)"
       class="sop-step-tabs"
