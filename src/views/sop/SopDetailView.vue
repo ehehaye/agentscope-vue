@@ -173,16 +173,6 @@
             @submit.native.prevent="query"
           >
             <el-form-item>
-              <el-input
-                v-model="filters.title"
-                size="small"
-                clearable
-                placeholder="搜索标题"
-                prefix-icon="el-icon-search"
-                class="tw-w-32"
-              />
-            </el-form-item>
-            <el-form-item>
               <el-select
                 v-model="filters.status"
                 size="small"
@@ -197,6 +187,16 @@
                   :value="option.value"
                 />
               </el-select>
+            </el-form-item>
+            <el-form-item>
+              <el-input
+                v-model="filters.title"
+                size="small"
+                clearable
+                placeholder="搜索标题"
+                prefix-icon="el-icon-search"
+                class="tw-w-32"
+              />
             </el-form-item>
             <el-form-item>
               <el-date-picker

@@ -218,6 +218,23 @@
                 />
               </el-form-item>
             </div>
+
+            <div class="tw-grid tw-grid-cols-3 tw-gap-3">
+              <el-form-item label="主模型思考模式">
+                <el-switch
+                  :value="thinkingEnabled(ref.key, 'primary')"
+                  :disabled="!settingsFor(ref.key).chat_model_config"
+                  @change="(value) => setThinkingEnabled(ref.key, 'primary', value)"
+                />
+              </el-form-item>
+              <el-form-item label="备用模型思考模式">
+                <el-switch
+                  :value="thinkingEnabled(ref.key, 'fallback')"
+                  :disabled="!settingsFor(ref.key).fallback_chat_model_config"
+                  @change="(value) => setThinkingEnabled(ref.key, 'fallback', value)"
+                />
+              </el-form-item>
+            </div>
           </div>
         </div>
       </div>
@@ -361,6 +378,29 @@ export default defineComponent({
       return form.value.session_settings[key] ?? {};
     }
 
+    /**
+     * ChatModelConfig.parameters 里各 provider 共有的只有 thinking_enable，故这里只暴露它。
+     * 其余字段随模型不同而变化（由模型卡的 parameter_schema 决定），包括：
+     *   max_tokens / temperature / top_p / top_k / parallel_tool_calls / voice
+     *   thinking_budget / thinking_mode / thinking_display / reasoning_effort
+     * 需要完整调参面板时可复用 components/popover/ModelParametersPopover.vue。
+     */
+    function modelConfigFor(key, slot) {
+      const settings = settingsFor(key);
+      return slot === 'fallback' ? settings.fallback_chat_model_config : settings.chat_model_config;
+    }
+
+    function thinkingEnabled(key, slot) {
+      return modelConfigFor(key, slot)?.parameters?.thinking_enable === true;
+    }
+
+    function setThinkingEnabled(key, slot, value) {
+      const config = modelConfigFor(key, slot);
+      if (!config) return;
+      if (!config.parameters) set(config, 'parameters', {});
+      set(config.parameters, 'thinking_enable', value);
+    }
+
     function addStep() {
       form.value.steps.push(createEmptyStep(props.agents[0]?.id || ''));
     }
@@ -406,6 +446,8 @@ export default defineComponent({
       resetForm,
       agentName,
       settingsFor,
+      thinkingEnabled,
+      setThinkingEnabled,
       addStep,
       removeStep,
       handleSave,
