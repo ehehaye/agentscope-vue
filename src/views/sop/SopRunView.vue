@@ -144,54 +144,14 @@
           </div>
         </div>
 
-        <div
+        <SopVerdictBar
           v-show="showVerdictBar"
-          class="tw-shrink-0 tw-border-t tw-border-yellow-200 tw-bg-yellow-50 tw-px-4 tw-py-2"
-        >
-          <div class="tw-flex tw-min-w-0 tw-items-baseline tw-gap-2">
-            <span class="tw-shrink-0 tw-text-sm tw-font-medium">人工验收</span>
-            <span
-              class="tw-min-w-0 tw-truncate tw-text-xs tw-text-muted-foreground"
-              :title="activeStep?.definition.verifier?.question"
-            >
-              {{ activeStep?.definition.verifier?.question }}
-            </span>
-          </div>
-          <div class="tw-mt-1.5 tw-flex tw-items-start tw-gap-2">
-            <el-input
-              v-model="verdictMessage"
-              type="textarea"
-              :autosize="{ minRows: 1, maxRows: 3 }"
-              resize="none"
-              placeholder="驳回原因（通过时可留空）"
-              class="tw-min-w-0 tw-flex-1"
-            />
-            <div class="tw-flex tw-shrink-0 tw-gap-2">
-              <el-button
-                size="mini"
-                type="primary"
-                :loading="submittingVerdict"
-                @click="handleVerdict(true)"
-              >
-                通过
-              </el-button>
-              <el-button
-                size="mini"
-                type="danger"
-                :loading="submittingVerdict"
-                @click="handleVerdict(false)"
-              >
-                驳回
-              </el-button>
-            </div>
-          </div>
-          <p
-            v-if="verdictError"
-            class="tw-mt-1 tw-text-xs tw-text-destructive"
-          >
-            {{ verdictError }}
-          </p>
-        </div>
+          :question="activeStep?.definition.verifier?.question"
+          v-model="verdictMessage"
+          :submitting="submittingVerdict"
+          :error="verdictError"
+          @submit="handleVerdict"
+        />
       </template>
     </main>
   </div>
@@ -205,6 +165,7 @@ import Spinner from '@/components/ui/Spinner.vue';
 import Scrollbar from '@/components/ui/Scrollbar.vue';
 import StatusBadge from '@/components/badge/StatusBadge.vue';
 import SegmentedControl from '@/components/ui/SegmentedControl.vue';
+import SopVerdictBar from '@/components/sop/SopVerdictBar.vue';
 import { sopApi } from '@/api';
 import { confirmDialog } from '@/utils/common';
 import { useAgents } from '@/composables/useAgents';
@@ -234,6 +195,7 @@ export default defineComponent({
     StatusBadge,
     Scrollbar,
     SegmentedControl,
+    SopVerdictBar,
     SopStepStrip,
     SopStepDelivery,
     SopSessionViewer,
