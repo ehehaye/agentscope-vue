@@ -73,24 +73,40 @@
         <span class="tw-text-sm tw-text-muted-foreground">会话</span>
         <!-- <span class="tw-font-mono tw-text-xs tw-text-muted-foreground">{{ sessions.length }}</span> -->
       </div>
-      <el-button
-        size="small"
-        class="tw-w-full"
-        :disabled="!agentId"
-        @click="$emit('create-session')"
-      >
-        新会话
-      </el-button>
+      <div class="tw-flex tw-items-center tw-gap-2">
+        <el-date-picker
+          v-model="filters.date"
+          size="small"
+          type="date"
+          placeholder="按日期筛选"
+          value-format="yyyy-MM-dd"
+          :picker-options="datePickerOptions"
+          class="tw-flex-1 tw-min-w-0 tw-w-full"
+        />
+        <el-button
+          size="small"
+          title="新会话"
+          aria-label="新会话"
+          type="text"
+          :disabled="!agentId"
+          @click="$emit('create-session')"
+        >
+          <Icon
+            icon="lucide:plus"
+            class="tw-h-4 tw-w-4"
+          />
+        </el-button>
+      </div>
 
       <div class="tw-relative tw-flex tw-min-h-0 tw-flex-1 tw-flex-col">
         <PanelEmpty
-          v-if="sessions.length === 0 && !sessionsLoading"
+          v-if="visibleSessions.length === 0 && !sessionsLoading"
           icon="lucide:message-square-dashed"
           title="暂无会话"
-          :description="agentId ? '当前助手下还没有会话' : '请先选择一个助手'"
+          :description="emptyDescription"
         />
         <Scrollbar
-          v-else-if="sessions.length > 0"
+          v-else-if="visibleSessions.length > 0"
           class="tw-min-h-0 tw-flex-1 tw-overflow-x-hidden tw-py-2"
           wrapClass="tw-overflow-x-hidden tw-pr-1"
         >
@@ -141,6 +157,8 @@
 import { defineComponent, computed } from '@/composables/vue';
 import Icon from '@/components/ui/Icon';
 import { isToday, isYesterday, isValid, format } from 'date-fns';
+import { useSessionsQuery, sessionDateKey } from '@/composables/useSessionsQuery';
+import { disableFutureDate } from '@/utils/common';
 import AgentSelect from '@/components/select/AgentSelect.vue';
 import Spinner from '@/components/ui/Spinner.vue';
 import Scrollbar from '@/components/ui/Scrollbar.vue';
@@ -170,26 +188,34 @@ export default defineComponent({
   ],
   setup(props, { emit }) {
     const selectedAgent = computed(() => props.agents.find((a) => a.id === props.agentId) || null);
+
+    // 日期筛选在 useSessionsQuery 内完成，这里直接消费过滤结果。
+    const { rows: visibleSessions, filters } = useSessionsQuery(() => props.sessions);
+    const datePickerOptions = { disabledDate: disableFutureDate };
+    const emptyDescription = computed(() => {
+      if (filters.date) return '该日期下没有会话';
+      return props.agentId ? '当前助手下还没有会话' : '请先选择一个助手';
+    });
+
     const dayGroups = computed(() => {
-      const UNKNOWN_KEY = 'unknown';
       const groups = new Map();
-      for (const v of props.sessions) {
+      for (const v of visibleSessions.value) {
         const raw = v.session?.created_at;
         const date = raw ? new Date(raw) : null;
         const valid = date && isValid(date);
-        const key = valid ? format(date, 'yyyy-MM-dd') : UNKNOWN_KEY;
+        const key = sessionDateKey(v);
         if (!groups.has(key)) {
           groups.set(key, { key, label: dayLabel(date, valid), items: [] });
         }
         groups.get(key).items.push(v);
       }
       return Array.from(groups.values()).sort((a, b) => {
-        if (a.key === UNKNOWN_KEY) return 1;
-        if (b.key === UNKNOWN_KEY) return -1;
+        if (a.key === 'unknown') return 1;
+        if (b.key === 'unknown') return -1;
         return a.key < b.key ? 1 : -1;
       });
     });
-    const showSourceIcons = computed(() => new Set(props.sessions.map((v) => v.session?.source)).size > 1);
+    const showSourceIcons = computed(() => new Set(visibleSessions.value.map((v) => v.session?.source)).size > 1);
 
     function dayLabel(date, valid) {
       if (!valid) return '未知日期';
@@ -207,6 +233,10 @@ export default defineComponent({
 
     return {
       selectedAgent,
+      filters,
+      datePickerOptions,
+      visibleSessions,
+      emptyDescription,
       dayGroups,
       showSourceIcons,
       handleAgentCommand,

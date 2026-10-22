@@ -6,6 +6,18 @@ export function credentialLabel(credential) {
 }
 
 /**
+ * el-date-picker 的 disabledDate 回调：禁止选择今天之后的日期。
+ *
+ * @param {Date} time 每个日期格子的起点（当天 00:00）。
+ * @returns {boolean} 该日期是否禁用。
+ */
+export function disableFutureDate(time) {
+  const endOfToday = new Date();
+  endOfToday.setHours(23, 59, 59, 999);
+  return time.getTime() > endOfToday.getTime();
+}
+
+/**
  * 把字符串复制到系统剪贴板。
  *
  * @param {string} text 要复制的文本。

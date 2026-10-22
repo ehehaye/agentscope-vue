@@ -205,6 +205,7 @@
                 type="date"
                 placeholder="按日期筛选"
                 value-format="yyyy-MM-dd"
+                :picker-options="datePickerOptions"
                 style="width: 150px"
               />
             </el-form-item>
@@ -351,7 +352,7 @@ import Spinner from '@/components/ui/Spinner.vue';
 import StatusBadge from '@/components/badge/StatusBadge.vue';
 import Scrollbar from '@/components/ui/Scrollbar.vue';
 import { sopApi } from '@/api';
-import { confirmDialog } from '@/utils/common';
+import { confirmDialog, disableFutureDate } from '@/utils/common';
 import { useAgents } from '@/composables/useAgents';
 import { useSopRuns } from '@/composables/useSopRuns';
 import { useRouteQueryState } from '@/composables/useRouteQueryState';
@@ -417,6 +418,8 @@ export default defineComponent({
 
     const editorVisible = ref(false);
     const startVisible = ref(false);
+
+    const datePickerOptions = { disabledDate: disableFutureDate };
 
     const steps = computed(() => sop.value?.data?.steps ?? []);
     const grainLabel = computed(
@@ -547,6 +550,7 @@ export default defineComponent({
       page,
       pageSize,
       filters,
+      datePickerOptions,
       statusOptions,
       defaultSort,
       query,
