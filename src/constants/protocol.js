@@ -48,7 +48,8 @@ export const SdkMessageRole = {
 /**
  * 后端 `SessionRecord.origin.type`：会话的来源类型。
  * 后端对应带标签联合 `SessionOrigin`（`UserOrigin / ScheduleOrigin /
- * ChannelOrigin / TeamOrigin / SOPOrigin`）。
+ * ChannelOrigin / TeamOrigin / SOPOrigin`），定义见 agentscope 后端：
+ * https://github.com/agentscope-ai/agentscope/blob/main/src/agentscope/app/storage/_model/_session.py#L29-L85
  */
 export const BackendSessionOriginType = {
   USER: 'user',
