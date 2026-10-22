@@ -106,42 +106,10 @@
         class="tw-flex tw-min-h-0 tw-flex-1"
       >
         <section class="tw-flex tw-w-64 tw-shrink-0 tw-flex-col tw-overflow-hidden xl:tw-w-96">
-          <div class="tw-flex tw-h-11 tw-shrink-0 tw-items-center tw-justify-between tw-gap-2 tw-px-5">
-            <span class="tw-text-sm tw-font-semibold">步骤定义</span>
-            <span class="tw-text-10px tw-text-muted-foreground">{{ steps.length }} 个步骤</span>
-          </div>
-          <Scrollbar
-            class="tw-min-h-0 tw-flex-1 tw-overflow-x-hidden"
-            wrapClass="tw-overflow-x-hidden tw-px-5 tw-pb-5"
-          >
-            <div class="tw-space-y-2">
-              <div
-                v-for="(step, index) in steps"
-                :key="index"
-                class="tw-flex tw-gap-3 tw-rounded-lg tw-border tw-border-border tw-p-3"
-              >
-                <div
-                  class="tw-flex tw-h-6 tw-w-6 tw-shrink-0 tw-items-center tw-justify-center tw-rounded-full tw-bg-muted tw-text-xs tw-font-medium"
-                >
-                  {{ index + 1 }}
-                </div>
-                <div class="tw-flex tw-min-w-0 tw-flex-1 tw-flex-col tw-gap-1">
-                  <div class="tw-text-sm tw-font-medium">{{ step.subject }}</div>
-                  <div
-                    class="tw-line-clamp-3 tw-whitespace-pre-line tw-text-xs tw-text-muted-foreground"
-                    :title="step.description"
-                  >
-                    {{ step.description }}
-                  </div>
-                  <div class="tw-mt-1 tw-flex tw-flex-wrap tw-gap-x-4 tw-gap-y-1 tw-text-xs tw-text-muted-foreground">
-                    <span>执行者：{{ agentDisplayName(agents, step.executor?.agent_id) }}</span>
-                    <span>验证者：{{ verifierLabel(agents, step) }}</span>
-                    <span v-if="step.verifier">最多尝试：{{ step.max_attempts }} 次</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Scrollbar>
+          <SopStepDefinitionList
+            :steps="steps"
+            :agents="agents"
+          />
         </section>
 
         <div class="tw-w-px tw-shrink-0 tw-self-stretch tw-bg-border"></div>
@@ -224,90 +192,15 @@
             </el-form-item>
           </el-form>
 
-          <div class="tw-min-h-0 tw-flex-1 tw-px-5">
-            <el-table
-              v-loading="runsLoading"
-              :data="rows"
-              height="100%"
-              max-height="100%"
-              class="sop-run-table"
-              :row-class-name="runRowClass"
-              :default-sort="defaultSort"
-              @sort-change="handleSortChange"
-              @row-click="openRun"
-            >
-              <el-table-column
-                label="状态"
-                prop="phase"
-                sortable="custom"
-                width="120"
-              >
-                <template #default="{ row }">
-                  <StatusBadge :status="row.state?.phase || 'pending'" />
-                </template>
-              </el-table-column>
-              <el-table-column
-                label="运行"
-                min-width="120"
-              >
-                <template #default="{ row }">
-                  <div class="tw-flex tw-min-w-0 tw-flex-col tw-gap-0.5 tw-py-1">
-                    <span
-                      class="tw-truncate tw-text-sm"
-                      :title="runInputText(row)"
-                    >
-                      {{ runInputText(row) || '（无起步输入）' }}
-                    </span>
-                    <span class="tw-truncate tw-text-10px tw-text-muted-foreground">
-                      {{ currentStepLabel(row) }}
-                    </span>
-                  </div>
-                </template>
-              </el-table-column>
-              <el-table-column
-                label="日期"
-                prop="created_at"
-                sortable="custom"
-                width="96"
-              >
-                <template #default="{ row }">
-                  <span
-                    class="tw-text-xs tw-text-muted-foreground"
-                    :title="formatTime(row.created_at)"
-                  >
-                    {{ formatShortTime(row.created_at) }}
-                  </span>
-                </template>
-              </el-table-column>
-              <el-table-column
-                width="100"
-                align="right"
-                label="操作"
-              >
-                <template #default="{ row }">
-                  <el-button
-                    type="text"
-                    size="mini"
-                    title="删除运行"
-                    class="run-delete-btn"
-                    @click.stop="handleDeleteRun(row)"
-                  >
-                    <Icon
-                      icon="lucide:trash-2"
-                      class="tw-h-3.5 tw-w-3.5"
-                    />
-                  </el-button>
-                </template>
-              </el-table-column>
-              <!-- 为 el-table 的覆盖式纵向滚动条预留位置，避免压住操作列 -->
-              <el-table-column width="12" />
-              <template #empty>
-                <div class="tw-py-8 tw-text-center tw-text-sm tw-text-muted-foreground">
-                  {{ runs.length === 0 ? '暂无运行' : '没有匹配的运行记录' }}
-                </div>
-              </template>
-            </el-table>
-          </div>
+          <SopRunTable
+            :rows="rows"
+            :loading="runsLoading"
+            :default-sort="defaultSort"
+            :empty-text="emptyText"
+            @sort-change="handleSortChange"
+            @row-click="openRun"
+            @delete="handleDeleteRun"
+          />
 
           <div
             v-if="total > 0"
@@ -349,8 +242,6 @@ import { defineComponent, ref, computed, watch } from '@/composables/vue';
 import { useRoute, useRouter } from '@/composables/vue-router';
 import Icon from '@/components/ui/Icon';
 import Spinner from '@/components/ui/Spinner.vue';
-import StatusBadge from '@/components/badge/StatusBadge.vue';
-import Scrollbar from '@/components/ui/Scrollbar.vue';
 import { sopApi } from '@/api';
 import { confirmDialog, disableFutureDate } from '@/utils/common';
 import { useAgents } from '@/composables/useAgents';
@@ -358,15 +249,9 @@ import { useSopRuns } from '@/composables/useSopRuns';
 import { useRouteQueryState } from '@/composables/useRouteQueryState';
 import SopEditorDialog from '@/components/dialog/SopEditorDialog.vue';
 import StartRunDialog from '@/components/dialog/StartRunDialog.vue';
-import {
-  SOP_PHASE_LABELS,
-  SOP_WORKSPACE_GRAIN_LABELS,
-  agentDisplayName,
-  getCurrentStepIndex,
-  parseRunListQuery,
-  runInputText,
-  verifierLabel,
-} from '@/utils/sop';
+import SopStepDefinitionList from '@/components/sop/SopStepDefinitionList.vue';
+import SopRunTable from '@/components/sop/SopRunTable.vue';
+import { SOP_PHASE_LABELS, SOP_WORKSPACE_GRAIN_LABELS, parseRunListQuery } from '@/utils/sop';
 
 const RUN_PAGE_SIZE = 10;
 
@@ -383,7 +268,7 @@ const RUN_QUERY_DEFAULTS = {
 
 export default defineComponent({
   name: 'SopDetailView',
-  components: { Icon, Spinner, StatusBadge, Scrollbar, SopEditorDialog, StartRunDialog },
+  components: { Icon, Spinner, SopEditorDialog, StartRunDialog, SopStepDefinitionList, SopRunTable },
   setup() {
     const route = useRoute();
     const router = useRouter();
@@ -428,6 +313,7 @@ export default defineComponent({
 
     const statusOptions = Object.entries(SOP_PHASE_LABELS).map(([value, label]) => ({ value, label }));
     const defaultSort = computed(() => ({ prop: sort.value.prop, order: sort.value.order }));
+    const emptyText = computed(() => (runs.value.length === 0 ? '暂无运行' : '没有匹配的运行记录'));
 
     // 已生效的条件与路由 query 双向同步，返回或刷新本页时原样恢复。
     useRouteQueryState(queryState, {
@@ -483,29 +369,6 @@ export default defineComponent({
       setSort({ prop, order });
     }
 
-    function runRowClass() {
-      return 'tw-group';
-    }
-
-    function formatTime(value) {
-      return value ? new Date(value).toLocaleString() : '—';
-    }
-
-    function formatShortTime(value) {
-      if (!value) return '—';
-      const date = new Date(value);
-      if (Number.isNaN(date.getTime())) return '—';
-      const part = (number) => String(number).padStart(2, '0');
-      return `${part(date.getMonth() + 1)}-${part(date.getDate())} ${part(date.getHours())}:${part(date.getMinutes())}`;
-    }
-
-    function currentStepLabel(run) {
-      const index = getCurrentStepIndex(run);
-      const step = run.definition?.steps?.[index];
-      if (!step) return '—';
-      return `第 ${index + 1} 步 · ${step.subject}`;
-    }
-
     async function handleStarted(run) {
       startVisible.value = false;
       await refetchRuns();
@@ -553,27 +416,21 @@ export default defineComponent({
       datePickerOptions,
       statusOptions,
       defaultSort,
+      emptyText,
       query,
       resetFilters,
       setPage,
       setPageSize,
       handleSortChange,
-      runRowClass,
       editorVisible,
       startVisible,
       loadSop,
       goBack,
       openRun,
-      formatTime,
-      formatShortTime,
-      currentStepLabel,
-      runInputText,
       handleStarted,
       handleSaved,
       handleDeleteRun,
       handleRemoveSop,
-      agentDisplayName,
-      verifierLabel,
     };
   },
 });

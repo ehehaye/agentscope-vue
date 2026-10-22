@@ -62,29 +62,12 @@
           v-else
           class="tw-grid tw-grid-cols-1 tw-gap-3 lg:tw-grid-cols-2 xl:tw-grid-cols-3"
         >
-          <div
+          <SopCard
             v-for="sop in sops"
             :key="sop.id"
-            class="tw-group tw-flex tw-cursor-pointer tw-flex-col tw-gap-1.5 tw-rounded-xl tw-border tw-border-border tw-p-4 tw-transition-colors hover:tw-border-primary hover:tw-bg-muted"
-            @click="openSop(sop)"
-          >
-            <div class="tw-flex tw-items-center tw-gap-2">
-              <span class="tw-min-w-0 tw-flex-1 tw-truncate tw-text-base tw-font-medium">{{ sop.data.name }}</span>
-              <Icon
-                icon="lucide:arrow-up-right"
-                class="tw-h-4 tw-w-4 tw-shrink-0 tw-text-muted-foreground tw-opacity-0 tw-transition-opacity group-hover:tw-opacity-100"
-              />
-            </div>
-            <p class="tw-truncate tw-text-xs tw-text-muted-foreground">
-              {{ sop.data.description || '暂无描述' }}
-            </p>
-            <div
-              class="tw-mt-auto tw-flex tw-flex-wrap tw-items-center tw-gap-x-3 tw-gap-y-1 tw-pt-2 tw-text-10px tw-text-muted-foreground"
-            >
-              <span>{{ (sop.data.steps || []).length }} 个步骤</span>
-              <span>{{ grainLabel(sop) }}</span>
-            </div>
-          </div>
+            :sop="sop"
+            @open="openSop"
+          />
         </div>
       </div>
     </main>
@@ -105,23 +88,19 @@ import Icon from '@/components/ui/Icon';
 import Spinner from '@/components/ui/Spinner.vue';
 import PanelEmpty from '@/components/panel/PanelEmpty.vue';
 import SopEditorDialog from '@/components/dialog/SopEditorDialog.vue';
+import SopCard from '@/components/sop/SopCard.vue';
 import { useSops } from '@/composables/useSops';
 import { useAgents } from '@/composables/useAgents';
-import { SOP_WORKSPACE_GRAIN_LABELS } from '@/utils/sop';
 
 export default defineComponent({
   name: 'SopListView',
-  components: { Icon, Spinner, PanelEmpty, SopEditorDialog },
+  components: { Icon, Spinner, PanelEmpty, SopEditorDialog, SopCard },
   setup() {
     const router = useRouter();
     const { sops, loading, error, refetch } = useSops();
     const { agents } = useAgents();
 
     const editorVisible = ref(false);
-
-    function grainLabel(sop) {
-      return SOP_WORKSPACE_GRAIN_LABELS[sop.data.workspace_grain] || '整个运行共用一个工作区';
-    }
 
     function openSop(sop) {
       router.push({ name: 'sop-detail', params: { sopId: sop.id } });
@@ -143,7 +122,6 @@ export default defineComponent({
       refetch,
       agents,
       editorVisible,
-      grainLabel,
       openSop,
       openCreate,
       handleSaved,
