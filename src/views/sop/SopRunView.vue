@@ -169,9 +169,9 @@ import SopVerdictBar from '@/components/sop/SopVerdictBar.vue';
 import { sopApi } from '@/api';
 import { confirmDialog } from '@/utils/common';
 import { useAgents } from '@/composables/useAgents';
-import SopStepStrip from './SopStepStrip.vue';
-import SopStepDelivery from './SopStepDelivery.vue';
-import SopSessionViewer from './SopSessionViewer.vue';
+import SopStepStrip from '@/components/sop/SopStepStrip.vue';
+import SopStepDelivery from '@/components/sop/SopStepDelivery.vue';
+import SopSessionViewer from '@/components/sop/SopSessionViewer.vue';
 import {
   collectRunSessions,
   collectStepAnchorIds,

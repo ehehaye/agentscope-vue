@@ -36,7 +36,7 @@ jest.mock('@/utils/common', () => ({
 }));
 
 // 避免加载聊天内核（其中 element-ui 的 ESM 工具文件无法被 Jest 直接解析）
-jest.mock('@/views/sop/SopSessionViewer.vue', () => ({
+jest.mock('@/components/sop/SopSessionViewer.vue', () => ({
   name: 'SopSessionViewer',
   props: ['entries', 'agents', 'runId', 'sessionKey', 'focusRequest'],
   render(h) {

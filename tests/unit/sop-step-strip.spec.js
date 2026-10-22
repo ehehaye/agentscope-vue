@@ -3,7 +3,7 @@ import CompositionApi from '@vue/composition-api';
 import { mount } from '@vue/test-utils';
 import ElTabs from 'element-ui/lib/tabs';
 import ElTabPane from 'element-ui/lib/tab-pane';
-import SopStepStrip from '@/views/sop/SopStepStrip.vue';
+import SopStepStrip from '@/components/sop/SopStepStrip.vue';
 
 Vue.use(CompositionApi);
 Vue.component(ElTabs.name, ElTabs);
