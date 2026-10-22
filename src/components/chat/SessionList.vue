@@ -20,7 +20,7 @@
       </div>
       <div class="tw-flex tw-items-center tw-gap-1">
         <AgentSelect
-          class="tw-flex-1 tw-min-w-0"
+          class="tw-flex-1 tw-min-w-0 tw-w-full"
           :agents="agents"
           :value="agentId"
           @change="$emit('agent-change', $event)"
@@ -30,14 +30,13 @@
           @command="handleAgentCommand"
         >
           <el-button
-            size="mini"
+            size="small"
             type="text"
-            class="tw-h-auto tw-px-1 tw-py-0"
             :disabled="!selectedAgent || !selectedAgent.editable"
           >
             <Icon
               icon="lucide:ellipsis"
-              class="tw-h-3.5 tw-w-3.5"
+              class="tw-h-4 tw-w-4"
             />
           </el-button>
           <el-dropdown-menu slot="dropdown">
@@ -73,7 +72,7 @@
         <span class="tw-text-sm tw-text-muted-foreground">会话</span>
         <!-- <span class="tw-font-mono tw-text-xs tw-text-muted-foreground">{{ sessions.length }}</span> -->
       </div>
-      <div class="tw-flex tw-items-center tw-gap-2">
+      <div class="tw-flex tw-items-center tw-gap-1">
         <el-date-picker
           v-model="filters.date"
           size="small"

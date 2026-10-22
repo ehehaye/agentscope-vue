@@ -2,6 +2,7 @@
   <el-select
     :value="value"
     :placeholder="placeholder"
+    size="small"
     @change="handleChange"
   >
     <el-option
