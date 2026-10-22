@@ -53,7 +53,7 @@
 
 <script>
 import { defineComponent } from '@/composables/vue';
-import { Icon } from '@/components/ui/Icon';
+import Icon from '@/components/ui/Icon';
 import Spinner from '@/components/ui/Spinner.vue';
 
 export default defineComponent({

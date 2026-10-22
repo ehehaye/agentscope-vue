@@ -79,7 +79,7 @@
 
 <script>
 import { defineComponent, computed } from '@/composables/vue';
-import { Icon } from '@/components/ui/Icon';
+import Icon from '@/components/ui/Icon';
 import { useRouter } from '@/composables/vue-router';
 import PanelEmpty from './PanelEmpty.vue';
 

@@ -120,7 +120,7 @@
 
 <script>
 import { defineComponent, ref, computed } from '@/composables/vue';
-import { Icon } from '@/components/ui/Icon';
+import Icon from '@/components/ui/Icon';
 import DotSpinner from '@/components/ui/DotSpinner.vue';
 import Scrollbar from '@/components/ui/Scrollbar.vue';
 import { AppConnectionState, AppReplyPhase } from '@/constants/app-state';

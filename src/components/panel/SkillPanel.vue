@@ -84,7 +84,7 @@
 
 <script>
 import { defineComponent, ref, computed } from '@/composables/vue';
-import { Icon } from '@/components/ui/Icon';
+import Icon from '@/components/ui/Icon';
 import { Item, ItemMedia, ItemContent, ItemTitle, ItemDescription, ItemActions } from '@/components/ui/Item.js';
 import PanelEmpty from './PanelEmpty.vue';
 import AddSkillDialog from '@/components/dialog/AddSkillDialog.vue';

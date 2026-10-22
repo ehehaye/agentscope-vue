@@ -166,7 +166,7 @@
 
 <script>
 import { defineComponent, ref, computed, watch, toRef } from '@/composables/vue';
-import { Icon } from '@/components/ui/Icon';
+import Icon from '@/components/ui/Icon';
 import { knowledgeBaseApi } from '@/api';
 import { toast } from '@/lib/toast';
 import DocumentDetailDrawer from '@/components/knowledge/DocumentDetailDrawer.vue';

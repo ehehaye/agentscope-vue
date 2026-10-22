@@ -271,7 +271,7 @@
 
 <script>
 import { defineComponent, ref, computed, watch, set } from '@/composables/vue';
-import { Icon } from '@/components/ui/Icon';
+import Icon from '@/components/ui/Icon';
 import AgentSelect from '@/components/select/AgentSelect.vue';
 import PermissionModeSelect from '@/components/select/PermissionModeSelect.vue';
 import LlmSelect from '@/components/select/LlmSelect.vue';

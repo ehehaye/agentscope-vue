@@ -128,7 +128,7 @@
 
 <script>
 import { defineComponent } from '@/composables/vue';
-import { Icon } from '@/components/ui/Icon';
+import Icon from '@/components/ui/Icon';
 import agentscopeLogo from '@/assets/imgs/agentscope.svg';
 import { AppStorageKeys } from '@/constants/app-state';
 import { version } from '@/../package.json';

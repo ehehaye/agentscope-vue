@@ -4,15 +4,13 @@
 // tooltip / message-box）一律用 .dark .el-xxx 前缀，确保 <html>.dark 时全局生效。
 // 本文件在 main.js 中于 element css 之后引入。
 //
-// 作用域：所有选择器统一加 @as-scope。append-to-body 的弹窗 / 抽屉 / 消息框及全部 popper
-// 都挂在 body 上、位于 #as-app 之外，若只加 :where(#as-app)（同 base.css），会连带弹窗内的
-// 输入框、按钮、表格等一起失效；故把它们的挂载根 body > .el-*-wrapper / body > .el-popper
-// 一并纳入作用域。:where() 保持 0 特异性，不改变原有覆盖优先级。
+// 作用域：所有选择器统一加 @as-scope（定义见 styles/variables.less）。
+// append-to-body 的弹窗 / 抽屉 / 消息框及全部 popper 都挂在 body 上、位于 #as-app 之外，
+// 若只加 :where(#as-app)（同 base.css），会连带弹窗内的输入框、按钮、表格等一起失效；
+// 故把它们的挂载根 body > .el-*-wrapper / body > .el-popper 一并纳入作用域。
 // 提示：body 上的弹窗 / popper 与宿主页面自身的 Element 实例在 DOM 上无法区分，
 // 若要彻底隔离，还需在用法处补 popper-class / custom-class 等标记类。
-// 不需要作用域控制时，去掉前缀（或把 @as-scope 换回 :where(#as-app)）即可。
-
-@as-scope: ~':where(#as-app, .el-dialog__wrapper, .el-drawer__wrapper, .el-message-box__wrapper, body > .el-popper)';
+// 不需要作用域控制时，去掉前缀即可。
 
 // ── 表面与文字 ──
 // 注：body > .el-popper 覆盖 el-popover / el-select-dropdown / el-dropdown-menu 等 popper 根
@@ -102,13 +100,6 @@ body > .el-dropdown-menu {
   background-color: var(--as-secondary);
   border-color: var(--as-border);
   color: var(--as-secondary-foreground);
-}
-
-// Icon 包装层固定追加 tw-cursor-pointer，禁用按钮内的图标统一改回不可点击光标并降低亮度。
-// 放在这里而不是各组件里，避免每个带图标的禁用按钮重复写 ::v-deep svg。
-@{as-scope} .el-button.is-disabled svg {
-  cursor: not-allowed;
-  opacity: 0.5;
 }
 
 // ── 危险操作图标按钮 ──

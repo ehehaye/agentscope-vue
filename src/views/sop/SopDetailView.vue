@@ -346,7 +346,7 @@
 <script>
 import { defineComponent, ref, computed, watch } from '@/composables/vue';
 import { useRoute, useRouter } from '@/composables/vue-router';
-import { Icon } from '@/components/ui/Icon';
+import Icon from '@/components/ui/Icon';
 import Spinner from '@/components/ui/Spinner.vue';
 import StatusBadge from '@/components/badge/StatusBadge.vue';
 import Scrollbar from '@/components/ui/Scrollbar.vue';

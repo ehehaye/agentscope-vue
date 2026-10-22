@@ -24,7 +24,7 @@
 <script>
 import print from 'vue-print-nb';
 import { defineComponent, watch, ref, nextTick } from '@/composables/vue';
-import { Icon } from '@/components/ui/Icon';
+import Icon from '@/components/ui/Icon';
 
 // vue-print-nb 会把目标节点克隆进一个全新的 iframe 再打印，iframe 的 <html> 不携带宿主页面的 class，
 // 所以打印相关的规则只能通过 extraHead 注入到该 iframe 的 <head> 里。

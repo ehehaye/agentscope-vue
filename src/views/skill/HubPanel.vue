@@ -187,7 +187,7 @@
 
 <script>
 import { defineComponent, ref, computed } from '@/composables/vue';
-import { Icon } from '@/components/ui/Icon';
+import Icon from '@/components/ui/Icon';
 import Spinner from '@/components/ui/Spinner.vue';
 import MarkdownRenderer from '@/components/md/MarkdownRenderer.vue';
 import { useSkillHubCards } from '@/composables/useSkillHubCards';

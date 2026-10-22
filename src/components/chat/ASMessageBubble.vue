@@ -127,7 +127,7 @@
 
 <script>
 import { defineComponent, ref, computed, watch, onUnmounted } from '@/composables/vue';
-import { Icon } from '@/components/ui/Icon';
+import Icon from '@/components/ui/Icon';
 import { format } from 'date-fns';
 import { copyToClipboard, formatNumber, formatTime } from '@/utils/common';
 import Bubble from '@/components/ui/Bubble.vue';

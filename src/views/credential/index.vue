@@ -278,7 +278,7 @@
 
 <script>
 import { defineComponent } from '@/composables/vue';
-import { Icon } from '@/components/ui/Icon';
+import Icon from '@/components/ui/Icon';
 import { useCredentials } from '@/composables/useCredentials';
 import { credentialApi, modelApi, ttsModelApi, embeddingModelApi } from '@/api';
 import CreateCredentialDialog from '@/components/dialog/CreateCredentialDialog.vue';

@@ -101,7 +101,7 @@
 <script>
 import { defineComponent, ref } from '@/composables/vue';
 import { useRouter } from '@/composables/vue-router';
-import { Icon } from '@/components/ui/Icon';
+import Icon from '@/components/ui/Icon';
 import Spinner from '@/components/ui/Spinner.vue';
 import PanelEmpty from '@/components/panel/PanelEmpty.vue';
 import SopEditorDialog from '@/components/dialog/SopEditorDialog.vue';

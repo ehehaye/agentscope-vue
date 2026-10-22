@@ -143,7 +143,7 @@
 
 <script>
 import { defineComponent, ref, computed, watch } from '@/composables/vue';
-import { Icon } from '@/components/ui/Icon';
+import Icon from '@/components/ui/Icon';
 import { useRoute, useRouter } from '@/composables/vue-router';
 import CreateKnowledgeBaseDialog from '@/components/dialog/CreateKnowledgeBaseDialog.vue';
 import CreateCredentialDialog from '@/components/dialog/CreateCredentialDialog.vue';

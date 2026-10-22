@@ -17,3 +17,9 @@
 
 @border-radius-sm: 4px;
 @border-radius-md: 8px;
+
+// —— 作用域 ——
+// Element 组件的作用域根：应用本体 + append-to-body 的弹窗 / 抽屉 / 消息框 / popper。
+// :where() 保持 0 特异性，不改变覆盖优先级。
+// 定义在这里供各 SFC 与 element-overrides.less 共用（本文件经 additionalData 全局注入）。
+@as-scope: ~':where(#as-app, .el-dialog__wrapper, .el-drawer__wrapper, .el-message-box__wrapper, body > .el-popper)';

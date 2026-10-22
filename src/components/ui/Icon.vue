@@ -1,3 +1,4 @@
+<script>
 /**
  * Iconify 统一入口：在「离线 / 在线」两套实现之间全局切换。
  *
@@ -14,11 +15,10 @@
  *   使用 @iconify/vue2：未注册图标自动请求 https://api.iconify.design，
  *   图标集 JSON 不会被打进包。
  *
- * 注意：业务代码只允许从本模块导入 Icon / addCollection / addIcon，
- * 不要直接 import '@iconify/vue2' 或 '@iconify/vue2/offline'——
- * 两个入口各自持有独立的图标存储实例，混用会导致注册的图标不生效。
+ * 注意：业务代码只允许从本模块导入 Icon，不要直接 import '@iconify/vue2'
+ * 或 '@iconify/vue2/offline'——两个入口各自持有独立的图标存储实例，
+ * 混用会导致注册的图标不生效。
  */
-
 const __ICONIFY_OFFLINE__ = true;
 
 let api;
@@ -30,26 +30,42 @@ if (__ICONIFY_OFFLINE__) {
   api = require('@iconify/vue2');
 }
 
-// 包装原始 Icon 组件：默认追加 tw-cursor-pointer，
-// 其余 props / 事件 / 插槽 / class 通过 data 原样透传
-export const Icon = {
+// 包装原始 Icon 组件：icon / disabled 为受控 props；
+// 其余 attributes、事件、插槽、class 通过 data 原样透传。
+// 默认追加 tw-cursor-pointer，disabled 时改用 not-allowed 并降低亮度。
+export default {
+  name: 'Icon',
   functional: true,
+  props: {
+    icon: { type: [String, Object], required: true },
+    disabled: { type: Boolean, default: false },
+  },
   render(h, ctx) {
     // 模板里写死的 class="..." 在 Vue 2 会编译进 staticClass，
     // 而下游 api.Icon 只读 contextData.class——所以这里必须显式把
     // staticClass 也拼到 class 里。
     const { staticClass, class: dynClass } = ctx.data;
+    const { icon, disabled } = ctx.props;
     return h(
       api.Icon,
       {
         ...ctx.data,
-        class: ['tw-cursor-pointer', staticClass, dynClass],
+        // Iconify 的 Icon 只读 $attrs；icon 声明为 prop 后需显式放回 attrs
+        attrs: { ...(ctx.data.attrs || {}), icon },
+        class: [disabled ? 'tw-cursor-not-allowed tw-opacity-50' : 'tw-cursor-pointer', staticClass, dynClass],
       },
       ctx.children,
     );
   },
 };
-export const addCollection = api.addCollection;
-export const addIcon = api.addIcon;
+</script>
 
-export default api;
+<style lang="less">
+// Icon 包装层固定追加 tw-cursor-pointer；禁用控件内的图标统一改回不可点击光标并降低亮度。
+// 用原生 button:disabled 而不是 .el-button.is-disabled，Element 按钮同样带 disabled，
+// 原生 button 与 el-button 都能覆盖。
+@{as-scope} button:disabled svg {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+</style>

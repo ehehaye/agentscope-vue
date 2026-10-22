@@ -142,7 +142,7 @@
 
 <script>
 import { defineComponent, ref, computed, watch } from '@/composables/vue';
-import { Icon } from '@/components/ui/Icon';
+import Icon from '@/components/ui/Icon';
 import Spinner from '@/components/ui/Spinner.vue';
 import { workspaceApi } from '@/api';
 
