@@ -22,6 +22,8 @@ export const AppStorageKeys = {
   USERNAME: 'as-username',
   /** API 接入模式：'direct'（默认）| 'proxy'，取值见 api/mapping.js 的 API_MODES。 */
   API_MODE: 'api_mode',
+  /** 连接是否已通过 setup 页健康检查：'true' | 'false'。 */
+  VERIFIED: 'as-verified',
   /** 侧边栏收起状态：'true' | 'false'。 */
   SIDEBAR_COLLAPSED: 'as-sidebarCollapsed',
   /** 聊天页右侧面板停靠布局（JSON 序列化的二维数组）。 */

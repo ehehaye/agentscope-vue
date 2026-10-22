@@ -20,11 +20,12 @@ export default {
     serverUrl: localStorage.getItem(AppStorageKeys.SERVER_URL) ?? AppDefaults.SERVER_URL,
     username: localStorage.getItem(AppStorageKeys.USERNAME) ?? AppDefaults.USERNAME,
     apiMode: localStorage.getItem(AppStorageKeys.API_MODE) ?? API_MODES.DIRECT,
+    verified: localStorage.getItem(AppStorageKeys.VERIFIED) === 'true',
   }),
 
   getters: {
-    /** setup 门禁：地址与用户名均已持久化才放行。 */
-    setupComplete: (state) => Boolean(state.serverUrl && state.username),
+    /** setup 门禁：地址、用户名已持久化且连接已验证通过才放行。 */
+    setupComplete: (state) => Boolean(state.serverUrl && state.username && state.verified),
   },
 
   mutations: {
@@ -41,10 +42,12 @@ export default {
       state.serverUrl = serverUrl;
       state.username = username;
       state.apiMode = apiMode;
+      state.verified = true;
       try {
         localStorage.setItem(AppStorageKeys.SERVER_URL, serverUrl);
         localStorage.setItem(AppStorageKeys.USERNAME, username);
         localStorage.setItem(AppStorageKeys.API_MODE, apiMode);
+        localStorage.setItem(AppStorageKeys.VERIFIED, 'true');
       } catch {
         /* ignore */
       }
