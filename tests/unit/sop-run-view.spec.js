@@ -198,4 +198,25 @@ describe('SopRunView', () => {
 
     wrapper.destroy();
   });
+
+  it('只在切入会话 Tab 时定位消息起点，会话内切换步骤不重复定位', async () => {
+    sopApi.getRun.mockResolvedValue(makeRun());
+
+    const wrapper = mountView();
+    await flushPromises();
+    await Vue.nextTick();
+
+    wrapper.vm.setTab('session');
+    await Vue.nextTick();
+    const focus = wrapper.vm.focusRequest;
+    expect(focus).not.toBeNull();
+
+    // 会话 Tab 下再次选择当前步骤（轮询抖动也会走到这里）：不应重新发起定位
+    const strip = wrapper.findComponent(StepStripStub);
+    strip.vm.$emit('select', 0);
+    await Vue.nextTick();
+    expect(wrapper.vm.focusRequest).toBe(focus);
+
+    wrapper.destroy();
+  });
 });

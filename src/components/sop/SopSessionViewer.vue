@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, watch, onUnmounted, nextTick } from '@/composables/vue';
+import { defineComponent, ref, computed, watch, onUnmounted } from '@/composables/vue';
 import { useMessages } from '@/composables/useMessages';
 import { provideAudioCenter } from '@/composables/useAudioCenter';
 import ChatContent from '@/components/chat/ChatContent.vue';
@@ -106,36 +106,19 @@ export default defineComponent({
   props: {
     entries: { type: Array, default: () => [] },
     agents: { type: Array, default: () => [] },
-    runId: { type: String, default: '' },
     /** 父级受控的激活会话键（由顶部步骤条决定）。 */
     sessionKey: { type: String, default: '' },
-    /** 步骤切换后的消息定位请求：{ sessionKey, subject, ids, token }。 */
+    /** 进入会话时的定位请求：{ sessionKey, subject, ids }。 */
     focusRequest: { type: Object, default: null },
   },
   setup(props) {
     const rootEl = ref(null);
     const activeKey = computed(() => props.sessionKey || '');
-    const pendingFocus = ref(null);
 
     const activeEntry = computed(() => props.entries.find((entry) => entry.session_key === activeKey.value) || null);
     const agentId = computed(() => activeEntry.value?.agent_id || null);
     const sessionId = computed(() => activeEntry.value?.session_id || null);
     const hasActiveSession = computed(() => !!sessionId.value);
-
-    watch(
-      () => props.runId,
-      () => {
-        pendingFocus.value = null;
-      },
-      { immediate: true },
-    );
-
-    // 父级切换会话后，属于旧会话的定位请求作废。
-    watch(activeKey, (key) => {
-      if (pendingFocus.value?.sessionKey && pendingFocus.value.sessionKey !== key) {
-        pendingFocus.value = null;
-      }
-    });
 
     const audioManager = provideAudioCenter();
 
@@ -174,14 +157,10 @@ export default defineComponent({
       return index >= 0 ? msgs.value[index] : null;
     }
 
-    async function applyFocusRequest() {
-      const request = pendingFocus.value;
-      if (!request || (!request.ids?.length && !request.subject)) return;
-      if (request.sessionKey && request.sessionKey !== activeKey.value) return;
+    /** 把目标消息滚到视口中部并高亮。 */
+    function focusStepStart(request) {
       const target = messageForStep(request);
       if (!target) return;
-      pendingFocus.value = null;
-      await nextTick();
       // 等 MessageScroller 在历史加载后的自动滚底结束，再定位到目标消息。
       setTimeout(() => {
         const el = rootEl.value?.querySelector(`[data-msg-id="${target.id}"]`);
@@ -192,21 +171,14 @@ export default defineComponent({
       }, 120);
     }
 
-    watch(
-      () => props.focusRequest,
-      (request) => {
-        if (!request) {
-          pendingFocus.value = null;
-          return;
-        }
-        pendingFocus.value = request;
-        nextTick(applyFocusRequest);
-      },
-    );
-
-    // 会话切换 / 历史加载完成后重试定位。
-    watch(msgs, () => {
-      if (pendingFocus.value) applyFocusRequest();
+    // 进入会话时定位一次：历史未加载完就等加载结束再定位。
+    // 同一请求只处理一次，之后的新消息（如验收后的新一轮输出）不再触发定位。
+    let focusedRequest = null;
+    watch([() => props.focusRequest, loading], ([request, isLoading]) => {
+      if (!request || isLoading || request === focusedRequest) return;
+      focusedRequest = request;
+      if (request.sessionKey && request.sessionKey !== activeKey.value) return;
+      focusStepStart(request);
     });
 
     function agentName(id) {

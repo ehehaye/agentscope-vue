@@ -137,7 +137,6 @@
               class="tw-min-h-0 tw-h-full"
               :entries="sessionEntries"
               :agents="agents"
-              :run-id="run.id"
               :session-key="activeSessionKey"
               :focus-request="focusRequest"
             />
@@ -238,7 +237,6 @@ export default defineComponent({
     let pollTimer = null;
     let requestSeq = 0;
     let initialized = false;
-    let focusToken = 0;
 
     const { agents } = useAgents();
 
@@ -260,16 +258,12 @@ export default defineComponent({
       (run.value?.definition?.steps ?? []).map((step) => step.executor?.session_key || ''),
     );
 
-    const stepSubjects = computed(() => (run.value?.definition?.steps ?? []).map((step) => step.subject || ''));
-
     const activeStep = computed(() => stepItems.value[activeStepIndex.value] || null);
     const activeSessionKey = computed(() => stepSessions.value[activeStepIndex.value] || '');
     const sessionEntries = computed(() => collectRunSessions(run.value));
     const canRefresh = computed(() => ['pending', 'running', 'awaiting'].includes(run.value?.state?.phase));
     const followingIndex = computed(() => getFollowingStepIndex(stepPhases.value));
-    const showVerdictBar = computed(
-      () => activeTab.value === 'delivery' && awaitingHumanIndex.value === activeStepIndex.value,
-    );
+    const showVerdictBar = computed(() => awaitingHumanIndex.value === activeStepIndex.value);
 
     const inputsText = computed(() => {
       const inputs = run.value?.state?.inputs ?? [];
@@ -288,17 +282,14 @@ export default defineComponent({
       if (!key) return;
       focusRequest.value = {
         sessionKey: key,
-        subject: stepSubjects.value[index] || '',
+        subject: run.value?.definition?.steps?.[index]?.subject || '',
         ids: collectStepAnchorIds(run.value, index),
-        token: ++focusToken,
       };
     }
 
     function applyStep(index) {
       if (index < 0 || index >= stepItems.value.length) return;
       activeStepIndex.value = index;
-      // 该步骤上次停留在「会话」时，切过去的同时定位到它的消息起点。
-      if (activeTab.value === 'session') requestFocus(index);
     }
 
     function selectStep(index) {
