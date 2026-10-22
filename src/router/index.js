@@ -108,6 +108,8 @@ const routes = [
 
 const router = new VueRouter({
   mode: 'history',
+  // 子路径部署（如 GitHub Pages 的 /<repo>/）时与 VUE_APP_PUBLIC_PATH 保持同值
+  base: process.env.VUE_APP_PUBLIC_PATH || '/',
   routes,
 });
 

@@ -1,8 +1,12 @@
 const path = require('path');
 const { codeInspectorPlugin } = require('code-inspector-plugin');
 
+// 部署到子路径（如 GitHub Pages 的 /<repo>/）时用 VUE_APP_PUBLIC_PATH 覆盖；
+// 发布产物需与 src/router/index.js 的 base 保持同值。
+const publicPath = process.env.VUE_APP_PUBLIC_PATH || (process.env.NODE_ENV === 'production' ? './' : '/');
+
 module.exports = {
-  publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
+  publicPath,
   outputDir: 'dist',
   assetsDir: 'static',
   lintOnSave: false,
