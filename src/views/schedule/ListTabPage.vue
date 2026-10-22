@@ -18,7 +18,13 @@
       >
         加载中…
       </div>
-      <EmptyState v-else-if="filteredSchedules.length === 0" />
+      <PanelEmpty
+        v-else-if="filteredSchedules.length === 0"
+        class="tw-h-full"
+        icon="lucide:calendar"
+        title="暂无日程"
+        description="创建日程以自动化智能体任务。"
+      />
       <div
         v-else
         class="tw-space-y-3"
@@ -43,13 +49,13 @@
 <script>
 import { defineComponent, ref, computed } from '@/composables/vue';
 import { CronExpressionParser } from 'cron-parser';
+import PanelEmpty from '@/components/panel/PanelEmpty.vue';
 import ScheduleCard from './ScheduleCard.vue';
 import ScheduleDetailDrawer from './ScheduleDetailDrawer.vue';
-import EmptyState from './EmptyState.vue';
 
 export default defineComponent({
   name: 'ListTabPage',
-  components: { ScheduleCard, ScheduleDetailDrawer, EmptyState },
+  components: { ScheduleCard, ScheduleDetailDrawer, PanelEmpty },
   props: {
     schedules: { type: Array, default: () => [] },
     loading: { type: Boolean, default: false },
