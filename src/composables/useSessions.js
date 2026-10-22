@@ -1,5 +1,6 @@
 import { ref, watch, unref } from '@/composables/vue';
 import { sessionApi } from '@/api';
+import { BackendSessionOriginType } from '@/constants/protocol';
 import store from '@/store';
 
 /**
@@ -28,7 +29,8 @@ export function useSessions(agentId) {
     error.value = null;
     try {
       const res = await sessionApi.list(aid);
-      const list = res?.sessions ?? res ?? [];
+      // SOP 运行的会话由 SOP 页面管理，不进聊天侧会话列表（条数随之减少）。
+      const list = (res?.sessions ?? res ?? []).filter((v) => v.session?.origin?.type !== BackendSessionOriginType.SOP);
       if (id === reqId) sessions.value = list;
       return list;
     } catch (e) {

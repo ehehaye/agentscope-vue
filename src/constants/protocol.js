@@ -46,6 +46,19 @@ export const SdkMessageRole = {
 };
 
 /**
+ * 后端 `SessionRecord.origin.type`：会话的来源类型。
+ * 后端对应带标签联合 `SessionOrigin`（`UserOrigin / ScheduleOrigin /
+ * ChannelOrigin / TeamOrigin / SOPOrigin`）。
+ */
+export const BackendSessionOriginType = {
+  USER: 'user',
+  SCHEDULE: 'schedule',
+  CHANNEL: 'channel',
+  TEAM: 'team',
+  SOP: 'sop',
+};
+
+/**
  * 后端通过 `EventType.CUSTOM` 下发的自定义事件名。
  *
  * 非 SDK 定义：SDK 只声明了 `CustomEvent { type: 'CUSTOM', name, value }` 这个外壳，
