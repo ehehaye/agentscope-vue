@@ -26,9 +26,7 @@ export function useSessionsQuery(sessionsSource) {
   const filters = reactive({ ...EMPTY_FILTERS });
 
   // 用 computed 把来源解析成响应式的列表；getter / ref 在这里都能正确追踪。
-  const source = computed(() =>
-    typeof sessionsSource === 'function' ? sessionsSource() : unref(sessionsSource),
-  );
+  const source = computed(() => (typeof sessionsSource === 'function' ? sessionsSource() : unref(sessionsSource)));
 
   const rows = computed(() => {
     const list = source.value || [];
