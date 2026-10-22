@@ -43,7 +43,7 @@ api/                       # client.js + 各资源 {list,create,update,delete,..
 assets/imgs/               # 静态资源
 components/
   badge/ chat/ common/ dialog/ drawer/ form/
-  knowledge/ layout/ panel/ popover/ select/ ui/
+  knowledge/ layout/ panel/ popover/ select/ sop/ ui/
 composables/               # 桥接层 + 业务 composable（useAgents/useMessages/...）
 constants/                 # 常量来源集中地（app-state.js：App* 自定义枚举 + AppStorageKeys 本地存储键；protocol.js：Sdk*/Backend* 外部协议）
 lib/                       # toast/utils
@@ -95,6 +95,7 @@ views/                     # 业务页（路由层）
 - **`api/mapping.js`**：官方每个 api 文件直接 fetch；本仓库把 URL/Method 全部收口到 `ENDPOINTS`，按 `direct / proxy` 两种模式分发，便于接入 Java 中转服务。
 - **`styles/base.css` + `atomic.css`**：本仓库特有，把 Tailwind base 预检用 `:where(#as-app)` 作用域化，再补少量从任意值语法抽离出的 `as-*` 原子类。
 - **`views/setup/`、`views/dev/`**：`setup` 为后端地址/凭证等初始化门禁（`router.beforeEach` 强校验）；`dev` 为内部 Markdown 渲染验证页（`/dev/markdown`），官方未对应。
+- **`components/sop/`**：SOP 纯展示组件（`SopCard` / `SopStepDefinitionList` / `SopRunTable` / `SopVerdictBar`）；`views/sop/` 保留路由页、状态容器与有状态的会话视图。
 
 ## 5. 端点映射表 `mapping.js`（本仓库特有）
 

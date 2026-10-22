@@ -157,7 +157,7 @@ export const sopApi = {
 
 新建目录 `src/views/sop/`。
 
-#### 新增 `src/views/sop/sop-utils.js`
+#### 新增 `src/utils/sop.js`
 
 纯函数，便于单测：
 
@@ -325,7 +325,7 @@ export const sopApi = {
 
 ### 6. 单元测试
 
-新增 `tests/unit/sop-utils.spec.js`，覆盖：
+新增 `tests/unit/sop.spec.js`，覆盖：
 
 - `createEmptyForm` / `formFromData` 的默认值与 verifier 归一化。
 - `validateSopForm`：
@@ -369,6 +369,12 @@ export const sopApi = {
    - 删除运行后返回流程详情，运行列表刷新。
 
 ## 变更记录
+
+### 2026-10-22 · SOP 展示组件分层
+
+- 人工验收栏、流程卡片、步骤定义列表、运行记录表格抽离到 `src/components/sop/`（`SopVerdictBar` / `SopCard` / `SopStepDefinitionList` / `SopRunTable`），`views/sop/` 保留路由页、状态容器与有状态的会话视图。
+- `views/sop/sop-utils.js` 移至 `src/utils/sop.js`，单测同步改名为 `tests/unit/sop.spec.js`。
+- 日程列表空态改用通用 `PanelEmpty`，删除 `views/schedule/EmptyState.vue`。
 
 ### 2026-10-21 · UI 信息架构重构
 

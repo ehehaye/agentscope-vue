@@ -86,7 +86,7 @@ localStorage.setItem(AppStorageKeys.SERVER_URL, 'http://hostname/proxy/api/');
 src/
 ├── api              # 后端接口封装 + 端点映射表（mapping.js：direct 直连 / proxy Java 中转）
 ├── assets           # 图片、字体等静态资源
-├── components       # 业务组件（chat、panel、dialog、drawer、form、layout、ui、iconify 等）
+├── components       # 业务组件（chat、panel、dialog、drawer、form、sop、layout、ui、iconify 等）
 ├── composables      # 组合式逻辑
 ├── constants        # 常量集中地（app-state.js：App* 枚举 + AppStorageKeys 本地存储键；protocol.js：外部协议）
 ├── lib              # 工具库/第三方适配
