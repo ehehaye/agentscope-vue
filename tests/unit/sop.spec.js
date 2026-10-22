@@ -20,7 +20,7 @@ import {
   sortRuns,
   parseRunListQuery,
   resolveRunSopId,
-} from '@/views/sop/sop-utils';
+} from '@/utils/sop';
 
 function validForm() {
   return {
