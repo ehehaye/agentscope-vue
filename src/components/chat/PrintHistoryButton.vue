@@ -5,7 +5,7 @@
       size="small"
       circle
       :disabled="disabled"
-      :title="disabled ? '打印暂不可用' : '打印历史消息'"
+      :title="disabled ? '打印暂不可用' : '打印'"
       @click="trigger"
     >
       <Icon
