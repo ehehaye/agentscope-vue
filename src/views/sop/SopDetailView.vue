@@ -435,3 +435,15 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="less">
+@{as-scope} .sop-run-filters .el-form-item {
+  margin-bottom: 0;
+  margin-right: 0;
+}
+
+@{as-scope} .el-pagination--small .el-pagination__sizes .el-input .el-input__inner {
+  height: 22px;
+  line-height: 22px;
+}
+</style>

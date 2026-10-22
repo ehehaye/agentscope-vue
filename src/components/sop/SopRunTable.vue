@@ -125,3 +125,36 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="less">
+@{as-scope} .sop-run-table {
+  background-color: transparent;
+
+  // 去掉表格底部的 1px 分隔线
+  &::before {
+    display: none;
+  }
+
+  .el-table__header-wrapper th.el-table__cell {
+    background-color: transparent;
+    border-bottom: 1px solid var(--as-border);
+    color: var(--as-muted-foreground);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 0;
+  }
+
+  td.el-table__cell {
+    border-bottom: none;
+    padding: 8px 0;
+  }
+
+  .el-table__row {
+    cursor: pointer;
+  }
+
+  .el-table__body tr:hover > td.el-table__cell {
+    background-color: var(--as-muted);
+  }
+}
+</style>
