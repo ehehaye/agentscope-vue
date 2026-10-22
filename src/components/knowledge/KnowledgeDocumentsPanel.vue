@@ -398,7 +398,7 @@ export default defineComponent({
         }
       }
       if (accepted.length === 0) return;
-      enqueue(props.knowledgeBaseId, accepted);
+      enqueue({ knowledgeBaseId: props.knowledgeBaseId, files: accepted });
     }
 
     function handleCancel(taskId) {

@@ -51,10 +51,10 @@ export function useDocumentStatusPolling({ knowledgeBaseId, documents }) {
       const next = { ...statuses.value };
       for (const item of items) next[item.id] = item;
       statuses.value = next;
-      applyServerStatuses(
-        kbId,
-        items.map((i) => ({ id: i.id, status: i.status, error: i.error })),
-      );
+      applyServerStatuses({
+        knowledgeBaseId: kbId,
+        items: items.map((i) => ({ id: i.id, status: i.status, error: i.error })),
+      });
     } catch {
       // 吞掉瞬时错误，下一 tick 重试
     }

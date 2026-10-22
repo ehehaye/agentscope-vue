@@ -7,8 +7,8 @@ import { computed } from '@/composables/vue';
 import store from '@/store';
 
 export function useUploadCenter() {
-  async function enqueue(knowledgeBaseId, files) {
-    return store.dispatch('upload/enqueue', { knowledgeBaseId, files });
+  async function enqueue(payload) {
+    return store.dispatch('upload/enqueue', payload);
   }
   async function cancel(taskId) {
     return store.dispatch('upload/cancel', taskId);
@@ -19,8 +19,8 @@ export function useUploadCenter() {
   async function clearFinishedForKb(knowledgeBaseId) {
     return store.dispatch('upload/clearFinishedForKb', knowledgeBaseId);
   }
-  async function applyServerStatuses(knowledgeBaseId, items) {
-    return store.dispatch('upload/applyServerStatuses', { knowledgeBaseId, items });
+  async function applyServerStatuses(payload) {
+    return store.dispatch('upload/applyServerStatuses', payload);
   }
   function tasksForKb(knowledgeBaseId) {
     return store.getters['upload/tasksForKb'](knowledgeBaseId);
