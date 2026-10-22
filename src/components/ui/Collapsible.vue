@@ -12,6 +12,11 @@
         name="trigger"
         :open="isOpen"
       />
+      <!-- stretch 时用占位元素撑满剩余宽度，把右侧图标顶到最右 -->
+      <span
+        v-if="stretch"
+        class="tw-flex-1"
+      />
       <!-- 默认折叠指示图标，可用 #icon="{ open }" 插槽覆盖 -->
       <slot
         name="icon"
@@ -55,6 +60,7 @@ export default defineComponent({
     open: { type: Boolean, default: undefined },
     triggerClass: { type: String, default: '' },
     contentClass: { type: String, default: '' },
+    stretch: { type: Boolean, default: false },
     cls: {
       type: Function,
       default: (isOpen) => '',

@@ -10,7 +10,7 @@
     v-else
     class="tw-flex tw-flex-col tw-gap-5"
   >
-    <Collapsible>
+    <Collapsible stretch>
       <template #trigger>
         <span class="tw-text-sm tw-font-medium">{{ step.definition.subject }}</span>
       </template>
@@ -24,37 +24,50 @@
       </div>
     </Collapsible>
 
-    <section>
-      <div class="tw-mb-2 tw-flex tw-items-center tw-justify-between tw-gap-2">
-        <span class="tw-text-sm tw-font-semibold">交付内容</span>
+    <Collapsible
+      default-open
+      stretch
+    >
+      <template #trigger>
+        <span class="tw-text-sm tw-font-medium">交付内容</span>
+      </template>
+      <div
+        v-if="submissionBlocks.length > 0"
+        class="tw-relative tw-mt-2"
+      >
+        <div
+          id="as-sop-delivery-content"
+          class="tw-rounded-lg tw-border tw-border-border tw-p-4"
+        >
+          <ASBlock
+            v-for="(block, index) in submissionBlocks"
+            :key="block.id || index"
+            :block="block"
+          />
+        </div>
         <PrintHistoryButton
-          v-if="submissionBlocks.length > 0"
+          class="tw-absolute tw-bottom-3 tw-right-3"
           target="#as-sop-delivery-content"
           :title="printTitle"
         />
       </div>
       <div
-        v-if="submissionBlocks.length > 0"
-        id="as-sop-delivery-content"
-        class="tw-rounded-lg tw-border tw-border-border tw-p-4"
-      >
-        <ASBlock
-          v-for="(block, index) in submissionBlocks"
-          :key="block.id || index"
-          :block="block"
-        />
-      </div>
-      <div
         v-else
-        class="tw-rounded-lg tw-border tw-border-dashed tw-border-border tw-py-8 tw-text-center tw-text-sm tw-text-muted-foreground"
+        class="tw-mt-2 tw-rounded-lg tw-border tw-border-dashed tw-border-border tw-py-8 tw-text-center tw-text-sm tw-text-muted-foreground"
       >
         {{ emptySubmissionText }}
       </div>
-    </section>
+    </Collapsible>
 
-    <section v-if="verifications.length > 0">
-      <div class="tw-mb-2 tw-text-sm tw-font-semibold">验证记录</div>
-      <div class="tw-space-y-2">
+    <Collapsible
+      v-if="verifications.length > 0"
+      default-open
+      stretch
+    >
+      <template #trigger>
+        <span class="tw-text-sm tw-font-medium">验证记录</span>
+      </template>
+      <div class="tw-mt-2 tw-space-y-2">
         <div
           v-for="(verification, index) in verifications"
           :key="index"
@@ -65,6 +78,7 @@
               {{ verification.passed ? '通过' : '驳回' }}
             </span>
             <span class="tw-text-muted-foreground">{{ verification.verifier }}</span>
+            <span class="tw-ml-auto tw-text-muted-foreground">{{ formatTime(verification.created_at) }}</span>
           </div>
           <p
             v-if="verification.message"
@@ -74,7 +88,7 @@
           </p>
         </div>
       </div>
-    </section>
+    </Collapsible>
 
     <div
       v-if="step.state.phase === 'awaiting' && !awaitingHuman"
@@ -119,11 +133,16 @@ export default defineComponent({
       return `第 ${props.step.index + 1} 步 · ${props.step.definition.subject} - 交付内容`;
     });
 
+    function formatTime(value) {
+      return value ? new Date(value).toLocaleString() : '—';
+    }
+
     return {
       submissionBlocks,
       verifications,
       emptySubmissionText,
       printTitle,
+      formatTime,
       agentDisplayName,
       verifierLabel,
     };
