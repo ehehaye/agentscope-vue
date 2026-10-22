@@ -366,7 +366,7 @@ import {
   parseRunListQuery,
   runInputText,
   verifierLabel,
-} from './sop-utils';
+} from '@/utils/sop';
 
 const RUN_PAGE_SIZE = 10;
 

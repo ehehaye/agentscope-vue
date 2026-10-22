@@ -75,7 +75,7 @@ import { useMessages } from '@/composables/useMessages';
 import { provideAudioCenter } from '@/composables/useAudioCenter';
 import ChatContent from '@/components/chat/ChatContent.vue';
 import ConnectionStatus from '@/components/chat/ConnectionStatus.vue';
-import { agentDisplayName, findStepMessageIndex } from './sop-utils';
+import { agentDisplayName, findStepMessageIndex } from '@/utils/sop';
 
 function noop() {
   return null;

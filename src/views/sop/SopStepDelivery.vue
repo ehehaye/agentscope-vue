@@ -104,7 +104,7 @@ import { defineComponent, computed } from '@/composables/vue';
 import Collapsible from '@/components/ui/Collapsible.vue';
 import ASBlock from '@/components/chat/ASBlock.vue';
 import PrintHistoryButton from '@/components/chat/PrintHistoryButton.vue';
-import { agentDisplayName, verifierLabel } from './sop-utils';
+import { agentDisplayName, verifierLabel } from '@/utils/sop';
 
 export default defineComponent({
   name: 'SopStepDelivery',

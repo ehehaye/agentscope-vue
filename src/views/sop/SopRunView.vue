@@ -180,7 +180,7 @@ import {
   getFollowingStepIndex,
   getInitialStepIndex,
   resolveRunSopId,
-} from './sop-utils';
+} from '@/utils/sop';
 
 const POLL_INTERVAL_MS = 2500;
 

@@ -1,5 +1,5 @@
 import { ref, reactive, computed, watch, unref } from '@/composables/vue';
-import { filterRuns, getPageCount, slicePage, sortRuns } from '@/views/sop/sop-utils';
+import { filterRuns, getPageCount, slicePage, sortRuns } from '@/utils/sop';
 
 const EMPTY_FILTERS = { title: '', status: '', date: '' };
 

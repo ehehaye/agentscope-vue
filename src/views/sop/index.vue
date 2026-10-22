@@ -107,7 +107,7 @@ import PanelEmpty from '@/components/panel/PanelEmpty.vue';
 import SopEditorDialog from '@/components/dialog/SopEditorDialog.vue';
 import { useSops } from '@/composables/useSops';
 import { useAgents } from '@/composables/useAgents';
-import { SOP_WORKSPACE_GRAIN_LABELS } from './sop-utils';
+import { SOP_WORKSPACE_GRAIN_LABELS } from '@/utils/sop';
 
 export default defineComponent({
   name: 'SopListView',

@@ -284,7 +284,7 @@ import {
   createEmptyStep,
   formFromData,
   validateSopForm,
-} from '@/views/sop/sop-utils';
+} from '@/utils/sop';
 
 function ensureSessionSettings(model) {
   const keys = [...new Set(collectSessionRefs(model).map((ref) => ref.session_key))];

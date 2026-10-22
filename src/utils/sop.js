@@ -1,6 +1,6 @@
 /**
- * SOP 页面的纯函数工具：表单模型、校验、提交数据构造与运行记录解析。
- * 不依赖 Vue，便于单测（见 tests/unit/sop-utils.spec.js）。
+ * SOP 相关的纯函数工具：表单模型、校验、提交数据构造与运行记录解析。
+ * 不依赖 Vue，便于单测（见 tests/unit/sop.spec.js）。
  */
 
 export const SOP_PHASE_LABELS = {
