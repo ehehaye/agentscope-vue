@@ -228,12 +228,12 @@ export const sopApi = {
   - 筛选条件、排序、页码与每页条数都写入 query；从运行详情返回时原样恢复，删除导致页数减少时自动回退。
 - 点击运行跳转 `/sop/:sopId/runs/:runId`；发起运行后直接进入运行详情。
 
-#### 新增 `src/views/sop/SopStepStrip.vue`
+#### 新增 `src/components/sop/SopStepStrip.vue`
 
 - 横向步骤条：序号、标题（截断）、`StatusBadge`，只保留必要信息；未开始（`pending`）的步骤禁用点击并显示禁止光标。
 - 激活项使用主色边框；激活步骤变化时横向滚动到可视区域。
 
-#### 新增 `src/views/sop/SopStepDelivery.vue`
+#### 新增 `src/components/sop/SopStepDelivery.vue`
 
 - 当前步骤的说明、执行者 / 验证者 / 最大尝试次数。
 - 交付物按内容块渲染：文本块经 `ASBlock` 使用 `MarkdownRenderer` 输出 Markdown；`data` / `tool_call_group` 等沿用既有渲染。
@@ -254,7 +254,7 @@ export const sopApi = {
 - 人工验收表单在「交付」Tab 内展示，提交 `sopApi.submitVerdict`。
 - 删除运行后返回流程详情，并保留分页 query。
 
-#### 修改 `src/views/sop/SopSessionViewer.vue`
+#### 修改 `src/components/sop/SopSessionViewer.vue`
 
 - 改为受控组件：Props `entries`、`agents`、`runId`、`sessionKey`、`focusRequest`；不再自行决定默认会话或跟随步骤。
 - 不再展示会话切换 tab：本期人工验收模式下每个步骤只有一个执行者会话，顶部只显示当前会话键与连接状态。
@@ -373,6 +373,7 @@ export const sopApi = {
 ### 2026-10-22 · SOP 展示组件分层
 
 - 人工验收栏、流程卡片、步骤定义列表、运行记录表格抽离到 `src/components/sop/`（`SopVerdictBar` / `SopCard` / `SopStepDefinitionList` / `SopRunTable`），`views/sop/` 保留路由页、状态容器与有状态的会话视图。
+- 步骤条、交付内容、运行会话查看器一并移至 `src/components/sop/`，`views/sop/` 只保留路由页与页面级状态容器。
 - `views/sop/sop-utils.js` 移至 `src/utils/sop.js`，单测同步改名为 `tests/unit/sop.spec.js`。
 - 日程列表空态改用通用 `PanelEmpty`，删除 `views/schedule/EmptyState.vue`。
 
