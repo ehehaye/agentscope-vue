@@ -106,12 +106,12 @@
             :agent-id="effectiveAgentId"
             :session-id="effectiveSessionId"
             :cwd="cwd"
-            :on-ask-user-submit="handleAskUserSubmit"
-            :on-subagent-ask-user-submit="handleSubagentAskUserSubmit"
+            :on-ask-user-submit="onAskUserSubmit"
+            :on-subagent-ask-user-submit="onSubagentAskUserSubmit"
             :on-cwd-change="handleCwdChange"
             @send="handleSend"
-            @user-confirm="handleUserConfirm"
-            @subagent-confirm="handleSubagentConfirm"
+            @user-confirm="onUserConfirm"
+            @subagent-confirm="onSubagentConfirm"
             @interrupt="interrupt"
           />
         </div>
@@ -441,22 +441,6 @@ export default defineComponent({
       }
     }
 
-    function handleUserConfirm({ toolCall, confirm, replyId, rules }) {
-      onUserConfirm(toolCall, confirm, replyId, rules);
-    }
-
-    function handleSubagentConfirm({ entry, toolCall, confirm, rules }) {
-      onSubagentConfirm(entry, toolCall, confirm, rules);
-    }
-
-    function handleAskUserSubmit(toolCall, replyId, answers) {
-      return onAskUserSubmit(toolCall, replyId, answers);
-    }
-
-    function handleSubagentAskUserSubmit(entry, toolCall, answers) {
-      return onSubagentAskUserSubmit(entry, toolCall, answers);
-    }
-
     // ── 面板数据：随会话切换重置 / 从会话状态播种 ────────────
     const credentialDialogVisible = ref(false);
     const credentialTrigger = ref(0);
@@ -580,10 +564,10 @@ export default defineComponent({
       handleTTSChange,
       handleCwdChange,
       handlePermissionModeChange,
-      handleUserConfirm,
-      handleSubagentConfirm,
-      handleAskUserSubmit,
-      handleSubagentAskUserSubmit,
+      onUserConfirm,
+      onSubagentConfirm,
+      onAskUserSubmit,
+      onSubagentAskUserSubmit,
       handleSend,
       send,
       interrupt,

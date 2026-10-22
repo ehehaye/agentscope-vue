@@ -61,20 +61,20 @@ export function useMessages(agentId, sessionId, callbacks = {}) {
     return store.dispatch('chat/send', contentBlocks);
   }
 
-  async function onUserConfirm(toolCall, confirm, replyId, rules) {
-    return store.dispatch('chat/confirm', { toolCall, confirm, rules });
+  async function onUserConfirm(payload) {
+    return store.dispatch('chat/confirm', payload);
   }
 
-  async function onSubagentConfirm(entry, toolCall, confirm, rules) {
-    return store.dispatch('chat/subagentConfirm', { entry, toolCall, confirm, rules });
+  async function onSubagentConfirm(payload) {
+    return store.dispatch('chat/subagentConfirm', payload);
   }
 
-  async function onAskUserSubmit(toolCall, replyId, answers) {
-    return store.dispatch('chat/askUserSubmit', { toolCall, replyId, answers });
+  async function onAskUserSubmit(payload) {
+    return store.dispatch('chat/askUserSubmit', payload);
   }
 
-  async function onSubagentAskUserSubmit(entry, toolCall, answers) {
-    return store.dispatch('chat/subagentAskUserSubmit', { entry, toolCall, answers });
+  async function onSubagentAskUserSubmit(payload) {
+    return store.dispatch('chat/subagentAskUserSubmit', payload);
   }
 
   async function interrupt() {

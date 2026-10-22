@@ -76,9 +76,7 @@
         <ConfirmCard
           v-if="pendingToolCall"
           :tool-call="pendingToolCall.toolCall"
-          @confirm="
-            (confirm, rules) => onUserConfirm(pendingToolCall.toolCall, confirm, pendingToolCall.replyId, rules)
-          "
+          @confirm="(confirm, rules) => onUserConfirm(pendingToolCall.toolCall, confirm, rules)"
         />
         <AskUserCard
           v-if="pendingAskUser"
@@ -260,12 +258,12 @@ export default defineComponent({
     function submitAskUser(answers) {
       if (!pendingAskUser.value || !props.onAskUserSubmit) return Promise.resolve();
       const { toolCall, replyId } = pendingAskUser.value;
-      return props.onAskUserSubmit(toolCall, replyId, answers);
+      return props.onAskUserSubmit({ toolCall, replyId, answers });
     }
 
     function submitSubagentAskUser(entry, toolCall, answers) {
       if (!props.onSubagentAskUserSubmit) return Promise.resolve();
-      return props.onSubagentAskUserSubmit(entry, toolCall, answers);
+      return props.onSubagentAskUserSubmit({ entry, toolCall, answers });
     }
 
     const showMaxItersAlert = computed(
@@ -292,8 +290,8 @@ export default defineComponent({
       emit('send', blocks);
     }
 
-    function onUserConfirm(toolCall, confirm, replyId, rules) {
-      emit('user-confirm', { toolCall, confirm, replyId, rules });
+    function onUserConfirm(toolCall, confirm, rules) {
+      emit('user-confirm', { toolCall, confirm, rules });
     }
 
     function onSubagentConfirm(entry, toolCall, confirm, rules) {

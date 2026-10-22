@@ -54,14 +54,14 @@
           :agent-id="agentId"
           :session-id="sessionId"
           :cwd="null"
-          :on-ask-user-submit="handleAskUserSubmit"
-          :on-subagent-ask-user-submit="handleSubagentAskUserSubmit"
+          :on-ask-user-submit="onAskUserSubmit"
+          :on-subagent-ask-user-submit="onSubagentAskUserSubmit"
           :on-cwd-change="noop"
           hide-input
           empty-text="会话暂无消息"
           @send="handleSend"
-          @user-confirm="handleUserConfirm"
-          @subagent-confirm="handleSubagentConfirm"
+          @user-confirm="onUserConfirm"
+          @subagent-confirm="onSubagentConfirm"
           @interrupt="interrupt"
         />
       </div>
@@ -217,22 +217,6 @@ export default defineComponent({
       return send(blocks);
     }
 
-    function handleUserConfirm({ toolCall, confirm, replyId, rules }) {
-      return onUserConfirm(toolCall, confirm, replyId, rules);
-    }
-
-    function handleSubagentConfirm({ entry, toolCall, confirm, rules }) {
-      return onSubagentConfirm(entry, toolCall, confirm, rules);
-    }
-
-    function handleAskUserSubmit(toolCall, replyId, answers) {
-      return onAskUserSubmit(toolCall, replyId, answers);
-    }
-
-    function handleSubagentAskUserSubmit(entry, toolCall, answers) {
-      return onSubagentAskUserSubmit(entry, toolCall, answers);
-    }
-
     onUnmounted(() => {
       abort();
       audioManager?.disposeAll();
@@ -253,10 +237,10 @@ export default defineComponent({
       subagentHitl,
       agentName,
       handleSend,
-      handleUserConfirm,
-      handleSubagentConfirm,
-      handleAskUserSubmit,
-      handleSubagentAskUserSubmit,
+      onUserConfirm,
+      onSubagentConfirm,
+      onAskUserSubmit,
+      onSubagentAskUserSubmit,
       interrupt,
       noop,
     };
