@@ -50,10 +50,10 @@ pnpm format:check
 
 - 仓库内：`docs/API.md`（直连清单）、`docs/API-java-proxy.md`（Java 中转映射，含 SSE/multipart/下载备注）、`docs/STRUCTURE.md`（↔ 官方 React 结构对照）、`docs/DATA-FLOW.md`（以 chat 会话为例的端到端数据流）。
 - **AgentScope 官方文档（查阅资料）**：[`https://docs.agentscope.io/llms.txt`](https://docs.agentscope.io/llms.txt) —— LLM 友好的文档总索引，进入后按 `/_llms/*` 索引逐级下钻到具体页面。需确认后端行为、协议语义、SDK API 时优先查它。
-  - 版本化入口：`https://docs.agentscope.io/zh/versions/<version>`；该 `<version>` 取自 `package.json` 的 `version`——它代表**本项目实现/对齐到的 AgentScope 版本**（当前 2.0.8），`AppSidebar.vue` 据此链接到对应版本文档。
+  - 版本化入口：`https://docs.agentscope.io/zh/versions/<version>`；该 `<version>` 取自 `package.json` 的 `version`——它代表**本项目实现/对齐到的 AgentScope 版本**（当前 2.0.9），`AppSidebar.vue` 据此链接到对应版本文档。
   - 新项目用 `/stable/`；不要混用 AgentScope 1.x 与 2.x API；引用安装/示例代码时标明版本。
 
 ## Notes
 
-- 版本号：`package.json` 的 `version` 代表**本项目实现/对齐到的 AgentScope 版本**（非本 UI 自身版本），是唯一来源；`AppSidebar.vue` 直接 import 并链接到 `https://docs.agentscope.io/zh/versions/<version>`（当前 2.0.8），跟进新 AgentScope 版本时同步升级。
+- 版本号：`package.json` 的 `version` 代表**本项目实现/对齐到的 AgentScope 版本**（非本 UI 自身版本），是唯一来源；`AppSidebar.vue` 直接 import 并链接到 `https://docs.agentscope.io/zh/versions/<version>`（当前 2.0.9），跟进新 AgentScope 版本时同步升级。
 - Markdown 渲染：流式消息统一走 `src/components/md/`（见 Architecture）。拼接后的 HTML 必须整体经 DOMPurify 消毒一次（如 `md/diff.js`、`src/views/mcp/HubPanel.vue` 的 readme），不要拆分 sanitize。
