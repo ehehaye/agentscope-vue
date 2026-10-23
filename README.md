@@ -29,6 +29,16 @@ SOP（Standard Operating Procedure，标准作业流程）模块支持流程定�
   <img src="docs/images/sop-run.png" alt="SOP 运行详情与人工验收" width="880" />
 </p>
 
+## 导出：Word / PDF
+
+聊天历史与 SOP 交付内容支持一键导出 Word（`.docx`）：
+
+- **按角色分段**：消息按 `用户` / `助手` 分组，连续同角色消息自动合并；只导出文本内容，`thinking`、工具调用、工具结果与数据块会被跳过。
+- **内容还原**：用户消息按纯文本保留原始换行（与界面一致），助手消息按 Markdown 渲染；标题、列表、表格、代码块与 ECharts 图表会一并写入，图表以 PNG 图片内嵌。
+- **按需加载**：`docx` 依赖只在点击导出时动态加载，不影响首屏体积。
+
+实现上分为两层：[src/utils/export.js](src/utils/export.js) 负责会话语义（角色分段、文本提取），[src/utils/word.js](src/utils/word.js) 是通用的 Markdown → docx 转换器，复用 Markdown 渲染层的消毒 HTML 与自定义节点注册（`registry.js` 的 `toDocx`）。按钮入口在 [src/components/exports/](src/components/exports/)：`ExportButton` 按 `type` 分发，当前入口使用 `word`，同时保留 `pdf`（浏览器打印）分支。
+
 ## 技术栈与兼容策略
 
 | 依赖 | 当前实现 | 说明 |
@@ -41,6 +51,7 @@ SOP（Standard Operating Procedure，标准作业流程）模块支持流程定�
 | 组合式 API | `@vue/composition-api` | 由 [src/plugins/composition-api.js](src/plugins/composition-api.js) 统一注册；业务代码统一从 [src/composables/vue.js](src/composables/vue.js) 桥接导入，升级时只需替换桥接层 |
 | 样式 | Tailwind CSS v2（`@tailwindcss/postcss7-compat`）+ Less | 类名、CSS 变量与根容器均做了命名空间隔离，见下文 |
 | 旧浏览器兼容 | `abort-signal-polyfill` + core-js | 启动时经 [src/polyfills/index.js](src/polyfills/index.js) 引入，为不支持 `AbortSignal.any / timeout / abort` 的旧浏览器补齐能力；按 CJS 路径引入，以规避老构建工具对 `exports` 字段的限制 |
+| 导出 | `docx`（按需加载）+ `vue-print-nb` | Word 导出复用 Markdown 渲染层；PDF 走浏览器打印，入口按 `type` 分发 |
 
 若现有工程同样使用 vue-cli 4 / Vue 2.6，可直接将 `src/` 下的组件与视图迁移过去，替换或补充路由、store 后即可接入，无需升级 Element UI、vue-router 或 vuex。
 
@@ -110,7 +121,7 @@ localStorage.setItem(AppStorageKeys.SERVER_URL, 'http://hostname/proxy/api/');
 src/
 ├── api              # 后端接口封装 + 端点映射表（mapping.js：direct 直连 / proxy Java 中转）
 ├── assets           # 图片、字体等静态资源
-├── components       # 业务组件（chat、panel、dialog、drawer、form、sop、layout、ui、iconify 等）
+├── components       # 业务组件（chat、exports、md、panel、dialog、drawer、form、sop、layout、ui 等）
 ├── composables      # 组合式逻辑
 ├── constants        # 常量集中地（app-state.js：App* 枚举 + AppStorageKeys 本地存储键；protocol.js：外部协议）
 ├── lib              # 工具库 / 第三方适配
@@ -119,7 +130,7 @@ src/
 ├── router           # 路由
 ├── store            # Vuex 状态
 ├── styles           # 全局样式：index.css（作用域化的 @tailwind base 预检 + Tailwind + CSS 变量）、atomic.css、element-overrides.less、Less 变量
-├── utils            # 工具函数
+├── utils            # 工具函数（export.js 会话导出分段、word.js Markdown→docx、file.js 下载与文件名清洗等）
 └── views            # 页面视图（chat、setup、knowledge、mcp、schedule、skill、sop 等）
 ```
 
