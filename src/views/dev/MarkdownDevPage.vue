@@ -14,6 +14,12 @@
       </el-button>
       <el-button
         size="small"
+        :loading="exporting"
+        @click="onExportWord"
+        >导出 Word</el-button
+      >
+      <el-button
+        size="small"
         type="primary"
         :loading="streaming"
         @click="startStream"
@@ -56,6 +62,7 @@
 <script>
 import { defineComponent } from '@/composables/vue';
 import MarkdownRenderer from '@/components/md/MarkdownRenderer.vue';
+import { downloadDocxFromMarkdown } from '@/utils/word';
 
 const STATIC_SAMPLE = `# AgentScope 渲染验证
 
@@ -145,6 +152,7 @@ export default defineComponent({
       xssSample: XSS_SAMPLE,
       streamContent: '',
       streaming: false,
+      exporting: false,
       timer: null,
     };
   },
@@ -164,6 +172,18 @@ export default defineComponent({
       if (this.timer) {
         clearInterval(this.timer);
         this.timer = null;
+      }
+    },
+    async onExportWord() {
+      if (this.exporting) return;
+      this.exporting = true;
+      try {
+        await downloadDocxFromMarkdown(this.staticSample);
+      } catch (err) {
+        console.error('[MarkdownDevPage] 导出 Word 失败', err);
+        this.$message.error('导出 Word 失败，详见控制台');
+      } finally {
+        this.exporting = false;
       }
     },
     startStream() {

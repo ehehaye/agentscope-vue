@@ -19,11 +19,12 @@ function warnDuplicate(kind, key) {
   console.warn(`[md/registry] ${kind} "${key}" 已注册，本次注册将覆盖旧的注册项`);
 }
 
-export function registerCodeBlockComp(lang, { component, resolve }) {
+export function registerCodeBlockComp(lang, { component, resolve, toDocx }) {
   if (CODE_BLOCK_COMPONENTS.has(lang)) warnDuplicate('代码块渲染器', lang);
   CODE_BLOCK_COMPONENTS.set(lang, {
     component,
     resolve,
+    toDocx,
     filter(node) {
       const attribs = node.attribs || {};
       return attribs['data-complete'] === '1';
@@ -31,12 +32,13 @@ export function registerCodeBlockComp(lang, { component, resolve }) {
   });
 }
 
-export function registerTagComp(tag, { component, resolve, filter }) {
+export function registerTagComp(tag, { component, resolve, filter, toDocx }) {
   if (TAG_COMPONENTS.has(tag)) warnDuplicate('标签渲染器', tag);
-  TAG_COMPONENTS.set(tag, { component, resolve, filter });
+  TAG_COMPONENTS.set(tag, { component, resolve, filter, toDocx });
 }
 
-export function resolveRenderer(node) {
+// 渲染与导出共用同一套节点匹配规则：优先 data-lang（代码块），其次 tagName
+function matchRenderer(node) {
   if (!node || node.type !== 'tag') return null;
   const attribs = node.attribs || {};
   const lang = attribs['data-lang'];
@@ -48,8 +50,22 @@ export function resolveRenderer(node) {
   try {
     if (entry.filter && !entry.filter(ctx)) return null;
     const props = entry.resolve ? entry.resolve(ctx) : attribs;
-    return props == null ? null : { component: entry.component, props };
+    return props == null ? null : { entry, props };
   } catch (err) {
     return null;
   }
+}
+
+export function resolveRenderer(node) {
+  const matched = matchRenderer(node);
+  return matched ? { component: matched.entry.component, props: matched.props } : null;
+}
+
+/**
+ * 导出层入口：返回组件的 props（与 Vue 组件拿到的完全一致）和可选的 docx 转换器。
+ * toDocx 缺省时由导出层降级为纯文本。
+ */
+export function resolveDocxRenderer(node) {
+  const matched = matchRenderer(node);
+  return matched ? { props: matched.props, toDocx: matched.entry.toDocx } : null;
 }

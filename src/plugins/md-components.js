@@ -1,5 +1,5 @@
 /**
- * Markdown 标签覆盖注册
+ * Markdown 自定义渲染注册
  */
 import VChart from '@/components/echarts/VChart.vue';
 import { registerCodeBlockComp } from '@/components/md/registry';
@@ -13,5 +13,8 @@ registerCodeBlockComp('echarts', {
       // JSON 不合法，回退默认代码块渲染
       return null;
     }
+  },
+  toDocx({ option }, ctx) {
+    return ctx.renderEcharts(option);
   },
 });
