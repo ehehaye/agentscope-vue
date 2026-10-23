@@ -11,7 +11,7 @@
  *   以及本模块的 `currentKey` / `pendingInput` / `subagentHitl` 等 state 字段。
  */
 import { EventType } from '@agentscope-ai/agentscope/event';
-import { appendEvent, AssistantMsg, UserMsg } from '@agentscope-ai/agentscope/message';
+import { AssistantMsg, UserMsg } from '@agentscope-ai/agentscope/message';
 import { AppConnectionState, AppReplyPhase } from '@/constants/app-state';
 import { BackendCustomEventName, SdkBlockType, SdkMessageRole, SdkToolResultState } from '@/constants/protocol';
 import { appendEventReactive, findToolBlocks, hasPendingToolCall, hitlKey, replaceMessage } from '@/utils/agentscope';
