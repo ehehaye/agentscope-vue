@@ -89,6 +89,9 @@ module.exports = {
         ),
         // htmlparser2 的 ESM 构建含 webpack 4 不支持的 `export * as`，强制走 CommonJS 入口
         htmlparser2: path.resolve(__dirname, 'node_modules/htmlparser2/lib/index.js'),
+        // docx 的 ESM 构建含 rolldown 的 `typeof require` 兼容分支，webpack 4 会报
+        // Critical dependency，改用 CommonJS 构建（按需 import 时仍会单独分包）
+        docx: path.resolve(__dirname, 'node_modules/docx/dist/index.cjs'),
       },
     },
   },
