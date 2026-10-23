@@ -47,7 +47,8 @@
     "vue": "2.6.14",
     "vue-print-nb": "^1.7.5",
     "vue-router": "^3.6.5",
-    "vuex": "^3.6.2"
+    "vuex": "^3.6.2",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@babel/plugin-transform-numeric-separator": "^7.22.0",
