@@ -22,6 +22,23 @@ import { defineComponent, ref, onMounted, onBeforeUnmount, watch, getCurrentInst
 import { usePrintEvents } from '@/composables/usePrintEvents';
 import { cn } from '@/lib/utils';
 
+/** 默认 toolbox：仅保留 PNG 导出；每次返回新对象，避免多实例共享被 ECharts 内部改写 */
+const createDefaultToolbox = () => ({
+  show: true,
+  right: 8,
+  top: 8,
+  feature: {
+    saveAsImage: {
+      show: true,
+      title: '保存为图片',
+      type: 'png',
+      pixelRatio: 2,
+      backgroundColor: '#fff',
+      excludeComponents: ['toolbox'],
+    },
+  },
+});
+
 export default defineComponent({
   name: 'VChart',
   props: {
@@ -52,6 +69,12 @@ export default defineComponent({
     let resizeObserver = null;
     let resizeFrame = 0;
 
+    /** 未显式指定 toolbox 时注入默认工具栏，提供 PNG 导出 */
+    const withDefaultToolbox = (option) => {
+      if (!option || option.toolbox !== undefined) return option;
+      return { ...option, toolbox: createDefaultToolbox() };
+    };
+
     /** 将父级 $listeners 转发为 ECharts 事件（如 click、mouseover），查找当前监听器，父级更新处理器无需重新绑定 */
     const bindEchartsEvents = () => {
       const listeners = instance.proxy.$listeners || {};
@@ -65,8 +88,8 @@ export default defineComponent({
 
     const initChart = () => {
       if (!el.value) return;
-      chart = echarts.init(el.value, props.theme, { renderer: 'svg', ...props.initOptions });
-      chart.setOption(props.option, { ...props.updateOptions });
+      chart = echarts.init(el.value, props.theme, { renderer: 'canvas', ...props.initOptions });
+      chart.setOption(withDefaultToolbox(props.option), { ...props.updateOptions });
       if (props.group) chart.group = props.group;
       if (props.loading) chart.showLoading();
       bindEchartsEvents();
@@ -140,7 +163,7 @@ export default defineComponent({
     watch(
       () => props.option,
       (option) => {
-        if (chart) chart.setOption(option, { ...props.updateOptions });
+        if (chart) chart.setOption(withDefaultToolbox(option), { ...props.updateOptions });
       },
       { deep: true },
     );
