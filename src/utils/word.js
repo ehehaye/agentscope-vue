@@ -332,6 +332,30 @@ function createConverter(docx) {
   return { blocks, orderedListDefinition };
 }
 
+const defaultDocxName = () => `export-${new Date().toISOString().replace(/[-:T]/g, '').slice(0, 14)}.docx`;
+
+/**
+ * 通用 docx 构建器：懒加载 docx，暴露 Markdown → 块转换与保存能力。
+ * 文档结构（分节、标签等）由调用方决定，word.js 不感知业务语义。
+ */
+export async function createDocxBuilder() {
+  // docx 依赖在导出时按需加载，避免进入首屏包
+  const docx = await import('docx');
+  const converter = createConverter(docx);
+  return {
+    docx,
+    markdownBlocks: (markdown) => converter.blocks(parseDocument(renderMarkdownToHtml(markdown)).children),
+    async save(children, filename) {
+      // 空文档补一个空段落，避免生成 Word 打不开的 section
+      const doc = new docx.Document({
+        numbering: { config: [converter.orderedListDefinition] },
+        sections: [{ children: children.length ? children : [new docx.Paragraph({})] }],
+      });
+      triggerDownload(await docx.Packer.toBlob(doc), filename || defaultDocxName());
+    },
+  };
+}
+
 /**
  * 将 Markdown 源码转换为 .docx 并触发下载
  *
@@ -339,17 +363,7 @@ function createConverter(docx) {
  * @param {string} [filename] - 文件名，缺省为 export-YYYYMMDD-HHmmss.docx
  */
 export async function downloadDocxFromMarkdown(markdown, filename) {
-  const name = filename || `export-${new Date().toISOString().replace(/[-:T]/g, '').slice(0, 14)}.docx`;
-  // docx 依赖在导出时按需加载，避免进入首屏包
-  const docx = await import('docx');
-  const converter = createConverter(docx);
-  const html = renderMarkdownToHtml(markdown);
-  const children = await converter.blocks(parseDocument(html).children);
-  // 空文档补一个空段落，避免生成 Word 打不开的 section
-  const doc = new docx.Document({
-    numbering: { config: [converter.orderedListDefinition] },
-    sections: [{ children: children.length ? children : [new docx.Paragraph({})] }],
-  });
-  const blob = await docx.Packer.toBlob(doc);
-  triggerDownload(blob, name);
+  const builder = await createDocxBuilder();
+  const children = await builder.markdownBlocks(markdown);
+  await builder.save(children, filename);
 }

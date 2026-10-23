@@ -67,7 +67,10 @@
         v-if="hideInput && msgs.length > 0 && !showFlipCard"
         class="tw-absolute tw-bottom-1 tw-right-3"
       >
-        <PrintHistoryButton target="#as-chat-history" />
+        <ExportButton
+          type="word"
+          :msgs="msgs"
+        />
       </div>
       <FlipCard
         :visible="showFlipCard"
@@ -104,8 +107,9 @@
         @interrupt="onInterrupt"
       >
         <template #actions>
-          <PrintHistoryButton
-            target="#as-chat-history"
+          <ExportButton
+            type="word"
+            :msgs="msgs"
             v-show="msgs.length > 0"
             :disabled="showFlipCard"
           />
@@ -139,7 +143,7 @@ import ConfirmCard from './ConfirmCard.vue';
 import AskUserCard from './AskUserCard.vue';
 import SubagentHitlCard from './SubagentHitlCard.vue';
 import TimeMarker from './TimeMarker.vue';
-import PrintHistoryButton from './PrintHistoryButton.vue';
+import ExportButton from '@/components/exports/ExportButton.vue';
 import WorkingDirectoryDialog from '@/components/dialog/WorkingDirectoryDialog.vue';
 
 const TIME_MARKER_GAP_MS = 10 * 60 * 1000;
@@ -158,7 +162,7 @@ export default defineComponent({
     AskUserCard,
     SubagentHitlCard,
     TimeMarker,
-    PrintHistoryButton,
+    ExportButton,
     WorkingDirectoryDialog,
   },
   props: {

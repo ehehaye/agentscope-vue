@@ -45,10 +45,11 @@
             :block="block"
           />
         </div>
-        <PrintHistoryButton
+        <ExportButton
+          type="word"
           class="tw-absolute tw-bottom-3 tw-right-3"
-          target="#as-sop-delivery-content"
-          :title="printTitle"
+          :msgs="exportMsgs"
+          :filename="exportFilename"
         />
       </div>
       <div
@@ -103,12 +104,12 @@
 import { defineComponent, computed } from '@/composables/vue';
 import Collapsible from '@/components/ui/Collapsible.vue';
 import ASBlock from '@/components/chat/ASBlock.vue';
-import PrintHistoryButton from '@/components/chat/PrintHistoryButton.vue';
+import ExportButton from '@/components/exports/ExportButton.vue';
 import { agentDisplayName, verifierLabel } from '@/utils/sop';
 
 export default defineComponent({
   name: 'SopStepDelivery',
-  components: { Collapsible, ASBlock, PrintHistoryButton },
+  components: { Collapsible, ASBlock, ExportButton },
   props: {
     step: { type: Object, default: null },
     agents: { type: Array, default: () => [] },
@@ -128,9 +129,15 @@ export default defineComponent({
       return '尚未交付';
     });
 
-    const printTitle = computed(() => {
-      if (!props.step) return '交付内容';
-      return `第 ${props.step.index + 1} 步 · ${props.step.definition.subject} - 交付内容`;
+    // 交付内容是 SDK content blocks，包成单条 assistant 消息交给导出组件，
+    // 组件内部只取 text 块（thinking / tool 等会被跳过）
+    const exportMsgs = computed(() =>
+      submissionBlocks.value.length ? [{ role: 'assistant', content: submissionBlocks.value }] : [],
+    );
+
+    const exportFilename = computed(() => {
+      if (!props.step) return '交付内容.docx';
+      return `第 ${props.step.index + 1} 步 · ${props.step.definition.subject} - 交付内容.docx`;
     });
 
     function formatTime(value) {
@@ -141,7 +148,8 @@ export default defineComponent({
       submissionBlocks,
       verifications,
       emptySubmissionText,
-      printTitle,
+      exportMsgs,
+      exportFilename,
       formatTime,
       agentDisplayName,
       verifierLabel,

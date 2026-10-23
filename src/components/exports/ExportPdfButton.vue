@@ -16,7 +16,7 @@
     <button
       v-show="false"
       v-print="printOptions"
-      ref="print"
+      ref="printBtn"
     ></button>
   </div>
 </template>
@@ -35,7 +35,7 @@ const buildExtraHead = ({ target, colorAdjust }) => {
 };
 
 export default defineComponent({
-  name: 'PrintHistoryButton',
+  name: 'ExportPdfButton',
   directives: { print },
   components: { Icon },
   props: {
@@ -67,16 +67,18 @@ export default defineComponent({
       },
     );
 
-    const print = ref(null);
+    const printBtn = ref(null);
     const trigger = async () => {
       // 打印前可能需要更新数据、调整打印样式，这些 DOM 变更要在打印窗口弹出前完成。
       // vue-print-nb 未提供异步回调，因此先派发 beforeprint，再用 nextTick 等待 DOM 更新后再触发打印。
       window.dispatchEvent(new Event('beforeprint'));
       await nextTick();
-      print.value?.click();
+      // popTitle 同样只在 bind 时捕获一次，点击时同步刷新，避免标题变化后仍是旧值
+      printOptions.popTitle = props.title || document.title;
+      printBtn.value?.click();
     };
 
-    return { printOptions, print, trigger };
+    return { printOptions, printBtn, trigger };
   },
 });
 </script>
