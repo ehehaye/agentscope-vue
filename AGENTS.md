@@ -23,7 +23,7 @@ pnpm format           # prettier --write
 pnpm format:check
 ```
 
-- 单测：jest 29 + `@vue/vue2-jest`（不走 `@vue/cli-plugin-unit-jest`），配置见 `jest.config.js`；模板编译使用 `vue-template-babel-compiler` 以支持 `?.`，与构建保持一致。当前 18 个 suite / 169 个用例，全部通过；`tests/unit/setup.js` 通过 `setupFiles` 全局安装 Composition API。
+- 单测：jest 29 + `@vue/vue2-jest`（不走 `@vue/cli-plugin-unit-jest`），配置见 `jest.config.js`；模板编译使用 `vue-template-babel-compiler` 以支持 `?.`，与构建保持一致。当前 20 个 suite / 183 个用例，全部通过；`tests/unit/setup.js` 通过 `setupFiles` 全局安装 Composition API。
 - Prettier：`printWidth 120`、单引号、`singleAttributePerLine`，改完代码跑 `pnpm format:check`。
 
 ## Architecture
@@ -33,8 +33,9 @@ pnpm format:check
 - `src/store/` — Vuex `modules/{app,workspace,chat,upload}`，由 `index.js` 组装；`app/setupComplete` 驱动 `/setup` 路由门禁。
 - `src/constants/` — `app-state.js`：`AppStorageKeys`（localStorage 键 SSOT，禁止散落字面量）+ `AppDefaults` + `App*` 前端状态机枚举；`protocol.js`：SDK/后端协议枚举。
 - `src/router/index.js` — history 模式；`/setup` 公开页，其余挂在 `components/layout/AppLayout.vue` 下（chat/credential/channel/schedule/sop/knowledge/mcp/skill/dev）。
-- `src/components/` — 业务组件（`chat/panel/dialog/drawer/form/md/sop/...`）；`src/views/` — 页面；`src/lib/` — `toast`、工具；`src/utils/` — 纯函数（`ast/html/common/agentscope/sop/streamingAudio`）。
-- `src/components/md/` — Markdown 渲染层：`MarkdownRenderer.vue`（`marked` + `highlight.js` + `remend` + `htmlparser2` 生成 AST）→ `NodeRenderer.vue` / `TextNodeRenderer.vue` 递归渲染；`registry.js` 注册代码块/标签自定义组件（`registerCodeBlockComp` / `registerTagComp`）；`diff.js` 做块级增量解析（流式从 O(n²) 降到 O(n)）。内部验证页 `src/views/dev/MarkdownDevPage.vue`（`/dev/markdown`）。
+- `src/components/` — 业务组件（`chat/exports/panel/dialog/drawer/form/md/sop/...`）；`src/views/` — 页面；`src/lib/` — `toast`、工具；`src/utils/` — 纯函数（`ast/html/common/agentscope/sop/streamingAudio/export/word/file`）。
+- `src/components/md/` — Markdown 渲染层：`MarkdownRenderer.vue`（`marked` + `highlight.js` + `remend` + `htmlparser2` 生成 AST）→ `NodeRenderer.vue` / `TextNodeRenderer.vue` 递归渲染；`marked.js` 集中 marked renderer/lexer 配置，`render.js` 提供「md → 消毒 HTML」共享入口；`registry.js` 注册代码块/标签自定义组件（`registerCodeBlockComp` / `registerTagComp`，可选 `toDocx` 参与 Word 导出）；`diff.js` 做块级增量解析（流式从 O(n²) 降到 O(n)）。内部验证页 `src/views/dev/MarkdownDevPage.vue`（`/dev/markdown`）。
+- `src/components/exports/` — 导出入口：`ExportButton.vue` 按 `type` 分发（默认 `word`，可选 `pdf`）到 `ExportWordButton.vue`（会话消息 → docx）与 `ExportPdfButton.vue`（区域打印/PDF）。Word 管线分两层：`utils/export.js` 负责会话语义（角色标签、用户纯文本），`utils/word.js` 是通用 Markdown/HTML AST → docx 转换器（`docx` 按需懒加载），两者不互相耦合。
 - `src/polyfills/` — 旧浏览器补齐 `AbortSignal` 等，`main.js` 首行引入。
 
 ## Conventions
@@ -45,6 +46,7 @@ pnpm format:check
 - 样式：Tailwind 类加 `tw-`，设计令牌用 `--as-` 变量（定义在 `src/styles/index.css`）。
 - `webpack 4` 限制在 `vue.config.js` 里以 alias / `transpileDependencies` 绕过（`@agentscope-ai/agentscope/event|message`、`htmlparser2`、`remend`）；新增 ESM-only 依赖需同步处理 alias 与 `jest.config.js` 的 `moduleNameMapper`/`transformIgnorePatterns`。
 - 工具结果监听：`useMessages(..., { tools: { [toolName]: (tool) => {}, '*': fallback } })`，在 `TOOL_RESULT_END` 后按工具名分发；`tool = { name, input, output }` 由 `src/utils/agentscope.js#findToolBlocks` 反查，分发逻辑在 `store/modules/chat.js#processEvent`。
+- 导出：Markdown → docx 统一走 `src/utils/word.js`（通用，不含角色/消息语义）；会话级语义（角色标签、用户纯文本、连续同角色合并）放 `src/utils/export.js#buildExportSections`；按钮与排版原语在 `src/components/exports/`。新增可导出的 Markdown 自定义节点时，在 `registry.js` 的注册项里提供 `toDocx(props, ctx)` 即可。
 
 ## Docs
 
@@ -57,3 +59,4 @@ pnpm format:check
 
 - 版本号：`package.json` 的 `version` 代表**本项目实现/对齐到的 AgentScope 版本**（非本 UI 自身版本），是唯一来源；`AppSidebar.vue` 直接 import 并链接到 `https://docs.agentscope.io/zh/versions/<version>`（当前 2.0.9），跟进新 AgentScope 版本时同步升级。
 - Markdown 渲染：流式消息统一走 `src/components/md/`（见 Architecture）。拼接后的 HTML 必须整体经 DOMPurify 消毒一次（如 `md/diff.js`、`src/views/mcp/HubPanel.vue` 的 readme），不要拆分 sanitize。
+- Markdown 导出：`utils/word.js` 复用 `md/render.js` 的消毒 HTML 与 `registry.js` 的节点匹配规则（`data-lang` / `tagName`），因此新增自定义节点只需在注册处补 `toDocx`；`docx` 依赖必须保持按需 `import()`，避免进入首屏包。

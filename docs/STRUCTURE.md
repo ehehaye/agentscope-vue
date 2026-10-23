@@ -42,8 +42,8 @@ App.tsx  index.css  main.tsx  vite-env.d.ts
 api/                       # client.js + 各资源 {list,create,update,delete,...}
 assets/imgs/               # 静态资源
 components/
-  badge/ chat/ common/ dialog/ drawer/ form/
-  knowledge/ layout/ panel/ popover/ select/ sop/ ui/
+  badge/ chat/ common/ dialog/ drawer/ exports/ form/
+  knowledge/ layout/ md/ panel/ popover/ select/ sop/ ui/
 composables/               # 桥接层 + 业务 composable（useAgents/useMessages/...）
 constants/                 # 常量来源集中地（app-state.js：App* 自定义枚举 + AppStorageKeys 本地存储键；protocol.js：Sdk*/Backend* 外部协议）
 lib/                       # toast/utils
@@ -79,7 +79,8 @@ views/                     # 业务页（路由层）
 | `components/popover/*` | `components/popover/*` | `ModelParametersPopover` 等。 |
 | `components/layout/*` | `components/layout/*` | 入口壳 `AppLayout.vue` / `AppSidebar.vue`。 |
 | `components/ui/*`（shadcn 按钮/侧栏等） | `components/ui/*` + `components/md/*` | shadcn 风格 → Element UI + 自研 ui/md（图标入口为 `ui/Icon.vue`）。 |
-| `components/md/*`（streamdown 包装） | `marked`（由 `ASBlock` 等使用） | 渲染管线不同。 |
+| `components/md/*`（streamdown 包装） | `marked`（由 `ASBlock` 等使用） | 渲染管线不同；`md/registry.js` 同时承载渲染组件与 Word 导出（`toDocx`）注册。 |
+| （官方无对应） | `components/exports/*` | 导出入口：`ExportButton` 按 `type` 分发到 `ExportWordButton` / `ExportPdfButton`；Word 管线为 `utils/export.js`（角色分段）→ `utils/word.js`（通用 md→docx，`docx` 懒加载）。 |
 | `components/badge/` `form/` `drawer/` `tour/` `error/` `hub/` `knowledge/` | `components/badge/` `form/` `drawer/` `knowledge/`（其余未引入） | `tour` 官方独有；`hub` 并入 `views/mcp/views/skill` 与 `useMCPHubs/useSkillHubs`。 |
 | `types/`（TS 类型） | 无（迁移期未引入 TS） | — |
 | `i18n/` | 无 | — |
@@ -96,6 +97,8 @@ views/                     # 业务页（路由层）
 - **`styles/base.css` + `atomic.css`**：本仓库特有，把 Tailwind base 预检用 `:where(#as-app)` 作用域化，再补少量从任意值语法抽离出的 `as-*` 原子类。
 - **`views/setup/`、`views/dev/`**：`setup` 为后端地址/凭证等初始化门禁（`router.beforeEach` 强校验）；`dev` 为内部 Markdown 渲染验证页（`/dev/markdown`），官方未对应。
 - **`components/sop/`**：SOP 业务组件（`SopCard` / `SopStepDefinitionList` / `SopRunTable` / `SopVerdictBar` / `SopStepStrip` / `SopStepDelivery` / `SopSessionViewer`）；`views/sop/` 只保留路由页与页面级状态容器。
+- **`components/exports/` + `utils/export.js` + `utils/word.js`**：本仓库特有的导出能力。`ExportButton` 按 `type` 分发 Word/PDF；会话消息先经 `utils/export.js#buildExportSections` 转成「角色标签 + 纯文本/Markdown」段落，再由 `utils/word.js` 复用渲染层的消毒 HTML 与自定义节点注册（`toDocx`）生成 `.docx`。`docx` 依赖按需 `import()`，不进入首屏包。
+- **`utils/file.js#sanitizeFilename`**：下载文件名统一按最严格的 Windows 规则清洗（`\/:*?"<>|` → `_`），`triggerDownload` 内部自动调用。
 
 ## 5. 端点映射表 `mapping.js`（本仓库特有）
 
