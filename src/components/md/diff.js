@@ -1,6 +1,6 @@
-import DOMPurify from 'dompurify';
 import remend from 'remend';
-import { marked } from 'marked';
+import { marked } from './marked';
+import { sanitizeMarkdownHtml } from './render';
 
 /**
  * 块级增量解析 mixin
@@ -116,9 +116,7 @@ export default {
       const tailHtml = tail ? marked(remend(tail)) : '';
 
       // 整体 sanitize（不能分开，否则 tail 里的恶意 script 可能逃过）
-      return DOMPurify.sanitize(stableUnsanitized + tailHtml, {
-        ALLOW_DATA_ATTR: true,
-      });
+      return sanitizeMarkdownHtml(stableUnsanitized + tailHtml);
     },
   },
 };

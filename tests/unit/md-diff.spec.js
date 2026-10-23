@@ -95,7 +95,8 @@ describe('getHtml', () => {
   it('渲染基础 markdown 为 HTML', () => {
     const html = createGetter('hello').getHtml();
     expect(html).toContain('hello');
-    expect(html).toContain('<p>');
+    // 走 md/marked.js 的共享配置，段落带渲染层类名
+    expect(html).toContain('<p class="md-p">');
   });
 
   it('多段内容整体拼接输出', () => {
