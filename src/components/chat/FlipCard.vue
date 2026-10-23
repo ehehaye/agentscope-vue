@@ -110,8 +110,6 @@ export default defineComponent({
   &-inner {
     position: relative;
     transform-origin: bottom center;
-    transform-style: preserve-3d;
-    will-change: transform, opacity;
     min-height: 0;
   }
 
