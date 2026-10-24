@@ -19,11 +19,14 @@ pnpm build            # 生产构建到 dist/
 pnpm preview          # 生产模式本地预览
 pnpm test:unit        # jest（tests/unit/**/*.spec.js）
 pnpm test:unit:watch
+pnpm lint             # ESLint：仅语法 + 未使用变量，不做样式检查
+pnpm lint:fix
 pnpm format           # prettier --write
 pnpm format:check
 ```
 
 - 单测：jest 29 + `@vue/vue2-jest`（不走 `@vue/cli-plugin-unit-jest`），配置见 `jest.config.js`；模板编译使用 `vue-template-babel-compiler` 以支持 `?.`，与构建保持一致。当前 20 个 suite / 183 个用例，全部通过；`tests/unit/setup.js` 通过 `setupFiles` 全局安装 Composition API。
+- ESLint：`.eslintrc.js` 只启用 `no-unused-vars`（`^_` 开头的变量/参数豁免）并借 `plugin:vue/base` 解析 `.vue` 的 `<script>`；**不启用任何样式/模板规则**，格式交给 Prettier。
 - Prettier：`printWidth 120`、单引号、`singleAttributePerLine`，改完代码跑 `pnpm format:check`。
 
 ## Architecture

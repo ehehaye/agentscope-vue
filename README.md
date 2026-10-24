@@ -78,6 +78,8 @@ pnpm dev           # 启动开发服务（默认端口 5173）
 pnpm build         # 生产构建
 pnpm preview       # 预览构建产物
 pnpm test:unit     # 运行单元测试
+pnpm lint          # ESLint：仅检查语法与未使用变量（不做样式检查）
+pnpm lint:fix      # ESLint 自动修复（可自动修复的问题）
 pnpm format        # 按 Prettier 规则格式化
 pnpm format:check  # 检查格式
 ```
