@@ -37,7 +37,7 @@ SOP（Standard Operating Procedure，标准作业流程）模块支持流程定�
 - **内容还原**：用户消息按纯文本保留原始换行（与界面一致），助手消息按 Markdown 渲染；标题、列表、表格、代码块与 ECharts 图表会一并写入，图表以 PNG 图片内嵌。
 - **按需加载**：`docx` 依赖只在点击导出时动态加载，不影响首屏体积。
 
-实现上分为两层：[src/utils/export.js](src/utils/export.js) 负责会话语义（角色分段、文本提取），[src/utils/word.js](src/utils/word.js) 是通用的 Markdown → docx 转换器，复用 Markdown 渲染层的消毒 HTML 与自定义节点注册（`registry.js` 的 `toDocx`）。按钮入口在 [src/components/exports/](src/components/exports/)：`ExportButton` 按 `type` 分发，当前入口使用 `word`，同时保留 `pdf`（浏览器打印）分支。
+实现上分为两层：[src/utils/export.js](src/utils/export.js) 负责会话语义（角色分段、文本提取），[src/utils/word.js](src/utils/word.js) 是通用的 Markdown → docx 转换器，复用 Markdown 渲染层的消毒 HTML 与自定义节点注册（`registry.js` 的 `toDocx`）。按钮入口在 [src/components/exports/](src/components/exports/)：`ExportButton` 按 `type` 分发，当前入口使用 `word`，同时保留 `pdf`（浏览器打印）分支。完整的端到端数据流向见 [docs/EXPORT_FLOW.md](docs/EXPORT_FLOW.md)。
 
 ## 技术栈与兼容策略
 
@@ -140,6 +140,7 @@ src/
 - [API-java-proxy.md](docs/API-java-proxy.md)：Java 中转映射版，含映射后的 URL / Method 与 SSE、multipart、文件下载等特殊场景说明。
 - [STRUCTURE.md](docs/STRUCTURE.md)：项目文件结构对照（当前 Vue 项目 ↔ 官方 React 项目）。
 - [DATA-FLOW.md](docs/DATA-FLOW.md)：数据流向说明，以 `src/views/chat/index.vue` 发起会话为例做端到端追踪。
+- [EXPORT_FLOW.md](docs/EXPORT_FLOW.md)：导出数据流向说明，以 `ExportWordButton.vue` + `utils/word.js` 为例追踪会话 / Markdown → Word（.docx）的完整走向。
 
 ## 扩展：监听工具执行结果
 
