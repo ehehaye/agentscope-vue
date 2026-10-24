@@ -84,7 +84,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed } from '@/composables/vue';
+import { defineComponent, computed } from '@/composables/vue';
 import Icon from '@/components/ui/Icon';
 import Spinner from '@/components/ui/Spinner.vue';
 import MinePanel from './MinePanel.vue';

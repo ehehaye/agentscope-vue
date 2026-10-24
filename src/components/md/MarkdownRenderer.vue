@@ -12,7 +12,6 @@
 import { defineComponent } from '@/composables/vue';
 import { parseDocument } from 'htmlparser2';
 import NodeRenderer from './NodeRenderer.vue';
-import { marked } from './marked';
 import diff from './diff';
 
 // 流式输出时最快每 120ms 重新解析一次，避免每来一小段就整篇重排

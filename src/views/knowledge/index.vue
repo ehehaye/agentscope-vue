@@ -171,7 +171,7 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const router = useRouter();
-    const { knowledgeBases, loading, refetch, remove, create } = useKnowledgeBases();
+    const { knowledgeBases, loading, refetch, remove } = useKnowledgeBases();
 
     const selectedKbId = ref(route.params.kbId);
     const createOpen = ref(false);

@@ -267,11 +267,7 @@ export default defineComponent({
     const cwd = computed(() => view.value?.session?.config?.cwd ?? pendingCwd.value ?? null);
 
     // ── 工作区（MCP / 技能） ────────────────────────────────
-    const { status: workspaceStatus, refetch: refetchWorkspaceStatus } = useWorkspaceStatus(
-      effectiveAgentId,
-      effectiveSessionId,
-      cwd,
-    );
+    const { refetch: refetchWorkspaceStatus } = useWorkspaceStatus(effectiveAgentId, effectiveSessionId, cwd);
 
     const {
       mcps,

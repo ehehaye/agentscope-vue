@@ -187,7 +187,7 @@ export default defineComponent({
     hub: { type: Object, default: null },
     installedNames: { type: Set, default: () => new Set() },
   },
-  setup(props, { emit }) {
+  setup(props) {
     const query = ref('');
     const hubIdRef = computed(() => props.hubId);
     const queryRef = computed(() => query.value);

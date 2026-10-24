@@ -63,7 +63,7 @@ export default defineComponent({
     stretch: { type: Boolean, default: false },
     cls: {
       type: Function,
-      default: (isOpen) => '',
+      default: () => '',
     },
   },
   setup(props, { emit }) {
