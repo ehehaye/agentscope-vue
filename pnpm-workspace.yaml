@@ -3,3 +3,4 @@ allowBuilds:
   ejs: true
   fsevents: true
   node-pty: true
+  yorkie: false

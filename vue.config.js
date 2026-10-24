@@ -41,7 +41,9 @@ module.exports = {
   publicPath,
   outputDir: 'dist',
   assetsDir: 'static',
-  lintOnSave: false,
+  // 由 @vue/cli-plugin-eslint 处理：'warning' 让 lint 结果以 warning 输出；
+  // 配合下面 eslint-loader 的 failOnError，error 级规则仍会中断构建。
+  lintOnSave: 'warning',
   // 仅转译发布为 ES2020+/ESM 的依赖（webpack 4 默认不转译 node_modules）。
   // 白名单来自 2026-09-07 实测：关闭全量转译后只有这 4 个包触发 module parse 失败，
   // 其余依赖（element-ui/date-fns/dompurify/remend/@iconify/vue2 等）均为 webpack 4 可解析产物。
@@ -67,6 +69,15 @@ module.exports = {
       args[0].cdnStyles = CDN_PACKAGES.map((pkg) => pkg.css).filter(Boolean);
       return args;
     });
+
+    // lintOnSave:'warning' 时 eslint-loader 把所有问题按 warning 输出；
+    // 打开 failOnError 让 error 级规则仍然中断构建。
+    if (config.module.rules.has('eslint')) {
+      config.module
+        .rule('eslint')
+        .use('eslint-loader')
+        .tap((options) => ({ ...options, failOnError: true }));
+    }
   },
   configureWebpack: {
     externals: cdnExternals,
