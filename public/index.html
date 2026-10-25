@@ -9,40 +9,86 @@
 	<title>AgentScope - Vue</title>
 	<% if (htmlWebpackPlugin.options.useCdn) { %>
 		<% htmlWebpackPlugin.options.cdnStyles.forEach(function(href) { %>
-		<link rel="stylesheet" href="<%= href %>" />
-		<% }) %>
-	<% } %>
-	<script>
-		// 首帧前应用主题，避免深色闪烁。
-		// 优先级：localStorage 主题键 > 系统偏好；与 Vuex app 模块同源。
-		// 注意：此脚本早于模块系统执行，无法 import；'as-theme' 必须与
-		// src/constants/app-state.js 的 AppStorageKeys.THEME 保持同值。
-		(function () {
-			try {
-				var stored = localStorage.getItem('as-theme');
-				var dark =
-					stored != null
-						? stored === 'dark'
-						: window.matchMedia('(prefers-color-scheme: dark)').matches;
-				document.documentElement.classList.toggle('dark', dark);
-			} catch (e) {
-				/* localStorage 不可用时跟随脚本默认（浅色） */
-			}
-		})();
-	</script>
+			<link rel="stylesheet" href="<%= href %>" />
+			<% }) %>
+				<% } %>
+					<script>
+						// 首帧前应用主题，避免深色闪烁。
+						// 优先级：localStorage 主题键 > 系统偏好；与 Vuex app 模块同源。
+						// 注意：此脚本早于模块系统执行，无法 import；'as-theme' 必须与
+						// src/constants/app-state.js 的 AppStorageKeys.THEME 保持同值。
+						(function () {
+							try {
+								var stored = localStorage.getItem('as-theme');
+								var dark =
+									stored != null
+										? stored === 'dark'
+										: window.matchMedia('(prefers-color-scheme: dark)').matches;
+								document.documentElement.classList.toggle('dark', dark);
+							} catch (e) {
+								/* localStorage 不可用时跟随脚本默认（浅色） */
+							}
+						})();
+					</script>
 </head>
 
 <body>
 	<noscript>
 		<strong>本站点需要启用 JavaScript 才能正常运行。</strong>
 	</noscript>
-	<div id="root"></div>
+	<div id="root">
+		<!-- 首屏 loading：纯内联、不依赖构建产物；应用挂载后 #root 被整体替换，自动消失。
+		     配色取自 src/styles/index.css 设计令牌（#aa3bff / #6b6f76 / #16171d 等），跟随 html.dark 切换。 -->
+		<style>
+			#root {
+				position: fixed;
+				inset: 0;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				gap: 14px;
+				background: #ffffff;
+				color: #6b6f76;
+				font: 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+					'Microsoft YaHei', sans-serif;
+			}
+
+			html.dark #root {
+				background: #16171d;
+				color: #a1a1a1;
+			}
+
+			.as-boot-spinner {
+				width: 28px;
+				height: 28px;
+				border-radius: 50%;
+				border: 3px solid rgba(170, 59, 255, 0.18);
+				border-top-color: #aa3bff;
+				animation: as-boot-spin 0.8s linear infinite;
+			}
+
+			@keyframes as-boot-spin {
+				to {
+					transform: rotate(360deg);
+				}
+			}
+
+			@media (prefers-reduced-motion: reduce) {
+				.as-boot-spinner {
+					animation-duration: 2.4s;
+				}
+			}
+		</style>
+		<div class="as-boot-spinner" role="status" aria-label="加载中"></div>
+		<div>加载中…</div>
+	</div>
 	<% if (htmlWebpackPlugin.options.useCdn) { %>
 		<% htmlWebpackPlugin.options.cdnScripts.forEach(function(src) { %>
-		<script src="<%= src %>"></script>
-		<% }) %>
-	<% } %>
-	<!-- built files will be auto injected -->
+			<script src="<%= src %>"></script>
+			<% }) %>
+				<% } %>
+					<!-- built files will be auto injected -->
 </body>
 
 </html>
