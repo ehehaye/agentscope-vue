@@ -156,6 +156,9 @@ importers:
       vue-template-compiler:
         specifier: 2.6.14
         version: 2.6.14
+      webpack-cdn-plugin:
+        specifier: ^3.3.1
+        version: 3.3.1(html-webpack-plugin@3.2.0(webpack@4.47.0(supports-color@6.1.0)))
 
 packages:
 
@@ -5920,6 +5923,13 @@ packages:
   sprintf-js@1.0.3:
     resolution: {integrity: sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g==}
 
+  sri-create@0.0.3:
+    resolution: {integrity: sha512-4ZL3TLvPvu0y/3YpTkZdd441ykiRnrdWJuvus99WIT7NWTS2Dl/dFdZ7j0+zuL8cZPAKG2qGSdB+OLTBMRNuyQ==}
+    hasBin: true
+
+  sri@1.1.0:
+    resolution: {integrity: sha512-6F5Ib0Bbybk8IJXg5HjIfa6InS+FLQFlTNlQzvR/nKFLJCJaAKZLF3mYQt+iHGHRUsxhnxCuvkdG3g9iIImFoA==}
+
   sshpk@1.18.0:
     resolution: {integrity: sha512-2p2KJZTSqQ/I3+HX42EpYOa2l3f8Erv8MWKsy2I9uf4wA7yFIkXRffYdsx86y6z4vHtV8u7g+pPlr8/4ouAxsQ==}
     engines: {node: '>=0.10.0'}
@@ -6561,6 +6571,12 @@ packages:
     resolution: {integrity: sha512-Ob8amZfCm3rMB1ScjQVlbYYUEJyEjdEtQ92jqiFUYt5VkEeO2v5UMbv49P/gnmCZm3A6yaFQzCBvpZqN4MUsdA==}
     engines: {node: '>= 6.14.4'}
     hasBin: true
+
+  webpack-cdn-plugin@3.3.1:
+    resolution: {integrity: sha512-xwhQ6xstFbPlgEkKNAOjXs/6YkPdzYeXl9na+CSBF7p1L88PZIGgL++vel4oiAnp+WTud7fhnSjlB79U6aN28w==}
+    engines: {node: '>=6.9'}
+    peerDependencies:
+      html-webpack-plugin: '>=3'
 
   webpack-chain@6.5.1:
     resolution: {integrity: sha512-7doO/SRtLu8q5WM0s7vPKPWX580qhi0/yBHkOxNkv50f6qB76Zy9o2wRTrrPULqYTvQlVHuvbA8v+G5ayuUDsA==}
@@ -14043,6 +14059,13 @@ snapshots:
 
   sprintf-js@1.0.3: {}
 
+  sri-create@0.0.3:
+    dependencies:
+      request: 2.88.2
+      sri: 1.1.0
+
+  sri@1.1.0: {}
+
   sshpk@1.18.0:
     dependencies:
       asn1: 0.2.6
@@ -14803,6 +14826,11 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
+
+  webpack-cdn-plugin@3.3.1(html-webpack-plugin@3.2.0(webpack@4.47.0(supports-color@6.1.0))):
+    dependencies:
+      html-webpack-plugin: 3.2.0(webpack@4.47.0(supports-color@6.1.0))
+      sri-create: 0.0.3
 
   webpack-chain@6.5.1:
     dependencies:

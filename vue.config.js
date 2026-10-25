@@ -1,41 +1,31 @@
 const path = require('path');
 const { codeInspectorPlugin } = require('code-inspector-plugin');
+const WebpackCdnPlugin = require('webpack-cdn-plugin');
 
 // 部署到子路径（如 GitHub Pages 的 /<repo>/）时用 VUE_APP_PUBLIC_PATH 覆盖；
 // 发布产物需与 src/router/index.js 的 base 保持同值。
 const publicPath = process.env.VUE_APP_PUBLIC_PATH || (process.env.NODE_ENV === 'production' ? './' : '/');
 
-// 开关取自 .env.production / .env.development：生产构建走 BootCDN，
-// development 始终 false（本地打包，离线可开发）；生产构建前改为 false 可退回全量本地打包（内网/离线部署场景）。
 const useCdn = process.env.VUE_APP_USE_CDN === 'true';
 
-// BootCDN 引入清单。key 为 webpack externals 的模块名（含子路径），value 为全局变量名。
-// 注意：element-ui 的 UMD 依赖 window.Vue，故 vue 必须一并 CDN 化且先于它加载。
-// lodash 本地为 4.18.1，BootCDN 最高仅 4.17.21（4.x API 冻结，兼容）。
-const CDN_PACKAGES = [
-  { module: 'vue', global: 'Vue', js: 'https://cdn.bootcdn.net/ajax/libs/vue/2.6.14/vue.min.js' },
+const CDN_MODULES = [
+  { name: 'vue', var: 'Vue', path: 'dist/vue.min.js' },
   {
-    module: 'element-ui',
-    global: 'ELEMENT',
-    js: 'https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.14/index.min.js',
-    css: 'https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.14/theme-chalk/index.min.css',
+    name: 'element-ui',
+    var: 'ELEMENT',
+    path: 'lib/index.js',
+    style: 'lib/theme-chalk/index.css',
   },
-  { module: 'echarts', global: 'echarts', js: 'https://cdn.bootcdn.net/ajax/libs/echarts/6.1.0/echarts.min.js' },
-  { module: 'lodash', global: '_', js: 'https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.21/lodash.min.js' },
-  {
-    module: 'highlight.js/lib/common',
-    global: 'hljs',
-    js: 'https://cdn.bootcdn.net/ajax/libs/highlight.js/11.12.0/highlight.min.js',
-  },
-  { module: 'dompurify', global: 'DOMPurify', js: 'https://cdn.bootcdn.net/ajax/libs/dompurify/3.4.15/purify.min.js' },
+  { name: 'echarts', var: 'echarts', path: 'dist/echarts.min.js' },
+  { name: 'lodash', var: '_', path: 'lodash.min.js' },
+  // highlight.js 的 npm 包只提供 CJS/ESM 构建，浏览器 UMD 由官方以同版本号发布在 @highlightjs/cdn-assets
+  { name: 'highlight.js', cdn: '@highlightjs/cdn-assets', var: 'hljs', path: 'highlight.min.js' },
+  { name: 'dompurify', var: 'DOMPurify', path: 'dist/purify.min.js' },
 ];
 
-const cdnExternals = useCdn
-  ? CDN_PACKAGES.reduce((acc, pkg) => {
-      acc[pkg.module] = pkg.global;
-      return acc;
-    }, {})
-  : {};
+// 业务代码引用的是子路径 highlight.js/lib/common，而插件用 name 同时充当包名与 externals 键，
+// 无法表达「模块 id ≠ 包名」，故单独补一条 externals；该包的版本与 URL 仍由上面的清单提供。
+const cdnExternals = useCdn ? { 'highlight.js/lib/common': 'hljs' } : {};
 
 module.exports = {
   publicPath,
@@ -62,14 +52,6 @@ module.exports = {
         return options;
       });
 
-    // 向 index.html 模板注入 CDN script/link 标签
-    config.plugin('html').tap((args) => {
-      args[0].useCdn = useCdn;
-      args[0].cdnScripts = CDN_PACKAGES.map((pkg) => pkg.js);
-      args[0].cdnStyles = CDN_PACKAGES.map((pkg) => pkg.css).filter(Boolean);
-      return args;
-    });
-
     // lintOnSave:'warning' 时 eslint-loader 把所有问题按 warning 输出；
     // 打开 failOnError 让 error 级规则仍然中断构建。
     if (config.module.rules.has('eslint')) {
@@ -85,6 +67,18 @@ module.exports = {
       codeInspectorPlugin({
         bundler: 'webpack',
       }),
+      // 仅在 CDN 构建时启用；development / 关闭 CDN 时依赖照常打进 bundle（离线可开发）。
+      ...(useCdn
+        ? [
+            new WebpackCdnPlugin({
+              prod: true,
+              publicPath,
+              pathToNodeModules: __dirname,
+              prodUrl: 'https://registry.npmmirror.com/:name/:version/files/:path',
+              modules: CDN_MODULES,
+            }),
+          ]
+        : []),
     ],
     resolve: {
       alias: {

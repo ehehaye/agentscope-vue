@@ -7,29 +7,24 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="icon" type="image/svg+xml" href="<%= BASE_URL %>agentscope.svg" />
 	<title>AgentScope - Vue</title>
-	<% if (htmlWebpackPlugin.options.useCdn) { %>
-		<% htmlWebpackPlugin.options.cdnStyles.forEach(function(href) { %>
-			<link rel="stylesheet" href="<%= href %>" />
-			<% }) %>
-				<% } %>
-					<script>
-						// 首帧前应用主题，避免深色闪烁。
-						// 优先级：localStorage 主题键 > 系统偏好；与 Vuex app 模块同源。
-						// 注意：此脚本早于模块系统执行，无法 import；'as-theme' 必须与
-						// src/constants/app-state.js 的 AppStorageKeys.THEME 保持同值。
-						(function () {
-							try {
-								var stored = localStorage.getItem('as-theme');
-								var dark =
-									stored != null
-										? stored === 'dark'
-										: window.matchMedia('(prefers-color-scheme: dark)').matches;
-								document.documentElement.classList.toggle('dark', dark);
-							} catch (e) {
-								/* localStorage 不可用时跟随脚本默认（浅色） */
-							}
-						})();
-					</script>
+	<script>
+		// 首帧前应用主题，避免深色闪烁。
+		// 优先级：localStorage 主题键 > 系统偏好；与 Vuex app 模块同源。
+		// 注意：此脚本早于模块系统执行，无法 import；'as-theme' 必须与
+		// src/constants/app-state.js 的 AppStorageKeys.THEME 保持同值。
+		(function () {
+			try {
+				var stored = localStorage.getItem('as-theme');
+				var dark =
+					stored != null
+						? stored === 'dark'
+						: window.matchMedia('(prefers-color-scheme: dark)').matches;
+				document.documentElement.classList.toggle('dark', dark);
+			} catch (e) {
+				/* localStorage 不可用时跟随脚本默认（浅色） */
+			}
+		})();
+	</script>
 </head>
 
 <body>
@@ -83,12 +78,7 @@
 		<div class="as-boot-spinner" role="status" aria-label="加载中"></div>
 		<div>加载中…</div>
 	</div>
-	<% if (htmlWebpackPlugin.options.useCdn) { %>
-		<% htmlWebpackPlugin.options.cdnScripts.forEach(function(src) { %>
-			<script src="<%= src %>"></script>
-			<% }) %>
-				<% } %>
-					<!-- built files will be auto injected -->
+	<!-- built files will be auto injected -->
 </body>
 
 </html>

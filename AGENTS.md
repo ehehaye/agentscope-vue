@@ -60,6 +60,7 @@ pnpm format:check
 
 ## Notes
 
+- CDN 引入：由 `webpack-cdn-plugin` 接管（清单在 `vue.config.js#CDN_MODULES`），版本从本地 `node_modules` 读取后拼 `registry.npmmirror.com` URL，并自动生成 externals、注入 `index.html`；仅在 `VUE_APP_USE_CDN=true` 的生产构建启用。`highlight.js/lib/common` 的子路径导入需单独补一条 externals 映射。
 - 版本号：`package.json` 的 `version` 代表**本项目实现/对齐到的 AgentScope 版本**（非本 UI 自身版本），是唯一来源；`AppSidebar.vue` 直接 import 并链接到 `https://docs.agentscope.io/zh/versions/<version>`（当前 2.0.9），跟进新 AgentScope 版本时同步升级。
 - Markdown 渲染：流式消息统一走 `src/components/md/`（见 Architecture）。拼接后的 HTML 必须整体经 DOMPurify 消毒一次（如 `md/diff.js`、`src/views/mcp/HubPanel.vue` 的 readme），不要拆分 sanitize。
 - Markdown 导出：`utils/word.js` 复用 `md/render.js` 的消毒 HTML 与 `registry.js` 的节点匹配规则（`data-lang` / `tagName`），因此新增自定义节点只需在注册处补 `toDocx`；`docx` 依赖必须保持按需 `import()`，避免进入首屏包。
