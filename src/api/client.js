@@ -57,7 +57,7 @@ async function streamRequest(path, options = {}) {
   const { method = 'GET', body, params, signal, silent = false, baseUrl, userId, timeoutMs } = options;
 
   const { pathname, origin } = new URL(baseUrl ?? getBaseUrl());
-  const url = new URL(`${pathname}/${path}/`.replace(/\/{2,}/g, '/'), origin);
+  const url = new URL(`${pathname}/${path}`.replace(/\/{2,}/g, '/'), origin);
   if (params) {
     Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
   }
