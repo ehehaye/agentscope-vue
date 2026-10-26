@@ -31,19 +31,18 @@
       <template #trigger>
         <span class="tw-text-sm tw-font-medium">交付内容</span>
       </template>
-      <div
-        v-if="submissionBlocks.length > 0"
-        class="tw-relative tw-mt-2"
-      >
-        <div
-          id="as-sop-delivery-content"
-          class="tw-rounded-lg tw-border tw-border-border tw-p-4"
-        >
-          <ASBlock
-            v-for="(block, index) in submissionBlocks"
-            :key="block.id || index"
-            :block="block"
-          />
+      <template v-if="submissionBlocks.length > 0">
+        <div class="tw-relative tw-mt-2">
+          <div
+            id="as-sop-delivery-content"
+            class="tw-rounded-lg tw-border tw-border-border tw-p-4"
+          >
+            <ASBlock
+              v-for="(block, index) in submissionBlocks"
+              :key="block.id || index"
+              :block="block"
+            />
+          </div>
         </div>
         <ExportButton
           type="word"
@@ -51,7 +50,7 @@
           :msgs="exportMsgs"
           :filename="exportFilename"
         />
-      </div>
+      </template>
       <div
         v-else
         class="tw-mt-2 tw-rounded-lg tw-border tw-border-dashed tw-border-border tw-py-8 tw-text-center tw-text-sm tw-text-muted-foreground"
