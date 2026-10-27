@@ -27,6 +27,38 @@ const CDN_MODULES = [
 // 无法表达「模块 id ≠ 包名」，故单独补一条 externals；该包的版本与 URL 仍由上面的清单提供。
 const cdnExternals = useCdn ? { 'highlight.js/lib/common': 'hljs' } : {};
 
+// 开发代理。http-proxy 默认会在 onProxyRes 之后自行 pipe 上游响应，不给调用方留 flush 时机；
+// 因此开启 selfHandleResponse 自己写响应头，再统一转发。
+// （http-proxy-middleware 0.19 没有声明这个选项，但会把它原样透传给 http-proxy@1.18。）
+const DEV_PROXY = {
+  '/proxy': {
+    target: 'http://localhost:8000',
+    changeOrigin: true,
+    pathRewrite: (url) => url.replace('/proxy', ''),
+    selfHandleResponse: true,
+    // 上游启用 gzip 时，SSE 的分块会被压缩流攒住，这里直接要求明文传输
+    onProxyReq: (proxyReq) => {
+      proxyReq.setHeader('Accept-Encoding', 'identity');
+    },
+    onProxyRes: (proxyRes, req, res) => {
+      const contentType = proxyRes.headers['content-type'] || '';
+      const isEventStream = contentType.includes('text/event-stream');
+
+      const headers = { ...proxyRes.headers };
+      if (isEventStream) {
+        // 覆盖掉可能存在的缓存/缓冲语义，普通响应保持上游原样
+        headers['Cache-Control'] = 'no-cache, no-transform';
+        headers['X-Accel-Buffering'] = 'no';
+      }
+
+      res.writeHead(proxyRes.statusCode, headers);
+      // SSE 长度未知，先把响应头发出去，浏览器才能立即进入流式读取
+      if (isEventStream) res.flushHeaders();
+      proxyRes.pipe(res);
+    },
+  },
+};
+
 module.exports = {
   publicPath,
   outputDir: 'dist',
@@ -41,6 +73,7 @@ module.exports = {
   devServer: {
     port: 5173,
     host: '0.0.0.0',
+    proxy: DEV_PROXY,
   },
   chainWebpack(config) {
     config.module

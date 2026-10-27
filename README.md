@@ -117,6 +117,11 @@ localStorage.setItem(AppStorageKeys.SERVER_URL, 'http://hostname/proxy/api/');
 - **接口文档**：直连清单见 [docs/API.md](docs/API.md)；Java 中转映射版（含映射后的 URL / Method，以及 SSE、multipart、文件下载等特殊场景说明）见 [docs/API-java-proxy.md](docs/API-java-proxy.md)。
 - **特殊响应**：SSE 事件流（`stream: true` 返回原始 `Response`）、multipart 上传（XHR）与带 token 的文件下载同样从映射表取路径。中转层需按文档说明做流式或二进制透传，不能按普通 JSON 处理。
 
+> **Tip：本地代理转发 SSE**
+> 本地代理转发 SSE 时，代理服务器可能把响应缓冲住，导致事件无法实时到达页面；此时可通过在 vue.config.js 的 `/proxy` 中开启 `selfHandleResponse`，手动转发并立即 flush 响应头的方式配置，达到 SSE 事件逐条实时推送的效果。
+>
+> 参见：[vue.config.js](vue.config.js)
+
 ## 目录结构
 
 ```text
