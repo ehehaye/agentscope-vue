@@ -179,6 +179,7 @@
 | sessionApi.remove | `/sessions/{sessionId}` | DELETE | Query：`agent_id` |
 | sessionApi.interrupt | `/sessions/{sessionId}/interrupt` | POST | Query：`agent_id`；Body：`null` |
 | sessionApi.messages | `/sessions/{sessionId}/messages` | GET | Query：`agent_id`、`before`（可选）、`limit`（可选） |
+| sessionApi.messagesAll | 同上（自动翻页） | GET | 前端封装：以当前页最早消息 id 作为 `before` 循环拉取，直到 `has_more` 为 false；按时间升序返回全部消息 |
 | sessionApi.streamEvents | `/sessions/{sessionId}/stream` | GET（`stream: true`，SSE 事件流） | Query：`agent_id`；options.signal 可中止；解析 `data:` 行 JSON |
 
 ## 13. chat（触发对话生成）

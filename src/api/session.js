@@ -13,6 +13,9 @@ import { client } from './client';
  */
 const freshlyCreated = new Set();
 
+/** 消息接口单页上限。 */
+const MESSAGES_PAGE_LIMIT = 200;
+
 /**
  * 检查并消费"刚创建"标记。
  * @returns {boolean} 若该 sessionId 刚被创建过则返回 true（同时从集合中移除），否则返回 false。
@@ -68,6 +71,31 @@ export const sessionApi = {
         ...(params?.limit != null && { limit: String(params.limit) }),
       },
     }),
+
+  /**
+   * 拉取会话的全部消息（按时间升序）。
+   * 接口为游标分页：用当前页最早一条的 id 作为 `before` 继续向前翻，直到 `has_more` 为 false。
+   * @param {string} sessionId
+   * @param {string} agentId
+   * @returns {Promise<object[]>} SDK Msg 列表
+   */
+  messagesAll: async (sessionId, agentId) => {
+    const pages = [];
+    let before = null;
+    for (;;) {
+      const { messages = [], has_more: hasMore } = await sessionApi.messages(sessionId, agentId, {
+        limit: MESSAGES_PAGE_LIMIT,
+        ...(before != null && { before }),
+      });
+      if (messages.length === 0) break;
+      pages.unshift(messages);
+      const earliest = messages[0]?.id;
+      // 没有游标（或游标没有前进）就无法继续向前翻页，直接停下，避免死循环。
+      if (!hasMore || earliest == null || earliest === before) break;
+      before = earliest;
+    }
+    return pages.flat();
+  },
 
   /**
    * 订阅会话的 SSE 实时事件流。

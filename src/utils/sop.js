@@ -2,6 +2,7 @@
  * SOP 相关的纯函数工具：表单模型、校验、提交数据构造与运行记录解析。
  * 不依赖 Vue，便于单测（见 tests/unit/sop.spec.js）。
  */
+import { buildExportSections } from '@/utils/export';
 
 export const SOP_PHASE_LABELS = {
   pending: '等待开始',
@@ -281,6 +282,29 @@ export function collectRunSessions(run) {
   });
 
   return [...byKey.values()];
+}
+
+/**
+ * 把一次运行下各会话的消息拼成导出段落：每个会话前加一条会话标签，再按角色分组。
+ * 没有可导出文字内容的会话会被跳过。
+ * @param {{ session_key: string, roles: string[] }[]} entries collectRunSessions 的结果
+ * @param {Record<string, object[]>} messagesByKey 会话键 → SDK Msg 列表
+ * @returns {{label: string, content: string, format: 'text'|'markdown'}[]}
+ */
+export function buildRunExportSections(entries, messagesByKey = {}) {
+  const sections = [];
+  (entries || []).forEach((entry) => {
+    const sessionSections = buildExportSections(messagesByKey[entry.session_key]);
+    if (sessionSections.length === 0) return;
+    const roleText = (entry.roles ?? []).join(' / ');
+    sections.push({
+      label: `会话 · ${entry.session_key}${roleText ? `（${roleText}）` : ''}`,
+      content: '',
+      format: 'text',
+    });
+    sections.push(...sessionSections);
+  });
+  return sections;
 }
 
 /** 返回当前等待人工验收的步骤下标；不是人工验收时返回 -1。 */

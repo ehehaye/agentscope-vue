@@ -60,18 +60,24 @@
         label="操作"
       >
         <template #default="{ row }">
-          <el-button
-            type="text"
-            size="mini"
-            title="删除运行"
-            class="run-delete-btn"
-            @click.stop="$emit('delete', row)"
-          >
-            <Icon
-              icon="lucide:trash-2"
-              class="tw-h-3.5 tw-w-3.5"
+          <div class="tw-flex tw-items-center tw-justify-end tw-gap-1">
+            <SopRunExportButton
+              :run="row"
+              :title="runInputText(row)"
             />
-          </el-button>
+            <el-button
+              type="text"
+              size="mini"
+              title="删除运行"
+              class="run-delete-btn"
+              @click.stop="$emit('delete', row)"
+            >
+              <Icon
+                icon="lucide:trash-2"
+                class="tw-h-3.5 tw-w-3.5"
+              />
+            </el-button>
+          </div>
         </template>
       </el-table-column>
       <!-- 为 el-table 的覆盖式纵向滚动条预留位置，避免压住操作列 -->
@@ -89,11 +95,12 @@
 import { defineComponent } from '@/composables/vue';
 import Icon from '@/components/ui/Icon';
 import StatusBadge from '@/components/badge/StatusBadge.vue';
+import SopRunExportButton from '@/components/sop/SopRunExportButton.vue';
 import { getCurrentStepIndex, runInputText } from '@/utils/sop';
 
 export default defineComponent({
   name: 'SopRunTable',
-  components: { Icon, StatusBadge },
+  components: { Icon, StatusBadge, SopRunExportButton },
   props: {
     rows: { type: Array, default: () => [] },
     loading: { type: Boolean, default: false },

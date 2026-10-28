@@ -4,6 +4,7 @@ import {
   validateSopForm,
   buildSopData,
   collectRunSessions,
+  buildRunExportSections,
   collectStepAnchorIds,
   findStepMessageIndex,
   getAwaitingHumanStepIndex,
@@ -182,6 +183,33 @@ describe('collectRunSessions', () => {
       { session_key: 'writer', agent_id: 'a1', session_id: 'session-1', roles: ['执行者'] },
       { session_key: 'reviewer', agent_id: 'a2', session_id: 'session-2', roles: ['验证者'] },
     ]);
+  });
+});
+
+describe('buildRunExportSections', () => {
+  const entries = [
+    { session_key: 'writer', roles: ['执行者'] },
+    { session_key: 'reviewer', roles: ['验证者'] },
+  ];
+
+  it('每个会话前插入会话标签，空会话被跳过', () => {
+    const messagesByKey = {
+      writer: [
+        { role: 'user', content: [{ type: 'text', text: '写一篇' }] },
+        { role: 'assistant', content: [{ type: 'text', text: '## 初稿' }] },
+      ],
+      reviewer: [{ role: 'assistant', content: [{ type: 'tool_call', name: 'bash' }] }],
+    };
+
+    expect(buildRunExportSections(entries, messagesByKey)).toEqual([
+      { label: '会话 · writer（执行者）', content: '', format: 'text' },
+      { label: '用户', content: '写一篇', format: 'text' },
+      { label: '助手', content: '## 初稿', format: 'markdown' },
+    ]);
+  });
+
+  it('没有可导出内容时返回空数组', () => {
+    expect(buildRunExportSections(entries, {})).toEqual([]);
   });
 });
 
