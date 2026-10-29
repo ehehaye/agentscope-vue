@@ -1,11 +1,10 @@
 /**
  * Markdown 自定义渲染注册
  */
-import VChart from '@/components/echarts/VChart.vue';
 import { registerCodeBlockComp } from '@/components/md/registry';
 
 registerCodeBlockComp('echarts', {
-  component: VChart,
+  component: () => import('@/components/echarts/VChart.vue'),
   resolve({ code }) {
     try {
       return { option: JSON.parse(code.trim()) };
