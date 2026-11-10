@@ -23,7 +23,7 @@ export function useSopRuns(sopId, initialQuery = {}) {
     filters,
     sort,
     queryState,
-    query,
+    query: applyQuery,
     resetFilters,
     setPage,
     setPageSize,
@@ -62,6 +62,12 @@ export function useSopRuns(sopId, initialQuery = {}) {
     () => refetch(),
     { immediate: true },
   );
+
+  // 查询按钮：先拉取最新运行再套用条件，避免只过滤本地旧数据。
+  async function query() {
+    await refetch();
+    applyQuery();
+  }
 
   async function start(inputs) {
     const res = await sopApi.startRun(unref(sopId), inputs);

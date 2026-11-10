@@ -70,8 +70,9 @@ describe('useSopRuns', () => {
     expect(wrapper.vm.rows).toHaveLength(2);
 
     wrapper.vm.filters.status = 'failed';
-    wrapper.vm.query();
+    await wrapper.vm.query();
     await Vue.nextTick();
+    expect(sopApi.listRuns).toHaveBeenCalledTimes(2);
     expect(wrapper.vm.page).toBe(1);
     expect(wrapper.vm.total).toBe(2);
     expect(wrapper.vm.rows.every((run) => run.state.phase === 'failed')).toBe(true);
