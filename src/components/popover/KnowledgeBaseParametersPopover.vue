@@ -38,6 +38,7 @@
           <template v-else-if="resolve(prop).enumValues">
             <el-select
               :value="paramValues[key] !== undefined ? paramValues[key] : ''"
+              filterable
               placeholder="选择"
               class="tw-w-full"
               @change="(v) => handleChange(key, v)"

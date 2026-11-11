@@ -73,6 +73,7 @@
           <span class="tw-text-xs tw-text-muted-foreground">会话范围</span>
           <el-select
             :value="binding.session_scope"
+            filterable
             size="small"
             class="tw-w-full"
             @change="(v) => update(i, { session_scope: v })"

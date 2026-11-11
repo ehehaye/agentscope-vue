@@ -20,6 +20,7 @@
       <template v-else-if="enumValues(prop)">
         <el-select
           :value="values[key]"
+          filterable
           @change="(val) => onChange(key, val)"
           :placeholder="placeholderFor(key, prop)"
           class="tw-w-full"

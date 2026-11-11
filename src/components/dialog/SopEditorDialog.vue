@@ -24,6 +24,7 @@
         <el-form-item label="工作区粒度">
           <el-select
             v-model="form.workspace_grain"
+            filterable
             class="tw-w-full"
           >
             <el-option

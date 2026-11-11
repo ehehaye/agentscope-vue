@@ -14,6 +14,7 @@
       </div>
       <el-select
         :value="fallbackValueKey"
+        filterable
         placeholder="无"
         clearable
         size="small"
@@ -41,6 +42,7 @@
       </div>
       <el-select
         :value="ttsValueKey"
+        filterable
         placeholder="无"
         clearable
         size="small"
@@ -93,6 +95,7 @@
           <template v-else-if="resolveType(prop).enumValues">
             <el-select
               :value="values[key] !== undefined ? values[key] : ''"
+              filterable
               placeholder="选择"
               class="tw-w-full"
               @change="(v) => handleChange(key, v)"

@@ -14,6 +14,7 @@
         <el-form-item label="凭证类型">
           <el-select
             v-model="selectedType"
+            filterable
             placeholder="选择凭证类型"
             class="tw-w-full"
           >

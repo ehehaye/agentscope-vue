@@ -69,6 +69,7 @@
       <el-form-item label="频率">
         <el-select
           v-model="form.freq"
+          filterable
           class="tw-w-full"
         >
           <el-option

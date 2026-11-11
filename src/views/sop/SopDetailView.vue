@@ -143,6 +143,7 @@
             <el-form-item>
               <el-select
                 v-model="filters.status"
+                filterable
                 size="small"
                 clearable
                 placeholder="全部状态"

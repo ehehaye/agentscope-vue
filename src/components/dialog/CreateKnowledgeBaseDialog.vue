@@ -57,6 +57,7 @@
         <div class="tw-flex tw-w-full tw-items-center tw-gap-2">
           <el-select
             v-model="selectedEmbedding"
+            filterable
             value-key="key"
             class="tw-flex-1"
             :loading="loadingModels"
@@ -87,6 +88,7 @@
       <el-form-item label="维度">
         <el-select
           v-model="dimension"
+          filterable
           class="tw-w-full"
           placeholder="选择维度"
         >
@@ -102,6 +104,7 @@
       <el-form-item label="分块器">
         <el-select
           v-model="selectedChunkerType"
+          filterable
           class="tw-w-full"
           placeholder="选择分块器"
         >

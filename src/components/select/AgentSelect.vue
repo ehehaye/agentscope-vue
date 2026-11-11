@@ -1,6 +1,7 @@
 <template>
   <el-select
     :value="value"
+    filterable
     :placeholder="placeholder"
     size="small"
     @change="handleChange"
