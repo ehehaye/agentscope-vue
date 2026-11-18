@@ -4,6 +4,7 @@ import { renderMarkdownToHtml } from '@/components/md/render';
 import { extractCode, getText } from '@/utils/ast';
 import { renderEchartsDataUrl } from '@/components/echarts/image';
 import { triggerDownload } from '@/utils/file';
+import { format } from 'date-fns';
 
 /**
  * Markdown → .docx 导出。
@@ -332,7 +333,7 @@ function createConverter(docx) {
   return { blocks, orderedListDefinition };
 }
 
-const defaultDocxName = () => `export-${new Date().toISOString().replace(/[-:T]/g, '').slice(0, 14)}.docx`;
+const defaultDocxName = () => `export-${format(new Date(), 'yyyyMMddHHmmss')}.docx`;
 
 /**
  * 通用 docx 构建器：懒加载 docx，暴露 Markdown → 块转换与保存能力。
@@ -360,7 +361,7 @@ export async function createDocxBuilder() {
  * 将 Markdown 源码转换为 .docx 并触发下载
  *
  * @param {string} markdown - Markdown 原文
- * @param {string} [filename] - 文件名，缺省为 export-YYYYMMDD-HHmmss.docx
+ * @param {string} [filename] - 文件名，缺省为 export-YYYYMMDDHHmmss.docx（本地时间）
  */
 export async function downloadDocxFromMarkdown(markdown, filename) {
   const builder = await createDocxBuilder();
