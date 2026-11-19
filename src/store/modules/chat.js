@@ -58,8 +58,10 @@ export default {
     currentKey: null,
     /** 本应用自定义：子代理 HITL 待办，由后端自定义事件 subagent_* 驱动。 */
     subagentHitl: [],
-    /** SDK 事件里的 `reply_id`，指向 messages 中正在流式的那条。 */
+    /** SDK 事件里的 `reply_id`，指向 messages 中最近开始的流式回复。 */
     currentReplyId: null,
+    /** 正在流式中的 `reply_id` 集合（团队/流水线会有多个代理并行回复）。 */
+    activeReplyIds: [],
     /** 本应用自定义：会话连接状态，取值见 AppConnectionState。 */
     connection: AppConnectionState.IDLE,
     /**
@@ -99,6 +101,12 @@ export default {
     SET_CURRENT_REPLY_ID(state, id) {
       state.currentReplyId = id;
     },
+    ADD_ACTIVE_REPLY(state, id) {
+      if (id && !state.activeReplyIds.includes(id)) state.activeReplyIds.push(id);
+    },
+    REMOVE_ACTIVE_REPLY(state, id) {
+      state.activeReplyIds = state.activeReplyIds.filter((x) => x !== id);
+    },
     SET_ABORT_CONTROLLER(state, controller) {
       state.abortController = controller;
     },
@@ -118,6 +126,7 @@ export default {
       state.currentKey = null;
       state.subagentHitl = [];
       state.currentReplyId = null;
+      state.activeReplyIds = [];
       state.connection = AppConnectionState.IDLE;
       state.pendingInput = null;
       if (state.abortController) {
@@ -295,10 +304,13 @@ export default {
           commit('SET_MESSAGES', [...state.messages, msg]);
           commit('SET_CURRENT_REPLY_ID', event.reply_id);
         }
+        commit('ADD_ACTIVE_REPLY', event.reply_id);
         commit('CLEAR_INTERRUPT_TIMER');
         commit('SET_PHASE', AppReplyPhase.STREAMING);
       } else {
-        const replyId = state.currentReplyId;
+        // 按事件自身的 reply_id 落到对应消息：团队/流水线场景下 leader 与
+        // 成员会并行产出不同 reply_id 的事件，不能只认 currentReplyId。
+        const replyId = event.reply_id || state.currentReplyId;
         if (replyId) {
           const nextMessages = replaceMessage(state.messages, replyId, (reply) => {
             appendEventReactive(reply, event);
@@ -307,9 +319,15 @@ export default {
           commit('SET_MESSAGES', nextMessages);
         }
         if (event.type === EventType.REPLY_END) {
-          commit('CLEAR_INTERRUPT_TIMER');
-          commit('SET_PHASE', AppReplyPhase.IDLE);
-          commit('SET_CURRENT_REPLY_ID', null);
+          commit('REMOVE_ACTIVE_REPLY', event.reply_id);
+          if (state.activeReplyIds.length === 0) {
+            commit('CLEAR_INTERRUPT_TIMER');
+            commit('SET_PHASE', AppReplyPhase.IDLE);
+            commit('SET_CURRENT_REPLY_ID', null);
+          } else {
+            // 仍有代理在回复（如成员结束后 leader 继续），切回最近的一个
+            commit('SET_CURRENT_REPLY_ID', state.activeReplyIds[state.activeReplyIds.length - 1]);
+          }
         }
       }
 

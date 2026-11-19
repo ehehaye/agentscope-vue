@@ -1,5 +1,7 @@
 import chat from '@/store/modules/chat';
 import { sessionApi } from '@/api';
+import { EventType } from '@agentscope-ai/agentscope/event';
+import { AppReplyPhase } from '@/constants/app-state';
 
 jest.mock('@/api', () => ({
   sessionApi: { messages: jest.fn() },
@@ -15,6 +17,57 @@ function makeContext(overrides = {}) {
 }
 
 const ids = (state) => state.messages.map((m) => m.id);
+
+describe('chat/processEvent 并发回复（团队 / TeamPipeline）', () => {
+  const evt = (type, replyId, extra = {}) => ({
+    id: `${type}-${Math.random()}`,
+    created_at: new Date().toISOString(),
+    type,
+    reply_id: replyId,
+    ...extra,
+  });
+
+  it('不同 reply_id 的事件落到各自消息，全部结束前保持 streaming', () => {
+    const { state, commit } = makeContext();
+    const process = (event) => chat.actions.processEvent({ state, commit }, { event });
+
+    process(evt(EventType.REPLY_START, 'leader', { name: 'TeamPipeline' }));
+    process(evt(EventType.REPLY_START, 'member', { name: 'Researcher' }));
+    expect(ids(state)).toEqual(['leader', 'member']);
+
+    process(evt(EventType.TEXT_BLOCK_START, 'leader', { block_id: 'l1' }));
+    process(evt(EventType.TEXT_BLOCK_START, 'member', { block_id: 'm1' }));
+    process(evt(EventType.TEXT_BLOCK_DELTA, 'leader', { block_id: 'l1', delta: 'leader says' }));
+    process(evt(EventType.TEXT_BLOCK_DELTA, 'member', { block_id: 'm1', delta: 'member says' }));
+
+    const byId = (id) => state.messages.find((m) => m.id === id);
+    expect(byId('leader').content[0].text).toBe('leader says');
+    expect(byId('member').content[0].text).toBe('member says');
+
+    // 成员先结束：仍有 leader 在回复
+    process(evt(EventType.REPLY_END, 'member'));
+    expect(state.phase).toBe(AppReplyPhase.STREAMING);
+    expect(state.currentReplyId).toBe('leader');
+
+    // leader 结束后才回到 idle
+    process(evt(EventType.REPLY_END, 'leader'));
+    expect(state.phase).toBe(AppReplyPhase.IDLE);
+    expect(state.currentReplyId).toBe(null);
+    expect(state.activeReplyIds).toEqual([]);
+  });
+
+  it('未开始过的 reply_id 事件不会误写到当前回复上', () => {
+    const { state, commit } = makeContext();
+    const process = (event) => chat.actions.processEvent({ state, commit }, { event });
+
+    process(evt(EventType.REPLY_START, 'leader', { name: 'TeamPipeline' }));
+    process(evt(EventType.TEXT_BLOCK_START, 'leader', { block_id: 'l1' }));
+    process(evt(EventType.TEXT_BLOCK_DELTA, 'ghost', { block_id: 'g1', delta: 'x' }));
+
+    expect(state.messages).toHaveLength(1);
+    expect(state.messages[0].content).toHaveLength(1);
+  });
+});
 
 describe('chat/reloadMessages', () => {
   beforeEach(() => {
